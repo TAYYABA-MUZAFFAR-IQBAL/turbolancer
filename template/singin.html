@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Projects Wizard</title>
+  <link rel="icon" href="/static/ee.ico" type="image/x-icon">  <style>
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1f1;
+        animation-name: w;
+            animation-duration: 1s;
+            animation-iteration-count: 1;
+        }
+
+        @keyframes w {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+
+.container {
+  width: 400px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* Added for positioning the back button */
+}
+
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  color: #663399;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+}
+
+h2 {
+  text-align: center;
+  color: #663399;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+input {
+  width: 100%;
+  padding: 10px 0;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  color: #555;
+  background-color: transparent;
+}
+
+label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  color: #999;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+input:focus ~ label,
+input:valid ~ label {
+  top: -20px;
+  font-size: 12px;
+  color: #663399;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #663399;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #512da8;
+  color: white;
+}
+
+.privacy-policy {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-top: 20px;
+}
+
+.privacy-policy a {
+  color: #663399;
+  text-decoration: none;
+}
+
+.privacy-policy a:hover {
+  text-decoration: underline;
+}
+
+.signin-link {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+}
+
+.signin-link a {
+  color: #663399;
+  text-decoration: none;
+}
+
+.signin-link a:hover {
+  text-decoration: underline;
+}  </style>
+</head>
+<body onload="check()">
+  <div class="container">
+    <h3 style="color: red; text-align: center;">{{ a }}</h3>
+
+    <button class="back-button" onclick="goBack()">&#8249;</button>
+    <form class="signin-form" action="/signin" method="POST">
+      <h2>Sign In</h2>
+      <div class="input-group">
+        <input type="email" id="email" name="email" required>
+        <label for="email">Email</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" name="ps" required>
+        <label for="password">Password</label>
+      </div>
+      <button type="submit">Sign In</button>
+      <p class="privacy-policy">By signing in, you agree to our <a href="#">Privacy Policy</a>.</p>
+      <p class="signup-link">Don't have an account? <a href="/signup">Sign up</a></p>
+    </form>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+    </script>
+
+    
+</body>
+</html>

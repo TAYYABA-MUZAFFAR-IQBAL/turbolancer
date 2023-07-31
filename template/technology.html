@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Add your head content here -->
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">My Skills</a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Insert New Skill</h2>
+
+        <form action="{{ url_for('insert_tech') }}" method="POST">
+            <div class="form-group">
+                <label for="skill">sector:</label>
+                <input type="text" class="form-control" id="sector" name="sector" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image">tech:</label>
+                <input type="text" class="form-control" id="tech" name="tech" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image URL:</label>
+                <input type="text" class="form-control" id="image" name="image" required>
+            </div>
+            <div class="form-group">
+                <label for="image">requared(op):</label>
+                <input type="text" class="form-control" id="image" name="req" >
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (Place this at the end of the body to improve page load speed) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+XjUp6lHzfK6jG97Lz+B8b1rGH2KKm6axXCL3l5gAn3t3Rx"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

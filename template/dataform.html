@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<title>turbolancer</title>
+<style>
+    * {
+        box-sizing: border-box;
+        overflow-y: hidden;
+
+    }
+
+
+    #regForm {
+        margin: 100px auto;
+        font-family: "Poppins", Arial, sans-serif;
+        padding: 40px;
+        width: 70%;
+        min-width: 300px;
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-radius: 1rem;
+        z-index: 10;
+        color: rgb(27, 27, 27);
+        transition: all 0.5s;
+
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    input {
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-family: "Poppins", Arial, sans-serif;
+        border: 1px solid #aaaaaa;
+    }
+
+    /* Mark input boxes that gets an error on validation: */
+    input.invalid {
+        background-color: #ffdddd;
+    }
+
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    button {
+        background-color: #04AA6D;
+        color: #ffffff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 17px;
+        font-family: "Poppins", Arial, sans-serif;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    #prevBtn {
+        background-color: #bbbbbb;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+        background-color: #e9e7e7;
+        box-shadow: 0 2px 4px #75757565;
+    }
+
+    .step.active {
+        opacity: 1;
+        background-color: #757575;
+    }
+
+    /* Mark the steps that are finished and valid: */
+    .step.finish {
+        background-color: #00c559;
+    }
+
+    .container {
+        max-width: 960px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 30px;
+        text-align: center;
+        margin: 20px 0 20px;
+    }
+
+    h1 small {
+        display: block;
+        font-size: 15px;
+        padding-top: 8px;
+        color: gray;
+    }
+
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 50px auto;
+    }
+
+    .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+    }
+
+    .avatar-upload .avatar-edit input {
+        display: none;
+    }
+
+    .avatar-upload .avatar-edit input+label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .avatar-upload .avatar-edit input+label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+    }
+
+    .avatar-upload .avatar-edit input+label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+    }
+
+    .avatar-upload .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-upload .avatar-preview>div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    #texta {
+        width: 80%;
+        border-radius: 7px;
+        margin-left: 10%;
+        font-family: "Poppins", Arial, sans-serif;
+        font-size: large;
+        outline: 1px solid #00ff5550;
+        margin-bottom: 10px;
+        padding: 7px;
+        backdrop-filter: blur(50px);
+        background-color: #f1f1f128;
+        line-break: anywhere;
+        word-break: keep-all;
+    }
+
+    .blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: linear-gradient(180deg,
+                #00ac6d 31.77%,
+                #75f15c 100%);
+        mix-blend-mode: color-dodge;
+        -webkit-animation: move 25s infinite alternate;
+        animation: move 25s infinite alternate;
+        transition: 1s cubic-bezier(0.07, 0.8, 0.16, 1);
+        box-shadow: 0 3px 8px #1212125b;
+    }
+
+
+
+    @-webkit-keyframes move {
+        from {
+            transform: translate(-10%, -5%) rotate(-90deg);
+            border-radius: 24% 76% 35% 65% / 27% 56% 64% 73%;
+        }
+
+        to {
+            transform: translate(200%, 100%) rotate(-10deg);
+            border-radius: 76% 24% 33% 67% / 68% 95% 45% 32%;
+        }
+    }
+
+    @keyframes move {
+        from {
+            transform: translate(-10%, -5%) rotate(-90deg);
+            border-radius: 24% 76% 35% 65% / 27% 36% 64% 73%;
+        }
+
+        to {
+            transform: translate(200% 100%) rotate(-720deg);
+            border-radius: 76% 24% 33% 67% / 68% 55% 45% 32%;
+        }
+    }
+
+    #patient {
+        width: 30%;
+        object-fit: cover;
+        margin-left: 35%;
+        margin-top: 20px;
+    }
+
+    .range-slider {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 650px;
+        height: 60px;
+        padding: 30px;
+        padding-left: 40px;
+        background: #fcfcfc44;
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0px 15px 40px #7E6D5766;
+    }
+
+    .range-slider__value {
+        font-size: 24px;
+        font-weight: 400;
+        font-family: Open Sans;
+        padding-left: 10px;
+        color: black;
+    }
+
+    input {
+        transition: all 0.5s;
+
+    }
+
+    input[type="range"] {
+        width: 420px;
+        height: 10px;
+        background: rgb(53, 187, 0);
+        color: lightgreen;
+        transition: all 0.5s;
+        border: none;
+        outline: none;
+    }
+
+    /* Additional styles for the thumb or handle */
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 506px;
+        background: lightgreen;
+        color: lightskyblue;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        background: lightgreen;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    input[type="range"]::-ms-thumb {
+        width: 16px;
+        height: 16px;
+        background: lightgreen;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+
+    .level {
+        min-height: 400px;
+    }
+
+    .logo-p {
+        margin: 10px;
+
+    }
+
+    #logo {
+        height: 40px;
+
+
+    }
+
+    /* Common styles for both desktop and mobile */
+    #contentt {
+        height: 300px;
+        width: 50%;
+    }
+
+    #regForm.welcom {
+        color: #ffff;
+        background-color: #00a54b;
+        background-image: linear-gradient(to left, #00ce2200, #00a54b 99%), url(/static/6krbcxk4.png);
+        background-size: 50% 100%;
+        background-position: right;
+        background-repeat: no-repeat;
+        min-height: 500px;
+    }
+
+    #ftext {
+        max-width: 50%;
+        text-align: left;
+        float: left;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 767px) {
+        #contentt {
+            width: 100%;
+            /* Take full width on mobile */
+        }
+
+        #regForm.welcom {
+            padding: 20px;
+            /* Add some padding for better mobile appearance */
+            min-height: 300px;
+            /* Adjust min-height for mobile */
+            background-position: center;
+            /* Center the background image on mobile */
+            background-size: 100% auto;
+            /* Resize the background image to fit */
+        }
+
+        #ftext {
+            max-width: 100%;
+
+            text-align: center;
+        }
+    }
+</style>
+
+<body class="animate__animated animate__fadeIn">
+    <div class="blob animate__animated animate__rotateIn "></div>
+
+
+    <div id="regForm" class='welcom'>
+        <div class="logo-p">
+            <img id="logo" src="/static//light_logo.png" alt="logo_turbolancer">
+        </div>
+        <div id="tb" class="tab animate__animated animate__fadeIn">
+            <div id="contentt">
+                <h1 id="ftext" style=" font-size: 27px; position: fixed; padding-left: 27px; color: #ffff;">Hi, {{name}}
+                </h1>
+                <h1 id="ftext"
+                    style=" font-size: 25px; position: fixed;  bottom: 190px; color: #ffff;padding: 3px; text-shadow: 0 1px 3px #12121262;">
+                    Please be
+                    patient as this process may require a few moments of your time.</h1>
+            </div>
+
+            <div style="position: absolute; bottom:8px; width: auto; right: 10px;">
+                <div style="float:right;">
+                    <button type="button" id="nextBtn" onclick="nextPrev(1), removecl()">continue</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab animate__animated animate__fadeIn">
+            <div class="container">
+                <h1>Upload your profile picture
+                </h1>
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" required>
+                        <label for="imageUpload"></label>
+                    </div>
+                    <div class="avatar-preview">
+                        <div id="imagePreview"
+                            style="background-image: url(https://cdn-icons-png.flaticon.com/128/3177/3177440.png);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="position: absolute; bottom:8px; width: auto; right: 10px;">
+                <div style="float:right;">
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                </div>
+            </div>
+            <script
+                src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+            <script>
+                function removecl() {
+                    document.getElementById('regForm').classList.remove('welcom');
+                    document.getElementById('logo').src = '/static//dark_logo.png'
+                }
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var imageBase64 = e.target.result;
+                            $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                            $('#imagePreview').hide();
+                            $('#imagePreview').fadeIn(650);
+
+                            var email = "{{ email }}";
+
+                            // Create a new FormData object
+                            var formData = new FormData();
+                            formData.append("image", input.files[0]);
+                            formData.append("email", email);
+
+                            // Send the AJAX request
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/UPLOAD_IMAGE");
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === XMLHttpRequest.DONE) {
+                                    if (xhr.status === 200) {
+                                        var response = JSON.parse(xhr.responseText);
+                                        console.log(response.message);
+                                    } else {
+                                        console.log("Error: " + xhr.status);
+                                    }
+                                }
+                            };
+                            xhr.send(formData);
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                $("#imageUpload").change(function () {
+                    readURL(this);
+                });
+
+            </script>
+        </div>
+        <div class="tab animate__animated animate__fadeIn">
+            <h1>Write about yourself</h1>
+            <h3 style="color: rgb(255, 66, 66); text-align: center;">The text should have a length ranging from 250 to
+                500 characters.</h3><br>
+            <textarea name="about_self" oninput="checkCharacterCount()" id="texta" rows="15" required autofocus="true"
+                autocomplete="address-level3" maxlength="500">Hi, my name is {{name}}</textarea>
+            <h2 style="float:right; margin-bottom: 13px;margin-right: 40px;" id="characterCount"></h2>
+
+            <div style="position: absolute; bottom:8px; width: auto; right: 10px;">
+                <div style="float:right;">
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                    <button type="button" class="nextbutton" id="nextBtn" onclick="nextPrev(1),updateData()"
+                        disabled>Next</button>
+                </div>
+            </div>
+
+            <script>
+                function checkCharacterCount() {
+                    var textarea = document.getElementById("texta");
+                    var characterCount = textarea.value.length;
+                    var characterCountElement = document.getElementById("characterCount");
+
+                    // Update character count display
+                    characterCountElement.textContent = characterCount + "/500 characters";
+
+                    // Disable or enable the next button based on character count
+                    var nextButton = document.querySelector('.nextbutton');
+                    if (characterCount < 250) {
+                        nextButton.disabled = true;
+                    } else {
+                        nextButton.disabled = false;
+                    }
+                }
+
+                // Call the function initially to set the initial state
+                checkCharacterCount();
+                function updateData() {
+                    var email = "{{ email }}";
+                    var textAreaValue = document.getElementById("texta").value;
+
+                    var data = {
+                        email: email,
+                        textAreaValue: textAreaValue
+                    };
+
+                    fetch('/update_data', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // Data successfully updated
+                                console.log("Data updated in data.json");
+                                // Proceed to the next step or perform any other action
+                            } else {
+                                // Error occurred while updating data
+                                throw new Error('Error updating data: ' + response.statusText);
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+
+            </script>
+        </div>
+
+        <div class="tab animate__animated animate__fadeIn level">
+            <h1>Select your English communication level</h1>
+            <div class="range-slider">
+                <input class="range-slider__range" type="range" value="0" min="0" max="100" step="50">
+                <span class="range-slider__value">Beginner</span>
+            </div>
+
+
+            <!-- Parent div with relative position -->
+            <div style="position: absolute; bottom:8px; width: auto; right: 10px;">
+                <!-- Child div aligned to the bottom -->
+                <div style="float: right;">
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                    <button type="button" id="nextBtn" onclick=" sendValueToBackend()">Submit</button>
+                </div>
+            </div>
+            <script>
+
+                function sendValueToBackend() {
+                    var email = "{{ email }}";
+                    var rangeValue = document.querySelector('.range-slider__value').textContent;
+
+                    // Prepare data object to be sent as JSON
+                    var data = {
+                        rangeValue: rangeValue,
+                        email: email
+                    };
+
+                    // Perform fetch request to send the JSON data to the backend
+                    fetch('/update_value', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // Data successfully sent to the backend
+                                console.log("Value sent to backend: " + rangeValue);
+                                return response.json();
+                            } else {
+                                throw new Error('Error sending value to backend.');
+                            }
+                        })
+                        .then(data => {
+                            // Check if the response contains a 'link' key
+                            if (data.link) {
+                                // Redirect to the provided link
+                                window.location.href = data.link;
+                            } else {
+                                // Handle error or perform other actions
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+
+                var rangeSlider = function () {
+                    var slider = $('.range-slider'),
+                        range = $('.range-slider__range'),
+                        value = $('.range-slider__value');
+
+                    slider.each(function () {
+                        value.each(function () {
+                            var val = $(this).prev().attr('value');
+                            if (val < 1) {
+                                $(this).html('Beginner');
+                            } else if (val < 51 && val > 49) {
+                                $(this).html('Conversational');
+                            } else {
+                                $(this).html('Expert');
+                            }
+                        });
+
+                        range.on('input', function () {
+                            var val = $(this).val();
+                            $(this).next(value).html(getLabel(val));
+                        });
+                    });
+                };
+
+
+                function getLabel(val) {
+                    if (val < 1) {
+                        return 'Beginner';
+                    } else if (val < 51 && val > 49) {
+                        return 'Conversational';
+                    } else {
+                        return 'Expert';
+                    }
+                }
+                ;
+
+                // Call the rangeSlider function
+                rangeSlider();
+            </script>
+        </div>
+
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+    </div>
+
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Continue";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            //... and run a function that will display the correct step indicator:
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 1 && !validateForm()) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                document.getElementById("regForm").submit();
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, i, valid = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            // A loop that checks every input field in the current tab:
+            for (i = 0; i < y.length; i++) {
+                // If a field is empty...
+                if (y[i].value == "") {
+                    // add an "invalid" class to the field:
+                    y[i].className += " invalid";
+                    // and set the current valid status to false
+                    valid = false;
+                }
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class on the current step:
+            x[n].className += " active";
+        }
+    </script>
+    <script>
+
+        {% if id %}
+        window.localStorage.setItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb', '{{id}}')
+        {% endif %}
+
+    </script>
+</body>
+
+</html>

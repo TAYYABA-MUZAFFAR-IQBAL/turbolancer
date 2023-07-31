@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.7" />
+  <title>TurboLancer</title>
+  <link rel="shortcut icon" href="/static/icon_turbolanccer.ico" type="image/x-icon">
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b8b432d7d3.js" crossorigin="anonymous"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="db.css">
+
+</head>
+
+<body>
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar flex-c flex-sb">
+      <div class="brand"><img style="float: left;" src="icon.png" alt="logo">
+        <p
+          style="transition: all 0.5s; font-size: 2.8vh; float: left; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;letter-spacing:1px ; font-weight: 500;">
+          &nbsp; Turbo<b>Lancer</b></p>
+      </div>
+      <div class="side-nav">
+        <a onclick="tab(this)" class="tabbutton active" data="#home">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="grid"></ion-icon>
+            </div>
+
+            <p>Dashboard</p>
+          </div>
+        </a>
+
+        <a onclick="tab(this)"  id="tabbuttonp"  class="tabbutton" data="#profile">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="person-circle-outline"></ion-icon>
+            </div>
+
+            <p>Profile</p>
+          </div>
+        </a>
+        <a onclick="tab(this)" id="tabbuttonno" class="tabbutton" data="#notifi">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="notifications-outline"></ion-icon>
+            </div>
+
+            <p>Notifications</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <p>Message</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="search-outline"></ion-icon>
+            </div>
+
+            <p>Find Work</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="hammer-outline"></ion-icon>
+            </div>
+
+            <p>Skills</p>
+          </div>
+        </a> <a onclick="tab(this)" class="tabbutton" class="tabbutton" data="#profile">
+
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="time-outline"></ion-icon>
+            </div>
+
+            <p>Projects History</p>
+          </div>
+        </a>
+        <a onclick="tab(this)" class="tabbutton" class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="card-outline"></ion-icon>
+            </div>
+
+            <p> Transections</p>
+          </div>
+        </a>
+
+
+        <div class="border"></div>
+
+        <div class="log-out">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+
+            <p>Logout</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Sidebar -->
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- ======Topbar======= -->
+      <div class="topbar flex flex-sb">
+        <div class="search flex">
+          <div class="icon">
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+          <input type="text" placeholder=" Search any collection" />
+        </div>
+
+        <div class="theme flex">
+          <div class="dark flex">
+            <ion-icon name="moon-outline"></ion-icon>
+          </div>
+          <div class="light active flex">
+            <ion-icon name="sunny-outline"></ion-icon>
+          </div>
+        </div>
+<a href="#Notification" onclick="tab(this) , document.querySelector('#tabbuttonno').classList.add('active')" style="cursor: pointer;"  class="tabbutton"
+data="#notifi">
+        <div class="notification icon">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </div>
+</a>
+        <div class="user flex flex-sb">
+          <img id="pro" src="w0qx9ror.png" alt="" />
+          <p>name</p>
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </div>
+      </div>
+      <!-- ======End Topbar======= -->
+
+      <!-- ======Section======= -->
+      <div id="home" class="section flex flex-sb active animate__animated animate__fadeIn ">
+        <!-- Section Left -->
+        <div class="section-left">
+          <!-- ======Banner======= -->
+          <div class="banner flex flex-sb">
+            <div class="text">
+              <h2>
+                Hi, name </h2>
+
+              <a onclick="tab(this) , document.querySelector('#tabbuttonp').classList.add('active')" style="cursor: pointer;" class="btn tabbutton" class="tabbutton"
+                data="#profile">See profile</a>
+            </div>
+
+            <img id="imagepro" src="w0qx9ror.png" alt="" />
+          </div>
+
+          <div class="nfts">
+
+
+
+            <!-- =====Browse NFT===== -->
+            <div class="browse">
+              <div class="nft">
+                <img style="object-fit: cover;" src="woman-filling-online-customer-feedback-form-5627122-4688581.png"
+                  alt="" />
+                <div class="title">Reviews and Ratings</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Rattings:</h2>
+                  </div>
+                  <div class="price">4.5/5</div>
+                </div>
+              </div>
+
+              <div class="nft">
+                <img style="object-fit:fill;" src="R-removebg-preview.png" alt="" />
+                <div class="title">Service Time</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+
+                    <h2>Member Since:</h2>
+                  </div>
+                  <div class="price">Year: 2023</div>
+                </div>
+              </div>
+
+              <div class="nft">
+                <img style='object-fit: cover;' src="conversation.png" alt="" />
+                <div class="title">English Communication lavel</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Level:</h2>
+                  </div>
+                  <div class="price">Expert</div>
+                </div>
+              </div>
+
+              <div class="nft">
+                <img style="object-fit: cover;background-size: 100%; max-width: 70%;" src="deposit.png" alt="" />
+                <div class="title">Payment Method</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Method:</h2>
+                  </div>
+                  <div class="price"> <img style="max-height: 30px; width: 40px;" src="visa.png" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Right -->
+        <div class="section-right">
+          <div style="margin-top: 40px; padding-top: 65px;" class="graph flex-c">
+            <p>Earnings</p>
+            <h2>93,565.00</h2>
+
+            <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/graph.svg" alt="" />
+          </div>
+
+          <div class="top-creators">
+            <div class="heading flex flex-sb">
+              <h2>recent clintes</h2>
+              <p>See all</p>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn following">show</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ======End Section======= -->
+      <div id="profile" class="section flex flex-sb animate__animated animate__fadeIn">
+
+        <div class="profile-card">
+          <div class="profile-header"><!-- profile header section -->
+            <div class="main-profile">
+              <div class="profile-image"><img src="w0qx9ror.png" style="border-radius: 50%;" alt="profile pic"></div>
+              <div class="profile-names">
+                <h1 class="username">Mohammad.S</h1>
+                <small class="page-title">Front-End developer</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-body"><!-- profile body section -->
+            <div class="profile-actions">
+              <button class="follow">Edit Profile</button>
+              <section class="bio">
+                <div class="bio-header">
+                  <i class="fa fa-info-circle"></i>
+                  About My Self
+                </div>
+                <p class="bio-text">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, quibusdam magnam? Repellendus ipsa
+                  nemo excepturi a nostrum quasi molestias, expedita reiciendis voluptate eveniet accusantium aliquid
+                  fuga molestiae doloribus repellat ab.
+                </p>
+              </section>
+            </div>
+
+            <div class="account-info">
+              <div class="data">
+                <div class="important-data">
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Email:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">
+                      &nbsp;mianjunaid2323@gmail.com</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Country:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;Pakistan</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Phone Number:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;03224041677</p>
+                  </section>
+
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Grade:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>A</b></p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Rating:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>4.6</b>/5</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Working Since:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>2023</b></p>
+                  </section>
+                </div>
+              </div>
+
+              <div class="social-media">
+                <span>Expetiese:</span>
+                <h3>&nbsp;HTML</h3>,<h3>&nbsp; CSS</h3>,<h3> &nbsp;JAVASCRIPT</h3>,<h3> &nbsp;BOOSTRAP</h3>,<h3>&nbsp;
+                  BOOSTRAP</h3>,<h3>&nbsp; WORDPRESS</h3>
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div id="notifi" class="section flex flex-sb animate__animated animate__fadeIn">
+
+        <div class="container">
+          <div style="margin-bottom: 50px;">
+            <div class="icon" style="float: left;font-weight: 600; color: rgb(26, 207, 26);">
+              <ion-icon name="notifications"></ion-icon>
+            </div>
+            <h1 style="font-size: 23PX; float:left; font-weight: 600;"> Notifications</h1>
+          </div>
+
+          <div class="accordion">
+            <dl>
+              <dt><a class="accordionTitle" href="#">Test Simple Flat UI CSS Accordion 1</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+              <dt><a href="#" class="accordionTitle">Test Simple Flat UI CSS Accordion 2</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+              <dt><a href="#" class="accordionTitle">Test Simple Flat UI CSS Accordion 3</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+            </dl>
+          </div>
+        </div>
+
+
+      </div>
+      <!-- End Dashboard Content -->
+    </div>
+  </div>
+
+  <!-- End Dashboard -->
+
+
+
+  <!-- Ion Icons Js -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+
+  <!-- JS -->
+  <script>
+    (function (window) {
+      'use strict';
+      function classReg(className) {
+        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+      }
+      var hasClass, addClass, removeClass;
+
+      if ('classList' in document.documentElement) {
+        hasClass = function (elem, c) {
+          return elem.classList.contains(c);
+        };
+        addClass = function (elem, c) {
+          elem.classList.add(c);
+        };
+        removeClass = function (elem, c) {
+          elem.classList.remove(c);
+        };
+      }
+      else {
+        hasClass = function (elem, c) {
+          return classReg(c).test(elem.className);
+        };
+        addClass = function (elem, c) {
+          if (!hasClass(elem, c)) {
+            elem.className = elem.className + ' ' + c;
+          }
+        };
+        removeClass = function (elem, c) {
+          elem.className = elem.className.replace(classReg(c), ' ');
+        };
+      }
+
+      function toggleClass(elem, c) {
+        var fn = hasClass(elem, c) ? removeClass : addClass;
+        fn(elem, c);
+      }
+      var classie = {
+        hasClass: hasClass,
+        addClass: addClass,
+        removeClass: removeClass,
+        toggleClass: toggleClass,
+        has: hasClass,
+        add: addClass,
+        remove: removeClass,
+        toggle: toggleClass
+      };
+      if (typeof define === 'function' && define.amd) {
+        define(classie);
+      } else {
+        window.classie = classie;
+      }
+    })(window);
+    var $ = function (selector) {
+      return document.querySelector(selector);
+    }
+    var accordion = $('.accordion');
+    accordion.addEventListener("click", function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (e.target && e.target.nodeName == "A") {
+        var classes = e.target.className.split(" ");
+        if (classes) {
+          for (var x = 0; x < classes.length; x++) {
+            if (classes[x] == "accordionTitle") {
+              var title = e.target;
+              var content = e.target.parentNode.nextElementSibling;
+              classie.toggle(title, 'accordionTitleActive');
+              if (classie.has(content, 'accordionItemCollapsed')) {
+                if (classie.has(content, 'animateOut')) {
+                  classie.remove(content, 'animateOut');
+                }
+                classie.add(content, 'animateIn');
+              } else {
+                classie.remove(content, 'animateIn');
+                classie.add(content, 'animateOut');
+              }
+              classie.toggle(content, 'accordionItemCollapsed');
+            }
+          }
+        }
+      }
+    });
+    const dark = document.querySelector(".dark");
+    const light = document.querySelector(".light");
+
+    dark.addEventListener("click", function () {
+      document.querySelector("body").classList.add("darkMode");
+      light.classList.remove("active");
+      dark.classList.add("active");
+    });
+
+    light.addEventListener("click", function () {
+      document.querySelector("body").classList.remove("darkMode");
+      dark.classList.remove("active");
+      light.classList.add("active");
+    });
+    // JavaScript tabbutton
+    function tab(element) {
+      const targetHref = element.getAttribute("data");
+
+      const tabContents = document.querySelectorAll(".section");
+      const tabContent = document.querySelectorAll(".tabbutton");
+
+      // Hide all tab contents
+      tabContents.forEach((content) => {
+        content.classList.remove("active");
+      });
+      tabContent.forEach((content) => {
+        content.classList.remove("active");
+      });
+      // Show the targeted tab content
+      const targetTab = document.querySelector(targetHref);
+      if (targetTab) {
+        targetTab.classList.add("active");
+        element.classList.add("active");
+
+      }
+    }
+
+  </script>
+  <!-- from cdn -->
+  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/collapse.js"></script>
+
+</body>
+
+</html>

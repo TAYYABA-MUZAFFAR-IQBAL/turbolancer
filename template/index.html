@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboLancer</title>
+  <link rel="shortcut icon" href="/static/icon_turbolanccer.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <style>
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  scroll-snap-type: both mandatory;
+
+  animation-name: en;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+  overflow-x: hidden;
+
+}
+body > section{
+  scroll-snap-align: center;
+
+}
+@keyframes en {
+  0%{
+    transform: scale(1.1);
+    opacity: 0;
+  } 
+   100%{
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+}
+html {
+  scroll-behavior: smooth;
+}
+/* Navigation Bar */
+.navbar {
+  background-color:#00a56e;
+  border-radius: 0 0 12px 12px ;
+
+  transition: background-color 0.3s ease;
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #949393;
+}
+
+/* Hero Section */
+.header {
+  background-image: url('/static/bh.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 48px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.header p {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+
+
+
+/* Features Section */
+.features-section {
+  padding: 80px 0;
+}
+
+.features-section .section-heading {
+  font-size: 36px;
+  color: green;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.features-section .feature {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.features-section .feature-icon {
+  font-size: 48px;
+  color: #1b8f61;
+  margin-bottom: 20px;
+}
+
+.features-section .feature-heading {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.features-section .feature-description {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Call to Action Section */
+.cta-section {
+  background-color: #d7fdf6;
+  padding: 80px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cta-section .section-heading {
+  font-size: 36px;
+  color: black;
+
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cta-section p {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+
+
+
+
+/* FAQ Section */
+.faq-section {
+  background-color: #fff;
+  padding: 60px 0;
+}
+
+.faq-section .section-heading {
+  font-size: 36px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.faq-section .card-header {
+  background-color: #f2f2f2;
+}
+
+.faq-section  button {
+  color: #00a56e !important;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  width: 100%;
+  border-radius: 3px;
+  outline: none;
+  text-decoration: none;
+}
+.faq-section .btn::after{
+  display: none;
+}
+.faq-section .btn:active{
+  outline: none;
+border: none;
+}
+.faq-section .card-header button:hover {
+  color: #2b2b2b;
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.faq-section .card-body {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Contact Section */
+.contact-section {
+  background-color: #f8faf9;
+  padding: 80px 0;
+  width: 100%;
+}
+
+.contact-section .section-heading {
+  font-size: 36px;
+  color: black;
+  font-weight: bold;  text-align: center;
+  margin-bottom: 50px;
+}
+
+.contact-section .form-control {
+  border-radius: 0;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 1px solid #0f6b5c;
+  transition: border-color 0.3s ease;
+}
+
+.contact-section .form-control:focus {
+  border-color: #2c8a5f;
+}
+
+.btn {
+ position: relative;
+ font-size: 17px;
+ text-transform: uppercase;
+ text-decoration: none;
+ padding: 1em 2.5em;
+ display: inline-block;
+ border-radius: 6em;
+ transition: all .2s;
+ border: none;
+ font-family: inherit;
+ font-weight: 500;
+ color: white;
+ background-color: #00b16a;
+ box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+}
+
+.btn:hover {
+ transform: translateY(-3px);
+ box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+ background-color: #209265;
+
+}
+
+.btn:active {
+ transform: translateY(-1px);
+ box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.btn::after {
+ content: "";
+ display: inline-block;
+ height: 100%;
+ width: 100%;
+ border-radius: 100px;
+ position: absolute;
+ top: 0;
+ left: 0;
+ z-index: -1;
+ transition: all .4s;
+}
+
+.btn::after {
+ background-color: #209265;
+}
+
+.btn:hover::after {
+ transform: scaleX(1.4) scaleY(1.6);
+ opacity: 0;
+}
+
+.contact-section .contact-info {
+  font-size: 18px;
+  color: #333;
+}
+
+/* Footer Section */
+footer {
+  background-color: #202020;
+  padding: 30px 0;
+}
+
+footer p {
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: rgb(3, 194, 3);
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top:hover {
+  background-color: rgb(1, 153, 1);
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* On Scroll Animation */
+.animated {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.animated.fadeIn {
+  opacity: 1;
+  visibility: visible;
+}
+
+::selection{
+  color: white;
+  background-color: #00a56e;
+}
+-moz-::selection{
+  color: white;
+  background-color: #00a56e;
+}
+:-webkit-::selection{
+  color: white;
+  background-color: #00a56e;
+}
+/* Add your own animations here */
+
+/* Scroll Animation */
+.scroll-reveal {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  z-index: 4;
+  visibility: visible;
+}
+
+/* Transition on Scroll */
+.transition-on-scroll {
+  transition: all 0.3s ease;
+}
+
+/* Sticky Navigation Bar */
+.sticky-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient Background */
+.gradient-bg {
+  background-image: linear-gradient(to bottom, #00ce2283, #00a56e),url(/static/6071fdco.png);
+  background-size: cover;
+  border-radius: 0 0 50px 50px ;
+  background-position: center;
+  background-attachment:initial;
+  box-shadow: 0 1px 10px #121212;
+}
+
+/* Image with Border Bottom */
+.image-with-border {
+  position: relative;
+}
+
+.image-with-border::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background-color: #00a56e;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+#sc{
+  color: white;
+  top: 100px !important;
+text-align: center;
+position: relative;
+z-index: 10;
+
+
+}
+.wave-group {
+  position: relative;
+}
+
+.wave-group .input {
+  font-size: 16px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #515151;
+  background: transparent;
+}
+
+.wave-group .input:focus {
+  outline: none;
+}
+
+.wave-group .label {
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  display: flex;
+}
+
+.wave-group .label-char {
+  transition: 0.2s ease all;
+  transition-delay: calc(var(--index) * .06s);
+  font-size: 20px;
+
+}
+
+.wave-group .input:focus ~ label .label-char,
+.wave-group .input:valid ~ label .label-char {
+  transform: translateY(-20px);
+  font-size: 14px;
+  color: #00a56e;
+}
+
+.wave-group .bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.wave-group .bar:before,.wave-group .bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #00a56e;
+  transition: 0.4s ease all;
+  -moz-transition: 0.4s ease all;
+  -webkit-transition: 0.4s ease all;
+}
+
+.wave-group .bar:before {
+  left: 50%;
+}
+
+.wave-group .bar:after {
+  right: 50%;
+}
+
+.wave-group .input:focus ~ .bar:before,
+.wave-group .input:focus ~ .bar:after {
+  width: 50%;
+}
+.ask{
+  float: left;
+  width: 100%;
+  height: 60px;
+}
+.ask::after{
+  display: none;
+}
+
+/* Track */
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 50px;
+
+}
+
+/* Hovered Thumb */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+  border-radius: 50px;
+}
+*{
+  font-family: "Poppins", Arial, sans-serif;}
+  
+.modal.fade{
+  backdrop-filter: blur(10px);
+}
+#logo{
+  height: 50px;
+  left: -10px;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-nav">
+    <div class="container">
+      <div  class="navbar-brand"><img id='logo'src="static/light_logo.png" alt=""></div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#features"><i class="fas fa-cogs"></i> Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#cta"><i class="fas fa-bullseye"></i> Get Started</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#faq"><i class="fas fa-question-circle"></i> FAQ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="header gradient-bg">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <h1 class="animated fadeIn">Transform your vision into reality with <b style="font-size: 50px;font-family: 'Poppins', Arial, sans-serif; color: rgb(229, 255, 229);filter: brightness(150%); text-shadow: 0 1px 3px rgb(94, 255, 94);">TurboLancer</b></h1>
+          <p class="animated fadeIn">Your ultimate freelancing destination where creativity meets expertise. Connect with top-notch talents from around the globe and watch your ideas take flight.</p>
+          <a href="#cta" data-toggle="modal" data-target="#signupModal" class="btn btn-primary btn-lg">Get Started</a>
+          <div class="scroll-down">
+
+          </div>
+        </div>
+      </div>
+      <span id ="sc" class="scroll-down-text">Scroll Down to See More</span>
+      <span id ="sc" class="scroll-down-icon"><i class="fas fa-chevron-down"></i></span>
+    </div>
+    
+  </section>
+  
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <h2 class="section-heading" style="color:  #00a56e;">Why Choose TurboLancer?</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="feature">
+            <i class="fas fa-search feature-icon"></i>
+            <h3 class="feature-heading">Watch Your Ideas Soar!</h3>
+            <p class="feature-description">Connect with top-notch talents from around the globe and watch your ideas take flight.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="feature">
+            <i class="fas fa-clock feature-icon"></i>
+            <h3 class="feature-heading">Save Time</h3>
+            <p class="feature-description">By using TurboLancer, you can quickly find and hire a developer, saving you
+              time and effort in the hiring process.</p>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="feature">
+            <i class="fas fa-dollar-sign feature-icon"></i>
+            <h3 class="feature-heading">Cost-Effective</h3>
+            <p class="feature-description">TurboLancer offers competitive pricing and ensures that you get the best value
+              for your money.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section id="cta" class="cta-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <h2 class="section-heading" style="color: black; font-weight: bolder;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Make your idea a reality<b style="font-size: 50px;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color:  #00a56e;">.</b></h2>
+          <p>Whether you need a dazzling website, captivating content, or cutting-edge design, our platform ensures your projects come to life with turbocharged brilliance. Embrace the future of freelancing and make your dreams a reality with TurboLancer.</p>
+          <a href="#contact" data-toggle="modal" data-target="#signupModal" class="btn btn-primary btn-lg">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <h2 class="section-heading"><b style="font-size: 50px;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color: #00a56e;"><i class="fas fa-cogs"></i></b>  Frequently Asked Questions</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="accordion" id="accordionFAQ">
+            <div class="card">
+              <div class="card-header" id="faqHeading1">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#faqCollapse1"
+                    aria-expanded="true" aria-controls="faqCollapse1">
+                    Can I hire multiple developers for my project?
+                  </button>
+                </h5>
+              </div>
+              <div id="faqCollapse1" class="collapse show" aria-labelledby="faqHeading1"
+                data-parent="#accordionFAQ">
+                <div class="card-body">
+                  No, you can hire only one developer for your project. We believe in providing focused attention and
+                  ensuring the best outcome for your project.
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="faqHeading2">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                    data-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2">
+                    How can I contact the TurboLancer support team?
+                  </button>
+                </h5>
+              </div>
+              <div id="faqCollapse2" class="collapse" aria-labelledby="faqHeading2" data-parent="#accordionFAQ">
+                <div class="card-body">
+                  You can contact our support team by sending an email to support@TurboLancer.com or by filling out the
+                  contact form on our website. We are available to assist you with any questions or concerns you may
+                  have.
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="faqHeading3">
+                <h5 class="mb-0">
+                  <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                    data-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3">
+                    What payment methods are accepted?
+                  </button>
+                </h5>
+              </div>
+              <div id="faqCollapse3" class="collapse" aria-labelledby="faqHeading3" data-parent="#accordionFAQ">
+                <div class="card-body">
+                  We accept major credit cards such as Visa, Mastercard, and American Express. We also support payment
+                  through PayPal.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <h2 class="section-heading">Contact Us<b style="font-size: 50px;font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color:  #00a56e;">.</b></h2>
+          <p>If you have any questions or inquiries, feel free to contact us. We are here to assist you.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+          <form>
+            <div class="form-group">
+              <div class="wave-group">
+                <input required="" type="text" class="input">
+                <span class="bar"></span>
+                <label class="label">
+                  <span class="label-char" style="--index: 0">N</span>
+                  <span class="label-char" style="--index: 1">a</span>
+                  <span class="label-char" style="--index: 2">m</span>
+                  <span class="label-char" style="--index: 3">e</span>
+                </label>
+              </div>            </div>
+            <div class="form-group">
+              <div class="wave-group">
+                <input required="" type="email" class="input">
+                <span class="bar"></span>
+                <label class="label">
+                  <span class="label-char" style="--index: 0">E</span>
+                  <span class="label-char" style="--index: 1">m</span>
+                  <span class="label-char" style="--index: 2">a</span>
+                  <span class="label-char" style="--index: 3">i</span>
+                  <span class="label-char" style="--index: 4">l</span>
+                </label>
+              </div>            </div>
+            <div class="form-group">
+              <div class="wave-group">
+                <textarea  rows="5" required=""class="input"></textarea>
+                <span class="bar"></span>
+                <label class="label">
+                  <span class="label-char" style="--index: 0">M</span>
+                  <span class="label-char" style="--index: 1">a</span>
+                  <span class="label-char" style="--index: 2">s</span>
+                  <span class="label-char" style="--index: 3">a</span>
+                  <span class="label-char" style="--index: 4">g</span>
+                  <span class="label-char" style="--index: 5">e</span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+   
+    </div>
+  </section>
+
+  <!-- Scroll to Top Button -->
+  <a href="#" class="scroll-to-top"><i class="fas fa-chevron-up"></i></a>
+
+<!-- Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 6px; min-width: 60% !important; padding-left: 20px;padding-right: 20px;">
+      <div class="modal-header ">
+        <h5 class="modal-title text-black" id="signupModalLabel">Sign Up</h5>
+        <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close" style="outline: none;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you signing up as a <b> Seller </b> or <b>client</b>?</p>
+      </div>
+      <div class="modal-footer">
+       <a style="width: 100%; border-radius:10px !important;" href="/signup_d"> <button type="button" class="btn btn-success ask">Sign Up as Seller</button></a>
+       <a style="width: 100%; border-radius:10px !important;" href="/signup_and_upload_image"> <button type="button" class="btn btn-success ask">Sign Up as Client</button></a>
+      </div>
+      
+      <div class="modal-footer">
+        <p>Already have an account? <a href="#" class="text-success"><b>Log In</b></a></p>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- Footer Section -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>&copy; 2023 TurboLancer. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/1234567890.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.7/dist/umd/scrollreveal.min.js"></script>
+  <script>
+    // Scroll Reveal Animation
+    ScrollReveal().reveal('.animated', {
+      delay: 200,
+      distance: '50px',
+      duration: 800,
+      easing: 'ease',
+      opacity: 0,
+      origin: 'bottom',
+      reset: true,
+      viewFactor: 0.4
+    });
+
+    // Scroll to Top Button
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 100) {
+        $('.scroll-to-top').addClass('visible');
+      } else {
+        $('.scroll-to-top').removeClass('visible');
+      }
+    });
+
+    $('.scroll-to-top').click(function (e) {
+      e.preventDefault();
+      $('html, body').animate({ scrollTop: 0 }, 800);
+    });
+
+    // Sticky Navigation Bar
+    $(window).scroll(function () {
+      if ($(this).scrollTop() > 0) {
+        $('.sticky-nav').addClass('transition-on-scroll');
+      } else {
+        $('.sticky-nav').removeClass('transition-on-scroll');
+      }
+    });
+  </script>
+</body>
+
+</html>
