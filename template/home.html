@@ -2,1009 +2,593 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.8">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha512-j3JFVYyIc+km+vm7FLwAt1cdok4fzS0/2gS3fS3jBl1U1EW6wDvnOMAsr7uUhhrzyGSvY31jLwOwDS0t6qwdwQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.7" />
+  <title>TurboLancer</title>
+  <link rel="shortcut icon" href="/static/icon_turbolanccer.ico" type="image/x-icon">
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/b8b432d7d3.js" crossorigin="anonymous"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="db.css">
 
-  <title>Turbolancer</title>
-  <link rel="icon" href="/static/icon_turbolanccer.ico" type="image/x-icon">
-  <style>
-    body {
-      overflow-x: hidden;
-    }
-
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      max-width: 300px;
-      background-color: #ffff;
-      box-shadow: 1px 1px 16px #1313133d;
-      border-radius: 0 15px 15px 0;
-      transition: left 0.3s ease;
-      z-index: 999;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .sidebar.overlay {
-      left: -100%;
-    }
-
-    .content {
-      margin-left: 300px;
-      padding: 20px;
-      display: none;
-      width: calc(100% - 300px);
-      grid-template-columns: auto;
-      gap: 20px;
-      overflow-x: hidden;
-    }
-
-    .profile-card {
-      display: grid;
-      grid-template-columns: 60% auto;
-      align-items: center;
-      padding: 20px;
-      width: max-content;
-      width: 98% !important;
-      background-image: linear-gradient(to bottom, #00ce22c2, #00a56e 95%),
-        url(https://logosbynick.com/wp-content/uploads/2019/07/finished-pattern-768x576.png);
-      color: #fff;
-      font-weight: 400;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-        'Open Sans', 'Helvetica Neue', sans-serif;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-radius: 13px;
-    }
-
-    @media (max-width: 800px) {
-      .profile-card {
-        grid-template-columns: auto;
-
-      }
-    }
-
-
-    .profile-image {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 20px;
-    }
-
-    .card {
-      width: 97%;
-      float: left;
-      background-color: #fff;
-      box-shadow: 1px 3px 17px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 10px;
-      border: none;
-    }
-
-    .card-icon {
-      font-size: 48px;
-      color: #00ce22;
-      margin-bottom: 20px;
-    }
-
-    .card-title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .card-text {
-      font-size: 18px;
-    }
-
-    .skill-bar {
-      background-color: #f1f1f1;
-      height: 15px;
-      border-radius: 10px;
-      margin-bottom: 5px;
-    }
-
-    .skill-progress {
-      height: 100%;
-      border-radius: 10px;
-    }
-
-    /* Define different skill levels */
-    .skill-level-1 {
-      width: 25%;
-      background-color: #ff6b6b;
-    }
-
-    .skill-level-2 {
-      width: 50%;
-      background-color: #ffa726;
-    }
-
-    .skill-level-3 {
-      width: 75%;
-      background-color: #ffc93c;
-    }
-
-    .skill-level-4 {
-      width: 100%;
-      background-color: #66bb6a;
-    }
-
-    .collapse-link {
-      cursor: pointer;
-    }
-
-    .collapse-icon {
-      transition: transform 0.3s ease;
-    }
-
-    .collapsed .collapse-icon {
-      transform: rotate(180deg);
-    }
-
-    .list-group {
-      border: none !important;
-      width: 100%;
-    }
-
-    .list-group-item {
-      background-color: transparent;
-      border: none;
-      margin-bottom: 5px;
-      border: none;
-      width: 100%;
-      border-radius: 0;
-    }
-
-    .sidebar a {
-      display: inline-block;
-      padding: 10px;
-      color: #333;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      border: none;
-      width: 295px;
-    }
-
-    .list-group-item:hover {
-      background-color: #e9ecef;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: none;
-      z-index: 998;
-    }
-
-    @media (max-width: 700px) {
-
-
-
-      .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(40px);
-        display: flex;
-        z-index: 994548;
-      }
-
-      .overlay.active {
-        display: block;
-      }
-
-      .overlay-content {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 24px;
-      }
-    }
-
-    #table {
-      display: grid;
-      width: 100%;
-      float: left;
-      grid-template-columns: 50% 50%;
-
-      transition: all 0.5s;
-    }
-
-    @media (max-width:800px) {
-      #table {
-        display: grid;
-        width: 100%;
-        float: left;
-        grid-template-columns: 100%;
-        transition: all 0.5s;
-
-
-      }
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-      width: calc(100% - 295px);
-      height: 100%;
-      right: 0;
-      background-color: #ffff;
-      position: fixed;
-      top: 0;
-      z-index: 566;
-      padding: 20px;
-    }
-
-    .tab-content.active>#innerdive {
-
-      animation-name: open;
-      animation-duration: 0.5s;
-      animation-iteration-count: 1;
-      transition-timing-function: linear;
-
-    }
-
-    @keyframes open {
-      0% {
-        transform: translateY(370px);
-        transform: scale(1.2);
-        filter: blur(20px);
-      }
-
-      100% {
-        transform: translateY(0px);
-        transform: scale(1);
-        filter: blur(0px);
-      }
-    }
-
-    .list-group-item.return {
-      background-color: #b6b6b6;
-
-    }
-
-    .content.re {
-      display: grid;
-      animation-name: open;
-      animation-duration: 1s;
-      animation-iteration-count: 0.3s;
-    }
-
-
-
-    .labels {
-      font-size: 22px;
-      margin-top: 5px;
-    }
-
-    .container {
-      max-width: 100%;
-      background-color: #ffffff;
-      border-radius: 5px;
-      margin-top: 50px;
-      margin-bottom: 50px;
-    }
-
-    .rounded-circle {
-      margin-top: 50px;
-      border-radius: 50%;
-    }
-
-    .font-weight-bold {
-      font-weight: bold;
-    }
-
-    .border-right {
-      border-right: 1px solid #000000;
-    }
-
-    .p-3 {
-      padding: 1rem;
-    }
-
-    .py-5 {
-      padding-top: 1rem;
-      padding-bottom: 3rem;
-    }
-
-    .text-right {
-      text-align: right;
-    }
-
-    .labels {
-      font-weight: bold;
-    }
-
-    .form-control {
-      margin-bottom: 10px;
-      overflow-y: scroll !important;
-
-    }
-
-    form {
-      overflow-y: scroll !important;
-
-    }
-
-    textarea {
-      min-height: 200px !important;
-
-    }
-
-    @media (max-width: 767.98px) {
-      .border-sm-start-none {
-        border-left: none !important;
-      }
-    }
-
-    .emp-profile{
-    padding: 3%;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    border-radius: 0.5rem;
-    background: #fff;
-}
-.profile-img{
-    text-align: center;
-}
-.profile-img img{
-    width: 70%;
-    height: 100%;
-}
-.profile-img .file {
-    position: relative;
-    overflow: hidden;
-    margin-top: -20%;
-    width: 70%;
-    border: none;
-    border-radius: 0;
-    font-size: 15px;
-    background: #212529b8;
-}
-.profile-img .file input {
-    position: absolute;
-    opacity: 0;
-    right: -10px;
-    top: 0;
-}
-.profile-head h5{
-    color: #333;
-}
-.profile-head h6{
-    color: #0062cc;
-}
-.profile-edit-btn{
-    border: none;
-    border-radius: 1.5rem;
-    width: 70%;
-    padding: 2%;
-    font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
-}
-.proile-rating{
-    font-size: 12px;
-    color: #818182;
-    margin-top: 5%;
-}
-.proile-rating span{
-    color: #495057;
-    font-size: 15px;
-    font-weight: 600;
-}
-.profile-head .nav-tabs{
-    margin-bottom:5%;
-}
-.profile-head .nav-tabs .nav-link{
-    font-weight:600;
-    border: none;
-}
-.profile-head .nav-tabs .nav-link.active{
-    border: none;
-    border-bottom:2px solid #0062cc;
-}
-.profile-work{
-    padding: 14%;
-    margin-top: -15%;
-}
-.profile-work p{
-    font-size: 12px;
-    color: #818182;
-    font-weight: 600;
-    margin-top: 10%;
-}
-.profile-work a{
-    text-decoration: none;
-    color: #495057;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.profile-tab label{
-    font-weight: 600;
-}
-.profile-tab p{
-    font-weight: 600;
-    color: #0062cc;
-}
-  </style>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Sidebar -->
-      <div id="sidebar" class="sidebar">
-        <div class="p-4">
-          <h3>Tasker</h3>
-
-          <ul class="list-group mt-4">
-            <li class="list-group-item return" id="dash" onclick="ff(this)">
-              <a href="#" class="nav-link">
-                <i class="fas fa-tachometer-alt me-2"></i>
-                Dashboard
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#profile-tab" class="nav-link">
-                <i class="fas fa-user me-2"></i>
-                Profile
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#buyer-account-tab" class="nav-link">
-                <i class="fas fa-users me-2"></i>
-                Switch to Buyer Account
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#jobs-tab" class="nav-link">
-                <i class="fas fa-briefcase me-2"></i>
-                Find Jobs
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#skills-tab" class="nav-link">
-                <i class="fas fa-tools me-2"></i>
-                Skills
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#project-history-tab" class="nav-link">
-                <i class="fas fa-history me-2"></i>
-                Project History
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="#logout-tab" class="nav-link">
-                <i class="fas fa-sign-out-alt me-2"></i>
-                Logout
-              </a>
-            </li>
-          </ul>
-
-        </div>
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <div class="sidebar flex-c flex-sb">
+      <div class="brand"><img style="float: left;" src="icon.png" alt="logo">
+        <p
+          style="transition: all 0.5s; font-size: 2.8vh; float: left; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;letter-spacing:1px ; font-weight: 500;">
+          &nbsp; Turbo<b>Lancer</b></p>
       </div>
-
-      <!-- Main Content -->
-      <div class="content re" id="content">
-        <div class="p-4">
-
-          <!-- Profile Card -->
-          <div class="card mb-4 profile-card">
-            <img src="w0qx9ror.png" alt="Profile Image" class="profile-image">
-            <div>
-              <h3 class="card-title">{{ user.name }}</h3>
-              <p class="card-text"><b>Identity Tag</b>: {{ user.tag }}</p>
-              <p class="card-text"><b>Email</b>: {{ user.email }}</p>
-              <p class="card-text"><b>Country</b>: {{ user.country }}</p>
+      <div class="side-nav">
+        <a onclick="tab(this)" class="tabbutton active" data="#home">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="grid"></ion-icon>
             </div>
+
+            <p>Dashboard</p>
           </div>
-          <div id="table">
-            <!-- Total Earning Section -->
-            <div class="card">
-              <i class="fas fa-money-bill-wave card-icon"></i>
-              <h2 class="card-title">Total Earning</h2>
-              <p class="card-text">${{ user.earnings }}</p>
+        </a>
+
+        <a onclick="tab(this)"  id="tabbuttonp"  class="tabbutton" data="#profile">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="person-circle-outline"></ion-icon>
             </div>
 
-            <!-- Reviews and Ratings Section -->
-            <div class="card">
-              <i class="fas fa-star card-icon"></i>
-              <h2 class="card-title">Reviews & Ratings</h2>
-              <p class="card-text">Rating: {{ user.rating }}/5</p>
-              <p class="card-text">Feedback: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Profile</p>
+          </div>
+        </a>
+        <a onclick="tab(this)" id="tabbuttonno" class="tabbutton" data="#notifi">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="notifications-outline"></ion-icon>
             </div>
 
-            <!-- Gig Management Section -->
-            <div class="card">
-              <i class="fas fa-tasks card-icon"></i>
-              <h2 class="card-title">Gigs</h2>
-              <p class="card-text">NO gig available</p>
+            <p>Notifications</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="mail-outline"></ion-icon>
             </div>
 
+            <p>Message</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
 
-            <!-- Member Since Section -->
-            <div class="card">
-              <i class="fas fa-calendar card-icon"></i>
-              <h2 class="card-title">Member Since</h2>
-              <p class="card-text">{{ user.member_since }}</p>
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="search-outline"></ion-icon>
             </div>
 
-            <!-- Skills Section -->
-            <div class="card">
-              <i class="fas fa-tools  card-icon"></i>
-              <h2 class="card-title">Skills</h2>
+            <p>Find Work</p>
+          </div>
+        </a>
+        <a onclick="tab(this)"  class="tabbutton" data="#profile">
 
-              <div class="collapse-link" data-bs-toggle="collapse" data-bs-target="#skills-collapse">
-                <i class="fas fa-chevron-down collapse-icon"></i> Web Development
-              </div>
-              <div id="skills-collapse" class="collapse">
-                <ul class="card-text">
-                  <li>
-                    HTML and CSS
-                    <div class="skill-bar">
-                      <div class="skill-progress skill-level-3"></div>
-                    </div>
-                  </li>
-                  <li>
-                    JavaScript
-                    <div class="skill-bar">
-                      <div class="skill-progress skill-level-4"></div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="hammer-outline"></ion-icon>
             </div>
 
-            <!-- Communication Level Section -->
-            <div class="card">
-              <i class="fas fa-comments card-icon"></i>
-              <h2 class="card-title">English Communication Level</h2>
-              <p class="card-text">{{ user.english }}</p>
+            <p>Skills</p>
+          </div>
+        </a> <a onclick="tab(this)" class="tabbutton" class="tabbutton" data="#profile">
+
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="time-outline"></ion-icon>
             </div>
 
-            <!-- Payment and Invoicing Section -->
-            <div class="card">
-              <i class="fas fa-credit-card card-icon"></i>
-              <h2 class="card-title">Payment Method</h2>
-              <p class="card-text">Method: {{ user.payment_method }}</p>
+            <p>Projects History</p>
+          </div>
+        </a>
+        <a onclick="tab(this)" class="tabbutton" class="tabbutton" data="#profile">
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="card-outline"></ion-icon>
             </div>
+
+            <p> Transections</p>
+          </div>
+        </a>
+
+
+        <div class="border"></div>
+
+        <div class="log-out">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+
+            <p>Logout</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Tab Content -->
-  <div class="tab-content" id="profile-tab">
 
- 
-    <!------ Include the above in your HEAD tag ---------->
+    <!-- End Sidebar -->
 
-    <div class="container emp-profile">
-      <form method="post">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="profile-img">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                alt="" />
-              <div class="file btn btn-lg btn-primary">
-                Change Photo
-                <input type="file" name="file" />
-              </div>
-            </div>
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <!-- ======Topbar======= -->
+      <div class="topbar flex flex-sb">
+        <div class="search flex">
+          <div class="icon">
+            <ion-icon name="search-outline"></ion-icon>
           </div>
-          <div class="col-md-6">
-            <div class="profile-head">
-              <h5>
-                Kshiti Ghelani
-              </h5>
-              <h6>
-                Web Developer and Designer
-              </h6>
-              <p class="proile-rating">RANKINGS : <span>8/10</span></p>
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                    aria-controls="home" aria-selected="true">About</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                    aria-controls="profile" aria-selected="false">Timeline</a>
-                </li>
-              </ul>
-            </div>
+          <input type="text" placeholder=" Search any collection" />
+        </div>
+
+        <div class="theme flex">
+          <div class="dark flex">
+            <ion-icon name="moon-outline"></ion-icon>
           </div>
-          <div class="col-md-2">
-            <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
+          <div class="light active flex">
+            <ion-icon name="sunny-outline"></ion-icon>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="profile-work">
-              <p>WORK LINK</p>
-              <a href="">Website Link</a><br />
-              <a href="">Bootsnipp Profile</a><br />
-              <a href="">Bootply Profile</a>
-              <p>SKILLS</p>
-              <a href="">Web Designer</a><br />
-              <a href="">Web Developer</a><br />
-              <a href="">WordPress</a><br />
-              <a href="">WooCommerce</a><br />
-              <a href="">PHP, .Net</a><br />
+<a href="#Notification" onclick="tab(this) , document.querySelector('#tabbuttonno').classList.add('active')" style="cursor: pointer;"  class="tabbutton"
+data="#notifi">
+        <div class="notification icon">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </div>
+</a>
+        <div class="user flex flex-sb">
+          <img id="pro" src="w0qx9ror.png" alt="" />
+          <p>name</p>
+          <ion-icon name="chevron-down-outline"></ion-icon>
+        </div>
+      </div>
+      <!-- ======End Topbar======= -->
+
+      <!-- ======Section======= -->
+      <div id="home" class="section flex flex-sb active animate__animated animate__fadeIn ">
+        <!-- Section Left -->
+        <div class="section-left">
+          <!-- ======Banner======= -->
+          <div class="banner flex flex-sb">
+            <div class="text">
+              <h2>
+                Hi, name </h2>
+
+              <a onclick="tab(this) , document.querySelector('#tabbuttonp').classList.add('active')" style="cursor: pointer;" class="btn tabbutton" class="tabbutton"
+                data="#profile">See profile</a>
             </div>
+
+            <img id="imagepro" src="w0qx9ror.png" alt="" />
           </div>
-          <div class="col-md-8">
-            <div class="tab-content profile-tab" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>User Id</label>
+
+          <div class="nfts">
+
+
+
+            <!-- =====Browse NFT===== -->
+            <div class="browse">
+              <div class="nft">
+                <img style="object-fit: cover;" src="woman-filling-online-customer-feedback-form-5627122-4688581.png"
+                  alt="" />
+                <div class="title">Reviews and Ratings</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Rattings:</h2>
                   </div>
-                  <div class="col-md-6">
-                    <p>Kshiti123</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Name</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>Kshiti Ghelani</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Email</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>kshitighelani@gmail.com</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Phone</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>123 456 7890</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Profession</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>Web Developer and Designer</p>
-                  </div>
+                  <div class="price">4.5/5</div>
                 </div>
               </div>
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Experience</label>
+
+              <div class="nft">
+                <img style="object-fit:fill;" src="R-removebg-preview.png" alt="" />
+                <div class="title">Service Time</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+
+                    <h2>Member Since:</h2>
                   </div>
-                  <div class="col-md-6">
-                    <p>Expert</p>
-                  </div>
+                  <div class="price">Year: 2023</div>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Hourly Rate</label>
+              </div>
+
+              <div class="nft">
+                <img style='object-fit: cover;' src="conversation.png" alt="" />
+                <div class="title">English Communication lavel</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Level:</h2>
                   </div>
-                  <div class="col-md-6">
-                    <p>10$/hr</p>
-                  </div>
+                  <div class="price">Expert</div>
                 </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Total Projects</label>
+              </div>
+
+              <div class="nft">
+                <img style="object-fit: cover;background-size: 100%; max-width: 70%;" src="deposit.png" alt="" />
+                <div class="title">Payment Method</div>
+                <div class="details flex flex-sb">
+                  <div class="author flex">
+                    <h2>Method:</h2>
                   </div>
-                  <div class="col-md-6">
-                    <p>230</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>English Level</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>Expert</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <label>Availability</label>
-                  </div>
-                  <div class="col-md-6">
-                    <p>6 months</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <label>Your Bio</label><br />
-                    <p>Your detail description</p>
+                  <div class="price"> <img style="max-height: 30px; width: 40px;" src="visa.png" alt="" />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
-  </div>
 
-  <div class="tab-content" id="jobs-tab">
-    <div id="innerdive">
-      <section style="background-color: #eee;">
-        <div class="container py-5">
-          <div class="row justify-content-center mb-3">
-            <div class="col-md-12 col-xl-10">
-              <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                      <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img src="w0qx9ror.png" class="w-100" />
-                        <a href="#!">
-                          <div class="hover-overlay">
-                            <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-6">
-                      <h5>Name of cline</h5>
-                      <div class="d-flex flex-row">
+        <!-- Section Right -->
+        <div class="section-right">
+          <div style="margin-top: 40px; padding-top: 65px;" class="graph flex-c">
+            <p>Earnings</p>
+            <h2>93,565.00</h2>
 
-                      </div>
-                      <div class="mt-1 mb-0 text-muted small">
-                        <span class="text-primary"> • </span>
-                        <span>Web Development</span>
+            <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/graph.svg" alt="" />
+          </div>
 
-                      </div>
+          <div class="top-creators">
+            <div class="heading flex flex-sb">
+              <h2>recent clintes</h2>
+              <p>See all</p>
+            </div>
 
-                      <p class=" mb-6" style="word-break:keep-all;">
-                        There are many variations of passages of Lorem Ipsum available, but the
-                        majority have suffered alteration in some form, by injected humour, or
-                        randomised words which don't look even slightly believable.
-                      </p>
-                    </div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-                      <div class="d-flex flex-row align-items-center mb-1">
-                        <h4 class="mb-1 me-1"><b class="text-success">Total: </b>$13.99</h4>
-                      </div>
-                      <h6 class="text-success"><b class="text-success">Timing: </b>2 days</h6>
-                      <div class="d-flex flex-column mt-4">
-                        <button class="btn btn-primary btn-sm" type="button">Details</button>
-
-                      </div>
-                    </div>
-                  </div>
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
                 </div>
               </div>
+
+              <a href="#" class="btn following">show</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
+            </div>
+
+            <div class="creator flex flex-sb">
+              <div class="follow-creator flex">
+                <img src="https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/user.png" alt="" />
+                <div class="creator-details">
+                  <h3>Hassnain Haider</h3>
+                  <p>@hassnain</p>
+                </div>
+              </div>
+
+              <a href="#" class="btn follow following">Follow</a>
             </div>
           </div>
         </div>
-      </section>
-    </div>
-  </div>
+      </div>
+      <!-- ======End Section======= -->
+      <div id="profile" class="section flex flex-sb animate__animated animate__fadeIn">
 
-  <div class="tab-content" id="skills-tab">
-    <div id="innerdive">
-
-      <div class="container mt-5">
-        <div class="card">
-          <div class="card-header bg-success text-white">
-            <h5 class="mb-0">Your Skills</h5>
-          </div>
-          <div class="card-body">
-            <div class="accordion" id="skillsAccordion">
-              <div class="card">
-                <div class="card-header" id="webDevelopmentHeading">
-                  <h6 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse"
-                      data-target="#webDevelopmentCollapse" aria-expanded="true" aria-controls="webDevelopmentCollapse">
-                      Web Development
-                    </button>
-                  </h6>
-                </div>
-                <div id="webDevelopmentCollapse" class="collapse" aria-labelledby="webDevelopmentHeading"
-                  data-parent="#skillsAccordion">
-                  <div class="card-body">
-                    <ul class="list-group">
-                      <li class="list-group-item">
-                        HTML
-                        <div class="progress mt-2">
-                          <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="80"
-                            aria-valuemin="0" aria-valuemax="100">80%</div>
-                        </div>
-                      </li>
-                      <li class="list-group-item">
-                        CSS
-                        <div class="progress mt-2">
-                          <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="70"
-                            aria-valuemin="0" aria-valuemax="100">70%</div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-
-                <div class="card-footer">
-                  <button class="btn btn-success " type="button"
-                    style="width: 98%; text-align: center; border-radius: 50px;">
-                    <i class="fas fa-plus"></i> Add New Skill
-                  </button>
-                </div>
+        <div class="profile-card">
+          <div class="profile-header"><!-- profile header section -->
+            <div class="main-profile">
+              <div class="profile-image"><img src="w0qx9ror.png" style="border-radius: 50%;" alt="profile pic"></div>
+              <div class="profile-names">
+                <h1 class="username">Mohammad.S</h1>
+                <small class="page-title">Front-End developer</small>
               </div>
             </div>
           </div>
 
-          <div class="tab-content" id="project-history-tab">
-            <div id="innerdive">
-
-              <section style="background-color: #eee;">
-                <div class="container py-5">
-                  <div class="row justify-content-center mb-3">
-                    <div class="col-md-12 col-xl-10">
-                      <div class="card shadow-0 border rounded-3">
-                        <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                              <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                <img src="w0qx9ror.png" class="w-100" />
-                                <a href="#!">
-                                  <div class="hover-overlay">
-                                    <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
-                                  </div>
-                                </a>
-                              </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-6">
-                              <h5>Name of cline</h5>
-                              <div class="d-flex flex-row">
-
-                              </div>
-                              <div class="mt-1 mb-0 text-muted small">
-                                <span class="text-primary"> • </span>
-                                <span>Web Development</span>
-
-                              </div>
-
-                              <p class=" mb-6" style="word-break:keep-all;">
-                                There are many variations of passages of Lorem Ipsum available, but the
-                                majority have suffered alteration in some form, by injected humour, or
-                                randomised words which don't look even slightly believable.
-                              </p>
-                            </div>
-                            <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-                              <div class="d-flex flex-row align-items-center mb-1">
-                                <h4 class="mb-1 me-1"><b class="text-success">Total: </b>$13.99</h4>
-                              </div>
-                              <h6 class="text-success"><b class="text-success">Timing: </b>2 days</h6>
-                              <div class="d-flex flex-column mt-4">
-                                <button class="btn btn-primary btn-sm" type="button">Details</button>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+          <div class="profile-body"><!-- profile body section -->
+            <div class="profile-actions">
+              <button class="follow">Edit Profile</button>
+              <section class="bio">
+                <div class="bio-header">
+                  <i class="fa fa-info-circle"></i>
+                  About My Self
                 </div>
+                <p class="bio-text">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae, quibusdam magnam? Repellendus ipsa
+                  nemo excepturi a nostrum quasi molestias, expedita reiciendis voluptate eveniet accusantium aliquid
+                  fuga molestiae doloribus repellat ab.
+                </p>
               </section>
             </div>
 
-          </div>
+            <div class="account-info">
+              <div class="data">
+                <div class="important-data">
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Email:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">
+                      &nbsp;mianjunaid2323@gmail.com</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Country:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;Pakistan</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Phone Number:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;03224041677</p>
+                  </section>
 
-          <div class="tab-content" id="logout-tab">
-            <div id="innerdive">
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Grade:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>A</b></p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Rating:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>4.6</b>/5</p>
+                  </section>
+                  <section class="data-item">
+                    <h5 style="float: left; text-align: left;" class="value">Working Since:</h5>
+                    <p style="float: left; text-align: right; margin-left: 7px;" class="title">&nbsp;<b>2023</b></p>
+                  </section>
+                </div>
+              </div>
 
-              Logout tab content here
+              <div class="social-media">
+                <span>Expetiese:</span>
+                <h3>&nbsp;HTML</h3>,<h3>&nbsp; CSS</h3>,<h3> &nbsp;JAVASCRIPT</h3>,<h3> &nbsp;BOOSTRAP</h3>,<h3>&nbsp;
+                  BOOSTRAP</h3>,<h3>&nbsp; WORDPRESS</h3>
+
+              </div>
+
+
             </div>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div id="notifi" class="section flex flex-sb animate__animated animate__fadeIn">
+
+        <div class="container">
+          <div style="margin-bottom: 50px;">
+            <div class="icon" style="float: left;font-weight: 600; color: rgb(26, 207, 26);">
+              <ion-icon name="notifications"></ion-icon>
+            </div>
+            <h1 style="font-size: 23PX; float:left; font-weight: 600;"> Notifications</h1>
+          </div>
+
+          <div class="accordion">
+            <dl>
+              <dt><a class="accordionTitle" href="#">Test Simple Flat UI CSS Accordion 1</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+              <dt><a href="#" class="accordionTitle">Test Simple Flat UI CSS Accordion 2</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec
+                  interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+              <dt><a href="#" class="accordionTitle">Test Simple Flat UI CSS Accordion 3</a></dt>
+              <dd class="accordionItem accordionItemCollapsed">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eu interdum diam. Donec interdum
+                  porttitor risus non bibendum. Maecenas sollicitudin eros in quam imperdiet placerat. Cras justo purus,
+                  rhoncus nec lobortis ut, iaculis vel ipsum. Donec dignissim arcu nec elit faucibus condimentum. Donec
+                  facilisis consectetur enim sit amet varius. Pellentesque justo dui, sodales quis luctus a, iaculis
+                  eget mauris. </p>
+              </dd>
+            </dl>
           </div>
         </div>
-        <div id="overlay" class="overlay">
-          <div class="overlay-content">
-            <h1>Open in desktop for a better experience</h1><br>
-            <p>The screen size is less than 700px.</p>
-          </div>
-        </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const navLinks = document.querySelectorAll('.list-group-item a');
-            const tabContents = document.querySelectorAll('.tab-content');
+      </div>
+      <!-- End Dashboard Content -->
+    </div>
+  </div>
 
-            navLinks.forEach(function (link) {
-              link.addEventListener('click', function (e) {
-                e.preventDefault();
+  <!-- End Dashboard -->
 
-                const target = this.getAttribute('href').substring(1);
-                const targetTab = document.getElementById(target);
-                document.getElementById('dash').classList.remove('return');
-                document.querySelector('.content').classList.remove('re');
 
-                if (targetTab) {
-                  tabContents.forEach(function (tabContent) {
-                    tabContent.classList.remove('active');
-                    navLinks.forEach(function (navLink) {
-                      navLink.parentElement.classList.remove('return'); // Use parentElement instead of parent
-                    });
-                  });
 
-                  targetTab.classList.add('active');
-                  this.parentElement.classList.add('return'); // Use parentElement instead of parent
-                }
-              });
-            });
-          });
+  <!-- Ion Icons Js -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
 
-          function ff(x) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            const navLinks = document.querySelectorAll('.list-group-item a');
+  <!-- JS -->
+  <script>
+    (function (window) {
+      'use strict';
+      function classReg(className) {
+        return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+      }
+      var hasClass, addClass, removeClass;
 
-            tabContents.forEach(function (tabContent) {
-              tabContent.classList.remove('active');
-            });
-
-            navLinks.forEach(function (navLink) {
-              navLink.parentElement.classList.remove('return'); // Use parentElement instead of parent
-            });
-            document.querySelector('.content').classList.add('re');
-
-            x.classList.add('return');
+      if ('classList' in document.documentElement) {
+        hasClass = function (elem, c) {
+          return elem.classList.contains(c);
+        };
+        addClass = function (elem, c) {
+          elem.classList.add(c);
+        };
+        removeClass = function (elem, c) {
+          elem.classList.remove(c);
+        };
+      }
+      else {
+        hasClass = function (elem, c) {
+          return classReg(c).test(elem.className);
+        };
+        addClass = function (elem, c) {
+          if (!hasClass(elem, c)) {
+            elem.className = elem.className + ' ' + c;
           }
+        };
+        removeClass = function (elem, c) {
+          elem.className = elem.className.replace(classReg(c), ' ');
+        };
+      }
 
-        </script>
+      function toggleClass(elem, c) {
+        var fn = hasClass(elem, c) ? removeClass : addClass;
+        fn(elem, c);
+      }
+      var classie = {
+        hasClass: hasClass,
+        addClass: addClass,
+        removeClass: removeClass,
+        toggleClass: toggleClass,
+        has: hasClass,
+        add: addClass,
+        remove: removeClass,
+        toggle: toggleClass
+      };
+      if (typeof define === 'function' && define.amd) {
+        define(classie);
+      } else {
+        window.classie = classie;
+      }
+    })(window);
+    var $ = function (selector) {
+      return document.querySelector(selector);
+    }
+    var accordion = $('.accordion');
+    accordion.addEventListener("click", function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (e.target && e.target.nodeName == "A") {
+        var classes = e.target.className.split(" ");
+        if (classes) {
+          for (var x = 0; x < classes.length; x++) {
+            if (classes[x] == "accordionTitle") {
+              var title = e.target;
+              var content = e.target.parentNode.nextElementSibling;
+              classie.toggle(title, 'accordionTitleActive');
+              if (classie.has(content, 'accordionItemCollapsed')) {
+                if (classie.has(content, 'animateOut')) {
+                  classie.remove(content, 'animateOut');
+                }
+                classie.add(content, 'animateIn');
+              } else {
+                classie.remove(content, 'animateIn');
+                classie.add(content, 'animateOut');
+              }
+              classie.toggle(content, 'accordionItemCollapsed');
+            }
+          }
+        }
+      }
+    });
+    const dark = document.querySelector(".dark");
+    const light = document.querySelector(".light");
 
-        <script>
-          const openOverlayButton = document.getElementById('openOverlay');
-          const overlay = document.getElementById('overlay');
+    dark.addEventListener("click", function () {
+      document.querySelector("body").classList.add("darkMode");
+      light.classList.remove("active");
+      dark.classList.add("active");
+    });
 
-          openOverlayButton.addEventListener('click', function () {
-            overlay.classList.add('active');
-          });
+    light.addEventListener("click", function () {
+      document.querySelector("body").classList.remove("darkMode");
+      dark.classList.remove("active");
+      light.classList.add("active");
+    });
+    // JavaScript tabbutton
+    function tab(element) {
+      const targetHref = element.getAttribute("data");
 
+      const tabContents = document.querySelectorAll(".section");
+      const tabContent = document.querySelectorAll(".tabbutton");
 
-        </script>
+      // Hide all tab contents
+      tabContents.forEach((content) => {
+        content.classList.remove("active");
+      });
+      tabContent.forEach((content) => {
+        content.classList.remove("active");
+      });
+      // Show the targeted tab content
+      const targetTab = document.querySelector(targetHref);
+      if (targetTab) {
+        targetTab.classList.add("active");
+        element.classList.add("active");
+
+      }
+    }
+
+  </script>
+  <!-- from cdn -->
+  <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/collapse.js"></script>
+
 </body>
 
 </html>

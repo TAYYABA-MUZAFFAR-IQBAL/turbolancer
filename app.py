@@ -1,35 +1,43 @@
-import asyncio
-import websockets
+import socketio
+from flask import Flask
 
-connected_clients = set()
+app = Flask(__name__, server_name="localhost", server_port=8080)
+sio = socketio.Server(app)
 
-async def handle_client(websocket, path):
-    connected_clients.add(websocket)
-    try:
-        async for message in websocket:
-            for client in connected_clients:
-                await client.send(message)
-                print(f"Received: {message}")
-    except:
-        pass
-    finally:
-        connected_clients.remove(websocket)
+rooms = {}
 
-async def receive_messages():
-    async with websockets.connect("ws://localhost:8765/") as websocket:
-        while True:
-            message = await websocket.recv()
-            print(f"Received: {message}")
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-async def send_message():
-    async with websockets.connect("ws://localhost:8765/") as websocket:
-        while True:
-            user_input = input("Enter message: ")
-            await websocket.send(user_input)
-            print(f"Sent: {user_input}")
+@sio.on("connect")
+def connect(sid):
+    print("Client connected: " + sid)
 
-# Run the WebSocket server and both sending and receiving tasks
-start_server = websockets.serve(handle_client, "localhost", 8765)
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_until_complete(asyncio.gather(receive_messages(), send_message()))
-asyncio.get_event_loop().run_forever()
+    room = sid
+    if room not in rooms:
+        rooms[room] = []
+
+@sio.on("message")
+def message(sid, message):
+    print("Received message from " + sid + ": " + message)
+
+    data = json.loads(message)
+    name = data["name"]
+    room = data["room"]
+    message = data["message"]
+
+    messages = rooms[room]
+    messages.append((name, message))
+
+    sio.emit("message", {"name": name, "room": room, "messages": messages}, room=room)
+
+@sio.on("disconnect")
+def disconnect(sid):
+    print("Client disconnected: " + sid)
+
+    room = sid
+    del rooms[room]
+
+if __name__ == "__main__":
+    app.run()
