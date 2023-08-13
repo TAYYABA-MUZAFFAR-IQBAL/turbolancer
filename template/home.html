@@ -11,7 +11,7 @@
   <script src="https://kit.fontawesome.com/b8b432d7d3.js" crossorigin="anonymous"></script>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-  <link rel="stylesheet" href="db.css">
+  <link rel="stylesheet" href="/static/db.css">
 
 </head>
 
@@ -20,7 +20,7 @@
   <div class="dashboard">
     <!-- Sidebar -->
     <div class="sidebar flex-c flex-sb">
-      <div class="brand"><img style="float: left;" src="icon.png" alt="logo">
+      <div class="brand"><img style="float: left;" src="/static/icon.png" alt="logo">
         <p
           style="transition: all 0.5s; font-size: 2.8vh; float: left; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;letter-spacing:1px ; font-weight: 500;">
           &nbsp; Turbo<b>Lancer</b></p>
@@ -55,7 +55,7 @@
             <p>Notifications</p>
           </div>
         </a>
-        <a onclick="tab(this)"  class="tabbutton" data="#profile">
+        <a onclick="tab(this)"  class="tabbutton" data="#chat">
 
           <div class="menu-item flex">
             <div class="icon">
@@ -149,7 +149,7 @@ data="#notifi">
         </div>
 </a>
         <div class="user flex flex-sb">
-          <img id="pro" src="w0qx9ror.png" alt="" />
+          <img id="pro" src="/static/w0qx9ror.png" alt="" />
           <p>name</p>
           <ion-icon name="chevron-down-outline"></ion-icon>
         </div>
@@ -170,7 +170,7 @@ data="#notifi">
                 data="#profile">See profile</a>
             </div>
 
-            <img id="imagepro" src="w0qx9ror.png" alt="" />
+            <img id="imagepro" src="/static/w0qx9ror.png" alt="" />
           </div>
 
           <div class="nfts">
@@ -180,7 +180,7 @@ data="#notifi">
             <!-- =====Browse NFT===== -->
             <div class="browse">
               <div class="nft">
-                <img style="object-fit: cover;" src="woman-filling-online-customer-feedback-form-5627122-4688581.png"
+                <img style="object-fit: cover;" src="/static/woman-filling-online-customer-feedback-form-5627122-4688581.png"
                   alt="" />
                 <div class="title">Reviews and Ratings</div>
                 <div class="details flex flex-sb">
@@ -192,7 +192,7 @@ data="#notifi">
               </div>
 
               <div class="nft">
-                <img style="object-fit:fill;" src="R-removebg-preview.png" alt="" />
+                <img style="object-fit:fill;" src="/static/R-removebg-preview.png" alt="" />
                 <div class="title">Service Time</div>
                 <div class="details flex flex-sb">
                   <div class="author flex">
@@ -204,7 +204,7 @@ data="#notifi">
               </div>
 
               <div class="nft">
-                <img style='object-fit: cover;' src="conversation.png" alt="" />
+                <img style='object-fit: cover;' src="/static/conversation.png" alt="" />
                 <div class="title">English Communication lavel</div>
                 <div class="details flex flex-sb">
                   <div class="author flex">
@@ -215,13 +215,13 @@ data="#notifi">
               </div>
 
               <div class="nft">
-                <img style="object-fit: cover;background-size: 100%; max-width: 70%;" src="deposit.png" alt="" />
+                <img style="object-fit: cover;background-size: 100%; max-width: 70%;" src="/static/deposit.png" alt="" />
                 <div class="title">Payment Method</div>
                 <div class="details flex flex-sb">
                   <div class="author flex">
                     <h2>Method:</h2>
                   </div>
-                  <div class="price"> <img style="max-height: 30px; width: 40px;" src="visa.png" alt="" />
+                  <div class="price"> <img style="max-height: 30px; width: 40px;" src="/static/visa.png" alt="" />
                   </div>
                 </div>
               </div>
@@ -324,7 +324,7 @@ data="#notifi">
         <div class="profile-card">
           <div class="profile-header"><!-- profile header section -->
             <div class="main-profile">
-              <div class="profile-image"><img src="w0qx9ror.png" style="border-radius: 50%;" alt="profile pic"></div>
+              <div class="profile-image"><img src="/static/w0qx9ror.png" style="border-radius: 50%;" alt="profile pic"></div>
               <div class="profile-names">
                 <h1 class="username">Mohammad.S</h1>
                 <small class="page-title">Front-End developer</small>
@@ -452,6 +452,10 @@ data="#notifi">
 
 
       </div>
+      <div id="chat" class="section flex flex-sb animate__animated animate__fadeIn">
+        <iframe src="/try" frameborder="0" style="width: 100%; height: 90vh; position: relative; top:0; left:0; border-radius: 24px;" ></iframe>
+
+</div>
       <!-- End Dashboard Content -->
     </div>
   </div>
