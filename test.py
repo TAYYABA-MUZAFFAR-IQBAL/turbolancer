@@ -454,7 +454,6 @@ def get_user_data(user_id, Atype):
         user_data = user_collection.find_one({'_id': user_id})
     return user_data
 
-
 @socketio.on('join')
 def handle_join(data):
     user_id = data['userId']
@@ -471,6 +470,7 @@ def handle_join(data):
     namesli = []
     img_s = []
     chids = []
+    last_message=[]
 
     for names in chat_rooms_list:
         other_users = user_collection.find({"chat_rooms": {"$in": [names]}})
@@ -494,7 +494,7 @@ def handle_join(data):
                 chids.append(chid)
 
     emit('join_response', {'status': 'OK',
-         "name": namesli, "imgs": img_s, 'chid': chids})
+         "name": namesli, "imgs": img_s, 'chid': chids, 'last_message': last_message})
 
 
 @socketio.on('sendMessage')
