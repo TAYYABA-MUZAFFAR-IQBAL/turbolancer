@@ -10,7 +10,7 @@ import uuid
 import datetime
 import turbolancer_data_Security
 from jinja2 import Environment, FileSystemLoader
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room
 
 
 app = Flask(__name__, template_folder='template', static_folder='static')
@@ -454,10 +454,12 @@ def get_user_data(user_id, Atype):
         user_data = user_collection.find_one({'_id': user_id})
     return user_data
 
+
 @socketio.on('join')
 def handle_join(data):
     user_id = data['userId']
     account = data['account']
+    
     # Retrieve the user's chat room list from the user collection
     user_data = get_user_data(user_id, account)
 
@@ -467,34 +469,46 @@ def handle_join(data):
 
     chat_rooms_list = user_data.get("chat_rooms", [])
     print(chat_rooms_list)
+
     namesli = []
     img_s = []
     chids = []
-    last_message=[]
+    last_message = []
 
     for names in chat_rooms_list:
-        other_users = user_collection.find({"chat_rooms": {"$in": [names]}})
+        # Search for users in the 'user_collection'
+        user_users = user_collection.find({"chat_rooms": {"$in": [names]}})
+        
+        # Search for users in the 'developer_collection'
+        developer_users = developer_collection.find({"chat_rooms": {"$in": [names]}})
+        
+        # Find or create the chat room
         chat_room_data = chat_rooms.find_one({"chat_room_name": names})
-
-        if not other_users:
-            other_users = developer_collection.find(
-                {"chat_rooms": {"$in": [names]}})
-            chat_room_data = chat_rooms.find_one({"chat_room_name": names})
-
+        if chat_room_data is None:
+            new_chat_room_id = ObjectId()
+            new_chat_room_name = str(new_chat_room_id)
+            chat_rooms.insert_one({"_id": new_chat_room_id, "chat_room_name": new_chat_room_name})
+            chat_room_data = {"_id": new_chat_room_id, "chat_room_name": new_chat_room_name}
+        
+        # Combine results from both collections
+        other_users = list(user_users) + list(developer_users)
+        
         for user in other_users:
             name = user.get('name')
             img = user.get('image')
             id = user.get('_id')
             chid = chat_room_data.get('_id')
             chid = str(chid)
-            print(id)
-            if id not in chat_rooms_list:
+            
+            # Compare ObjectId to user_id
+            if str(id) != user_id:
                 namesli.append(name)
                 img_s.append(img)
                 chids.append(chid)
 
     emit('join_response', {'status': 'OK',
          "name": namesli, "imgs": img_s, 'chid': chids, 'last_message': last_message})
+
 
 
 @socketio.on('sendMessage')
@@ -513,7 +527,7 @@ def handle_send_message(data):
                                     'timestamp': current_time, 'sender': user_id}}},
             upsert=True
         )
-        emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id},
+        emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name},
              broadcast=True, include_self=True)
 
     else:
@@ -523,10 +537,81 @@ def handle_send_message(data):
                                     'timestamp': current_time, 'sender': user_id}}},
             upsert=True
         )
-        emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id},
+        emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name},
              broadcast=True, include_self=True)
 
-    # Emit the new message to all clients in the chat room
+
+
+
+@socketio.on('delete_message')
+def delmessage(data):
+    sender = data.get('sender')
+    time = data.get('time')
+    message = data.get('message')
+    index = data.get('index')
+    chatroomname = data.get('chatroomname')
+    new_blocked_by = sender
+
+    # Find the chat room by its _id and the specific message by time
+    chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
+    
+    if chat_room:
+        messages = chat_room.get('messages', [])
+        x= 0
+        for  message in messages:
+            x+=1
+            print(x-1)
+            if message.get('timestamp') == time and x-1 == index:
+                # Add new_blocked_by to the 'blocked_by' list in the specific message
+                message.setdefault('blocked_by', []).append(new_blocked_by)
+                print(message)
+                # Update the chat room with the modified messages list
+                chat_rooms.update_one(
+                    {"_id": ObjectId(chatroomname)},
+                    {"$set": {"messages": messages}},upsert=True
+                )
+                print(chat_room.get('chat_room_name'))
+                # Broadcast the message_deleted event to all clients in the chat room
+                emit('messagedeleted', {'index':x-1, 'sender':sender},
+                 broadcast=True, include_self=True)
+    return {'response':"Message with the specified items not found."}
+
+
+@socketio.on('delete_message_from_evryone')
+def delmessageev(data):
+    sender = data.get('sender')
+    time = data.get('time')
+    typee = data.get('type')
+    name = get_user_data(sender, typee)
+    print(name['name'])
+    message = data.get('message')
+    index = data.get('index')
+    chatroomname = data.get('chatroomname')
+    new_blocked_by = 'h4d64bdy4b4hf74hhh44jfuff848vfn4u48f '+name['name']
+
+    # Find the chat room by its _id and the specific message by time
+    chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
+    
+    if chat_room:
+        messages = chat_room.get('messages', [])
+        x= 0
+        for  message in messages:
+            x+=1
+            print(x-1)
+            if message.get('timestamp') == time and x-1 == index:
+                # Add new_blocked_by to the 'blocked_by' list in the specific message
+                message.setdefault('blocked_by', []).append(new_blocked_by)
+                print(message)
+                # Update the chat room with the modified messages list
+                chat_rooms.update_one(
+                    {"_id": ObjectId(chatroomname)},
+                    {"$set": {"messages": messages}},upsert=True
+                )
+                print(chat_room.get('chat_room_name'))
+                # Broadcast the message_deleted event to all clients in the chat room
+                emit('messagedeletedbyall', {'index':x-1,'by':new_blocked_by, 'sender':sender},
+                 broadcast=True, include_self=True)
+    return {'response':"Message with the specified items not found."}
 
 
 @app.route('/get_messages', methods=['POST'])
@@ -550,18 +635,22 @@ def get_messages():
     messages = []
     time = []
     sender = []
+    bloaked_by = []
 
     for m in messagesli:
         a = m.get('message')
         b = m.get('timestamp')
         print(b)
         c = m.get('sender')
+        d = m.get('blocked_by')
         messages.append(a)
         time.append(b)
         sender.append(c)
+        bloaked_by.append(d)
     print(time)
+    #bloaked_by[0] is a lsit
 
-    return jsonify(messages=messages, time=time, sender=sender)
+    return jsonify(messages=messages, time=time, sender=sender,blb = bloaked_by)
 
 
 if __name__ == '__main__':

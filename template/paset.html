@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clipboard Image and Drag-Drop</title>
+    <style>
+        #textInput {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #imageContainer {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="textInput" placeholder="Paste image and text here">
+    <div id="imageContainer"></div>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const imageContainer = document.getElementById('imageContainer');
+
+        textInput.addEventListener('paste', event => {
+            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+            handleClipboardItems(items);
+        });
+
+        imageContainer.addEventListener('dragover', event => {
+            event.preventDefault();
+        });
+
+        imageContainer.addEventListener('drop', event => {
+            event.preventDefault();
+            const items = event.dataTransfer.items;
+            handleClipboardItems(items);
+        });
+
+        function handleClipboardItems(items) {
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    const blob = items[i].getAsFile();
+                    const imageURL = URL.createObjectURL(blob);
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = imageURL;
+                    imageContainer.appendChild(imageElement);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+<!-- let
+
+ -->
