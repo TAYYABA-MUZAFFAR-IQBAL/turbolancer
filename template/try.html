@@ -33,7 +33,6 @@
       const message = messageInput.value.trim();
       if (message !== "") {
 
-
         // Send the new message to the server using Socket.IO
         socket.emit('sendMessage', { userId, chatRoomName, message, currentTime });
 
@@ -50,7 +49,15 @@
         event.preventDefault();
       }
     }
+    function handleKeyDownim(event) {
+      const enterKeyCode = 13;
+      const shiftKeyCode = 16;
 
+      if (event.keyCode === enterKeyCode && !event.shiftKey) {
+        sendimage(event.id);
+        event.preventDefault();
+      }
+    }
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
@@ -78,7 +85,7 @@
       --box-shadow-color: rgba(0, 0, 0, 0.2);
       --hover-color: #f0f0f0;
       --dark-background-color: #121212;
-      --dark-primary-color: #15A986;
+      --dark-primary-color: #15a986;
       --dark-text-color: #fff;
       --color2: #ffffffd2;
       --bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1432%26quot%3b)' fill='none'%3e%3cpath d='M40.81 26.28L81.52 49.78L81.52 96.78L40.81 120.28L0.11 96.78L0.11 49.78zM0.11 96.78L40.81 120.28L40.81 167.28L0.11 190.78L-40.59 167.28L-40.59 120.28zM81.52 -44.22L122.22 -20.72L122.22 26.28L81.52 49.78L40.81 26.28L40.81 -20.72zM122.22 26.28L162.93 49.78L162.93 96.78L122.22 120.28L81.52 96.78L81.52 49.78zM81.52 96.78L122.22 120.28L122.22 167.28L81.52 190.78L40.81 167.28L40.81 120.28zM122.22 308.28L162.93 331.78L162.93 378.78L122.22 402.28L81.52 378.78L81.52 331.78zM81.52 378.78L122.22 402.28L122.22 449.28L81.52 472.78L40.81 449.28L40.81 402.28zM203.63 26.28L244.34 49.78L244.34 96.78L203.63 120.28L162.93 96.78L162.93 49.78zM162.93 96.78L203.63 120.28L203.63 167.28L162.93 190.78L122.22 167.28L122.22 120.28zM162.93 237.78L203.63 261.28L203.63 308.28L162.93 331.78L122.22 308.28L122.22 261.28zM203.63 308.28L244.34 331.78L244.34 378.78L203.63 402.28L162.93 378.78L162.93 331.78zM244.34 -44.22L285.04 -20.72L285.04 26.28L244.34 49.78L203.63 26.28L203.63 -20.72zM285.04 449.28L325.74 472.78L325.74 519.78L285.04 543.28L244.34 519.78L244.34 472.78zM244.34 519.78L285.04 543.28L285.04 590.28L244.34 613.78L203.63 590.28L203.63 543.28zM366.45 26.28L407.15 49.78L407.15 96.78L366.45 120.28L325.74 96.78L325.74 49.78zM366.45 167.28L407.15 190.78L407.15 237.78L366.45 261.28L325.74 237.78L325.74 190.78zM325.74 237.78L366.45 261.28L366.45 308.28L325.74 331.78L285.04 308.28L285.04 261.28zM325.74 519.78L366.45 543.28L366.45 590.28L325.74 613.78L285.04 590.28L285.04 543.28zM407.15 -44.22L447.86 -20.72L447.86 26.28L407.15 49.78L366.45 26.28L366.45 -20.72zM447.86 167.28L488.56 190.78L488.56 237.78L447.86 261.28L407.15 237.78L407.15 190.78zM407.15 237.78L447.86 261.28L447.86 308.28L407.15 331.78L366.45 308.28L366.45 261.28zM447.86 308.28L488.56 331.78L488.56 378.78L447.86 402.28L407.15 378.78L407.15 331.78zM407.15 378.78L447.86 402.28L447.86 449.28L407.15 472.78L366.45 449.28L366.45 402.28zM488.56 96.78L529.27 120.28L529.27 167.28L488.56 190.78L447.86 167.28L447.86 120.28zM529.27 167.28L569.97 190.78L569.97 237.78L529.27 261.28L488.56 237.78L488.56 190.78zM488.56 519.78L529.27 543.28L529.27 590.28L488.56 613.78L447.86 590.28L447.86 543.28zM569.97 -44.22L610.68 -20.72L610.68 26.28L569.97 49.78L529.27 26.28L529.27 -20.72zM569.97 96.78L610.68 120.28L610.68 167.28L569.97 190.78L529.27 167.28L529.27 120.28zM610.68 167.28L651.38 190.78L651.38 237.78L610.68 261.28L569.97 237.78L569.97 190.78zM610.68 308.28L651.38 331.78L651.38 378.78L610.68 402.28L569.97 378.78L569.97 331.78zM569.97 519.78L610.68 543.28L610.68 590.28L569.97 613.78L529.27 590.28L529.27 543.28zM651.38 -44.22L692.08 -20.72L692.08 26.28L651.38 49.78L610.68 26.28L610.68 -20.72zM692.08 167.28L732.79 190.78L732.79 237.78L692.08 261.28L651.38 237.78L651.38 190.78zM692.08 308.28L732.79 331.78L732.79 378.78L692.08 402.28L651.38 378.78L651.38 331.78zM692.08 449.28L732.79 472.78L732.79 519.78L692.08 543.28L651.38 519.78L651.38 472.78zM651.38 519.78L692.08 543.28L692.08 590.28L651.38 613.78L610.68 590.28L610.68 543.28zM773.49 26.28L814.2 49.78L814.2 96.78L773.49 120.28L732.79 96.78L732.79 49.78zM773.49 308.28L814.2 331.78L814.2 378.78L773.49 402.28L732.79 378.78L732.79 331.78zM773.49 449.28L814.2 472.78L814.2 519.78L773.49 543.28L732.79 519.78L732.79 472.78zM732.79 519.78L773.49 543.28L773.49 590.28L732.79 613.78L692.08 590.28L692.08 543.28zM854.9 167.28L895.61 190.78L895.61 237.78L854.9 261.28L814.2 237.78L814.2 190.78zM814.2 378.78L854.9 402.28L854.9 449.28L814.2 472.78L773.49 449.28L773.49 402.28zM854.9 449.28L895.61 472.78L895.61 519.78L854.9 543.28L814.2 519.78L814.2 472.78zM814.2 519.78L854.9 543.28L854.9 590.28L814.2 613.78L773.49 590.28L773.49 543.28zM895.61 -44.22L936.31 -20.72L936.31 26.28L895.61 49.78L854.9 26.28L854.9 -20.72zM936.31 167.28L977.01 190.78L977.01 237.78L936.31 261.28L895.61 237.78L895.61 190.78zM895.61 237.78L936.31 261.28L936.31 308.28L895.61 331.78L854.9 308.28L854.9 261.28zM936.31 308.28L977.01 331.78L977.01 378.78L936.31 402.28L895.61 378.78L895.61 331.78zM895.61 378.78L936.31 402.28L936.31 449.28L895.61 472.78L854.9 449.28L854.9 402.28zM936.31 449.28L977.01 472.78L977.01 519.78L936.31 543.28L895.61 519.78L895.61 472.78zM977.01 -44.22L1017.72 -20.72L1017.72 26.28L977.01 49.78L936.31 26.28L936.31 -20.72zM977.01 96.78L1017.72 120.28L1017.72 167.28L977.01 190.78L936.31 167.28L936.31 120.28zM1017.72 167.28L1058.42 190.78L1058.42 237.78L1017.72 261.28L977.01 237.78L977.01 190.78zM1017.72 308.28L1058.42 331.78L1058.42 378.78L1017.72 402.28L977.01 378.78L977.01 331.78zM977.01 378.78L1017.72 402.28L1017.72 449.28L977.01 472.78L936.31 449.28L936.31 402.28zM1017.72 449.28L1058.42 472.78L1058.42 519.78L1017.72 543.28L977.01 519.78L977.01 472.78zM1058.42 378.78L1099.13 402.28L1099.13 449.28L1058.42 472.78L1017.72 449.28L1017.72 402.28zM1139.83 -44.22L1180.54 -20.72L1180.54 26.28L1139.83 49.78L1099.13 26.28L1099.13 -20.72zM1180.54 26.28L1221.24 49.78L1221.24 96.78L1180.54 120.28L1139.83 96.78L1139.83 49.78zM1139.83 96.78L1180.54 120.28L1180.54 167.28L1139.83 190.78L1099.13 167.28L1099.13 120.28zM1139.83 378.78L1180.54 402.28L1180.54 449.28L1139.83 472.78L1099.13 449.28L1099.13 402.28zM1261.94 26.28L1302.65 49.78L1302.65 96.78L1261.94 120.28L1221.24 96.78L1221.24 49.78zM1221.24 96.78L1261.94 120.28L1261.94 167.28L1221.24 190.78L1180.54 167.28L1180.54 120.28zM1302.65 96.78L1343.35 120.28L1343.35 167.28L1302.65 190.78L1261.94 167.28L1261.94 120.28zM1343.35 167.28L1384.06 190.78L1384.06 237.78L1343.35 261.28L1302.65 237.78L1302.65 190.78zM1302.65 237.78L1343.35 261.28L1343.35 308.28L1302.65 331.78L1261.94 308.28L1261.94 261.28zM1343.35 308.28L1384.06 331.78L1384.06 378.78L1343.35 402.28L1302.65 378.78L1302.65 331.78zM1302.65 378.78L1343.35 402.28L1343.35 449.28L1302.65 472.78L1261.94 449.28L1261.94 402.28zM1343.35 449.28L1384.06 472.78L1384.06 519.78L1343.35 543.28L1302.65 519.78L1302.65 472.78zM1302.65 519.78L1343.35 543.28L1343.35 590.28L1302.65 613.78L1261.94 590.28L1261.94 543.28zM1384.06 378.78L1424.76 402.28L1424.76 449.28L1384.06 472.78L1343.35 449.28L1343.35 402.28z' stroke='url(%26quot%3b%23SvgjsRadialGradient1433%26quot%3b)' stroke-width='2'%3e%3c/path%3e%3cpath d='M36.11 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM36.11 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM-4.59 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM-4.59 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM36.11 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM-4.59 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM-45.29 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM-45.29 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM36.11 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM76.82 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM36.11 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM36.11 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM158.23 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM117.52 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM239.64 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM198.93 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM280.34 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM321.04 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM402.45 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM361.75 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM483.86 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM443.16 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM524.57 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM605.98 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM565.27 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM687.38 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM646.68 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM768.79 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM728.09 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM809.5 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM850.2 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM890.91 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM972.31 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM931.61 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1053.72 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1013.02 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 -44.22 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 -20.72 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1216.54 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1216.54 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1094.43 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1175.84 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1135.13 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 26.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 49.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 96.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1216.54 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 120.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 167.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 190.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 237.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 308.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 261.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 331.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 378.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 472.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1379.36 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 519.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1338.65 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1297.95 613.78 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 590.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1257.24 543.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1420.06 402.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0zM1420.06 449.28 a4.7 4.7 0 1 0 9.4 0 a4.7 4.7 0 1 0 -9.4 0z' fill='url(%26quot%3b%23SvgjsRadialGradient1433%26quot%3b)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1432'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3cradialGradient cx='720' cy='280' r='772.53' gradientUnits='userSpaceOnUse' id='SvgjsRadialGradient1433'%3e%3cstop stop-color='rgba(54%2c 158%2c 0%2c 1)' offset='0'%3e%3c/stop%3e%3cstop stop-color='rgba(205%2c 255%2c 200%2c 1)' offset='1'%3e%3c/stop%3e%3c/radialGradient%3e%3c/defs%3e%3c/svg%3e");
@@ -181,7 +188,7 @@
     .profile-pic {
       width: 50px;
 
-            animation: fadeIn 0.4s ease-in-out;
+      animation: fadeIn 0.4s ease-in-out;
 
       height: 50px;
       border-radius: 50%;
@@ -200,7 +207,7 @@
     .profile-pic.parent {
       display: flex;
       background-size: 50px 50px;
-      
+
       width: 50px !important;
       background-position: center;
       background-repeat: no-repeat;
@@ -247,7 +254,8 @@
 
     ::-webkit-scrollbar {
       width: 10px;
-      background-color: #f1f1f1;
+      background-color: transparent;
+      border-radius: 25%;
       transition: all 0.4s;
 
     }
@@ -298,10 +306,11 @@
       overflow-x: hidden;
       padding: 10px;
       border-radius: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
-    #message {
+    #message,
+    #messageim {
       width: 100%;
       padding: 10px;
       border: 1px solid var(--border-color);
@@ -309,7 +318,15 @@
       outline: none;
     }
 
-    #send-btn {
+    #messageim {
+      background-color: transparent;
+      backdrop-filter: brightness(120%);
+      -webkit-backdrop-filter: brightness(120%);
+      -moz-backdrop-filter: brightness(120%);
+    }
+
+    #send-btn,
+    #send-btnim {
       border: none;
       background-color: var(--primary-color);
       color: #fff;
@@ -400,105 +417,6 @@
       opacity: 0;
     }
 
-    .file_uploading {
-      width: 200px;
-      height: 10px;
-      margin-top: 20px;
-      background: #ccc;
-    }
-
-    .file_uploading .btn_upload {
-      display: none;
-    }
-
-    .processing_bar {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 0;
-      height: 100%;
-      border-radius: 30px;
-      background: var(--primary-color);
-      transition: 3s;
-    }
-
-    .file_uploading .processing_bar {
-      width: 100%;
-    }
-
-    .success_box {
-      display: none;
-      width: 80px !important;
-      height: 50px;
-      position: relative;
-    }
-
-    .success_box:before {
-      content: 'Send';
-      text-align: center;
-      font-weight: bold;
-      display: block;
-
-    }
-
-    .file_uploaded .success_box {
-      display: inline-block;
-      width: 80px;
-      height: auto;
-      padding: 7px;
-    }
-
-    .file_uploaded {
-      margin-top: 0;
-      width: 80px;
-      background: var(--primary-color);
-      height: 40px;
-    }
-
-    .uploaded_file_view {
-      max-width: 300px;
-      max-height: 200px;
-      margin: 40px auto;
-      text-align: center;
-      position: relative;
-      transition: .2s;
-      opacity: 0;
-      border-radius: 16px;
-    }
-
-    .uploaded_file_view img {
-      border-radius: 24px;
-      filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.384));
-    }
-
-    .file_remove {
-      width: 30px;
-      height: 30px;
-      border-radius: 50px;
-      display: block;
-      position: absolute;
-      background: #474747;
-      line-height: 30px;
-      color: #fff;
-      font-size: 12px;
-      cursor: pointer;
-      right: -15px;
-      z-index: 123213;
-      top: -15px;
-    }
-
-    .file_remove:hover {
-      background: #222;
-      transition: .2s;
-    }
-
-    .uploaded_file_view img {
-      max-width: 100%;
-    }
-
-    .uploaded_file_view.show {
-      opacity: 1;
-    }
 
     .error_msg {
       text-align: center;
@@ -506,13 +424,15 @@
     }
 
     #control.im {
-      display: grid;
-      grid-template-columns: auto;
-      justify-items: center;
-      align-items: center;
-      max-width: 100%;
+      transform: translateY(200%);
+      transition: all 0.5s;
     }
 
+    .containeree.im {
+      display: grid;
+      bottom: 20px;
+      transition: all 0.5s;
+    }
 
 
     .darkmode #control {
@@ -532,7 +452,7 @@
       left: 50%;
       /* Center the container horizontally */
       transform: translateX(-50%);
-      /* Adjust to truly center the container */
+      transition: all 0.5s;
       width: 100%;
       display: flex;
       align-items: center;
@@ -551,7 +471,8 @@
       /* Align textarea to the bottom */
     }
 
-    #message {
+    #message,
+    #messageim {
       border: none;
       min-height: 50px;
       max-height: 330px;
@@ -673,7 +594,7 @@
       /*  rotation degree of input*/
       --gap: 2em;
       /*  gap of items in input */
-      --icon-change-color: #15A986;
+      --icon-change-color: #var(--primary-color);
       /*  when rotating changed icon color */
       --height: 40px;
       border: 1px solid #2020203a;
@@ -832,27 +753,34 @@
 
     .messageses {
       margin-top: 5px;
+      transition: all 0.4s;
+
       display: flex;
       flex-direction: column;
     }
 
     .messagese {
-      border-radius: 16px;
-      padding: 14px;
+      border-radius: 9px;
+      padding: 8px;
+      padding-top:14px ;
+      padding-bottom:14px ;
       max-width: 40%;
+      min-width: 30rem;
       min-width: 240px;
       height: auto;
-      max-height: 450px;
-      overflow: auto;
-      overflow-x: hidden;
+      max-height: 400px;
+
       box-shadow: 6px 2px 15px #20202050;
       color: #fff;
       font-size: 17px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-family: "Poppins", Arial, sans-serif;
+
       margin-top: 5px;
       margin-bottom: 5px;
       display: flex;
       flex-direction: column;
+      transition: all 0.4s;
+
       line-break: anywhere;
       word-break: keep-all;
       padding-bottom: 15px;
@@ -861,8 +789,10 @@
     .messagese img {
       border-radius: 9px;
       background-color: #09090911;
+      transition: all 0.4s;
+
       height: 180px;
-      object-fit: cover ;
+      object-fit: cover;
       margin-bottom: 10px;
 
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' style='margin: auto; background: transparent; display: block;' width='100%25' height='100%25' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid'%3E%3Ccircle cx='50' cy='50' r='25' stroke-width='4' stroke='%2300b609' stroke-dasharray='39.269908169872416 39.269908169872416' fill='none' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' repeatCount='indefinite' dur='2.0408163265306123s' keyTimes='0;1' values='0 50 50;360 50 50'%3E%3C/animateTransform%3E%3C/circle%3E%3C/svg%3E");
@@ -874,19 +804,24 @@
       -moz-backdrop-filter: brightness(90%);
 
     }
+
     .messagese img.loaded {
-    background-image: none;
-  }
+      background-image: none;
+      margin-top: 10px;
+
+    }
+
     .responsive-button {
       width: 15%;
-      /* Adjust the width as per your preference */
-      max-width: 100px;
+      transition: all 0.4s;
+            max-width: 100px;
       /* Set a maximum width to prevent excessive growth */
-    }
+    }  
+
 
     .SendSVG {
       width: 70%;
-      /* Make the SVG fill the button */
+      transition: all 0.4s;
       height: auto;
       /* Keep the SVG aspect ratio */
     }
@@ -898,12 +833,15 @@
         max-width: 60px;
       }
     }
-
     .timestamp {
       font-size: 12px;
-      color: #888;
+      margin-right: 3px;
+      color: #888888;
       text-align: right;
       margin-bottom: -9px;
+      transition: all 0.4s;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
       margin-top: 7px;
     }
 
@@ -1151,11 +1089,12 @@
       border-color: var(--item-border);
     }
 
-
     #right {
       position: absolute;
       top: 0;
+      right: 0;
       display: none;
+      float: right;
       width: 35px;
       height: 35px;
       border-radius: 50px;
@@ -1164,25 +1103,20 @@
       padding: 10px;
       padding-left: 4px;
       justify-content: center;
-      justify-items: center;
-      z-index: 3764783;
       align-items: center;
+      z-index: 3764783;
       font-family: "Poppins", Arial, sans-serif;
-
+      background: var(--primary-color);
+      background: -webkit-radial-gradient(circle, var(--primary-color) 0%, rgba(71, 74, 255, 0) 100%);
+      background: radial-gradient(circle, var(--primary-color) 0%, rgba(71, 74, 255, 0) 100%);
+      backdrop-filter: blur(5px);
       animation: fadeout 0.2s ease-in-out;
-
-      right: 8px;
       cursor: pointer;
     }
 
     .messageses:hover #right {
       display: flex;
-      backface-visibility: 30%;
-      backdrop-filter: blur(10px);
       animation: fadeIn 0.2s ease-in-out;
-      background: var(--primary-color);
-      box-shadow: 0px 4px 30px 10px var(--primary-color);
-
 
     }
 
@@ -1191,8 +1125,11 @@
       animation: fadeIn 0.2s ease-in-out;
       background: var(--yours);
       color: var(--svg) !important;
+      background: var(--yours);
+      background: -webkit-radial-gradient(circle, var(--yours) 0%, rgba(71, 74, 255, 0) 100%);
+      background: radial-gradient(circle, var(--yours) 0%, rgba(71, 74, 255, 0) 100%);
+      backdrop-filter: blur(5px);
       box-shadow: 0 10px 30px var(--yours);
-
 
     }
 
@@ -1223,7 +1160,7 @@
       grid-template-columns: auto;
       padding: 5px 15px;
       min-height: 43px;
-            animation: fadeIn 0.4s ease-in-out;
+      animation: fadeIn 0.4s ease-in-out;
 
       cursor: pointer;
     }
@@ -1401,7 +1338,8 @@
       }
     }
 
-    .modal.out,.bg.out {
+    .modal.out,
+    .bg.out {
       -webkit-animation-name: fadeout;
       -webkit-animation-duration: 0.6s;
       animation-name: fadeout;
@@ -1463,7 +1401,8 @@
     }
 
     .modal-content.out,
-    #caption.out, .box.out {
+    #caption.out,
+    .box.out {
       -webkit-animation-name: zoomOUT;
       -webkit-animation-duration: 0.6s;
       animation-name: zoomOUT;
@@ -1555,13 +1494,17 @@
         left: unset;
       }
     }
-    
+
     .messt.deleted {
       font-style: oblique;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
       color: rgb(180, 180, 180);
       pointer-events: none;
     }
-
+    .messt.deleted + p{
+      display: none;
+    }
     .messt.deleted::before {
       content: '⊘';
       font-style: normal;
@@ -1572,11 +1515,36 @@
       color: rgb(216, 216, 216);
       pointer-events: none;
     }
+    .messt.fourimg {
+      display: grid;
+      padding: 5px;
+      font-family: "Poppins", Arial, sans-serif;
 
+      grid-template-columns: 33% 33% 33%;
+      gap: 4px;
+
+    }
+    @media (max-width:700px) {
+      .messt.fourimg {
+      display: grid;
+      padding: 5px;
+      font-family: "Poppins", Arial, sans-serif;
+
+      grid-template-columns: 49.5% 49.5%;
+      gap: 4px;
+
+    }
+    }
     .messt img {
-      border-radius: 9px;
+      border-radius: 4px;
+      filter: drop-shadow(0 2px 4px #00000052);
       background-color: #09090905;
-      height: 180px;
+      max-height: 150px;
+      min-height: 100px;
+      width: auto;
+      left: 0;
+      margin-top: 10px;
+      flex-direction: column;
       object-fit: cover;
       margin-bottom: 10px;
 
@@ -1592,10 +1560,12 @@
 
     img.loaded {
       background-image: none;
+      margin-top: 10px;
+
     }
 
-    
-   .bg {
+
+    .bg {
       display: none;
       position: fixed;
       z-index: 435435431;
@@ -1724,11 +1694,17 @@
 
     .messt {
       width: 100%;
+      overflow: auto;
+      overflow-x: hidden;
+      max-height: 390px;
+      top: 0;
+
     }
 
     .messt img {
-      margin-top: 4px;
-      width: 95%;
+      margin-top: 15px;
+      width: 100%;
+      left: 0;
       justify-content: space-evenly;
       justify-self: center;
       margin: auto;
@@ -1739,6 +1715,165 @@
     .ar * {
       pointer-events: none;
     }
+
+    .containeree {
+      display: none;
+      overflow: hidden !important;
+      grid-template-columns: 100%;
+      transition: all 0.5s;
+      justify-content: center;
+      grid-template-rows: 20px auto 55px;
+      max-width: 40rem;
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 4px 40px #00000050;
+      padding-bottom: 10px;
+      height: 60%;
+      --menu-bg: linear-gradient(45deg,
+          #22222257 0%,
+          #1d1d1db3 100%);
+      --menu-border: rgba(255, 255, 255, 0.08);
+      --item-border: rgba(255, 255, 255, 0.1);
+      --item-color: #fff;
+      --item-bg-hover: rgba(255, 255, 255, 0.1);
+      background: var(--menu-bg);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+
+      -webkit-animation: fadein 0.4s 0s both;
+      animation: fadein 0.4s 0s both;
+      transform-origin: left;
+      gap: 15px;
+      position: absolute;
+      bottom: -200%;
+      left: 50%;
+      transform: translateX(-50%);
+
+      z-index: 13232;
+
+    }
+
+    .imgprov {
+      width: 100%;
+      top: 50px;
+      position: sticky;
+      display: grid;
+      grid-template-columns: 70%;
+      justify-content: center;
+      justify-self: center;
+      justify-items: center;
+      height: auto;
+      min-height: 70%;
+      overflow-y: auto;
+    }
+
+    .imgprov img {
+
+      max-height: 70%;
+      object-fit: scale-down;
+      border-radius: 14px;
+
+    }
+
+    .imgprov.eightimg {
+      padding: 5px;
+      display: grid;
+      grid-template-columns: 32% 32% 32%;
+      gap: 4px;
+    }
+
+    .imgprov.fourimg {
+      display: grid;
+      padding: 5px;
+
+      grid-template-columns: 49% 49%;
+      gap: 4px;
+
+    }
+
+    .imgsendcontrol {
+      display: flex;
+      bottom: 6px;
+      padding: 3px;
+      flex-direction: row;
+      position: absolute;
+      z-index: 6786876;
+      width: 100%;
+      height: 45px;
+
+    }
+
+    .ttop {
+      height: 40px;
+      position: sticky;
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      top: 0;
+    }
+
+    .ttop button {
+      color: #fff;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      font-size: 30px;
+
+      text-align: center;
+      transition: all 0.3;
+      cursor: pointer;
+      border-radius: 7px;
+      height: 100%;
+      right: 0;
+      top: 0;
+      width: 40px;
+    }
+
+    .ttop button:hover {
+      box-shadow: 0 1px 4px #0000003a;
+      filter: brightness(160%);
+      background: linear-gradient(45deg,
+          #33333357 0%,
+          #353535b3 100%);
+
+
+    }
+
+    .dotted {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 130ch;
+  height: 30px;
+  top: 97%;
+  left: 0;
+        font-family: "Poppins", Arial, sans-serif;
+
+  transition: all 0.4s;
+}
+
+.expandeddotted {
+  transition: all 0.4s;
+  text-overflow: initial; /* Use "initial" instead of "clip" */
+  white-space: normal; /* Use "normal" instead of "none" */
+  font-family: "Poppins", Arial, sans-serif;
+
+  padding: 10px;
+  border-radius: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--primary-color);
+  height: calc(100% - 19px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 7862368732;
+}
+.afterblue{
+  color:rgb(0, 81, 255);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
   </style>
 </head>
 
@@ -1785,26 +1920,32 @@
       </div>
       <div id="chat-room">
         <div id="messages"></div>
+        <div class="containeree">
+          <div class="ttop">
+            <div class="error_msg"></div>
+            <button>&times;</button>
+          </div>
+
+          <div class="imgprov"></div>
+          <div class="imgsendcontrol">
+            <form class="messageform" id="bb1q2w3e4r5t6y|7u8ii9o0p-&&&&&|I_D+3477bb">
+              <textarea id="messageim" placeholder="Capiton (optional)" rows="1"
+                onkeydown="handleKeyDownim(event)"></textarea>
+
+            </form>
+            <button id="send-btnim" onclick="sendimage(this)" type="submit">
+              <ion-icon name="send"></ion-icon>
+            </button>
+          </div>
+        </div>
+
         <div id="control">
 
-          <div class="containeree">
-            <div class="error_msg"></div>
-            <div class="uploaded_file_view before" id="uploaded_view">
-              <span class="file_remove">X</span>
-            </div>
-            <div class="panel">
-              <div class="button_outer none">
-                <div class="btn_upload none">
-                  <input type="file" id="upload_file" name="file_upload" accept=".jpg,.gif,.png">
-                  <span class="material-symbols-outlined">
-                    add
-                  </span>
-                </div>
-                <div class="processing_bar"></div>
-                <div onclick="sendimage(this) " class="success_box"></div>
-              </div>
-            </div>
-
+          <div class="btn_upload none">
+            <input type="file" id="upload_file" name="file_upload" multiple accept=".jpg,.gif,.png">
+            <span class="material-symbols-outlined">
+              add
+            </span>
           </div>
           <form class="messageform" id="bb1q2w3e4r5t6y|7u8ii9o0p-&&&&&|I_D+3477bb">
             <textarea id="message" placeholder="Type your message" rows="1" onkeydown="handleKeyDown(event)"></textarea>
@@ -1926,28 +2067,31 @@
         Delete from everyone
       </h3>
     </li>
-</ul>
- 
-<div class="bg">
-  <div class="box animate__animated animate__zoomIn animate__bounceIn animate_faster">
-    <span>
-      <h2 id="h2del">Delete message?</h2>
-      <p>Deleting a message for yourself allows you to delete your copy of messages you've sent or received.
-        <br><br> This has no effect on your recipients' chats.
-      </p>
-    </span>
-    <div class="button_container">
-      <button class="cancle">&nbsp;Cancle</button>
-      <button class="delete"> <ion-icon name="trash-outline"></ion-icon>&nbsp;Delete</button>
-    </div>
-  </div>
+  </ul>
 
-</div>  </ul>
+  <div class="bg">
+    <div class="box animate__animated animate__zoomIn animate__bounceIn animate_faster">
+      <span>
+        <h2 id="h2del">Delete message?</h2>
+        <p>Deleting a message for yourself allows you to delete your copy of messages you've sent or received.
+          <br><br> This has no effect on your recipients' chats.
+        </p>
+      </span>
+      <div class="button_container">
+        <button class="cancle">&nbsp;Cancle</button>
+        <button class="delete"> <ion-icon name="trash-outline"></ion-icon>&nbsp;Delete</button>
+      </div>
+    </div>
+
+  </div>
+  </ul>
   <div id="myModal" class="modal">
     <span class="close">&times;</span>
     <img class="modal-content" id="img01">
     <div id="caption"></div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script
     src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
 
@@ -1970,14 +2114,15 @@
       modalImg.src = src;
       captionText.innerHTML = alt;
     }
-function check(){
-  var images = document.querySelectorAll(".messagese img");
+    function check() {
+      var images = document.querySelectorAll(".messagese img");
 
-images.forEach(function (image) {
-  image.addEventListener("load", function () {
-    image.classList.add("loaded");
-  });
-})}
+      images.forEach(function (image) {
+        image.addEventListener("load", function () {
+          image.classList.add("loaded");
+        });
+      })
+    }
     var span = document.getElementsByClassName("close")[0];
     span.onclick = function () {
       document.querySelector('.modal').classList.add('out')
@@ -2002,57 +2147,98 @@ images.forEach(function (image) {
 
     }
 
-
     const btnUpload = document.querySelector("#upload_file");
-    const btnOuter = document.querySelector(".button_outer");
     const errorMsg = document.querySelector(".error_msg");
-    const uploadedView = document.querySelector("#uploaded_view");
+    const uploadedView = document.querySelector(".imgprov");
+    const textInput = document.body;
+    const imageContainer = document.body;
 
+    textInput.addEventListener('paste', event => {
+      const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+      handleClipboardItems(items);
+    });
+
+    imageContainer.addEventListener('dragover', event => {
+      event.preventDefault();
+    });
+
+    imageContainer.addEventListener('drop', event => {
+      event.preventDefault();
+      const items = event.dataTransfer.items;
+      handleClipboardItems(items);
+    });
+
+    function handleClipboardItems(items) {
+
+
+      console.log('uploadinding image.')
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          const imageURL = URL.createObjectURL(blob);
+
+          const imageElement = document.createElement('img');
+          imageElement.src = imageURL;
+          uploadedView.appendChild(imageElement);
+          uploadedView.scrollTop = uploadedView.scrollHeight;
+          iimg = uploadedView.querySelectorAll('img');
+          if (iimg.length >= 8) {
+            uploadedView.classList.add('eightimg');
+          } else if (iimg.length >= 4 && iimg.length < 8) {
+            uploadedView.classList.add('fourimg');
+          } else if (iimg.length < 4) {
+            uploadedView.classList.remove('fourimg');
+            uploadedView.classList.remove('eightimg');
+
+          }
+
+          document.querySelector('#control').classList.add('im')
+      document.querySelector('.containeree').classList.add('im')
+        }
+      }
+    }
     btnUpload.addEventListener("change", function (e) {
-      document.querySelector('.success_box').style.pointerevent = 'all';
+      console.log('uploadinding image.')
 
-
-      document.querySelector('#message').classList.add('none-con')
-      document.querySelector('.uploaded_file_view').classList.remove('before')
       document.querySelector('#control').classList.add('im')
-      document.querySelector('#send-btn').classList.add('none-con')
-      btnOuter.classList.remove('none')
-      document.querySelector('.btn_upload').classList.remove('none')
+      document.querySelector('.containeree').classList.add('im')
       const ext = btnUpload.value.split('.').pop().toLowerCase();
       if (['gif', 'png', 'jpg', 'jpeg'].indexOf(ext) === -1) {
         errorMsg.textContent = "Not an Image...";
       } else {
         errorMsg.textContent = "";
-        btnOuter.classList.add("file_uploading");
-        setTimeout(function () {
-          btnOuter.classList.add("file_uploaded");
-        }, 3000);
+        const fileInput = e.target; // Assuming e.target is your file input element
+        const fileList = Array.from(fileInput.files);
 
-        const uploadedFile = URL.createObjectURL(e.target.files[0]);
-        setTimeout(function () {
+        fileList.forEach(file => {
+          const uploadedFile = URL.createObjectURL(file);
           const imgElement = document.createElement("img");
           imgElement.src = uploadedFile;
           uploadedView.appendChild(imgElement);
-          uploadedView.classList.add("show");
-        }, 3500);
+        });
+
+        // After adding the images, you can apply your logic for adding classes based on the image count
+        iimg = uploadedView.querySelectorAll('img');
+        if (iimg.length >= 8) {
+          uploadedView.classList.add('eightimg');
+        } else if (iimg.length >= 4 && iimg.length < 8) {
+          uploadedView.classList.add('fourimg');
+        }
+
+
       }
     });
 
 
-    const fileRemoveBtn = document.querySelector(".file_remove");
+    const fileRemoveBtn = document.querySelector(".ttop button");
     fileRemoveBtn.addEventListener("click", function (e) {
 
-      uploadedView.classList.remove("show");
-      uploadedView.innerHTML = "";
-      uploadedView.appendChild(fileRemoveBtn)
-      btnOuter.classList.remove("file_uploading");
-      btnOuter.classList.remove("file_uploaded");
-      document.querySelector('#message').classList.remove('none-con')
-      document.querySelector('.uploaded_file_view').classList.add('before')
+      const uploadedView = document.querySelector(".imgprov");
       document.querySelector('#control').classList.remove('im')
-      document.querySelector('#send-btn').classList.remove('none-con')
-      btnOuter.classList.add('none')
-      document.querySelector('.btn_upload').classList.add('none')
+      document.querySelector('.containeree').classList.remove('im')
+      uploadedView.innerHTML = ''
+
     });
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -2064,7 +2250,8 @@ images.forEach(function (image) {
     function add() {
       const contextMenu = document.getElementById("customContextMenu");
       const targetNodes = document.querySelectorAll("#right");
-
+ 
+         
       function openContextMenu(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -2195,7 +2382,7 @@ images.forEach(function (image) {
             div.appendChild(img);
             div.appendChild(h3);
             div.addEventListener("click", (e) => {
-              view_image(imageLink, imageLink);
+              view_image(imageLink, data.time);
             });
             content.appendChild(div);
 
@@ -2206,7 +2393,7 @@ images.forEach(function (image) {
           const viewImageItem = contextMenu.querySelector(".view-image");
           viewImageItem.style.display = "block";
           viewImageItem.addEventListener("click", () => {
-            view_image(data.imageLinks[0], data.imageLinks[0]);
+            view_image(data.imageLinks[0], data.time);
           });
         }
         if (data.imageLinks.length > 1) {
@@ -2569,7 +2756,7 @@ images.forEach(function (image) {
         }, 500);
       });
     }
-   
+
 
     function toggleSidebar() {
       const sidebar = document.querySelector('.contacts-bar');
@@ -2580,6 +2767,10 @@ images.forEach(function (image) {
 
   <script>
     document.getElementById('message').addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+    document.getElementById('messageim').addEventListener('input', function () {
       this.style.height = 'auto';
       this.style.height = (this.scrollHeight) + 'px';
     });
@@ -2692,14 +2883,14 @@ images.forEach(function (image) {
       const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
       const specificPatternRegex = /\/turbolancer\/gett_image\/chats\/turbolancer_qazwsxedcrfvqwerty\/[0-9a-fA-F]{24}/;
 
-      function createLinkElement(link, type) {
+      function createLinkElement(link, type, timestamp) {
         const element = document.createElement(type === 'image' ? 'img' : 'a');
 
         if (type === 'image' || type === 'img') {
           element.src = link;
 
           element.onclick = function () {
-            view_image(link, link);
+            view_image(link, timestamp);
           };
         } else if (type === 'website') {
           element.href = link;
@@ -2720,179 +2911,254 @@ images.forEach(function (image) {
 
         return element;
       }
+      function splitTextByMarker(text) {
+        const marker = "[|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ";
 
-      function appendMessage(message, timestamp, sender, blocked_by, index) {
+        if (text.includes(marker)) {
+          const parts = text.split(marker);
+          const firstPortion = parts[0];
+          const secondPortion = parts[1];
 
-const messagesDiv = document.getElementById("messages");
-const newMessageDiv = document.createElement("div");
-const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
-const isCurrentUser = sender === local;
-const fullemssage = message
-const acutime = timestamp
-newMessageDiv.className = isCurrentUser
-  ? 'mine messageses animate__animated animate__bounceInRight'
-  : 'yours messageses animate__animated animate__bounceInLeft';
-
-const newInner = document.createElement("div");
-const men = document.createElement("div");
-const messt = document.createElement("div");
-messt.className = "messt"
-newInner.className = 'messagese last';
-men.id = 'right';
-men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
-men.style.color = '#ffff';
-
-newInner.appendChild(men);
-
-const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
-const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
-
-let lastIndex = 0;
-const imageLinks = [];
-const simpleLinks = [];
-const textNodes = [];
-let loopCount = 0;
-
-for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
-  let blockedByConditionMet
-  loopCount = index
-
-  if (blocked_by) {
-    let blockedByConditionMet = false;
-
-    blocked_by.forEach(node => {
-      if (node !== local) {
-        if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
-          if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
-
-            message = ' This message was deleted by YOU';
-          } else {
-            const remainingText = node.split(" ").slice(1).join(" ");
-            message = `This message was deleted by ${remainingText}`;
-          }
-          blockedByConditionMet = true;
-          return;
-
-
-        }
-      }
-      else if (node === local) {
-        blockedByConditionMet = true;
-        message = `This message was deleted`;
-
-      }
-    });
-
-    if (blockedByConditionMet) {
-      messt.classList.add('deleted');
-      newMessageDiv.disabled = true;
-      newMessageDiv.classList.add('ar');
-      newMessageDiv.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-      });
-
-      newMessageDiv.addEventListener("mouseenter", function (e) {
-        e.preventDefault();
-      });
-    }
-  }
-
-
-  const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
-
-  if (specificPatternMatch) {
-    const specificLink = specificPatternMatch[0];
-    const specificPatternIndex = message.indexOf(specificLink, lastIndex);
-
-    if (specificPatternIndex > lastIndex) {
-      const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
-      textNodes.push(document.createTextNode(textBeforeSpecific));
-    }
-
-    imageLinks.push(specificLink);
-    textNodes.push(createLinkElement(specificLink, 'image'));
-    lastIndex = specificPatternIndex + specificLink.length;
-  } else {
-    const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
-
-    if (base64Match) {
-      const base64Link = base64Match[0];
-      const base64Index = message.indexOf(base64Link, lastIndex);
-
-      if (base64Index > lastIndex) {
-        const textBeforeBase64 = message.substring(lastIndex, base64Index);
-        textNodes.push(document.createTextNode(textBeforeBase64));
-      }
-
-      imageLinks.push(base64Link);
-      lastIndex = base64Index + base64Link.length;
-    } else {
-      const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
-
-      if (linkMatch) {
-        const link = linkMatch[0];
-        const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
-
-        if (textBeforeLink) {
-          textNodes.push(document.createTextNode(textBeforeLink));
-        }
-
-        const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
-
-        if (linkType === 'image') {
-          imageLinks.push(link);
+          return {
+            firstPortion: firstPortion.trim(),
+            secondPortion: secondPortion.trim()
+          };
         } else {
-          simpleLinks.push(link);
+          return null; // Marker not found in the text
+        }
+      }
+
+
+      function sanitizeHTMLAndCSS(inputText) {
+  // Replace HTML tags with their HTML entity equivalents
+  const sanitizedHTML = inputText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // Remove any CSS within style attributes
+  const sanitizedCSS = sanitizedHTML.replace(/style="[^"]*"/g, '');
+
+  return sanitizedCSS;
+}
+
+
+      function appendMessage(message, timestamp, sender, blocked_by, index) { 
+
+        var textafter
+        var paragraph;
+        const messagesDiv = document.getElementById("messages");
+        const newMessageDiv = document.createElement("div");
+        const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
+        const isCurrentUser = sender === local;
+        const fullemssage = message
+        const acutime = timestamp
+        newMessageDiv.className = isCurrentUser
+          ? 'mine messageses animate__animated animate__bounceInRight'
+          : 'yours messageses animate__animated animate__bounceInLeft';
+
+        const newInner = document.createElement("div");
+        const men = document.createElement("div");
+        const messt = document.createElement("div");
+        messt.className = "messt"
+        newInner.className = 'messagese last';
+        men.id = 'right';
+        men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
+        men.style.color = '#ffff';
+
+        newInner.appendChild(men);
+        const result = splitTextByMarker(message)
+        if (result) {
+          message = result.firstPortion
+          textafter = result.secondPortion;
+
         }
 
-        textNodes.push(createLinkElement(link, linkType));
-        lastIndex += linkMatch.index + link.length;
-      } else {
-        textNodes.push(document.createTextNode(message.substring(lastIndex)));
-        break;
+        const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
+        const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
+
+        let lastIndex = 0;
+        const imageLinks = [];
+        const simpleLinks = [];
+        const textNodes = [];
+        let loopCount = 0;
+
+        for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
+          let blockedByConditionMet
+          loopCount = index
+
+          if (blocked_by) {
+            let blockedByConditionMet = false;
+
+            blocked_by.forEach(node => {
+              if (node !== local) {
+                if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
+                  if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+
+                    message = ' This message was deleted by YOU';
+                  } else {
+                    const remainingText = node.split(" ").slice(1).join(" ");
+                    message = `This message was deleted by ${remainingText}`;
+                  }
+                  blockedByConditionMet = true;
+                  return;
+
+
+                }
+              }
+              else if (node === local) {
+                blockedByConditionMet = true;
+                message = `This message was deleted`;
+
+              }
+            });
+
+            if (blockedByConditionMet) {
+              messt.classList.add('deleted');
+              newMessageDiv.disabled = true;
+              newMessageDiv.classList.add('ar');
+              newMessageDiv.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+              });
+
+              newMessageDiv.addEventListener("mouseenter", function (e) {
+                e.preventDefault();
+              });
+            }
+          }
+
+
+          const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
+
+          if (specificPatternMatch) {
+            const specificLink = specificPatternMatch[0];
+            const specificPatternIndex = message.indexOf(specificLink, lastIndex);
+
+            if (specificPatternIndex > lastIndex) {
+              const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
+              textNodes.push(document.createTextNode(textBeforeSpecific));
+            }
+
+            imageLinks.push(specificLink);
+            textNodes.push(createLinkElement(specificLink, 'image', timestamp));
+            lastIndex = specificPatternIndex + specificLink.length;
+          } else {
+            const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
+
+            if (base64Match) {
+              const base64Link = base64Match[0];
+              const base64Index = message.indexOf(base64Link, lastIndex);
+
+              if (base64Index > lastIndex) {
+                const textBeforeBase64 = message.substring(lastIndex, base64Index);
+                textNodes.push(document.createTextNode(textBeforeBase64));
+              }
+
+              imageLinks.push(base64Link);
+              lastIndex = base64Index + base64Link.length;
+            } else {
+              const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
+
+              if (linkMatch) {
+                const link = linkMatch[0];
+                const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
+
+                if (textBeforeLink) {
+                  textNodes.push(document.createTextNode(textBeforeLink));
+                }
+
+                const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
+
+                if (linkType === 'image') {
+                  imageLinks.push(link);
+                } else {
+                  simpleLinks.push(link);
+                }
+
+                textNodes.push(createLinkElement(link, linkType));
+                lastIndex += linkMatch.index + link.length;
+              } else {
+                textNodes.push(document.createTextNode(message.substring(lastIndex)));
+                break;
+              }
+            }
+          }
+        }
+
+        textNodes.forEach(node => {
+          messt.appendChild(node)
+          newInner.appendChild(messt);
+
+        });
+
+        if (textafter) {
+          paragraph = document.createElement("p");
+          function convertLinksToAnchors(text) {
+  // Regular expression to match URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  // Replace all URLs with anchor elements
+  const replacedText = text.replace(urlRegex, (url) => {
+    return `<a class="afterblue" href="${url}" target="_blank">${url}</a>`;
+  });
+
+  return replacedText;
+}
+textaftere = convertLinksToAnchors(textafter)
+          paragraph.innerHTML = textaftere;
+          paragraph.classList.add('dotted')
+          $(paragraph).on("click", function () {
+            $(this).toggleClass("expandeddotted");
+          });
+          tbl = textafter
+          newInner.appendChild(paragraph);
+
+        }
+        tbl = textNodes.map(node => node.textContent).join(' ')
+        const collectedData = {
+          imageLinks: imageLinks,
+          simpleLinks: simpleLinks,
+          textWithoutLinks: textNodes.map(node => node.textContent).join(' '),
+          sender: sender,
+          fullmsesage: fullemssage,
+          time: acutime,
+          index: index
+        };
+        if (!messagesDiv.className.includes('ar')) {
+          newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
+          men.dataset.collectedData = JSON.stringify(collectedData);
+        }
+        else {
+          newMessageDiv.dataset.collectedData = JSON.stringify(removed);
+          men.dataset.collectedData = JSON.stringify(removed);
+        }
+        console.log(index)
+        newMessageDiv.classList.add(index)
+
+        const timestampDiv = document.createElement("div");
+        timestampDiv.className = 'timestamp';
+        timestampDiv.textContent = timestamp;
+        newInner.appendChild(timestampDiv);
+
+        newMessageDiv.appendChild(newInner);
+        messagesDiv.appendChild(newMessageDiv);
+        add();
+        check();
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        iimg = messagesDiv.querySelectorAll('.messt')
+        iimgcont = messagesDiv.querySelectorAll('.messt')
+        iimg.forEach(element => {
+          immgg = element.querySelectorAll('img')
+          if (result) {
+
+          if (immgg.length >= 4) {
+            element.classList.add('fourimg');
+          } else if (iimg.length < 4) {
+            if (messagesDiv.querySelectorAll('.messt.fourimg'))
+              element.classList.remove('fourimg');
+
+          }}
+        });
       }
-    }
-  }
-}
 
-textNodes.forEach(node => {
-  messt.appendChild(node)
-  newInner.appendChild(messt);
-});
-
-const collectedData = {
-  imageLinks: imageLinks,
-  simpleLinks: simpleLinks,
-  textWithoutLinks: textNodes.map(node => node.textContent).join(' '),
-  sender: sender,
-  fullmsesage: fullemssage,
-  time: acutime,
-  index: index
-};
-if (!messagesDiv.className.includes('ar')) {
-  newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
-  men.dataset.collectedData = JSON.stringify(collectedData);
-}
-else {
-  newMessageDiv.dataset.collectedData = JSON.stringify(removed);
-  men.dataset.collectedData = JSON.stringify(removed);
-}
-console.log(index)
-newMessageDiv.classList.add(index)
-
-const timestampDiv = document.createElement("div");
-timestampDiv.className = 'timestamp';
-timestampDiv.textContent = timestamp;
-newInner.appendChild(timestampDiv);
-
-newMessageDiv.appendChild(newInner);
-messagesDiv.appendChild(newMessageDiv);
-add();
-check();
-messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-socket.on('newMessage', (message) => {
+      socket.on('newMessage', (message) => {
         let chatroomname = document.getElementById('send-btn').className;
         if (message.ch === chatroomname) {
           const messagesElements = document.querySelectorAll('.messageses');
@@ -2902,137 +3168,159 @@ socket.on('newMessage', (message) => {
           appendMessage(message.message, message.timestamp, message.sender, [], iiii);
         }
       });
-function getMessages(x) {
-xyz = document.querySelectorAll('.contact')
-xyz.forEach(item => {
-  item.classList.remove('active')
-})
-x.classList.add('active')
+      function getMessages(x) {
+        xyz = document.querySelectorAll('.contact')
+        xyz.forEach(item => {
+          item.classList.remove('active')
+        })
+        x.classList.add('active')
 
-const chatRoomElement = document.getElementById('messages');
-if (chatRoomElement) {
-  chatRoomElement.innerHTML = '<div class="loader"></div>';
-} else {
-  console.error("Element 'chat-room' not found.");
-}
-document.getElementById('cinfo').innerHTML = '';
-input = document.querySelectorAll('input')
-
-input.forEach(item => {
-  item.value = ''
-
-})
-uploadedView.classList.remove("show");
-uploadedView.innerHTML = "";
-uploadedView.appendChild(fileRemoveBtn)
-btnOuter.classList.remove("file_uploading");
-btnOuter.classList.remove("file_uploaded");
-document.querySelector('#message').classList.remove('none-con')
-document.querySelector('.uploaded_file_view').classList.add('before')
-document.querySelector('#control').classList.remove('im')
-document.querySelector('#send-btn').classList.remove('none-con')
-btnOuter.classList.add('none')
-document.querySelector('.btn_upload').classList.add('none')
-
-const overlay = document.querySelector('.overlay');
-
-if (overlay) {
-  overlay.classList.add('animate__animated');
-  overlay.classList.add('animate__zoomOut');
-
-  setTimeout(() => {
-    overlay.remove();
-  }, 1000);
-}
-
-fetch('/get_messages', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    user_id: userId,
-    chat_room_name: x.id,
-  }),
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    document.getElementById('messages').innerHTML = '';
-    document.getElementById('send-btn').className = x.id;
-    if ('messages' in data) {
-      const cinfo = document.querySelector('#cinfo');
-      cinfo.innerHTML = ''; // Clear existing content before appending new elements
-
-      const imgElement = x.querySelector('.parent');
-      const h2Element = x.querySelector('.user-name');
-
-      // Clone the elements
-      const imgClone = imgElement.cloneNode(true);
-      const h2Clone = h2Element.cloneNode(true);
-
-      // Append the cloned elements to #cinfo
-      cinfo.appendChild(imgClone);
-      cinfo.appendChild(h2Clone);
-
-      const messages = data.messages;
-      const times = data.time;
-      const sender = data.sender;
-      const blb = data.blb;
-
-      // Append retrieved messages to the chat room
-      for (let i = 0; i < messages.length; i++) {
-        appendMessage(messages[i], times[i], sender[i], blb[i], i);
-      }
-    } else {
-      console.error('Error fetching messages: Invalid response format');
-    }
-  })
-  .catch(error => console.error('Error fetching messages:', error));
-
-    
-}});
-    function sendimage(x) {
-      x.style.pointerevent = 'none';
-
-
-      console.log('clicked')
-
-      uploadedView.classList.remove("show");
-      uploadedView.innerHTML = "";
-      uploadedView.appendChild(fileRemoveBtn)
-      btnOuter.classList.remove("file_uploading");
-      btnOuter.classList.remove("file_uploaded");
-      document.querySelector('#message').classList.remove('none-con')
-      document.querySelector('.uploaded_file_view').classList.add('before')
-      document.querySelector('#control').classList.remove('im')
-      document.querySelector('#send-btn').classList.remove('none-con')
-      btnOuter.classList.add('none')
-      document.querySelector('.btn_upload').classList.add('none')
-      const imageFile = document.getElementById("upload_file").files[0];
-      const currentTime = getCurrentTime();
-      const userId = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')
-      const chatRoomName = document.getElementById("send-btn").classList[0];
-      var formData = new FormData();
-      formData.append("image", imageFile);
-      formData.append("chatroom", chatRoomName);
-
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/send_IMAGE");
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
-            const imageLink = response.image_id;
-            console.log(imageLink)
-            socket.emit('sendMessage', { userId, chatRoomName, currentTime, imageLink });
-          } else {
-            console.log("Error: " + xhr.status);
-          }
+        const chatRoomElement = document.getElementById('messages');
+        if (chatRoomElement) {
+          chatRoomElement.innerHTML = '<div class="loader"></div>';
+        } else {
+          console.error("Element 'chat-room' not found.");
         }
-      };
+        document.getElementById('cinfo').innerHTML = '';
+        input = document.querySelectorAll('input')
 
-      xhr.send(formData);
+        input.forEach(item => {
+          item.value = ''
+
+        })
+
+        document.querySelector('#message').classList.remove('none-con')
+        document.querySelector('#control').classList.remove('im')
+        document.querySelector('#send-btn').classList.remove('none-con')
+        document.querySelector('.btn_upload').classList.add('none')
+
+        const overlay = document.querySelector('.overlay');
+
+        if (overlay) {
+          overlay.classList.add('animate__animated');
+          overlay.classList.add('animate__zoomOut');
+
+          setTimeout(() => {
+            overlay.remove();
+          }, 1000);
+        }
+
+        fetch('/get_messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            chat_room_name: x.id,
+          }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            document.getElementById('messages').innerHTML = '';
+            document.getElementById('send-btn').className = x.id;
+            if ('messages' in data) {
+              const cinfo = document.querySelector('#cinfo');
+              cinfo.innerHTML = ''; // Clear existing content before appending new elements
+
+              const imgElement = x.querySelector('.parent');
+              const h2Element = x.querySelector('.user-name');
+
+              // Clone the elements
+              const imgClone = imgElement.cloneNode(true);
+              const h2Clone = h2Element.cloneNode(true);
+
+              // Append the cloned elements to #cinfo
+              cinfo.appendChild(imgClone);
+              cinfo.appendChild(h2Clone);
+
+              const messages = data.messages;
+              const times = data.time;
+              const sender = data.sender;
+              const blb = data.blb;
+
+              // Append retrieved messages to the chat room
+              for (let i = 0; i < messages.length; i++) {
+                appendMessage(messages[i], times[i], sender[i], blb[i], i);
+              }
+            } else {
+              console.error('Error fetching messages: Invalid response format');
+            }
+          })
+          .catch(error => console.error('Error fetching messages:', error));
+
+
+      }
+    });
+
+
+    function sendimage(x) {
+      x.style.pointerEvents = 'none';
+      console.log(document.getElementById('messageim').value)
+      const value = document.getElementById('messageim').value;
+      console.log('clicked');
+
+      const uploadedView = document.querySelector(".imgprov");
+      const uploadedViewimg = document.querySelectorAll(".imgprov img");
+      document.querySelector('#control').classList.remove('im');
+      document.querySelector('.containeree').classList.remove('im');
+      document.getElementById('messageim').value = ''
+      uploadedView.innerHTML = '';
+
+      const currentTime = getCurrentTime();
+      const userId = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
+      const chatRoomName = document.getElementById("send-btn").classList[0];
+
+      const imageLinks = []; // To store the links of uploaded images
+
+      let uploadCount = 0; // To track the number of images uploaded
+
+      uploadedViewimg.forEach(function (uploadedViewimgsub) {
+        const imageBlobPromise = fetch(uploadedViewimgsub.src)
+          .then(response => response.blob());
+
+        imageBlobPromise.then(imageBlob => {
+          const newImageFile = new File([imageBlob], 'newFileName.jpg', { type: 'image/jpeg' });
+          console.log(newImageFile);
+
+          var formData = new FormData();
+          formData.append("image", newImageFile);
+          formData.append("chatroom", chatRoomName);
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/send_IMAGE");
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                x.style.pointerEvents = 'all';
+                console.log(document.getElementById('messageim').value)
+
+                var response = JSON.parse(xhr.responseText);
+                const imageLink = response.image_id;
+                imageLinks.push(imageLink);
+                uploadCount++;
+
+                if (uploadCount === uploadedViewimg.length) {
+                  const joinedImageLinks = imageLinks.join(" ");
+                  const messagew = joinedImageLinks + ' [|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ' + value
+                  console.log(document.getElementById('messageim').value)
+
+                  socket.emit('sendMessage', { userId, chatRoomName, currentTime, message: messagew });
+                  console.log("Message with image links sent successfully.");
+                }
+              } else {
+                console.log("Error: " + xhr.status);
+              }
+            }
+          };
+
+          xhr.send(formData);
+        })
+          .catch(error => {
+            console.error('Error fetching or processing the image:', error);
+          });
+      });
     }
     socket.on('messagedeleted', function (data) {
       console.log(data)
@@ -3047,6 +3335,8 @@ fetch('/get_messages', {
         if (newMessageDiv) { // Check if newMessageDiv is defined
           let messt = newMessageDiv.querySelector('.messt');
           messt.classList.add('deleted');
+          messt.classList.remove('fourimg');
+          
           newMessageDiv.disabled = true;
           newMessageDiv.classList.add('ar');
           newMessageDiv.addEventListener("contextmenu", function (e) {
