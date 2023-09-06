@@ -517,27 +517,28 @@ def handle_send_message(data):
     current_time = data['currentTime']
     chat_room_name = data['chatRoomName']
     message = data.get('message')
+    print(message)
     image_link = data.get('imageLink')
-    print(image_link)
+    diff = data.get('diff')
 
     if image_link:
         chat_rooms.update_one(
             {"_id": ObjectId(chat_room_name)},
             {"$push": {"messages": {'message': image_link,
-                                    'timestamp': current_time, 'sender': user_id}}},
+                                    'timestamp': current_time, 'sender': user_id,'diff': diff}}},
             upsert=True
         )
-        emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name},
+        emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name, 'diff': diff},
              broadcast=True, include_self=True)
 
     else:
         chat_rooms.update_one(
             {"_id": ObjectId(chat_room_name)},
             {"$push": {"messages": {'message': message,
-                                    'timestamp': current_time, 'sender': user_id}}},
+                                    'timestamp': current_time, 'sender': user_id,'diff': diff}}},
             upsert=True
         )
-        emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name},
+        emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id, 'ch' :chat_room_name, 'diff': diff},
              broadcast=True, include_self=True)
 
 
@@ -636,10 +637,12 @@ def get_messages():
     time = []
     sender = []
     bloaked_by = []
+    diffl = []
 
     for m in messagesli:
         a = m.get('message')
         b = m.get('timestamp')
+        diff = m.get('diff')
         print(b)
         c = m.get('sender')
         d = m.get('blocked_by')
@@ -647,10 +650,11 @@ def get_messages():
         time.append(b)
         sender.append(c)
         bloaked_by.append(d)
+        diffl.append(diff)
     print(time)
     #bloaked_by[0] is a lsit
 
-    return jsonify(messages=messages, time=time, sender=sender,blb = bloaked_by)
+    return jsonify(messages=messages, time=time, sender=sender,blb = bloaked_by, diff = diffl)
 
 
 if __name__ == '__main__':

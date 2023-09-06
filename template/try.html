@@ -21,9 +21,360 @@
 
   <script>
     const socket = io();
+    const theindexofelementtobechecked = []
+    const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
+      const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
+      const specificPatternRegex = /\/turbolancer\/gett_image\/chats\/turbolancer_qazwsxedcrfvqwerty\/[0-9a-fA-F]{24}/;
 
+      function createLinkElement(link, type, timestamp) {
+        const element = document.createElement(type === 'image' ? 'img' : 'a');
+
+        if (type === 'image' || type === 'img') {
+          element.src = link;
+
+          element.onclick = function () {
+            view_image(link, timestamp);
+          };
+        } else if (type === 'website') {
+          element.href = link;
+          element.textContent = link;
+          element.target = '_blank';
+          element.style.color = 'rgb(0, 81, 255)'
+
+          element.addEventListener('mouseover', () => {
+            element.style.textDecoration = 'underline';
+          });
+
+          element.addEventListener('mouseout', () => {
+            element.style.textDecoration = 'none';
+          });
+        } else {
+          element.textContent = link;
+        }
+
+        return element;
+      }
+      function splitTextByMarker(text) {
+        const marker = "[|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ";
+
+        if (text.includes(marker)) {
+          const parts = text.split(marker);
+          const firstPortion = parts[0];
+          const secondPortion = parts[1];
+
+          return {
+            firstPortion: firstPortion.trim(),
+            secondPortion: secondPortion.trim()
+          };
+        } else {
+          return null; // Marker not found in the text
+        }
+      }
+
+
+      function sanitizeHTMLAndCSS(inputText) {
+        // Replace HTML tags with their HTML entity equivalents
+        const sanitizedHTML = inputText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        // Remove any CSS within style attributes
+        const sanitizedCSS = sanitizedHTML.replace(/style="[^"]*"/g, '');
+
+        return sanitizedCSS;
+      }
+      function addLineBreaks(className) {
+      const elements = document.querySelectorAll('.' + className);
+
+      elements.forEach(element => {
+        const childNodes = element.childNodes;
+        const newContent = [];
+
+        childNodes.forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            const lines = node.textContent.split(/\n/g).map(line => line.trim());
+
+            lines.forEach((line, index) => {
+              newContent.push(document.createTextNode(line));
+              if (index < lines.length - 1) {
+                newContent.push(document.createElement('br'));
+              }
+            });
+          } else {
+            newContent.push(node.cloneNode(true));
+          }
+        });
+
+        // Clear existing content
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+
+        // Append the new content
+        newContent.forEach(node => {
+          element.appendChild(node);
+        });
+      });
+    }
+
+
+      function appendMessage(message, timestamp, sender, blocked_by, index, diff) {
+        const actulatime = timestamp;
+
+        function convertToTimeZone(inputTime) {
+          // Parse the input time string into a Date object
+          const inputDate = new Date(`${inputTime} UTC`);
+
+          // Get the user's local time zone
+          const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+          // Convert to the user's local time zone
+          const localDate = new Date(inputDate.toLocaleString('en-US', { timeZone: userTimeZone }));
+
+          // Format the local date components
+          const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(localDate);
+          const day = localDate.getDate();
+          const year = localDate.getFullYear();
+          const hours = localDate.getHours();
+          const minutes = localDate.getMinutes();
+          const ampm = hours >= 12 ? 'PM' : 'AM';
+
+          // Format the local time string
+          const formattedLocalTime = `${month} ${day}, ${year}, ${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+          return formattedLocalTime;
+        }
+
+
+        timestamp = convertToTimeZone(timestamp);
+        console.log(timestamp)
+        var textafter
+        var paragraph;
+        const messagesDiv = document.getElementById("messages");
+        const newMessageDiv = document.createElement("div");
+        const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
+        const isCurrentUser = sender === local;
+        const fullemssage = message
+        const acutime = timestamp
+        newMessageDiv.className = isCurrentUser
+          ? 'mine messageses animate__animated animate__bounceInRight'
+          : 'yours messageses animate__animated animate__bounceInLeft';
+
+        const newInner = document.createElement("div");
+        const men = document.createElement("div");
+        const messt = document.createElement("div");
+        messt.className = "messt"
+        newInner.className = 'messagese last';
+        men.id = 'right';
+        men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
+        men.style.color = '#ffff';
+
+        newInner.appendChild(men);
+        const result = splitTextByMarker(message)
+        if (result) {
+          message = result.firstPortion
+          textafter = result.secondPortion;
+
+        }
+
+        const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
+        const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
+        let tbl;
+
+        let lastIndex = 0;
+        const imageLinks = [];
+        const simpleLinks = [];
+        const textNodes = [];
+        let loopCount = 0;
+
+        for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
+          let blockedByConditionMet
+          loopCount = index
+
+          if (blocked_by) {
+            let blockedByConditionMet = false;
+
+            blocked_by.forEach(node => {
+              if (node !== local) {
+                if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
+                  if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+
+                    message = ' This message was deleted by YOU';
+                  } else {
+                    const remainingText = node.split(" ").slice(1).join(" ");
+                    message = `This message was deleted by ${remainingText}`;
+                  }
+                  blockedByConditionMet = true;
+                  return;
+
+
+                }
+              }
+              else if (node === local) {
+                blockedByConditionMet = true;
+                message = `This message was deleted`;
+
+              }
+            });
+
+            if (blockedByConditionMet) {
+              messt.classList.add('deleted');
+              newMessageDiv.disabled = true;
+              newMessageDiv.classList.add('ar');
+              newMessageDiv.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+              });
+
+              newMessageDiv.addEventListener("mouseenter", function (e) {
+                e.preventDefault();
+              });
+            }
+          }
+
+
+          const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
+
+          if (specificPatternMatch) {
+            const specificLink = specificPatternMatch[0];
+            const specificPatternIndex = message.indexOf(specificLink, lastIndex);
+
+            if (specificPatternIndex > lastIndex) {
+              const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
+              textNodes.push(document.createTextNode(textBeforeSpecific));
+            }
+
+            imageLinks.push(specificLink);
+            textNodes.push(createLinkElement(specificLink, 'image', timestamp));
+            lastIndex = specificPatternIndex + specificLink.length;
+          } else {
+            const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
+
+            if (base64Match) {
+              const base64Link = base64Match[0];
+              const base64Index = message.indexOf(base64Link, lastIndex);
+
+              if (base64Index > lastIndex) {
+                const textBeforeBase64 = message.substring(lastIndex, base64Index);
+                textNodes.push(document.createTextNode(textBeforeBase64));
+              }
+
+              imageLinks.push(base64Link);
+              lastIndex = base64Index + base64Link.length;
+            } else {
+              const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
+
+              if (linkMatch) {
+                const link = linkMatch[0];
+                const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
+
+                if (textBeforeLink) {
+                  textNodes.push(document.createTextNode(textBeforeLink));
+                }
+
+                const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
+
+                if (linkType === 'image') {
+                  imageLinks.push(link);
+                } else {
+                  simpleLinks.push(link);
+                }
+
+                textNodes.push(createLinkElement(link, linkType));
+                lastIndex += linkMatch.index + link.length;
+              } else {
+                textNodes.push(document.createTextNode(message.substring(lastIndex)));
+                break;
+              }
+            }
+          }
+        }
+
+        textNodes.forEach(node => {
+          messt.appendChild(node);
+
+          newInner.appendChild(messt);
+
+
+        });
+        tbl = textNodes.map(node => node.textContent).join(' ')
+
+        if (textafter) {
+          tbl = textafter
+          paragraph = document.createElement("p");
+          function convertLinksToAnchors(text) {
+            // Regular expression to match URLs
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+            // Replace all URLs with anchor elements
+            const replacedText = text.replace(urlRegex, (url) => {
+              return `<a class="afterblue" href="${url}" target="_blank">${url}</a>`;
+            });
+
+            return replacedText;
+          }
+          textaftere = convertLinksToAnchors(textafter)
+          paragraph.innerHTML = textaftere;
+          paragraph.title = "Click to Expand/Collaps the Text"
+          paragraph.classList.add('dotted')
+          addLineBreaks('dotted');
+
+          $(paragraph).on("click", function () {
+            $(this).toggleClass("expandeddotted");
+            addLineBreaks('expandeddotted');
+
+          });
+          newInner.appendChild(paragraph);
+
+        }
+        const collectedData = {
+          imageLinks: imageLinks,
+          simpleLinks: simpleLinks,
+          textWithoutLinks: tbl,
+          sender: sender,
+          fullmsesage: fullemssage,
+          time: acutime,
+          index: index,
+          actulatime: actulatime
+        };
+
+        if (!messagesDiv.className.includes('ar')) {
+          newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
+          men.dataset.collectedData = JSON.stringify(collectedData);
+        }
+        else {
+          newMessageDiv.dataset.collectedData = JSON.stringify(removed);
+          men.dataset.collectedData = JSON.stringify(removed);
+        }
+        console.log(index)
+        theindexofelementtobechecked[0] = index;
+        newMessageDiv.classList.add(index)
+
+        const timestampDiv = document.createElement("div");
+        timestampDiv.className = 'timestamp';
+        timestampDiv.textContent = timestamp;
+        newInner.appendChild(timestampDiv);
+
+        newMessageDiv.appendChild(newInner);
+        messagesDiv.appendChild(newMessageDiv);
+        add();
+        check();
+        
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        iimg = messagesDiv.querySelectorAll('.messt')
+        iimgcont = messagesDiv.querySelectorAll('.messt')
+        iimg.forEach(element => {
+          immgg = element.querySelectorAll('img')
+          if (result) {
+
+            if (immgg.length >= 4) {
+              element.classList.add('fourimg');
+            } else if (iimg.length < 4) {
+              if (messagesDiv.querySelectorAll('.messt.fourimg'))
+                element.classList.remove('fourimg');
+
+            }
+          }
+        });
+      }
     function send_message() {
-      event.preventDefault(); // Prevent the default form submission behavior
+      event.preventDefault(); 
 
       console.log('clicked')
       const messageInput = document.getElementById("message");
@@ -32,9 +383,11 @@
       const chatRoomName = document.getElementById("send-btn").className;
       const message = messageInput.value.trim();
       if (message !== "") {
-
-        // Send the new message to the server using Socket.IO
-        socket.emit('sendMessage', { userId, chatRoomName, message, currentTime });
+        const d = new Date();
+        let diff = d.getTimezoneOffset();
+        length = document.querySelectorAll('.messt')
+      appendMessage(message, currentTime, userId, [], length.length+1,diff);        
+      socket.emit('sendMessage', { userId, chatRoomName, message, currentTime, diff });
 
         messageInput.value = ' '; // Clear the input field after sending the message
 
@@ -54,7 +407,7 @@
       const shiftKeyCode = 16;
 
       if (event.keyCode === enterKeyCode && !event.shiftKey) {
-        sendimage(event.id);
+        sendimage(document.getElementById('send-btnim'));
         event.preventDefault();
       }
     }
@@ -762,8 +1115,8 @@
     .messagese {
       border-radius: 9px;
       padding: 8px;
-      padding-top:14px ;
-      padding-bottom:14px ;
+      padding-top: 14px;
+      padding-bottom: 14px;
       max-width: 40%;
       min-width: 30rem;
       min-width: 240px;
@@ -802,6 +1155,7 @@
       backdrop-filter: brightness(90%);
       -webkit-backdrop-filter: brightness(90%);
       -moz-backdrop-filter: brightness(90%);
+      margin-top: 10px;
 
     }
 
@@ -814,9 +1168,9 @@
     .responsive-button {
       width: 15%;
       transition: all 0.4s;
-            max-width: 100px;
+      max-width: 100px;
       /* Set a maximum width to prevent excessive growth */
-    }  
+    }
 
 
     .SendSVG {
@@ -833,6 +1187,7 @@
         max-width: 60px;
       }
     }
+
     .timestamp {
       font-size: 12px;
       margin-right: 3px;
@@ -965,26 +1320,27 @@
       background-position: bottom;
 
       display: grid;
-      grid-template-columns: 50%;
-      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 80%;
       justify-content: center;
       justify-items: center;
+
+      align-items: center;
       overflow: hidden;
       gap: 10px;
     }
 
     .overlay img:first-child {
-      max-width: 80%;
-      align-self: end;
+      width: 50%;
+object-fit: scale-down;
       filter: drop-shadow(0 3px 15px rgba(0, 0, 0, 0.685));
 
     }
 
     .overlay img:last-child {
-      max-width: 230px;
-      filter: drop-shadow(0 3px 15px rgba(0, 0, 0, 0.685));
+      width: 50%;
+      object-fit: scale-down;
 
-      align-self: start;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.685));
     }
 
     #menue {
@@ -1225,6 +1581,10 @@
 
     }
 
+    .content {
+      background: transparent !important;
+    }
+
     #cta {
       width: 200px;
       white-space: nowrap;
@@ -1291,9 +1651,20 @@
     .modal-content {
       margin: auto;
       display: block;
+      object-fit: scale-down;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    .imgouter {
+      margin: auto;
+      display: flex;
+      overflow: hidden;
+
       width: 80%;
       object-fit: scale-down;
-      max-height: 500px;
+      height: 500px;
       max-width: 700px;
     }
 
@@ -1502,9 +1873,11 @@
       color: rgb(180, 180, 180);
       pointer-events: none;
     }
-    .messt.deleted + p{
+
+    .messt.deleted+p {
       display: none;
     }
+
     .messt.deleted::before {
       content: '⊘';
       font-style: normal;
@@ -1515,6 +1888,7 @@
       color: rgb(216, 216, 216);
       pointer-events: none;
     }
+
     .messt.fourimg {
       display: grid;
       padding: 5px;
@@ -1524,26 +1898,28 @@
       gap: 4px;
 
     }
+
     @media (max-width:700px) {
       .messt.fourimg {
-      display: grid;
-      padding: 5px;
-      font-family: "Poppins", Arial, sans-serif;
+        display: grid;
+        padding: 5px;
+        font-family: "Poppins", Arial, sans-serif;
 
-      grid-template-columns: 49.5% 49.5%;
-      gap: 4px;
+        grid-template-columns: 49.5% 49.5%;
+        gap: 4px;
 
+      }
     }
-    }
+
     .messt img {
       border-radius: 4px;
-      filter: drop-shadow(0 2px 4px #00000052);
+      filter: drop-shadow(2px 4px 6px #00000081);
       background-color: #09090905;
       max-height: 150px;
       min-height: 100px;
       width: auto;
       left: 0;
-      margin-top: 10px;
+      margin-top: 10px !important;
       flex-direction: column;
       object-fit: cover;
       margin-bottom: 10px;
@@ -1840,41 +2216,182 @@
     }
 
     .dotted {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 130ch;
-  height: 30px;
-  top: 97%;
-  left: 0;
-        font-family: "Poppins", Arial, sans-serif;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 130ch;
+      height: 30px;
+      top: 97%;
+      left: 0;
+      font-family: "Poppins", Arial, sans-serif;
 
-  transition: all 0.4s;
+      transition: all 0.4s;
+    }
+
+    .expandeddotted {
+      transition: all 0.4s;
+      text-overflow: initial;
+      /* Use "initial" instead of "clip" */
+      white-space: normal;
+      /* Use "normal" instead of "none" */
+      font-family: "Poppins", Arial, sans-serif;
+
+      padding: 10px;
+      border-radius: 16px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background-color: var(--primary-color);
+      height: calc(100% - 19px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 7862368732;
+    }
+
+    .imgcontent {
+      display: grid !important;
+      grid-template-columns: 50px 50px 50px 50px 50px !important;
+      gap: auto !important;
+      justify-content: space-evenly !important;
+      align-items: center !important;
+      max-width: 270px;
+    }
+
+    .afterblue {
+      color: rgb(0, 81, 255);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .asimg {
+      transition: all 0.2s;
+      cursor: pointer;
+      display: flex;
+      padding: 3px;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+      width: 50px !important;
+      float: left !important;
+      margin-left: 4px;
+      border-radius: 4px !important;
+    }
+
+    .asimg img {
+      border-radius: 4px;
+      width: 47px;
+    }
+
+    .asimg:hover {
+      transform: scale(1.1) rotate(-1deg) !important;
+    }
+
+    .messt img {
+
+      transition: all 0.3s;
+    }
+
+    .messt img:hover {
+      filter: drop-shadow(0 2px 5px #0000004d) brightness(90%);
+
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dragover {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #4accff3f;
+      z-index: 545646456465465465;
+      animation: fadeIn 0.4s ease-in-out;
+      display: none;
+    }
+
+    .modal img {
+      transition: all 0.3s;
+      cursor: zoom-in;
+    }
+
+    #no_results_message {
+  color: var(--primary-color);
+  font-size: 17px;
+  font-weight: 100;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+
 }
-
-.expandeddotted {
-  transition: all 0.4s;
-  text-overflow: initial; /* Use "initial" instead of "clip" */
-  white-space: normal; /* Use "normal" instead of "none" */
-  font-family: "Poppins", Arial, sans-serif;
-
-  padding: 10px;
-  border-radius: 16px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: var(--primary-color);
-  height: calc(100% - 19px);
-  position: absolute;
-  top: 0;
-  left: 0;
+.dots-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   width: 100%;
-  z-index: 7862368732;
+  animation: fadeIn 0.2s ease-in-out;
+
 }
-.afterblue{
-  color:rgb(0, 81, 255);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}
+
+.dot {
+  height: 9px;
+  width: 9px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.dot:last-child {
+  margin-right: 0;
+
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.3s;
+
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.1s;
+
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.1s;
+
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    background-color: #fff;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #fff;
+    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+  }
+
+  100% {
+    transform: scale(0.8);
+    background-color: #fff;
+    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+  }
+}
+
+
+
+
+
+
+
+
   </style>
+
 </head>
 
 <body class="darkmode">
@@ -1886,7 +2403,7 @@
         <form class="form">
           <label for="search">
             <input required='' onclick="document.querySelector('.contacts-bar').classList.add('expanded')"
-              autocomplete="off" placeholder="search..." id="search" type="text">
+              autocomplete="off" placeholder="search..." id="search" class="searchfilter" type="text">
             <div class="icon">
               <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg" class="swap-on">
@@ -1910,6 +2427,9 @@
       </div>
       <div id='container_contect'>
         <div class="loader"></div>
+        <div id="no_results_message" style="display: none;">
+          No Search results found!
+        </div>
       </div>
     </div>
 
@@ -1957,8 +2477,7 @@
         </div>
       </div>
       <div class="overlay">
-        <img src="/static/[removal.ai]_633b72ba-a04f-4001-9c35-d83b0748ea85-annotation-2023-08-03-122207 (1).png"
-          alt="chat image">
+       
         <img id="logoch" class="alogo" src="/static/dark_logo.png" alt="logo">
         <img id="logoch" class="blogo" src="/static/light_logo.png" alt="logo">
       </div>
@@ -2019,7 +2538,7 @@
         select to Copy image link
       </h3>
     </li>
-    <div class="content" style="display: none;"></div>
+    <div class="content imgcontent" style="display: none;"></div>
 
     <li class="contextMenu-item view-image" style="display: none;">
       <h3>
@@ -2034,7 +2553,7 @@
 
       </h3>
     </li>
-    <div class="content" style="display: none;"></div>
+    <div class="content imgcontent" style="display: none;"></div>
 
     <li class="collapsible contextMenu-item download-images" style="display: none;">
       <h3>
@@ -2044,7 +2563,7 @@
 
       </h3>
     </li>
-    <div class="content" style="display: none;"></div>
+    <div class="content imgcontent" style="display: none;"></div>
 
     <li class="contextMenu-item download-image">
       <h3>
@@ -2058,13 +2577,13 @@
     <li class="contextMenu-item additional-option" style="display: none;">
       <h3>
         <ion-icon name="trash-outline"></ion-icon>&nbsp;
-        Delete from Me
+        Delete for Me
       </h3>
     </li>
     <li class="contextMenu-item additional-optionme" style="display: none;">
       <h3>
         <ion-icon name="trash-outline"></ion-icon>&nbsp;
-        Delete from everyone
+        Delete for everyone
       </h3>
     </li>
   </ul>
@@ -2087,9 +2606,13 @@
   </ul>
   <div id="myModal" class="modal">
     <span class="close">&times;</span>
-    <img class="modal-content" id="img01">
+    <div class="imgouter">
+      <img class="modal-content" title="Scroll to ZommIn/Out" id="img01">
+    </div>
     <div id="caption"></div>
   </div>
+
+  <div class="dragover"></div>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script
@@ -2100,6 +2623,158 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
+
+
+
+socket.on('messagedeleted', function (data) {
+      console.log(data)
+      if (data.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+
+        closethemodalauto();
+        let classSelector = data.index;
+        console.log(data.index)
+        let newMessageDivs = document.getElementsByClassName(classSelector);
+
+        let newMessageDiv = newMessageDivs[0];
+        if (newMessageDiv) { // Check if newMessageDiv is defined
+          let messt = newMessageDiv.querySelector('.messt');
+          del = document.querySelector(".delete");
+          del.innerHTML = 'Delete'
+          messt.classList.add('deleted');
+          messt.classList.remove('fourimg');
+
+          newMessageDiv.disabled = true;
+          newMessageDiv.classList.add('ar');
+          newMessageDiv.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+          });
+
+          newMessageDiv.addEventListener("mouseenter", function (e) {
+            e.preventDefault();
+          });
+
+          messt.textContent = ' This message was deleted';
+          console.log('Success!!');
+
+        } else {
+          console.log('Element not found');
+        }
+
+      }
+    });
+
+    function closethemodalauto() {
+      box = document.querySelector(".box")
+      bg = document.querySelector(".bg")
+
+      box.classList.add('out');
+      bg.classList.add('out');
+      
+      del = document.querySelector(".delete");
+          del.innerHTML = 'Delete'
+      setTimeout((() => {
+        box.style.display = "none";
+        bg.style.display = 'none'
+
+      }), 600)
+
+
+
+    }
+
+    socket.on('messagedeletedbyall', function (data) {
+      closethemodalauto();
+
+      console.log(data.by)
+      if (data.by.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
+
+
+        if (data.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+
+          closethemodalauto();
+          let classSelector = data.index;
+          console.log(data.index)
+          let newMessageDivs = document.getElementsByClassName(classSelector);
+          console.log(newMessageDivs)
+
+          let newMessageDiv = newMessageDivs[0];
+          let messt = newMessageDiv.querySelector('.messt');
+          messt.textContent = ' This message was deleted by YOU';
+          del = document.querySelector(".delete");
+          del.innerHTML = 'Delete'
+          if (newMessageDiv) { // Check if newMessageDiv is defined
+            messt.classList.add('deleted');
+            newMessageDiv.disabled = true;
+            newMessageDiv.classList.add('ar');
+            newMessageDiv.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+            });
+
+            newMessageDiv.addEventListener("mouseenter", function (e) {
+              e.preventDefault();
+            });
+
+            console.log('Success!!');
+
+          } else {
+            console.log('Element not found');
+          }
+
+        }
+        else {
+          const remainingText = data.by.split(" ").slice(1).join(" ");
+
+          del = document.querySelector(".delete");
+          del.innerHTML = 'Delete'
+          closethemodalauto();
+          messt.textContent = `This message was deleted by ${remainingText}`;
+
+          let classSelector = data.index;
+          console.log(data.index)
+          let newMessageDivs = document.getElementsByClassName(classSelector);
+
+          let newMessageDiv = newMessageDivs[0];
+          if (newMessageDiv) { // Check if newMessageDiv is defined
+            messt.classList.add('deleted');
+            newMessageDiv.disabled = true;
+            newMessageDiv.classList.add('ar');
+            newMessageDiv.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+            });
+
+            newMessageDiv.addEventListener("mouseenter", function (e) {
+              e.preventDefault();
+            });
+
+            console.log('Success!!');
+
+          } else {
+            console.log('Element not found');
+          }
+        }
+      }
+    }
+    );
+
+    function closethemodalauto() {
+      box = document.querySelector(".box")
+      bg = document.querySelector(".bg")
+
+      del = document.querySelector(".delete");
+          del.innerHTML = 'Delete'
+      box.classList.add('out');
+      bg.classList.add('out');
+      setTimeout((() => {
+        box.style.display = "none";
+        bg.style.display = 'none'
+
+      }), 600)
+
+
+
+    }
+
+
     var modal = document.getElementById("myModal");
 
     var img = document.getElementById("myImg");
@@ -2147,6 +2822,7 @@
 
     }
 
+
     const btnUpload = document.querySelector("#upload_file");
     const errorMsg = document.querySelector(".error_msg");
     const uploadedView = document.querySelector(".imgprov");
@@ -2160,10 +2836,20 @@
 
     imageContainer.addEventListener('dragover', event => {
       event.preventDefault();
+      document.querySelector('.dragover').style.display = 'block'
+    });
+    window.addEventListener('mouseout', event => {
+      // Check if the cursor left the page
+      if (event.toElement === null && event.relatedTarget === null) {
+        // Your code to handle cursor leaving the page here
+        document.querySelector('.dragover').style.display = 'none'
+      }
     });
 
     imageContainer.addEventListener('drop', event => {
       event.preventDefault();
+      document.querySelector('.dragover').style.display = 'none'
+
       const items = event.dataTransfer.items;
       handleClipboardItems(items);
     });
@@ -2194,7 +2880,7 @@
           }
 
           document.querySelector('#control').classList.add('im')
-      document.querySelector('.containeree').classList.add('im')
+          document.querySelector('.containeree').classList.add('im')
         }
       }
     }
@@ -2250,8 +2936,8 @@
     function add() {
       const contextMenu = document.getElementById("customContextMenu");
       const targetNodes = document.querySelectorAll("#right");
- 
-         
+
+
       function openContextMenu(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -2288,9 +2974,6 @@
           data.imageLinks.forEach(imageLink => {
             const img = document.createElement("img");
             const div = document.createElement("div");
-            const h3 = document.createElement("h3");
-            h3.innerHTML = 'Click to Copy Link';
-            h3.style.marginLeft = '6px'
             img.style.maxHeight = "40px";
             img.src = imageLink;
 
@@ -2320,7 +3003,7 @@
             });
 
             div.appendChild(img);
-            div.appendChild(h3);
+            div.classList.add('asimg')
             content.appendChild(div);
           });
 
@@ -2373,14 +3056,12 @@
           data.imageLinks.forEach(imageLink => {
             const img = document.createElement("img");
             const div = document.createElement("div");
-            const h3 = document.createElement("h3");
-            h3.innerHTML = 'Click to vew image';
-            h3.style.marginLeft = '6px'
+
             img.style.maxHeight = "40px";
             img.src = imageLink;
 
             div.appendChild(img);
-            div.appendChild(h3);
+            div.classList.add('asimg')
             div.addEventListener("click", (e) => {
               view_image(imageLink, data.time);
             });
@@ -2411,12 +3092,10 @@
           data.imageLinks.forEach(imageLink => {
             const img = document.createElement("img");
             const div = document.createElement("div");
-            const h3 = document.createElement("h3");
             const a = document.createElement("a");
-            h3.innerHTML = 'Click to download image';
-            h3.style.marginLeft = '6px'
             img.style.maxHeight = "40px";
             img.src = imageLink;
+            div.className = 'asimg'
 
             div.onclick = async function () {
               a.target = "_blank"
@@ -2426,7 +3105,6 @@
 
             };
             a.appendChild(img);
-            a.appendChild(h3);
             div.appendChild(a);
             content.appendChild(div);
           });
@@ -2584,7 +3262,7 @@
           additionalOptionItemMine.onclick = function () {
             bg = document.querySelector(".bg")
             box = document.querySelector(".box")
-            box.querySelector('h2').textContent = 'Delete message from Everyone?'
+            box.querySelector('h2').textContent = 'Delete message for Everyone?'
             box.querySelector('p').innerHTML = "Deleting a message for all participants permits you to erase your sent messages from everyone's view. <br><br>  recipients will no longer have access to the message."
 
             bg.style.display = 'grid'
@@ -2596,11 +3274,13 @@
             addEventListenerOnce(cancle, "click", closethemodal);
             del = document.querySelector(".delete")
             del.onclick = function () {
+       
+              del.innerHTML = '<section class="dots-container">  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div></section>';
               let sender = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
               let message = data.fullmsesage;
-              let time = data.time;
+              let time = data.actulatime;
               let index = data.index;
-              console.log(data.index)
+              console.log(data.actulatime)
               let type = localStorage.getItem('bb1q2w3e4r5t6y7u8iisd9o')
 
               let chatroomname = document.getElementById('send-btn').className;
@@ -2627,7 +3307,7 @@
           bg.style.display = 'grid'
           box = document.querySelector(".box")
 
-          box.querySelector('h2').textContent = 'Delete message from Me?'
+          box.querySelector('h2').textContent = 'Delete message for Me?'
           box.querySelector('p').innerHTML = "Deleting a message for yourself allows you to delete your copy of messages you've sent or received.<br><br> This has no effect on your recipients' chats."
           box.classList.remove('out');
           bg.classList.remove('out');
@@ -2636,11 +3316,12 @@
           addEventListenerOnce(cancle, "click", closethemodal);
           del = document.querySelector(".delete");
           del.onclick = function () {
+            del.innerHTML = '<section class="dots-container">  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div></section>';
             let sender = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
             let message = data.fullmsesage;
-            let time = data.time;
+            let time = data.actulatime;
             let index = data.index;
-            console.log(data.index)
+            console.log(data.actulatime)
 
             let chatroomname = document.getElementById('send-btn').className;
 
@@ -2776,14 +3457,19 @@
     });
 
     function getCurrentTime() {
-      const now = new Date();
+      const utcTime = new Date().toISOString();
+
       const formattedTime = new Intl.DateTimeFormat('en-US', {
+        year: '2-digit', // Add 'year' option to display the last two digits of the year
         month: 'short',
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
         hour12: true,
-      }).format(now);
+        timeZone: 'UTC',
+      }).format(new Date(utcTime));
+
+      console.log(formattedTime);
 
       return formattedTime;
     }
@@ -2825,7 +3511,7 @@
           const chids = data.chid;
           console.log(imgs);
           const contactList = document.querySelector('#container_contect');
-          contactList.innerHTML = ''
+          contactList.querySelector('.loader').remove()
 
           for (let i = 0; i < names.length; i++) {
             const user = names[i];
@@ -2879,295 +3565,29 @@
 
         }
       });
-      const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
-      const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
-      const specificPatternRegex = /\/turbolancer\/gett_image\/chats\/turbolancer_qazwsxedcrfvqwerty\/[0-9a-fA-F]{24}/;
-
-      function createLinkElement(link, type, timestamp) {
-        const element = document.createElement(type === 'image' ? 'img' : 'a');
-
-        if (type === 'image' || type === 'img') {
-          element.src = link;
-
-          element.onclick = function () {
-            view_image(link, timestamp);
-          };
-        } else if (type === 'website') {
-          element.href = link;
-          element.textContent = link;
-          element.target = '_blank';
-          element.style.color = 'rgb(0, 81, 255)'
-
-          element.addEventListener('mouseover', () => {
-            element.style.textDecoration = 'underline';
-          });
-
-          element.addEventListener('mouseout', () => {
-            element.style.textDecoration = 'none';
-          });
-        } else {
-          element.textContent = link;
-        }
-
-        return element;
-      }
-      function splitTextByMarker(text) {
-        const marker = "[|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ";
-
-        if (text.includes(marker)) {
-          const parts = text.split(marker);
-          const firstPortion = parts[0];
-          const secondPortion = parts[1];
-
-          return {
-            firstPortion: firstPortion.trim(),
-            secondPortion: secondPortion.trim()
-          };
-        } else {
-          return null; // Marker not found in the text
-        }
-      }
-
-
-      function sanitizeHTMLAndCSS(inputText) {
-  // Replace HTML tags with their HTML entity equivalents
-  const sanitizedHTML = inputText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  // Remove any CSS within style attributes
-  const sanitizedCSS = sanitizedHTML.replace(/style="[^"]*"/g, '');
-
-  return sanitizedCSS;
-}
-
-
-      function appendMessage(message, timestamp, sender, blocked_by, index) { 
-
-        var textafter
-        var paragraph;
-        const messagesDiv = document.getElementById("messages");
-        const newMessageDiv = document.createElement("div");
-        const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
-        const isCurrentUser = sender === local;
-        const fullemssage = message
-        const acutime = timestamp
-        newMessageDiv.className = isCurrentUser
-          ? 'mine messageses animate__animated animate__bounceInRight'
-          : 'yours messageses animate__animated animate__bounceInLeft';
-
-        const newInner = document.createElement("div");
-        const men = document.createElement("div");
-        const messt = document.createElement("div");
-        messt.className = "messt"
-        newInner.className = 'messagese last';
-        men.id = 'right';
-        men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
-        men.style.color = '#ffff';
-
-        newInner.appendChild(men);
-        const result = splitTextByMarker(message)
-        if (result) {
-          message = result.firstPortion
-          textafter = result.secondPortion;
-
-        }
-
-        const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
-        const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
-
-        let lastIndex = 0;
-        const imageLinks = [];
-        const simpleLinks = [];
-        const textNodes = [];
-        let loopCount = 0;
-
-        for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
-          let blockedByConditionMet
-          loopCount = index
-
-          if (blocked_by) {
-            let blockedByConditionMet = false;
-
-            blocked_by.forEach(node => {
-              if (node !== local) {
-                if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
-                  if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
-
-                    message = ' This message was deleted by YOU';
-                  } else {
-                    const remainingText = node.split(" ").slice(1).join(" ");
-                    message = `This message was deleted by ${remainingText}`;
-                  }
-                  blockedByConditionMet = true;
-                  return;
-
-
-                }
-              }
-              else if (node === local) {
-                blockedByConditionMet = true;
-                message = `This message was deleted`;
-
-              }
-            });
-
-            if (blockedByConditionMet) {
-              messt.classList.add('deleted');
-              newMessageDiv.disabled = true;
-              newMessageDiv.classList.add('ar');
-              newMessageDiv.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-              });
-
-              newMessageDiv.addEventListener("mouseenter", function (e) {
-                e.preventDefault();
-              });
-            }
-          }
-
-
-          const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
-
-          if (specificPatternMatch) {
-            const specificLink = specificPatternMatch[0];
-            const specificPatternIndex = message.indexOf(specificLink, lastIndex);
-
-            if (specificPatternIndex > lastIndex) {
-              const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
-              textNodes.push(document.createTextNode(textBeforeSpecific));
-            }
-
-            imageLinks.push(specificLink);
-            textNodes.push(createLinkElement(specificLink, 'image', timestamp));
-            lastIndex = specificPatternIndex + specificLink.length;
-          } else {
-            const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
-
-            if (base64Match) {
-              const base64Link = base64Match[0];
-              const base64Index = message.indexOf(base64Link, lastIndex);
-
-              if (base64Index > lastIndex) {
-                const textBeforeBase64 = message.substring(lastIndex, base64Index);
-                textNodes.push(document.createTextNode(textBeforeBase64));
-              }
-
-              imageLinks.push(base64Link);
-              lastIndex = base64Index + base64Link.length;
-            } else {
-              const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
-
-              if (linkMatch) {
-                const link = linkMatch[0];
-                const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
-
-                if (textBeforeLink) {
-                  textNodes.push(document.createTextNode(textBeforeLink));
-                }
-
-                const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
-
-                if (linkType === 'image') {
-                  imageLinks.push(link);
-                } else {
-                  simpleLinks.push(link);
-                }
-
-                textNodes.push(createLinkElement(link, linkType));
-                lastIndex += linkMatch.index + link.length;
-              } else {
-                textNodes.push(document.createTextNode(message.substring(lastIndex)));
-                break;
-              }
-            }
-          }
-        }
-
-        textNodes.forEach(node => {
-          messt.appendChild(node)
-          newInner.appendChild(messt);
-
-        });
-
-        if (textafter) {
-          paragraph = document.createElement("p");
-          function convertLinksToAnchors(text) {
-  // Regular expression to match URLs
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-  // Replace all URLs with anchor elements
-  const replacedText = text.replace(urlRegex, (url) => {
-    return `<a class="afterblue" href="${url}" target="_blank">${url}</a>`;
-  });
-
-  return replacedText;
-}
-textaftere = convertLinksToAnchors(textafter)
-          paragraph.innerHTML = textaftere;
-          paragraph.classList.add('dotted')
-          $(paragraph).on("click", function () {
-            $(this).toggleClass("expandeddotted");
-          });
-          tbl = textafter
-          newInner.appendChild(paragraph);
-
-        }
-        tbl = textNodes.map(node => node.textContent).join(' ')
-        const collectedData = {
-          imageLinks: imageLinks,
-          simpleLinks: simpleLinks,
-          textWithoutLinks: textNodes.map(node => node.textContent).join(' '),
-          sender: sender,
-          fullmsesage: fullemssage,
-          time: acutime,
-          index: index
-        };
-        if (!messagesDiv.className.includes('ar')) {
-          newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
-          men.dataset.collectedData = JSON.stringify(collectedData);
-        }
-        else {
-          newMessageDiv.dataset.collectedData = JSON.stringify(removed);
-          men.dataset.collectedData = JSON.stringify(removed);
-        }
-        console.log(index)
-        newMessageDiv.classList.add(index)
-
-        const timestampDiv = document.createElement("div");
-        timestampDiv.className = 'timestamp';
-        timestampDiv.textContent = timestamp;
-        newInner.appendChild(timestampDiv);
-
-        newMessageDiv.appendChild(newInner);
-        messagesDiv.appendChild(newMessageDiv);
-        add();
-        check();
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        iimg = messagesDiv.querySelectorAll('.messt')
-        iimgcont = messagesDiv.querySelectorAll('.messt')
-        iimg.forEach(element => {
-          immgg = element.querySelectorAll('img')
-          if (result) {
-
-          if (immgg.length >= 4) {
-            element.classList.add('fourimg');
-          } else if (iimg.length < 4) {
-            if (messagesDiv.querySelectorAll('.messt.fourimg'))
-              element.classList.remove('fourimg');
-
-          }}
-        });
-      }
+    
 
       socket.on('newMessage', (message) => {
-        let chatroomname = document.getElementById('send-btn').className;
-        if (message.ch === chatroomname) {
-          const messagesElements = document.querySelectorAll('.messageses');
-          const iiii = messagesElements.length;
-          console.log(iiii)
-          console.log(message.message);
-          appendMessage(message.message, message.timestamp, message.sender, [], iiii);
-        }
-      });
+  const iiii = document.querySelectorAll('.messt').length;
+
+  const chatroomname = document.getElementById('send-btn').className;
+
+  if (message.ch === chatroomname) {
+    if (message.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+      if (iiii == theindexofelementtobechecked[0]) {
+        console.log('sended');
+      }
+    else {
+      console.log('not you');
+      appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
+    } }
+    else {
+      console.log('you');
+      appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
+    }
+  }
+});
+
       function getMessages(x) {
         xyz = document.querySelectorAll('.contact')
         xyz.forEach(item => {
@@ -3267,7 +3687,9 @@ textaftere = convertLinksToAnchors(textafter)
       document.querySelector('.containeree').classList.remove('im');
       document.getElementById('messageim').value = ''
       uploadedView.innerHTML = '';
-
+      const d = new Date();
+      let diff = d.getTimezoneOffset();
+      console.log(diff)
       const currentTime = getCurrentTime();
       const userId = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
       const chatRoomName = document.getElementById("send-btn").classList[0];
@@ -3305,8 +3727,12 @@ textaftere = convertLinksToAnchors(textafter)
                   const joinedImageLinks = imageLinks.join(" ");
                   const messagew = joinedImageLinks + ' [|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ' + value
                   console.log(document.getElementById('messageim').value)
+                  length = document.querySelectorAll('.messt')
 
-                  socket.emit('sendMessage', { userId, chatRoomName, currentTime, message: messagew });
+                  appendMessage(messagew, currentTime, userId, [], length.length+1,diff);
+
+                  socket.emit('sendMessage', { userId, chatRoomName, currentTime, message: messagew, diff: diff });
+
                   console.log("Message with image links sent successfully.");
                 }
               } else {
@@ -3322,143 +3748,80 @@ textaftere = convertLinksToAnchors(textafter)
           });
       });
     }
-    socket.on('messagedeleted', function (data) {
-      console.log(data)
-      if (data.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+   
+    document.querySelector(".searchfilter").addEventListener('input', function (event) {
+  // Declare variables
+  var input, filter, contacts, i, span, username;
 
-        closethemodalauto();
-        let classSelector = data.index;
-        console.log(data.index)
-        let newMessageDivs = document.getElementsByClassName(classSelector);
+  input = document.querySelector(".searchfilter");
+  filter = input.value.toUpperCase();
+  contacts = document.querySelectorAll("#container_contect .contact");
 
-        let newMessageDiv = newMessageDivs[0];
-        if (newMessageDiv) { // Check if newMessageDiv is defined
-          let messt = newMessageDiv.querySelector('.messt');
-          messt.classList.add('deleted');
-          messt.classList.remove('fourimg');
-          
-          newMessageDiv.disabled = true;
-          newMessageDiv.classList.add('ar');
-          newMessageDiv.addEventListener("contextmenu", function (e) {
-            e.preventDefault();
-          });
+  let allContactsHidden = true;
 
-          newMessageDiv.addEventListener("mouseenter", function (e) {
-            e.preventDefault();
-          });
+  for (i = 0; i < contacts.length; i++) {
+    span = contacts[i].getElementsByClassName("user-name")[0];
+    username = span.textContent || span.innerText;
 
-          messt.textContent = ' This message was deleted';
-          console.log('Success!!');
+    // Check if the username contains the filter text
+    if (username.toUpperCase().indexOf(filter) > -1) {
+      contacts[i].style.display = "grid";
 
-        } else {
-          console.log('Element not found');
-        }
+      // Highlight matching letters in green and bold
+      var regex = new RegExp('(' + filter + ')', 'gi');
+      span.innerHTML = username.replace(regex, '<span style="color: var(--primary-color);  transition: all 0.3s;">$1</span>');
+    } else {
+      contacts[i].style.display = "none";
+    }
+  }
 
-      }
+  // Check if all contacts are hidden
+  contacts.forEach(contact => {
+    if (contact.style.display !== "none") {
+      allContactsHidden = false;
+    }
+  });
+
+  let noResultsMessage = document.querySelector('#no_results_message');
+  noResultsMessage.style.display = allContactsHidden ? "block" : "none";
+});
+
+    let currentZoom = 1;
+    let minZoom = 1;
+    let maxZoom = 5;
+    let stepSize = 0.3;
+    let container = document.getElementById('myModal');
+    let image = document.querySelector('.modal img');
+
+    container.addEventListener('wheel', function (event) {
+      // Calculate the position of the cursor relative to the container
+      let image = document.querySelector('.modal img').getBoundingClientRect();
+      let cursorX = event.clientX - image.left;
+      let cursorY = event.clientY - image.top;
+
+      // Calculate the zoom origin based on cursor position
+      let originX = (cursorX / image.width) * 100 + '%';
+      let originY = (cursorY / image.height) * 100 + '%';
+
+      // Zoom in or out based on the scroll direction and set the transform origin
+      let direction = event.deltaY > 0 ? -1 : 1;
+      zoomImage(direction, originX, originY);
     });
 
-    function closethemodalauto() {
-      box = document.querySelector(".box")
-      bg = document.querySelector(".bg")
 
-      box.classList.add('out');
-      bg.classList.add('out');
-      setTimeout((() => {
-        box.style.display = "none";
-        bg.style.display = 'none'
+    function zoomImage(direction, originX, originY) {
+      let newZoom = currentZoom + direction * stepSize;
 
-      }), 600)
-
-
-
-    }
-
-    socket.on('messagedeletedbyall', function (data) {
-      closethemodalauto();
-
-      console.log(data.by)
-      if (data.by.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
-
-
-        if (data.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
-
-          closethemodalauto();
-          let classSelector = data.index;
-          console.log(data.index)
-          let newMessageDivs = document.getElementsByClassName(classSelector);
-          console.log(newMessageDivs)
-
-          let newMessageDiv = newMessageDivs[0];
-          let messt = newMessageDiv.querySelector('.messt');
-          messt.textContent = ' This message was deleted by YOU';
-
-          if (newMessageDiv) { // Check if newMessageDiv is defined
-            messt.classList.add('deleted');
-            newMessageDiv.disabled = true;
-            newMessageDiv.classList.add('ar');
-            newMessageDiv.addEventListener("contextmenu", function (e) {
-              e.preventDefault();
-            });
-
-            newMessageDiv.addEventListener("mouseenter", function (e) {
-              e.preventDefault();
-            });
-
-            console.log('Success!!');
-
-          } else {
-            console.log('Element not found');
-          }
-
-        }
-        else {
-          const remainingText = data.by.split(" ").slice(1).join(" ");
-
-
-          closethemodalauto();
-          messt.textContent = `This message was deleted by ${remainingText}`;
-
-          let classSelector = data.index;
-          console.log(data.index)
-          let newMessageDivs = document.getElementsByClassName(classSelector);
-
-          let newMessageDiv = newMessageDivs[0];
-          if (newMessageDiv) { // Check if newMessageDiv is defined
-            messt.classList.add('deleted');
-            newMessageDiv.disabled = true;
-            newMessageDiv.classList.add('ar');
-            newMessageDiv.addEventListener("contextmenu", function (e) {
-              e.preventDefault();
-            });
-
-            newMessageDiv.addEventListener("mouseenter", function (e) {
-              e.preventDefault();
-            });
-
-            console.log('Success!!');
-
-          } else {
-            console.log('Element not found');
-          }
-        }
+      // Limit the zoom level to the minimum and maximum values
+      if (newZoom < minZoom || newZoom > maxZoom) {
+        return;
       }
-    }
-    );
 
-    function closethemodalauto() {
-      box = document.querySelector(".box")
-      bg = document.querySelector(".bg")
+      currentZoom = newZoom;
 
-      box.classList.add('out');
-      bg.classList.add('out');
-      setTimeout((() => {
-        box.style.display = "none";
-        bg.style.display = 'none'
-
-      }), 600)
-
-
-
+      // Update the CSS transform of the image to scale it with the specified origin
+      image.style.transform = `scale(${currentZoom})`;
+      image.style.transformOrigin = originX + ' ' + originY;
     }
 
   </script>
