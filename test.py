@@ -560,9 +560,9 @@ def delmessage(data):
         messages = chat_room.get('messages', [])
         x= 0
         for  message in messages:
-            x+=1
-            print(x-1)
-            if message.get('timestamp') == time and x-1 == index:
+            print(message.get('timestamp') )
+            print(time)            
+            if message.get('timestamp') == time and x == index:
                 # Add new_blocked_by to the 'blocked_by' list in the specific message
                 message.setdefault('blocked_by', []).append(new_blocked_by)
                 print(message)
@@ -573,8 +573,9 @@ def delmessage(data):
                 )
                 print(chat_room.get('chat_room_name'))
                 # Broadcast the message_deleted event to all clients in the chat room
-                emit('messagedeleted', {'index':x-1, 'sender':sender},
+                emit('messagedeleted', {'index':x, 'sender':sender},
                  broadcast=True, include_self=True)
+            x+=1
     return {'response':"Message with the specified items not found."}
 
 
@@ -597,9 +598,10 @@ def delmessageev(data):
         messages = chat_room.get('messages', [])
         x= 0
         for  message in messages:
-            x+=1
-            print(x-1)
-            if message.get('timestamp') == time and x-1 == index:
+            print(message.get('timestamp') )
+            print(time)
+
+            if message.get('timestamp') == time and x == index:
                 # Add new_blocked_by to the 'blocked_by' list in the specific message
                 message.setdefault('blocked_by', []).append(new_blocked_by)
                 print(message)
@@ -610,8 +612,10 @@ def delmessageev(data):
                 )
                 print(chat_room.get('chat_room_name'))
                 # Broadcast the message_deleted event to all clients in the chat room
-                emit('messagedeletedbyall', {'index':x-1,'by':new_blocked_by, 'sender':sender},
+                emit('messagedeletedbyall', {'index':x,'by':new_blocked_by, 'sender':sender},
                  broadcast=True, include_self=True)
+            x+=1
+
     return {'response':"Message with the specified items not found."}
 
 

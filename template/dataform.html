@@ -16,10 +16,16 @@
 
     }
 
-
+    body{
+    display:flex ;
+    justify-content: center;
+    justify-items: center;
+    background-color: #f0ffed;
+    align-items: center;
+}
     #regForm {
         margin: 100px auto;
-        font-family: "Poppins", Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
         padding: 40px;
         width: 70%;
         min-width: 300px;
@@ -29,7 +35,7 @@
         -webkit-backdrop-filter: blur(18px);
         border-radius: 1rem;
         z-index: 10;
-        color: rgb(27, 27, 27);
+        color: rgb(255, 255, 255);
         transition: all 0.5s;
 
     }
@@ -42,7 +48,7 @@
         padding: 10px;
         width: 100%;
         font-size: 17px;
-        font-family: "Poppins", Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
         border: 1px solid #aaaaaa;
     }
 
@@ -62,7 +68,7 @@
         border: none;
         padding: 15px 30px;
         font-size: 17px;
-        font-family: "Poppins", Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
         cursor: pointer;
         border-radius: 10px;
         transition: all 0.3s;
@@ -76,28 +82,8 @@
         background-color: #bbbbbb;
     }
 
-    /* Make circles that indicate the steps of the form: */
-    .step {
-        height: 15px;
-        width: 15px;
-        margin: 0 2px;
-        border: none;
-        border-radius: 50%;
-        display: inline-block;
-        opacity: 0.5;
-        background-color: #e9e7e7;
-        box-shadow: 0 2px 4px #75757565;
-    }
 
-    .step.active {
-        opacity: 1;
-        background-color: #757575;
-    }
 
-    /* Mark the steps that are finished and valid: */
-    .step.finish {
-        background-color: #00c559;
-    }
 
     .container {
         max-width: 960px;
@@ -193,6 +179,7 @@
         outline: 1px solid #00ff5550;
         margin-bottom: 10px;
         padding: 7px;
+        color: #fff;
         backdrop-filter: blur(50px);
         background-color: #f1f1f128;
         line-break: anywhere;
@@ -200,6 +187,7 @@
     }
 
     .blob {
+        display: none;
         position: absolute;
         width: 500px;
         height: 500px;
@@ -266,9 +254,9 @@
     .range-slider__value {
         font-size: 24px;
         font-weight: 400;
-        font-family: Open Sans;
+        font-family: "Poppins", sans-serif;
         padding-left: 10px;
-        color: black;
+        color: rgb(255, 255, 255);
     }
 
     input {
@@ -277,9 +265,9 @@
     }
 
     input[type="range"] {
-        width: 420px;
+        width: 400px;
         height: 10px;
-        background: rgb(53, 187, 0);
+        background: #35bb00;
         color: lightgreen;
         transition: all 0.5s;
         border: none;
@@ -338,11 +326,12 @@
 
     #regForm.welcom {
         color: #ffff;
-        background-color: #00a54b;
-        background-image: linear-gradient(to left, #00ce2200, #00a54b 99%), url(/static/6krbcxk4.png);
-        background-size: 50% 100%;
+        background-color: #b0445c;
+        background-image: url("/static/freelancer girl.png");
+        background-size: scale-down;
         background-position: right;
         background-repeat: no-repeat;
+        
         min-height: 500px;
     }
 
@@ -353,7 +342,7 @@
     }
 
     /* Mobile styles */
-    @media (max-width: 767px) {
+    @media (max-width: 900px) {
         #contentt {
             width: 100%;
             /* Take full width on mobile */
@@ -363,10 +352,7 @@
             padding: 20px;
             /* Add some padding for better mobile appearance */
             min-height: 300px;
-            /* Adjust min-height for mobile */
-            background-position: center;
-            /* Center the background image on mobile */
-            background-size: 100% auto;
+            background-image: none;
             /* Resize the background image to fit */
         }
 
@@ -376,6 +362,10 @@
             text-align: center;
         }
     }
+    .next{
+
+        background-color: #292929 !important;
+    }
 </style>
 
 <body class="animate__animated animate__fadeIn">
@@ -384,14 +374,13 @@
 
     <div id="regForm" class='welcom'>
         <div class="logo-p">
-            <img id="logo" src="/static//light_logo.png" alt="logo_turbolancer">
+            <img id="logo" src="/static/light_logo.png" alt="logo_turbolancer">
         </div>
         <div id="tb" class="tab animate__animated animate__fadeIn">
             <div id="contentt">
-                <h1 id="ftext" style=" font-size: 27px; position: fixed; padding-left: 27px; color: #ffff;">Hi, {{name}}
-                </h1>
-                <h1 id="ftext"
-                    style=" font-size: 25px; position: fixed;  bottom: 190px; color: #ffff;padding: 3px; text-shadow: 0 1px 3px #12121262;">
+                <h1 id="ftext" style=" font-size: 27px; position: fixed; padding-left: 27px; font-family: 'Poppins', sans-serif;
+                color: #ffff;">Hi,<b > {{name}}</b> <br><br>
+            
                     Please be
                     patient as this process may require a few moments of your time.</h1>
             </div>
@@ -403,7 +392,7 @@
             </div>
         </div>
 
-        <div class="tab animate__animated animate__fadeIn">
+        <div class="tab animate__animated animate__fadeIn pfp">
             <div class="container">
                 <h1>Upload your profile picture
                 </h1>
@@ -431,7 +420,9 @@
             <script>
                 function removecl() {
                     document.getElementById('regForm').classList.remove('welcom');
-                    document.getElementById('logo').src = '/static//dark_logo.png'
+                    document.getElementById('regForm').classList.add('next');
+
+                    document.getElementById('logo').src = '/static/dark_logo.png'
                 }
                 function readURL(input) {
                     if (input.files && input.files[0]) {
