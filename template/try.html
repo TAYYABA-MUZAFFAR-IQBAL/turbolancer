@@ -22,330 +22,330 @@
   <script>
     const socket = io();
 
-    
+
 
 
     const theindexofelementtobechecked = []
     const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
-      const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
-      const specificPatternRegex = /\/turbolancer\/gett_image\/chats\/turbolancer_qazwsxedcrfvqwerty\/[0-9a-fA-F]{24}/;
+    const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
+    const specificPatternRegex = /\/turbolancer\/gett_image\/chats\/turbolancer_qazwsxedcrfvqwerty\/[0-9a-fA-F]{24}/;
 
-      function createLinkElement(link, type, timestamp) {
-        const element = document.createElement(type === 'image' ? 'img' : 'a');
+    function createLinkElement(link, type, timestamp) {
+      const element = document.createElement(type === 'image' ? 'img' : 'a');
 
-        if (type === 'image' || type === 'img') {
-          element.src = link;
+      if (type === 'image' || type === 'img') {
+        element.src = link;
 
-          element.onclick = function () {
-            view_image(link, timestamp);
-          };
-        } else if (type === 'website') {
-          element.href = link;
-          element.textContent = link;
-          element.target = '_blank';
-          element.style.color = 'rgb(0, 81, 255)'
-
-          element.addEventListener('mouseover', () => {
-            element.style.textDecoration = 'underline';
-          });
-
-          element.addEventListener('mouseout', () => {
-            element.style.textDecoration = 'none';
-          });
-        } else {
-          element.textContent = link;
-        }
-
-        return element;
-      }
-      function splitTextByMarker(text) {
-        const marker = "[|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ";
-
-        if (text.includes(marker)) {
-          const parts = text.split(marker);
-          const firstPortion = parts[0];
-          const secondPortion = parts[1];
-
-          return {
-            firstPortion: firstPortion.trim(),
-            secondPortion: secondPortion.trim()
-          };
-        } else {
-          return null; // Marker not found in the text
-        }
-      }
-
-
-      function sanitizeHTMLAndCSS(inputText) {
-        // Replace HTML tags with their HTML entity equivalents
-        const sanitizedHTML = inputText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-        // Remove any CSS within style attributes
-        const sanitizedCSS = sanitizedHTML.replace(/style="[^"]*"/g, '');
-
-        return sanitizedCSS;
-      }
-
-
-
-      function appendMessage(message, timestamp, sender, blocked_by, index, diff) {
-        const actulatime = timestamp;
-
-        function convertToTimeZone(inputTime) {
-          // Parse the input time string into a Date object
-          const inputDate = new Date(`${inputTime} UTC`);
-
-          // Get the user's local time zone
-          const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-          // Convert to the user's local time zone
-          const localDate = new Date(inputDate.toLocaleString('en-US', { timeZone: userTimeZone }));
-
-          // Format the local date components
-          const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(localDate);
-          const day = localDate.getDate();
-          const year = localDate.getFullYear();
-          const hours = localDate.getHours();
-          const minutes = localDate.getMinutes();
-          const ampm = hours >= 12 ? 'PM' : 'AM';
-
-          // Format the local time string
-          const formattedLocalTime = `${month} ${day}, ${year}, ${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-          return formattedLocalTime;
-        }
-
-
-        timestamp = convertToTimeZone(timestamp);
-        console.log(timestamp)
-        var textafter
-        var paragraph;
-        const messagesDiv = document.getElementById("messages");
-        const newMessageDiv = document.createElement("div");
-        const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
-        const isCurrentUser = sender === local;
-        const fullemssage = message
-        const acutime = timestamp
-        newMessageDiv.className = isCurrentUser
-          ? 'mine messageses animate__animated animate__bounceInRight'
-          : 'yours messageses animate__animated animate__bounceInLeft';
-
-        const newInner = document.createElement("div");
-        const men = document.createElement("div");
-        const messt = document.createElement("div");
-        messt.className = "messt"
-        newInner.className = 'messagese last';
-        men.id = 'right';
-        men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
-        men.style.color = '#ffff';
-
-        newInner.appendChild(men);
-        const result = splitTextByMarker(message)
-        if (result) {
-          message = result.firstPortion
-          textafter = result.secondPortion;
-
-        }
-
-        const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
-        const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
-        let tbl;
-
-        let lastIndex = 0;
-        const imageLinks = [];
-        const simpleLinks = [];
-        const textNodes = [];
-        let loopCount = 0;
-
-        for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
-          let blockedByConditionMet
-          loopCount = index
-
-          if (blocked_by) {
-            let blockedByConditionMet = false;
-
-            blocked_by.forEach(node => {
-              if (node !== local) {
-                if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
-                  if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
-
-                    message = 'You deleted this message.';
-                  } else {
-                    const remainingText = node.split(" ").slice(1).join(" ");
-                    message = ` ${remainingText} deleted this message.`;
-                  }
-                  blockedByConditionMet = true;
-                  return;
-
-
-                }
-              }
-              else if (node === local) {
-                blockedByConditionMet = true;
-                message = `This message was deleted`;
-
-              }
-            });
-
-            if (blockedByConditionMet) {
-              messt.classList.add('deleted');
-              newMessageDiv.disabled = true;
-              newMessageDiv.classList.add('ar');
-              newMessageDiv.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-              });
-
-              newMessageDiv.addEventListener("mouseenter", function (e) {
-                e.preventDefault();
-              });
-            }
-          }
-
-
-          const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
-
-          if (specificPatternMatch) {
-            const specificLink = specificPatternMatch[0];
-            const specificPatternIndex = message.indexOf(specificLink, lastIndex);
-
-            if (specificPatternIndex > lastIndex) {
-              const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
-              textNodes.push(document.createTextNode(textBeforeSpecific));
-            }
-
-            imageLinks.push(specificLink);
-            textNodes.push(createLinkElement(specificLink, 'image', timestamp));
-            lastIndex = specificPatternIndex + specificLink.length;
-          } else {
-            const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
-
-            if (base64Match) {
-              const base64Link = base64Match[0];
-              const base64Index = message.indexOf(base64Link, lastIndex);
-
-              if (base64Index > lastIndex) {
-                const textBeforeBase64 = message.substring(lastIndex, base64Index);
-                textNodes.push(document.createTextNode(textBeforeBase64));
-              }
-
-              imageLinks.push(base64Link);
-              lastIndex = base64Index + base64Link.length;
-            } else {
-              const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
-
-              if (linkMatch) {
-                const link = linkMatch[0];
-                const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
-
-                if (textBeforeLink) {
-                  textNodes.push(document.createTextNode(textBeforeLink));
-                }
-
-                const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
-
-                if (linkType === 'image') {
-                  imageLinks.push(link);
-                } else {
-                  simpleLinks.push(link);
-                }
-
-                textNodes.push(createLinkElement(link, linkType));
-                lastIndex += linkMatch.index + link.length;
-              } else {
-                textNodes.push(document.createTextNode(message.substring(lastIndex)));
-                break;
-              }
-            }
-          }
-        }
-
-        textNodes.forEach(node => {
-          messt.appendChild(node);
-
-          newInner.appendChild(messt);
-
-
-        });
-        tbl = textNodes.map(node => node.textContent).join(' ')
-
-        if (textafter) {
-          tbl = textafter
-          paragraph = document.createElement("p");
-          function convertLinksToAnchors(text) {
-            // Regular expression to match URLs
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-            // Replace all URLs with anchor elements
-            const replacedText = text.replace(urlRegex, (url) => {
-              return `<a class="afterblue" href="${url}" target="_blank">${url}</a>`;
-            });
-
-            return replacedText;
-          }
-          textaftere = convertLinksToAnchors(textafter)
-          paragraph.innerHTML = textaftere;
-          paragraph.title = "Click to Expand/Collaps the Text"
-          paragraph.classList.add('dotted')
-
-          $(paragraph).on("click", function () {
-            $(this).toggleClass("expandeddotted");
-            addLineBreaks('expandeddotted');
-
-          });
-          newInner.appendChild(paragraph);
-
-        }
-        const collectedData = {
-          imageLinks: imageLinks,
-          simpleLinks: simpleLinks,
-          textWithoutLinks: tbl,
-          sender: sender,
-          fullmsesage: fullemssage,
-          time: acutime,
-          index: index,
-          actulatime: actulatime
+        element.onclick = function () {
+          view_image(link, timestamp);
         };
+      } else if (type === 'website') {
+        element.href = link;
+        element.textContent = link;
+        element.target = '_blank';
+        element.style.color = 'rgb(0, 81, 255)'
 
-        if (!messagesDiv.className.includes('ar')) {
-          newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
-          men.dataset.collectedData = JSON.stringify(collectedData);
-        }
-        else {
-          newMessageDiv.dataset.collectedData = JSON.stringify(removed);
-          men.dataset.collectedData = JSON.stringify(removed);
-        }
-        console.log(index)
-        theindexofelementtobechecked[0] = index;
-        newMessageDiv.classList.add(index)
+        element.addEventListener('mouseover', () => {
+          element.style.textDecoration = 'underline';
+        });
 
-        const timestampDiv = document.createElement("div");
-        timestampDiv.className = 'timestamp';
-        timestampDiv.textContent = timestamp;
-        newInner.appendChild(timestampDiv);
+        element.addEventListener('mouseout', () => {
+          element.style.textDecoration = 'none';
+        });
+      } else {
+        element.textContent = link;
+      }
 
-        newMessageDiv.appendChild(newInner);
-        messagesDiv.appendChild(newMessageDiv);
-        add();
-        check();
-        
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        iimg = messagesDiv.querySelectorAll('.messt')
-        iimgcont = messagesDiv.querySelectorAll('.messt')
-        iimg.forEach(element => {
-          immgg = element.querySelectorAll('img')
-          if (result) {
+      return element;
+    }
+    function splitTextByMarker(text) {
+      const marker = "[|||__-_...-_=+~~+)(*@#$%#^^%&(&$!~~~#$%&,,<76576><hfghghfhgfg.gfh>?[{(TurboLancer)}]~))__|||] ";
 
-            if (immgg.length >= 4) {
-              element.classList.add('fourimg');
-            } else if (iimg.length < 4) {
-              if (messagesDiv.querySelectorAll('.messt.fourimg'))
-                element.classList.remove('fourimg');
+      if (text.includes(marker)) {
+        const parts = text.split(marker);
+        const firstPortion = parts[0];
+        const secondPortion = parts[1];
+
+        return {
+          firstPortion: firstPortion.trim(),
+          secondPortion: secondPortion.trim()
+        };
+      } else {
+        return null; // Marker not found in the text
+      }
+    }
+
+
+    function sanitizeHTMLAndCSS(inputText) {
+      // Replace HTML tags with their HTML entity equivalents
+      const sanitizedHTML = inputText.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+      // Remove any CSS within style attributes
+      const sanitizedCSS = sanitizedHTML.replace(/style="[^"]*"/g, '');
+
+      return sanitizedCSS;
+    }
+
+
+
+    function appendMessage(message, timestamp, sender, blocked_by, index, diff) {
+      const actulatime = timestamp;
+
+      function convertToTimeZone(inputTime) {
+        // Parse the input time string into a Date object
+        const inputDate = new Date(`${inputTime} UTC`);
+
+        // Get the user's local time zone
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Convert to the user's local time zone
+        const localDate = new Date(inputDate.toLocaleString('en-US', { timeZone: userTimeZone }));
+
+        // Format the local date components
+        const month = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(localDate);
+        const day = localDate.getDate();
+        const year = localDate.getFullYear();
+        const hours = localDate.getHours();
+        const minutes = localDate.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        // Format the local time string
+        const formattedLocalTime = `${month} ${day}, ${year}, ${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+        return formattedLocalTime;
+      }
+
+
+      timestamp = convertToTimeZone(timestamp);
+      console.log(timestamp)
+      var textafter
+      var paragraph;
+      const messagesDiv = document.getElementById("messages");
+      const newMessageDiv = document.createElement("div");
+      const local = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
+      const isCurrentUser = sender === local;
+      const fullemssage = message
+      const acutime = timestamp
+      newMessageDiv.className = isCurrentUser
+        ? 'mine messageses animate__animated animate__bounceInRight'
+        : 'yours messageses animate__animated animate__bounceInLeft';
+
+      const newInner = document.createElement("div");
+      const men = document.createElement("div");
+      const messt = document.createElement("div");
+      messt.className = "messt"
+      newInner.className = 'messagese last';
+      men.id = 'right';
+      men.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
+      men.style.color = '#ffff';
+
+      newInner.appendChild(men);
+      const result = splitTextByMarker(message)
+      if (result) {
+        message = result.firstPortion
+        textafter = result.secondPortion;
+
+      }
+
+      const imageFormats = /\.(png|jpg|jpeg|gif|bmp|svg)$/i;
+      const websiteFormat = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/i;
+      let tbl;
+
+      let lastIndex = 0;
+      const imageLinks = [];
+      const simpleLinks = [];
+      const textNodes = [];
+      let loopCount = 0;
+
+      for (let lastIndex = 0; lastIndex < message.length; lastIndex++) {
+        let blockedByConditionMet
+        loopCount = index
+
+        if (blocked_by) {
+          let blockedByConditionMet = false;
+
+          blocked_by.forEach(node => {
+            if (node !== local) {
+              if (node.includes("h4d64bdy4b4hf74hhh44jfuff848vfn4u48f")) {
+                if (sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+
+                  message = 'You deleted this message.';
+                } else {
+                  const remainingText = node.split(" ").slice(1).join(" ");
+                  message = ` ${remainingText} deleted this message.`;
+                }
+                blockedByConditionMet = true;
+                return;
+
+
+              }
+            }
+            else if (node === local) {
+              blockedByConditionMet = true;
+              message = `This message was deleted`;
 
             }
+          });
+
+          if (blockedByConditionMet) {
+            messt.classList.add('deleted');
+            newMessageDiv.disabled = true;
+            newMessageDiv.classList.add('ar');
+            newMessageDiv.addEventListener("contextmenu", function (e) {
+              e.preventDefault();
+            });
+
+            newMessageDiv.addEventListener("mouseenter", function (e) {
+              e.preventDefault();
+            });
           }
-        });
+        }
+
+
+        const specificPatternMatch = message.substring(lastIndex).match(specificPatternRegex);
+
+        if (specificPatternMatch) {
+          const specificLink = specificPatternMatch[0];
+          const specificPatternIndex = message.indexOf(specificLink, lastIndex);
+
+          if (specificPatternIndex > lastIndex) {
+            const textBeforeSpecific = message.substring(lastIndex, specificPatternIndex);
+            textNodes.push(document.createTextNode(textBeforeSpecific));
+          }
+
+          imageLinks.push(specificLink);
+          textNodes.push(createLinkElement(specificLink, 'image', timestamp));
+          lastIndex = specificPatternIndex + specificLink.length;
+        } else {
+          const base64Match = message.substring(lastIndex).match(/data:image\/(png|jpg|jpeg|gif|bmp|svg);base64,[^\s]+/);
+
+          if (base64Match) {
+            const base64Link = base64Match[0];
+            const base64Index = message.indexOf(base64Link, lastIndex);
+
+            if (base64Index > lastIndex) {
+              const textBeforeBase64 = message.substring(lastIndex, base64Index);
+              textNodes.push(document.createTextNode(textBeforeBase64));
+            }
+
+            imageLinks.push(base64Link);
+            lastIndex = base64Index + base64Link.length;
+          } else {
+            const linkMatch = message.substring(lastIndex).match(/(?:http|https):\/\/[^\s/$.?#].[^\s]*/);
+
+            if (linkMatch) {
+              const link = linkMatch[0];
+              const textBeforeLink = message.substring(lastIndex, lastIndex + linkMatch.index);
+
+              if (textBeforeLink) {
+                textNodes.push(document.createTextNode(textBeforeLink));
+              }
+
+              const linkType = imageFormats.test(link) ? 'image' : websiteFormat.test(link) ? 'website' : 'text';
+
+              if (linkType === 'image') {
+                imageLinks.push(link);
+              } else {
+                simpleLinks.push(link);
+              }
+
+              textNodes.push(createLinkElement(link, linkType));
+              lastIndex += linkMatch.index + link.length;
+            } else {
+              textNodes.push(document.createTextNode(message.substring(lastIndex)));
+              break;
+            }
+          }
+        }
       }
+
+      textNodes.forEach(node => {
+        messt.appendChild(node);
+
+        newInner.appendChild(messt);
+
+
+      });
+      tbl = textNodes.map(node => node.textContent).join(' ')
+
+      if (textafter) {
+        tbl = textafter
+        paragraph = document.createElement("p");
+        function convertLinksToAnchors(text) {
+          // Regular expression to match URLs
+          const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+          // Replace all URLs with anchor elements
+          const replacedText = text.replace(urlRegex, (url) => {
+            return `<a class="afterblue" href="${url}" target="_blank">${url}</a>`;
+          });
+
+          return replacedText;
+        }
+        textaftere = convertLinksToAnchors(textafter)
+        paragraph.innerHTML = textaftere;
+        paragraph.title = "Click to Expand/Collaps the Text"
+        paragraph.classList.add('dotted')
+
+        $(paragraph).on("click", function () {
+          $(this).toggleClass("expandeddotted");
+          addLineBreaks('expandeddotted');
+
+        });
+        newInner.appendChild(paragraph);
+
+      }
+      const collectedData = {
+        imageLinks: imageLinks,
+        simpleLinks: simpleLinks,
+        textWithoutLinks: tbl,
+        sender: sender,
+        fullmsesage: fullemssage,
+        time: acutime,
+        index: index,
+        actulatime: actulatime
+      };
+
+      if (!messagesDiv.className.includes('ar')) {
+        newMessageDiv.dataset.collectedData = JSON.stringify(collectedData);
+        men.dataset.collectedData = JSON.stringify(collectedData);
+      }
+      else {
+        newMessageDiv.dataset.collectedData = JSON.stringify(removed);
+        men.dataset.collectedData = JSON.stringify(removed);
+      }
+      console.log(index)
+      theindexofelementtobechecked[0] = index;
+      newMessageDiv.classList.add(index)
+
+      const timestampDiv = document.createElement("div");
+      timestampDiv.className = 'timestamp';
+      timestampDiv.textContent = timestamp;
+      newInner.appendChild(timestampDiv);
+
+      newMessageDiv.appendChild(newInner);
+      messagesDiv.appendChild(newMessageDiv);
+      add();
+      check();
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      iimg = messagesDiv.querySelectorAll('.messt')
+      iimgcont = messagesDiv.querySelectorAll('.messt')
+      iimg.forEach(element => {
+        immgg = element.querySelectorAll('img')
+        if (result) {
+
+          if (immgg.length >= 4) {
+            element.classList.add('fourimg');
+          } else if (iimg.length < 4) {
+            if (messagesDiv.querySelectorAll('.messt.fourimg'))
+              element.classList.remove('fourimg');
+
+          }
+        }
+      });
+    }
     function send_message() {
-      event.preventDefault(); 
+      event.preventDefault();
 
       console.log('clicked')
       const messageInput = document.getElementById("message");
@@ -357,9 +357,9 @@
         const d = new Date();
         let diff = d.getTimezoneOffset();
         length = document.querySelectorAll('.messt')
-      appendMessage(message, currentTime, userId, [], length.length+1,diff);        
-      socket.emit('sendMessage', { userId, chatRoomName, message, currentTime, diff });
-      messageInput.style.height= 'auto'
+        appendMessage(message, currentTime, userId, [], length.length + 1, diff);
+        socket.emit('sendMessage', { userId, chatRoomName, message, currentTime, diff });
+        messageInput.style.height = 'auto'
         messageInput.value = ''; // Clear the input field after sending the message
 
       }
@@ -382,7 +382,7 @@
         event.preventDefault();
       }
     }
-    
+
     socket.on('messagedeletedbyall', function (data) {
       closethemodalauto();
 
@@ -462,7 +462,7 @@
       bg = document.querySelector(".bg")
 
       del = document.querySelector(".delete");
-          del.innerHTML = 'Delete'
+      del.innerHTML = 'Delete'
       box.classList.add('out');
       bg.classList.add('out');
       setTimeout((() => {
@@ -475,7 +475,7 @@
 
     }
 
-socket.on('messagedeleted', function (data) {
+    socket.on('messagedeleted', function (data) {
       console.log(data)
       if (data.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
 
@@ -518,9 +518,9 @@ socket.on('messagedeleted', function (data) {
 
       box.classList.add('out');
       bg.classList.add('out');
-      
+
       del = document.querySelector(".delete");
-          del.innerHTML = 'Delete'
+      del.innerHTML = 'Delete'
       setTimeout((() => {
         box.style.display = "none";
         bg.style.display = 'none'
@@ -547,9 +547,9 @@ socket.on('messagedeleted', function (data) {
     }
 
     :root {
-      --svgg:#2b322a;
+      --svgg: #2b322a;
       --modalbg: #f1f1f1;
-      --cc_color_ofbg:rgba(255, 255, 255, 0.342);
+      --cc_color_ofbg: rgba(255, 255, 255, 0.342);
       --background-color: #ececec;
       --coror: #fff;
       --primary-color: #aae99d;
@@ -575,8 +575,8 @@ socket.on('messagedeleted', function (data) {
 
     /* Dark mode colors */
     .darkmode {
-      --cc_color_ofbg:rgba(0, 0, 0, 0.342);
-      --svgg:#f1f1f1;
+      --cc_color_ofbg: rgba(0, 0, 0, 0.342);
+      --svgg: #f1f1f1;
 
       --yours: #242424;
       --incolor: #252525;
@@ -692,7 +692,7 @@ socket.on('messagedeleted', function (data) {
 
 
     .contact:hover {
-background-color: var(--background-color);
+      background-color: var(--background-color);
     }
 
 
@@ -797,11 +797,11 @@ background-color: var(--background-color);
 
     #messageim {
       border: solid 1px var(--cc_color_ofbg) !important;
-box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
-    backdrop-filter: blur(13.3817px)!important;
-    background-color: transparent!important;  
-        -webkit-backdrop-filter: blur(13.3817px)!important;
-      -moz-backdrop-filter: blur(13px)!important;
+      box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg) !important;
+      backdrop-filter: blur(13.3817px) !important;
+      background-color: transparent !important;
+      -webkit-backdrop-filter: blur(13.3817px) !important;
+      -moz-backdrop-filter: blur(13px) !important;
     }
 
     #send-btn,
@@ -914,7 +914,7 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
     }
 
 
-   
+
 
     body {
       margin: 0;
@@ -937,10 +937,12 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
       justify-content: center;
       background-color: #fff;
     }
+
     .darkmode #control {
       background-color: #353535;
 
     }
+
     .messageform {
       width: 100%;
       display: grid;
@@ -1229,7 +1231,7 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
       color: var(--svg);
       font-size: 15px;
       font-family: "Poppins", Arial, sans-serif;
-font-weight: 100;
+      font-weight: 100;
       margin-top: 5px;
       margin-bottom: 5px;
       display: flex;
@@ -1310,8 +1312,8 @@ font-weight: 100;
       margin-right: 25%;
       background-color: var(--yours);
       position: relative;
-      color: var(--svg);   
-         box-shadow: 6px 2px 15px #20202050;
+      color: var(--svg);
+      box-shadow: 6px 2px 15px #20202050;
 
     }
 
@@ -1356,32 +1358,38 @@ font-weight: 100;
 
       color: #444 !important;
       pointer-events: none;
-    }  
+    }
+
     .darkmode .mine .messt.deleted {
       font-style: oblique;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
       color: #f1efef !important;
       pointer-events: none;
-    } 
-     .mine .messt {
+    }
+
+    .mine .messt {
 
       color: #222222;
     }
+
     .darkmode .mine .messt {
 
-color: #ffffff;
-}
+      color: #ffffff;
+    }
+
     .mine .dotted {
 
-color: #222222;
-}
-.darkmode .dotted {
+      color: #222222;
+    }
 
-color: #ffffff;
-}
+    .darkmode .dotted {
+
+      color: #ffffff;
+    }
+
     .mine .messagese {
-      color: white  !important;
+      color: white !important;
       box-shadow: -6px 2px 15px #20202050;
       margin-left: 25%;
       background: var(--primary-color);
@@ -1420,10 +1428,12 @@ color: #ffffff;
         max-width: 70%;
         /* Adjust the width for smaller screens */
       }
-      .intext{
+
+      .intext {
         opacity: 0;
         pointer-events: none;
       }
+
       #cinfo .user-name {
         display: block !important;
       }
@@ -1465,25 +1475,27 @@ color: #ffffff;
       overflow: hidden;
       gap: 20px;
     }
+
     .overlay:before {
-  content: ' ';
-  display: block;
-  position: absolute;
-  filter: drop-shadow(1px 5px 10px #0000008f);
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.2;
-  background-image: url('/static/blob.png');
-  background-repeat: no-repeat;
+      content: ' ';
+      display: block;
+      position: absolute;
+      filter: drop-shadow(1px 5px 10px #0000008f);
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.2;
+      background-image: url('/static/blob.png');
+      background-repeat: no-repeat;
       background-size: scale-down;
       background-position: center;
-}
+    }
+
     .overlay img:first-child {
       width: 50%;
-align-self: self-end;
-object-fit: scale-down;
+      align-self: self-end;
+      object-fit: scale-down;
 
     }
 
@@ -1492,7 +1504,8 @@ object-fit: scale-down;
       align-self: self-start;
       object-fit: scale-down;
     }
-    .intext{
+
+    .intext {
       max-width: 65%;
       text-align: center;
       font-family: "Poppins", Arial, sans-serif;
@@ -1527,7 +1540,7 @@ object-fit: scale-down;
       display: block;
     }
 
-  
+
 
 
     .none-con {
@@ -1555,10 +1568,10 @@ object-fit: scale-down;
       height: 0;
       overflow: hidden;
       border: solid 1px var(--cc_color_ofbg);
-box-shadow: 0 4.28214px 52.4562px rgba(0,7,72,.12);
-    backdrop-filter: blur(13.3817px);
-    background-color:var(--cc_color_ofbg);  
-        -webkit-backdrop-filter: blur(13.3817px);
+      box-shadow: 0 4.28214px 52.4562px rgba(0, 7, 72, .12);
+      backdrop-filter: blur(13.3817px);
+      background-color: var(--cc_color_ofbg);
+      -webkit-backdrop-filter: blur(13.3817px);
       position: fixed;
       top: var(--top);
       left: var(--left);
@@ -1571,7 +1584,7 @@ box-shadow: 0 4.28214px 52.4562px rgba(0,7,72,.12);
       display: flex;
       flex-direction: column;
       z-index: 999999999;
-     
+
     }
 
     .contextMenu-item {
@@ -1649,12 +1662,12 @@ box-shadow: 0 4.28214px 52.4562px rgba(0,7,72,.12);
       display: none;
       position: absolute;
       border: solid 1px var(--cc_color_ofbg) !important;
-box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
-    backdrop-filter: blur(13.3817px)!important;
-    background-color: var(--cc_color_ofbg)!important;  
-        -webkit-backdrop-filter: blur(13.3817px)!important;
-      -moz-backdrop-filter: blur(13px)!important;   
-         color: var(--svg);
+      box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg) !important;
+      backdrop-filter: blur(13.3817px) !important;
+      background-color: var(--cc_color_ofbg) !important;
+      -webkit-backdrop-filter: blur(13.3817px) !important;
+      -moz-backdrop-filter: blur(13px) !important;
+      color: var(--svg);
       height: auto;
       padding: 5px 0;
       border-radius: 13px;
@@ -2226,7 +2239,8 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
     .messt {
       width: 100%;
       overflow: auto;
-      overflow-x: hidden;font-weight: 100;
+      overflow-x: hidden;
+      font-weight: 100;
       max-height: 390px;
       top: 0;
       white-space: pre-wrap;
@@ -2271,10 +2285,10 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg)!important;
       --item-color: #fff;
       --item-bg-hover: rgba(255, 255, 255, 0.1);
       border: solid 1px rvar(--cc_color_ofbg);
-box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
-    backdrop-filter: blur(13.3817px);
-    background-color: var(--cc_color_ofbg);  
-        -webkit-backdrop-filter: blur(13.3817px);
+      box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
+      backdrop-filter: blur(13.3817px);
+      background-color: var(--cc_color_ofbg);
+      -webkit-backdrop-filter: blur(13.3817px);
 
       -webkit-animation: fadein 0.4s 0s both;
       animation: fadein 0.4s 0s both;
@@ -2407,9 +2421,9 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
       overflow-x: hidden;
       background-color: var(--primary-color);
       height: calc(100% - 19px);
-      position: absolute;    
-        color: var(--svgg);
-        white-space: pre-wrap;
+      position: absolute;
+      color: var(--svgg);
+      white-space: pre-wrap;
 
       top: 0;
       left: 0;
@@ -2484,73 +2498,72 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
     }
 
     #no_results_message {
-  color: var(--primary-color);
-  font-size: 17px;
-  font-weight: 100;
-  text-align: center;
-  animation: fadeIn 0.4s ease-in-out;
+      color: var(--primary-color);
+      font-size: 17px;
+      font-weight: 100;
+      text-align: center;
+      animation: fadeIn 0.4s ease-in-out;
 
-}
-.dots-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  animation: fadeIn 0.2s ease-in-out;
+    }
 
-}
+    .dots-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      animation: fadeIn 0.2s ease-in-out;
 
-.dot {
-  height: 9px;
-  width: 9px;
-  margin-right: 10px;
-  border-radius: 10px;
-  background-color: #fff;
-  animation: pulse 1.5s infinite ease-in-out;
-}
+    }
 
-.dot:last-child {
-  margin-right: 0;
+    .dot {
+      height: 9px;
+      width: 9px;
+      margin-right: 10px;
+      border-radius: 10px;
+      background-color: #fff;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
 
-}
+    .dot:last-child {
+      margin-right: 0;
 
-.dot:nth-child(1) {
-  animation-delay: -0.3s;
+    }
 
-}
+    .dot:nth-child(1) {
+      animation-delay: -0.3s;
 
-.dot:nth-child(2) {
-  animation-delay: -0.1s;
+    }
 
-}
+    .dot:nth-child(2) {
+      animation-delay: -0.1s;
 
-.dot:nth-child(3) {
-  animation-delay: 0.1s;
+    }
 
-}
+    .dot:nth-child(3) {
+      animation-delay: 0.1s;
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.8);
-    background-color: #fff;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-  }
+    }
 
-  50% {
-    transform: scale(1.2);
-    background-color: #fff;
-    box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
-  }
+    @keyframes pulse {
+      0% {
+        transform: scale(0.8);
+        background-color: #fff;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+      }
 
-  100% {
-    transform: scale(0.8);
-    background-color: #fff;
-    box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
-  }
-}
+      50% {
+        transform: scale(1.2);
+        background-color: #fff;
+        box-shadow: 0 0 0 10px rgba(178, 212, 252, 0);
+      }
 
-
+      100% {
+        transform: scale(0.8);
+        background-color: #fff;
+        box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
+      }
+    }
   </style>
 
 </head>
@@ -2563,8 +2576,9 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
       <div id="search">
         <form class="form">
           <label for="search">
-            <input data-title="search"  onclick="document.querySelector('.contacts-bar').classList.add('expanded')"
-              autocomplete="off" required="" placeholder="search..." id="search" class="searchfilter tooltip" type="text">
+            <input data-title="search" onclick="document.querySelector('.contacts-bar').classList.add('expanded')"
+              autocomplete="off" required="" placeholder="search..." id="search" class="searchfilter tooltip"
+              type="text">
             <div class="icon close-btn">
               <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg" class="swap-on">
@@ -2576,13 +2590,13 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
                 <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linejoin="round" stroke-linecap="round"></path>
               </svg>
             </div>
-    
+
           </label>
         </form>
       </div>
       <div id='container_contect'>
         <div class="loader"></div>
-        <div id="no_results_message" class = "tooltip" data-tooltip="No Search results found!" style="display: none;">
+        <div id="no_results_message" class="tooltip" data-tooltip="No Search results found!" style="display: none;">
           No Search results found!
         </div>
       </div>
@@ -2632,9 +2646,11 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
         </div>
       </div>
       <div class="overlay">
-       
+
         <img id="logoch" class="alogo" src="/static/dark_logo.png" alt="logo">
-        <p class="intext">Elevate team productivity with Turbolancer chat, facilitating seamless and swift communication. Experience a dynamic platform that streamlines workflows and connects colleagues effortlessly.</p>
+        <p class="intext">Elevate team productivity with Turbolancer chat, facilitating seamless and swift
+          communication. Experience a dynamic platform that streamlines workflows and connects colleagues effortlessly.
+        </p>
       </div>
 
     </div>
@@ -2644,7 +2660,7 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
   </div>
   <ul class="contextMenu" id="customContextMenu" style="display: none;">
     <li data-tooltip="Copy message" class="contextMenu-item copy-message tooltip" style="display: none;">
-      <h3 class = "tooltip"data-tooltip="This is the tooltip content">
+      <h3 class="tooltip" data-tooltip="This is the tooltip content">
         <ion-icon name="copy-outline"></ion-icon>&nbsp;
         Copy message
       </h3>
@@ -2778,7 +2794,19 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
-
+    setInterval(() => {
+      const theme = localStorage.getItem('themeofturbolancer')
+      if (theme == 'on') {
+        document.body.classList.add('darkmode')
+      } else {
+        if (document.querySelector(".darkmode")) {
+          document.body.classList.remove('darkmode')
+        }
+        else {
+          return true
+        }
+      }
+    }, 500);
 
 
     var modal = document.getElementById("myModal");
@@ -3278,7 +3306,7 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
             addEventListenerOnce(cancle, "click", closethemodal);
             del = document.querySelector(".delete")
             del.onclick = function () {
-       
+
               del.innerHTML = '<section class="dots-container">  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div>  <div class="dot"></div></section>';
               let sender = localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb');
               let message = data.fullmsesage;
@@ -3569,28 +3597,29 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
 
         }
       });
-    
+
 
       socket.on('newMessage', (message) => {
-  const iiii = document.querySelectorAll('.messt').length;
+        const iiii = document.querySelectorAll('.messt').length;
 
-  const chatroomname = document.getElementById('send-btn').className;
+        const chatroomname = document.getElementById('send-btn').className;
 
-  if (message.ch === chatroomname) {
-    if (message.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
-      if (iiii == theindexofelementtobechecked[0]) {
-        console.log('sended');
-      }
-    else {
-      console.log('not you');
-      appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
-    } }
-    else {
-      console.log('you');
-      appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
-    }
-  }
-});
+        if (message.ch === chatroomname) {
+          if (message.sender === localStorage.getItem('bb1q2w3e4r5t6y7u8ii9o0p+I_D+3477bb')) {
+            if (iiii == theindexofelementtobechecked[0]) {
+              console.log('sended');
+            }
+            else {
+              console.log('not you');
+              appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
+            }
+          }
+          else {
+            console.log('you');
+            appendMessage(message.message, message.timestamp, message.sender, [], iiii, message.diff);
+          }
+        }
+      });
 
       function getMessages(x) {
         xyz = document.querySelectorAll('.contact')
@@ -3733,7 +3762,7 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
                   console.log(document.getElementById('messageim').value)
                   length = document.querySelectorAll('.messt')
 
-                  appendMessage(messagew, currentTime, userId, [], length.length+1,diff);
+                  appendMessage(messagew, currentTime, userId, [], length.length + 1, diff);
 
                   socket.emit('sendMessage', { userId, chatRoomName, currentTime, message: messagew, diff: diff });
 
@@ -3752,79 +3781,79 @@ box-shadow: 0 4.28214px 52.4562px var(--cc_color_ofbg);
           });
       });
     }
-   
+
     document.querySelector(".searchfilter").addEventListener('input', function (event) {
-  // Declare variables
-  var input, filter, contacts, i, span, username;
+      // Declare variables
+      var input, filter, contacts, i, span, username;
 
-  input = document.querySelector(".searchfilter");
-  filter = input.value.toUpperCase();
-  contacts = document.querySelectorAll("#container_contect .contact");
+      input = document.querySelector(".searchfilter");
+      filter = input.value.toUpperCase();
+      contacts = document.querySelectorAll("#container_contect .contact");
 
-  let allContactsHidden = true;
+      let allContactsHidden = true;
 
-  for (i = 0; i < contacts.length; i++) {
-    span = contacts[i].getElementsByClassName("user-name")[0];
-    username = span.textContent || span.innerText;
+      for (i = 0; i < contacts.length; i++) {
+        span = contacts[i].getElementsByClassName("user-name")[0];
+        username = span.textContent || span.innerText;
 
-    // Check if the username contains the filter text
-    if (username.toUpperCase().indexOf(filter) > -1) {
-      contacts[i].style.display = "grid";
+        // Check if the username contains the filter text
+        if (username.toUpperCase().indexOf(filter) > -1) {
+          contacts[i].style.display = "grid";
 
-      // Highlight matching letters in green and bold
-      var regex = new RegExp('(' + filter + ')', 'gi'); 
-      span.innerHTML = username.replace(regex, '<span style="color: #15a986;  transition: all 0.3s;">$1</span>');
-    } else {
-      contacts[i].style.display = "none";
-    }
-  }
+          // Highlight matching letters in green and bold
+          var regex = new RegExp('(' + filter + ')', 'gi');
+          span.innerHTML = username.replace(regex, '<span style="color: #15a986;  transition: all 0.3s;">$1</span>');
+        } else {
+          contacts[i].style.display = "none";
+        }
+      }
 
-  // Check if all contacts are hidden
-  contacts.forEach(contact => {
-    if (contact.style.display !== "none") {
-      allContactsHidden = false;
-    }
-  });
+      // Check if all contacts are hidden
+      contacts.forEach(contact => {
+        if (contact.style.display !== "none") {
+          allContactsHidden = false;
+        }
+      });
 
-  let noResultsMessage = document.querySelector('#no_results_message');
-  noResultsMessage.style.display = allContactsHidden ? "block" : "none";
-});
-document.querySelector(".searchfilter").addEventListener('click', function (event) {
-  // Declare variables
-  var input, filter, contacts, i, span, username;
+      let noResultsMessage = document.querySelector('#no_results_message');
+      noResultsMessage.style.display = allContactsHidden ? "block" : "none";
+    });
+    document.querySelector(".searchfilter").addEventListener('click', function (event) {
+      // Declare variables
+      var input, filter, contacts, i, span, username;
 
-  input = document.querySelector(".searchfilter");
-  filter = input.value.toUpperCase();
-  contacts = document.querySelectorAll("#container_contect .contact");
+      input = document.querySelector(".searchfilter");
+      filter = input.value.toUpperCase();
+      contacts = document.querySelectorAll("#container_contect .contact");
 
-  let allContactsHidden = true;
+      let allContactsHidden = true;
 
-  for (i = 0; i < contacts.length; i++) {
-    span = contacts[i].getElementsByClassName("user-name")[0];
-    username = span.textContent || span.innerText;
+      for (i = 0; i < contacts.length; i++) {
+        span = contacts[i].getElementsByClassName("user-name")[0];
+        username = span.textContent || span.innerText;
 
-    // Check if the username contains the filter text
-    if (username.toUpperCase().indexOf(filter) > -1) {
-      contacts[i].style.display = "grid";
+        // Check if the username contains the filter text
+        if (username.toUpperCase().indexOf(filter) > -1) {
+          contacts[i].style.display = "grid";
 
-      // Highlight matching letters in green and bold
-      var regex = new RegExp('(' + filter + ')', 'gi');
-      span.innerHTML = username.replace(regex, '<span style="color: var(--primary-color);  transition: all 0.3s;">$1</span>');
-    } else {
-      contacts[i].style.display = "none";
-    }
-  }
+          // Highlight matching letters in green and bold
+          var regex = new RegExp('(' + filter + ')', 'gi');
+          span.innerHTML = username.replace(regex, '<span style="color: var(--primary-color);  transition: all 0.3s;">$1</span>');
+        } else {
+          contacts[i].style.display = "none";
+        }
+      }
 
-  // Check if all contacts are hidden
-  contacts.forEach(contact => {
-    if (contact.style.display !== "none") {
-      allContactsHidden = false;
-    }
-  });
+      // Check if all contacts are hidden
+      contacts.forEach(contact => {
+        if (contact.style.display !== "none") {
+          allContactsHidden = false;
+        }
+      });
 
-  let noResultsMessage = document.querySelector('#no_results_message');
-  noResultsMessage.style.display = allContactsHidden ? "block" : "none";
-});
+      let noResultsMessage = document.querySelector('#no_results_message');
+      noResultsMessage.style.display = allContactsHidden ? "block" : "none";
+    });
 
     let currentZoom = 1;
     let minZoom = 1;

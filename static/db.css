@@ -8,7 +8,6 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
@@ -18,8 +17,9 @@ body {
 }
 
 .dashboard {
-    max-width: 100%;
-    height: 100%;
+    width: 100%;
+
+    min-height: 100% !important;
     background: #f2f2f2;
     display: flex;
     overflow: hidden;
@@ -221,7 +221,7 @@ body {
     width: 100%;
     height: 210px;
     border-radius: 18px;
-    background: #55c960 url(https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/bannerBG.svg);
+    background: url(https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/bannerBG.svg), linear-gradient(-287.83deg, #043c24, #0c744a);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -340,11 +340,11 @@ body {
 }
 
 .price {
-    background: rgba(124, 248, 136, 0.346);
+    background: #043c24;
     padding: 12px 15px;
     border-radius: 6px;
     cursor: pointer;
-    color: #38c947;
+    color: #fff;
     font-weight: 600;
 }
 
@@ -467,9 +467,7 @@ p {
 /* End Dashboard */
 
 /* Dark Mode */
-.darkMode {
-    background: #404040;
-}
+
 
 .darkMode .dashboard {
     box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.22);
@@ -517,12 +515,13 @@ p {
 }
 
 .darkMode .banner {
-    background: #38c947 url(https://raw.githubusercontent.com/programmercloud/nft-dashboard/main/img/bannerBG.svg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     color: #404040;
 }
+
+
 
 .darkMode .btn {
     background: #fff;
@@ -563,6 +562,14 @@ p {
 }
 
 /* End Dark Mode */
+.brand #logo1 {
+    display: block;
+}
+
+.brand #logo2 {
+
+    display: none;
+}
 
 /* Responsive */
 @media (max-width: 1250px) {
@@ -650,10 +657,14 @@ p {
         align-items: center;
     }
 
-    .brand p {
+    .brand #logo1 {
         display: none;
     }
 
+    .brand #logo2 {
+
+        display: block;
+    }
 
     .menu-item {
         margin: 40px auto;
@@ -850,7 +861,48 @@ a {
 .darkMode.tabbutton.active {
     color: #fff;
 }
+body {
+    background: #fff; /* Set your default background color */
+    transition: all 0.6s ease-in-out;
+    
+}
+body.darkMode  {
+    background: #404040; /* Set the background color for dark mode */
+}
+body.lightmode *{
+    animation: showi 1s ease-in-out 1;
+}
+body.darkMode  * {
+    animation: show 1s ease-in-out 1;
+}
+@keyframes show {
+    0% {
+        transform: scale(auto);
+    }
+    50% {
+        transform: scale(.994);
+    }
+    100% {
+        transform: scale(auto);
+        
 
+    }
+}
+@keyframes showi {
+    0% {
+        transform: scale(auto);
+
+    }
+    50% {
+        transform: scale(.994);
+
+
+    }
+    100% {
+        transform: scale(auto);
+
+    }
+}
 
 :root {
     --primary-bg: #f1f1f1;
@@ -863,6 +915,7 @@ a {
     --username-size: 32px;
     --title-size: 28px;
     --subtitle: 24px;
+    --ddb:#ffffff65;
 
 }
 
@@ -878,29 +931,43 @@ a {
     --username-size: 32px;
     --title-size: 28px;
     --subtitle: 24px;
-
+    --ddb:#1010109d;
 }
 
+#profile {
+    background-image: url('/static/windows-flow-dark-wallpaper-1024x768-wallpaper.jpg');
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 .profile-card {
     min-width: 50vw;
     height: 100%;
-    background-color: var(--primary-bg);
+    background-color: transparent;
+    background-image: linear-gradient(var(--ddb) , var(--ddb) );
+    backdrop-filter: blur(50px) !important;
+
     border-radius: 40px;
     display: grid;
     transition: all 0.3s;
     grid-template-rows: 220px auto;
     overflow: auto;
+    border-radius: 20px;
+
 }
 
 /* ------ profile header section */
 .profile-header {
-    background: url('banner.jpg') center;
+    background: url('/static/windows-flow-dark-wallpaper-1024x768-wallpaper.jpg') center;
     background-size: cover;
     margin: 10px;
     transition: all 0.3s;
-
-    border-radius: 30px 30px 0 0;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+    border-radius: 20px 20px 0 0;
     position: relative;
 }
 
@@ -933,6 +1000,7 @@ a {
     background-color: var(--primary-bg);
     padding: 10px 30px;
     transition: all 0.3s;
+    text-transform: capitalize;
 
     border-radius: 0 50px 50px 0;
     transform: translateX(-10px);
@@ -1004,6 +1072,11 @@ a {
     gap: 10px;
     border-bottom: 1px solid var(--border-color);
     color: var(--secondary-color);
+}
+.bio p{
+    white-space: pre-wrap;
+    line-break: anywhere;
+    overflow: hidden;
 }
 
 .account-info {
@@ -1131,6 +1204,9 @@ a {
     .profile-names {
         transform: translateX(0);
         box-shadow: none;
+        border-radius: 50px;
+        background-color: transparent;
+        font-weight: 500;
     }
 
     .profile-body {
@@ -1428,4 +1504,64 @@ a {
         opacity: 0;
         transform: scale(0.8);
     }
+}
+
+* {
+    font-family: "Poppins", Arial, sans-serif !important;
+}
+
+
+
+.masked-text {
+    font-size: 4vw;
+    width: 100%;
+    filter: drop-shadow(0 5px 8px #000000a8);
+    text-transform: capitalize;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    background: url('https://th.bing.com/th/id/OIP.55GJWoZd4UAij0r4Fx2bqgHaFS?w=250&h=180&c=7&r=0&o=5&pid=1.7');
+    /* Replace with the correct image URL */
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-align: center;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-mask-image: url('https://th.bing.com/th/id/OIP.55GJWoZd4UAij0r4Fx2bqgHaFS?w=250&h=180&c=7&r=0&o=5&pid=1.7');
+    /* Replace with the correct image URL */
+    mask-image: url('https://th.bing.com/th/id/OIP.55GJWoZd4UAij0r4Fx2bqgHaFS?w=250&h=180&c=7&r=0&o=5&pid=1.7');
+    /* Replace with the correct image URL */
+    mask-position: center;
+    background-position: center;
+
+    mask-type: alpha;
+    background-size: contain;
+    /* Cover the text with the image */
+
+}
+
+.masked-text1 {
+    font-size: 4vw;
+    width: 100%;
+    filter: drop-shadow(2px 0px 0px #000000a8);
+    text-transform: capitalize;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    background: url('https://images.creativemarket.com/0.1.0/ps/1653743/600/400/m2/fpnw/wm0/low-poly-multicolor-background-.jpg?1473775167&s=1606d9d62988b7a2ee84f66e23a13ce8&fmt=webp');
+    /* Replace with the correct image URL */
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-align: center;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    -webkit-mask-image: url('https://images.creativemarket.com/0.1.0/ps/1653743/600/400/m2/fpnw/wm0/low-poly-multicolor-background-.jpg?1473775167&s=1606d9d62988b7a2ee84f66e23a13ce8&fmt=webp');
+    /* Replace with the correct image URL */
+    mask-image: url('https://images.creativemarket.com/0.1.0/ps/1653743/600/400/m2/fpnw/wm0/low-poly-multicolor-background-.jpg?1473775167&s=1606d9d62988b7a2ee84f66e23a13ce8&fmt=webp');
+    /* Replace with the correct image URL */
+    mask-position: center;
+    background-position: center;
+
+    mask-type: alpha;
+    background-size: cover;
+    /* Cover the text with the image */
+
 }

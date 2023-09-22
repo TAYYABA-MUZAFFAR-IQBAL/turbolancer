@@ -78,24 +78,7 @@ def signup():
             year = datetime.date.today().year
             count = str(count)
             user = {
-                "_id": user_id,
-                'image': '',
-                "name": name,
-                'tag': tag + str(count),
-                "email": encoded_email,
-                "password": encoded_password,
-                "country": encoded_country,
-                'phone_number': encoded_phone,
-                'about_self': '',
-                'd': d,
-                'sk': skils,
-                'grade': 'C',
-                'earnings': 0,
-                'rating': 0.0,
-                'member_since': year,
-                'english': '',
-                'payment_method': 'Visa',
-                'project_history': []
+         
             }
             developer_collection.insert_one(user)
 
@@ -435,17 +418,53 @@ def update_result():
             return jsonify({'error': 'Developer not found.'})
     else:
         return jsonify({'error': 'Invalid data.'})
+        # "_id": user_id,
+        #         'image': '',
+        #         "name": name,
+        #         'tag': tag + str(count),
+        #         "email": encoded_email,
+        #         "password": encoded_password,
+        #         "country": encoded_country,
+        #         'phone_number': encoded_phone,
+        #         'about_self': '',
+        #         'd': d,
+        #         'sk': skils,
+        #         'grade': 'C',
+        #         'earnings': 0,
+        #         'rating': 0.0,
+        #         'member_since': year,
+        #         'english': '',
+        #         'payment_method': 'Visa',
+        #         'project_history': []
 
+@app.route('/Dashbord/<x>/<y>')
+def Dashbord(x,y):
+        if y in 'd':
+            user_data = developer_collection.find_one({"_id": x})
+            email = turbolancer_data_Security.decrypt(key, user_data["email"])
+            print("user_data",email)
+            image = user_data["image"]
+            name = user_data["name"]
+            tag = user_data["tag"]
+            country =turbolancer_data_Security.decrypt(key,user_data["country"])
+            ph = turbolancer_data_Security.decrypt(key,user_data["phone_number"])
+            about=user_data['about_self']
+            grade = user_data['grade']
+            earnings = user_data['earnings']
+            ratting= user_data['rating']
+            en = user_data['english']
+            year = user_data['member_since']
+            method = user_data["payment_method"]
 
-@app.route('/Dashbord')
-def Dashbord():
-    return render_template('home.html')
+            return render_template('home.html',email= email, image= image, name=name, tag = tag,cont = country,ph = ph,abs = about,grade = grade,ern = earnings,ratting = ratting, el= en, check = user_data['email'],year = year,method=method)
 
 
 @app.route('/try')
 def index():
     return render_template('try.html')
-
+@app.route('/getdevsellerdatafromtrbolancer')
+def getdev():
+    return 'hello'
 
 def get_user_data(user_id, Atype):
     if 'd' in Atype:
