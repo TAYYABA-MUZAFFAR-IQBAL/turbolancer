@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
+    <title>TurboLancer | {{name}}</title>
+    <link rel="icon" type="image/png" href="/static/icon.png" />
+    <link rel="stylesheet" href="/static/clinte.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+    <div id="full_page" style="width: 100%;right: 0; position: absolute;">
+        <nav class="nav1">
+            <div id="loplus">
+                <span style="font-size:30px;cursor:pointer ;" onclick="openNav()">&#9776; </span>
+
+                <img src="/static/dark_logo.png" class="logo" alt="logo" title="TurboLancer">
+            </div>
+            <div>
+                <a href="#about_me"><i class="fa-solid fa-envelope"></i>&nbsp; Contect us</a>
+                <a href="#skills"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
+                <div class="dropdown">
+                   
+                    <span class="profile dropdown-toggle" data-bs-toggle="dropdown" type="button">
+                    <name>Mian Junaid</name><img src="/static/4543.png" title="{{name}}" alt="{{name}}">
+                </span>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Link 1</a></li>
+                      <li><a class="dropdown-item" href="#">Link 2</a></li>
+                      <li><a class="dropdown-item" href="#">Link 3</a></li>
+                    </ul>
+                  </div>
+                
+
+            </div>
+
+        </nav>
+        <section class="hero gradient1">
+            <div class="left">
+                <h1 class="slogen"><b> Discover the perfect</b> <i> freelance</i> <br> <b>service instantly.</b></h1>
+                <div class="container_input">
+                    <input type="text" placeholder="Search for any service..." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
+                <div class="tags">
+                    <p>Popular:</p>
+                    <span>Website Design</span>
+                    <span>Picture editing</span>
+                    <span>AI Images</span>
+
+                </div>
+            </div>
+            <img src="" id="imga" alt="">
+        </section>
+
+        <section class="tabular_parent">
+            <nav class="nav2 scrolled">
+                <div id="loplus">
+                    <span style="font-size:30px;cursor:pointer ;" onclick="openNav()">&#9776; </span>
+
+                    <img src="/static/dark_logo.png" class="logo" alt="logo" title="TurboLancer">
+                </div>
+                <div>
+                    <a href="#about_me"><i class="fa-solid fa-envelope"></i>&nbsp; Contect us</a>
+                      <a href="#skills"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
+
+                      <div class="dropdown">
+                   
+                        <span class="profile dropdown-toggle" data-bs-toggle="dropdown" type="button">
+                        <name>Mian Junaid</name><img src="/static/4543.png" title="{{name}}" alt="{{name}}">
+                    </span>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#">Link 1</a></li>
+                          <li><a class="dropdown-item" href="#">Link 2</a></li>
+                          <li><a class="dropdown-item" href="#">Link 3</a></li>
+                        </ul>
+                      </div>
+
+                </div>
+
+            </nav>
+            <div class="tab">
+                <span onclick="select(this)" data="projects" class="active"><i class="fa-solid fa-cart-shopping"></i>&nbsp;Buy Projects</span>
+                <span onclick="select(this)" data="service"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find service</span>
+                <span onclick="select(this)" data="job"><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload Job</span>
+            </div>
+            <iframe class="upload_job_if"  src="http://127.0.0.1:5500/template/upload_job.html" style="width: 100%;margin-top: 10vh;
+            height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
+            " frameborder="0"></iframe>
+        </section>
+    </div>
+    <div id="mySidenav" class="sidenav">
+        <span href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa-solid fa-xmark"></i></span>
+        <br>
+        <br>
+        <a href="#"><img src="/static/4543.png" class="pfp" title="{{name}}" alt="{{name}}">&nbsp;Profile</a>
+        <a href="#"><i class="fa-regular fa-bell"></i>&nbsp; Notification</a>
+
+        <a href="#"><i class="fa-solid fa-envelope"></i>&nbsp; Messages</a>
+
+        <a href="#"><i class="fa-solid fa-cart-shopping"></i>&nbsp; Order History</a>
+
+        <a href="#"><i class="fa-solid fa-money-check-dollar"></i>&nbsp; Payments</a>
+
+        <a href="#"><i class="fa-solid fa-question"></i>&nbsp; Contect us</a>
+
+        <a href="#"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
+
+        <a href="#" style="color: rgb(253, 58, 58);"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
+
+
+ 
+    </div>
+    <script>
+function select(x){
+    document.querySelector('.tab span.active').classList.remove('active');
+    x.classList.add("active");
+    if(document.querySelector('.active[data = "job"]')){
+        document.querySelector('.upload_job_if').style.display = 'block'
+        setTimeout(() => {
+            document.querySelector('.upload_job_if').style.opacity = '1'
+
+        }, 1000);
+    }
+    else if(document.querySelector('.active[data = "service"]')){
+        document.querySelector('.upload_job_if').style.opacity = '0'
+        setTimeout(() => {
+            document.querySelector('.upload_job_if').style.display = 'none'
+
+        }, 1000);
+    }
+    else{
+        return 0
+    }
+ 
+}
+        function openNav() {
+            if (!(window.innerWidth < 980)) {
+                document.getElementById("full_page").removeEventListener('click', closeNav)
+
+                document.getElementById("mySidenav").style.width = "322px";
+                document.getElementById("full_page").style.width = "calc(100% - 322px)";
+                document.getElementById("mySidenav").style.marginLeft = "0px";
+
+            }
+            else {
+                document.getElementById("full_page").removeEventListener('click', closeNav)
+
+                document.getElementById("mySidenav").style.width = "322px";
+                document.getElementById("mySidenav").style.zIndex = "9999999999";
+                document.getElementById("mySidenav").style.marginLeft = "0px";
+
+                document.getElementById("full_page").style.filter = "brightness(80%)";
+                setTimeout(() => {
+                    document.getElementById("full_page").addEventListener('click', closeNav)
+
+                }, 200);
+            }
+        }
+
+
+        function closeNav() {
+            document.getElementById("full_page").removeEventListener('click', closeNav)
+
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mySidenav").style.marginLeft = "-3px";
+            document.getElementById("full_page").style.width = "100%";
+            document.getElementById("full_page").style.filter = "brightness(100%)";
+
+
+        }
+        window.addEventListener("resize", function () {
+            if (window.innerWidth < 980) {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("mySidenav").style.marginLeft = "-3px";
+
+                document.getElementById("full_page").style.width = "100%";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const hero = document.querySelector(".hero");
+
+            // Function to update brightness based on scroll position
+            function updateBrightness() {
+                const scrollPosition = window.scrollY;
+                const maxScroll = document.body.clientHeight - window.innerHeight;
+                const brightness = scrollPosition / maxScroll; // Adjust brightness as per scroll
+
+                hero.style.filter = `brightness(${1.03 + brightness})`;
+            }
+
+            // Add scroll event listener
+            window.addEventListener("scroll", updateBrightness);
+
+            // Initial call to set brightness based on initial scroll position
+            updateBrightness();
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            let imageCount;
+            const element = document.querySelector(".hero");
+            let currentGradient = 1;
+            let count = 3
+            function loadImageAsBase64(url, callback) {
+                fetch(url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const base64Data = reader.result.split(',')[1];
+                            callback(base64Data);
+                        };
+                        reader.readAsDataURL(blob);
+                    })
+                    .catch(error => {
+                        console.error(`Error loading image from ${url}: ${error}`);
+                        callback(null);
+                    });
+            }
+            const base64Array = [];
+            function convertImagesToBase64(imageLinks, callback) {
+                let completed = 0;
+
+                for (let i = 0; i < imageLinks.length; i++) {
+                    loadImageAsBase64(imageLinks[i], base64Data => {
+                        if (base64Data !== null) {
+                            // Remove any additional paths, e.g., "/static/" before adding to base64Array.
+                            const cleanBase64Data = base64Data.replace(/^data:image\/\w+;base64,/, '');
+                            base64Array.push(cleanBase64Data);
+                        }
+                        completed++;
+
+                        if (completed === imageLinks.length) {
+                            callback(base64Array);
+                        }
+                    });
+                }
+            }
+
+            // Example usage:
+            const imageLinks = [
+                '/static/3.png',
+                '/static/1.png',
+                '/static/2.png'
+            ];
+
+            convertImagesToBase64(imageLinks, base64Array => {
+                document.querySelector("#imga").src = `data:image/png;base64,${base64Array[0]}`;
+
+                imageCount = base64Array;
+            });
+
+            function changeGradient() {
+                element.classList.remove(`gradient${currentGradient}`);
+                currentGradient = (currentGradient % 3) + 1;
+                element.classList.add(`gradient${currentGradient}`);
+                document.body.classList.add(`gradient${currentGradient}`);
+
+                document.querySelector("#imga").style.opacity = '0';
+
+                setTimeout(() => {
+                    document.querySelector("#imga").src = `data:image/png;base64,${base64Array[count - 1]}`;
+
+                    document.querySelector("#imga").style.opacity = '1';
+
+
+                    if (count === 1) {
+                        count = 3;
+                    } else {
+                        count = count - 1;
+                    }
+                }, 300);
+            }
+
+            setInterval(changeGradient, 8000);
+
+        });
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 380 || document.documentElement.scrollTop > 380) {
+                document.querySelector('nav').classList.add('scrolled');
+                document.querySelector('.nav2').classList.remove('scrolled');
+                document.querySelector('.tabular_parent').style.width = '100%';
+                document.querySelector('.tabular_parent').style.left = '0%';
+                document.querySelector('.tabular_parent').style.borderRadius = '0%';
+
+            } else {
+                document.querySelector('nav').classList.remove('scrolled');
+                document.querySelector('.nav2').classList.add('scrolled');
+
+                document.querySelector('.tabular_parent').style.width = '98%';
+                document.querySelector('.tabular_parent').style.left = '1%';
+                document.querySelector('.tabular_parent').style.borderRadius = '30px 30px 00 0';
+
+            }
+        }
+    </script>
+</body>
+
+</html>

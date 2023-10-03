@@ -1,0 +1,303 @@
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the data from the URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const compressedData = urlParams.get("data");
+            console.log(compressedData);
+            sessionStorage.setItem('ds', compressedData)
+            // Decompress the data using lz-string
+            const decompressedData = LZString.decompressFromBase64(compressedData);
+
+            // Decode the JSON string
+            const jsonData = atob(decompressedData);
+
+            // Parse the JSON data into an object
+            const formData = JSON.parse(jsonData);
+
+            // Now you can access the form data
+            console.log(formData);
+
+            // Display the data on the page (replace with your desired output)
+            const outputElement = document.createElement("pre");
+            outputElement.textContent = JSON.stringify(formData, null, 2);
+            document.body.appendChild(outputElement);
+        });
+    </script>
+ </body>
+ </html>
+ 
+ <!-- <option value="Web Development"></option>
+ <option value="App Development"></option>
+ <option value="Graphic Design"></option>
+ <option value="Digital Marketing"></option>
+ <option value="Writing and Content"></option>
+ <option value="Video Production"></option>
+ <option value="SEO and SEM"></option>
+ <option value="Social Media Management"></option>
+ <option value="Data Entry"></option>
+ <option value="Customer Support"></option>
+ <option value="Translation and Localization"></option>
+ <option value="Online Research"></option>
+ <option value="Accounting and Finance"></option>
+ <option value="Legal Services"></option>
+ <option value="IT and Networking"></option>
+ <option value="Video Editing"></option>
+ <option value="Photography"></option>
+ <option value="UI/UX Design"></option>
+ <option value="Sales and Marketing"></option>
+ <option value="Business Consulting"></option>
+ <option value="Project Management"></option>
+ <option value="Architecture and Interior Design"></option>
+ <option value="Music and Audio Production"></option>
+ <option value="Data Analysis"></option>
+ <option value="Game Development"></option>
+ <option value="E-commerce Development"></option>
+ <option value="Art and Illustration"></option>
+ <option value="Virtual Assistance"></option>
+ <option value="Human Resources"></option>
+ <option value="Engineering"></option>
+ <option value="Healthcare and Medical Services"></option>
+ <option value="Education and Tutoring"></option>
+ <option value="Event Planning and Management"></option>
+ <option value="Manufacturing and Prototyping"></option>
+ <option value="Science and Lab Services"></option>
+ <option value="Blockchain and Cryptocurrency"></option>
+ <option value="Fashion and Apparel Design"></option>
+ <option value="Travel and Tourism"></option>
+ <option value="Home Improvement and Renovation"></option>
+ <option value="Fitness and Nutrition"></option>
+ <option value="Agriculture and Farming"></option>
+ <option value="Environmental Services"></option>
+ <option value="Other Services"></option>
+ <option value="Logo Design"></option>
+ <option value="Web Design"></option>
+ <option value="Mobile App Design"></option>
+ <option value="Print Design"></option>
+ <option value="UI/UX Prototyping"></option>
+ <option value="Content Writing"></option>
+ <option value="Blog Writing"></option>
+ <option value="Technical Writing"></option>
+ <option value="Copywriting"></option>
+ <option value="Editing and Proofreading"></option>
+ <option value="Scriptwriting"></option>
+ <option value="Content Strategy"></option>
+ <option value="Email Marketing"></option>
+ <option value="Social Media Advertising"></option>
+ <option value="Content Marketing"></option>
+ <option value="PPC Advertising"></option>
+ <option value="Affiliate Marketing"></option>
+ <option value="Influencer Marketing"></option>
+ <option value="Branding"></option>
+ <option value="Market Research"></option>
+ <option value="Competitor Analysis"></option>
+ <option value="Data Entry"></option>
+ <option value="Data Cleaning and Analysis"></option>
+ <option value="Data Visualization"></option>
+ <option value="Database Administration"></option>
+ <option value="Virtual Reality Development"></option>
+ <option value="Augmented Reality Development"></option>
+ <option value="Game Design"></option>
+ <option value="Game Testing"></option>
+ <option value="3D Modeling and Animation"></option>
+ <option value="Video Production"></option>
+ <option value="Video Scriptwriting"></option>
+ <option value="Motion Graphics"></option>
+ <option value="Explainer Videos"></option>
+ <option value="Voice-over"></option>
+ <option value="Podcast Production"></option>
+ <option value="Podcast Editing"></option>
+ <option value="Podcast Scriptwriting"></option>
+ <option value="SEO Optimization"></option>
+ <option value="Keyword Research"></option>
+ <option value="Local SEO"></option>
+ <option value="Link Building"></option>
+ <option value="Website Maintenance"></option>
+ <option value="E-commerce Management"></option>
+ <option value="Amazon FBA Services"></option>
+ <option value="Dropshipping"></option>
+ <option value="Social Media Management"></option>
+ <option value="Social Media Content Creation"></option>
+ <option value="Community Management"></option>
+ <option value="Social Media Analytics"></option>
+ <option value="Email Management"></option>
+ <option value="Live Chat Support"></option>
+ <option value="Phone Support"></option>
+ <option value="Virtual Receptionist Services"></option>
+ <option value="Transcription Services"></option>
+ <option value="Translation Services"></option>
+ <option value="Subtitle Services"></option>
+ <option value="Localization Services"></option>
+ <option value="Legal Research"></option>
+ <option value="Contract Drafting"></option>
+ <option value="Contract Review"></option>
+ <option value="Legal Consultation"></option>
+ <option value="Tax Services"></option>
+ <option value="Financial Planning"></option>
+ <option value="Bookkeeping"></option>
+ <option value="Accounting Services"></option>
+ <option value="Auditing"></option>
+ <option value="IT Support"></option>
+ <option value="Network Security"></option>
+ <option value="Database Management"></option>
+ <option value="Software Development"></option>
+ <option value="App Development"></option>
+ <option value="Web Development"></option>
+ <option value="Front-end Development"></option>
+ <option value="Back-end Development"></option>
+ <option value="Blockchain Development"></option>
+ <option value="Smart Contract Development"></option>
+ <option value="Machine Learning"></option>
+ <option value="Artificial Intelligence"></option>
+ <option value="Big Data Analytics"></option>
+ <option value="Chatbot Development"></option>
+ <option value="Cybersecurity"></option>
+ <option value="Computer Repair"></option>
+ <option value="Graphic Design"></option>
+ <option value="Logo Design"></option>
+ <option value="Illustration"></option>
+ <option value="Character Design"></option>
+ <option value="Packaging Design"></option>
+ <option value="Brochure Design"></option>
+ <option value="Poster Design"></option>
+ <option value="T-shirt Design"></option>
+ <option value="Flyer Design"></option>
+ <option value="Business Card Design"></option>
+ <option value="Icon Design"></option>
+ <option value="Infographic Design"></option>
+ <option value="Banner Design"></option>
+ <option value="Print Design"></option>
+ <option value="Menu Design"></option>
+ <option value="Interior Design"></option>
+ <option value="Architectural Design"></option>
+ <option value="Structural Engineering"></option>
+ <option value="Landscape Design"></option>
+ <option value="Video Editing"></option>
+ <option value="Photo Editing"></option>
+ <option value="Color Correction"></option>
+ <option value="Green Screen Removal"></option>
+ <option value="Visual Effects"></option>
+ <option value="Sound Editing"></option>
+ <option value="Sound Mixing"></option>
+ <option value="Music Production"></option>
+ <option value="Voice Acting"></option>
+ <option value="Voice Dubbing"></option>
+ <option value="Narration"></option>
+ <option value="Script Editing"></option>
+ <option value="Screenwriting"></option>
+ <option value="Novel Writing"></option>
+ <option value="Ghostwriting"></option>
+ <option value="Poetry Writing"></option>
+ <option value="Grant Writing"></option>
+ <option value="Resume Writing"></option>
+ <option value="Creative Writing"></option>
+ <option value="Academic Writing"></option>
+ <option value="Scientific Writing"></option>
+ <option value="Essay Writing"></option>
+ <option value="Content Writing"></option>
+ <option value="Article Writing"></option>
+ <option value="Case Study Writing"></option>
+ <option value="Whitepaper Writing"></option>
+ <option value="Market Research"></option>
+ <option value="Survey Design and Analysis"></option>
+ <option value="Data Analysis"></option>
+ <option value="Data Visualization"></option>
+ <option value="Statistical Analysis"></option>
+ <option value="Financial Analysis"></option>
+ <option value="Business Analysis"></option>
+ <option value="Operations Research"></option>
+ <option value="Mathematical Modeling"></option>
+ <option value="Math Tutoring"></option>
+ <option value="Physics Tutoring"></option>
+ <option value="Chemistry Tutoring"></option>
+ <option value="Biology Tutoring"></option>
+ <option value="Language Tutoring"></option>
+ <option value="Programming Tutoring"></option>
+ <option value="Online Coaching"></option>
+ <option value="Life Coaching"></option>
+ <option value="Career Coaching"></option>
+ <option value="Personal Training"></option>
+ <option value="Fitness Coaching"></option>
+ <option value="Nutrition Coaching"></option>
+ <option value="Yoga Instruction"></option>
+ <option value="Meditation Instruction"></option>
+ <option value="Dance Instruction"></option>
+ <option value="Acting Coaching"></option>
+ <option value="Music Instruction"></option>
+ <option value="Art Instruction"></option>
+ <option value="Photography Instruction"></option>
+ <option value="Crafting Instruction"></option>
+ <option value="Culinary Instruction"></option>
+ <option value="Interior Design Instruction"></option>
+ <option value="Gardening Instruction"></option>
+ <option value="Home Improvement"></option>
+ <option value="Plumbing Services"></option>
+ <option value="Electrical Services"></option>
+ <option value="Painting Services"></option>
+ <option value="Carpentry Services"></option>
+ <option value="Roofing Services"></option>
+ <option value="Lawn Care and Landscaping"></option>
+ <option value="Pool Services"></option>
+ <option value="Pest Control"></option>
+ <option value="Home Cleaning"></option>
+ <option value="House Sitting"></option>
+ <option value="Pet Sitting"></option>
+ <option value="Dog Walking"></option>
+ <option value="Plant Care"></option>
+ <option value="Personal Chef Services"></option>
+ <option value="Party Planning"></option>
+ <option value="Wedding Planning"></option>
+ <option value="Event Photography"></option>
+ <option value="Travel Planning"></option>
+ <option value="Tour Guiding"></option>
+ <option value="Travel Writing"></option>
+ <option value="Eco-Tourism Services"></option>
+ <option value="Adventure Planning"></option>
+ <option value="Backpacking Support"></option>
+ <option value="Car Rental Services"></option>
+ <option value="Camping Equipment Rental"></option>
+ <option value="Hiking Guide Services"></option>
+ <option value="Wildlife Safaris"></option>
+ <option value="Environmental Consulting"></option>
+ <option value="Sustainability Services"></option>
+ <option value="Energy Efficiency Consulting"></option>
+ <option value="Green Building Design"></option>
+ <option value="Recycling Services"></option>
+ <option value="Waste Management"></option>
+ <option value="Environmental Impact Assessments"></option>
+ <option value="Community Outreach and Engagement"></option>
+ <option value="Community Development"></option>
+ <option value="Nonprofit Consulting"></option>
+ <option value="Fundraising"></option>
+ <option value="Volunteer Management"></option>
+ <option value="Disaster Relief Services"></option>
+ <option value="Humanitarian Aid Services"></option>
+ <option value="Childcare Services"></option>
+ <option value="Elderly Care Services"></option>
+ <option value="Special Needs Care"></option>
+ <option value="Tutoring for Special Needs"></option>
+ <option value="Mental Health Support"></option>
+ <option value="Rehabilitation Services"></option>
+ <option value="Teletherapy"></option>
+ <option value="Substance Abuse Counseling"></option>
+ <option value="Social Work"></option>
+ <option value="Therapeutic Arts"></option>
+ <option value="Holistic Healing"></option>
+ <option value="Traditional Medicine"></option>
+ <option value="Herbal Remedies"></option>
+ <option value="Health Coaching"></option>
+ <option value="Medical Writing"></option>
+ <option value="Medical Research"></option>
+ <option value="Medical Billing and Coding"></option>
+ <option value="Telemedicine"></option>
+ <option value="Telehealth Support"></option> -->

@@ -1,0 +1,574 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Sofia");
+
+* {
+    padding: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    transition: all 0.1s;
+}
+
+html {
+    padding: 0%;
+    min-height: 200%;
+
+}
+
+body {
+    padding: 0;
+    background-color: #03301c;
+    transition: background 1s ease;
+
+}
+
+nav {
+    z-index: 423424234;
+    top: 0px;
+    right: 0;
+    position: sticky;
+    width: 100%;
+    top: 5px;
+    height: max-content;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    padding: 15px;
+    transition: all 0.5s;
+    backdrop-filter: blur(10px);
+    background-image: linear-gradient(#05050577, transparent);
+    box-shadow: 0 -10px 1px #05050577;
+    color: #fff;
+
+}
+
+nav.scrolled {
+    top: -140%;
+}
+
+.nav2.scrolled {
+    top: -140%;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+
+}
+
+.nav2 {
+    transition: all 0.4s;
+    height: auto;
+    top: 0;
+    opacity: 1;
+    pointer-events: all;
+    background-color: #fff;
+    box-shadow: 0 4px 10px #0002;
+    backdrop-filter: none;
+    background-image: none;
+    color: #000 !important;
+
+}
+
+.nav2 a,
+nav.scrolled a {
+    color: #000;
+}
+
+.nav2 .profile,
+nav.scrolled .profile {
+    background: #121212 !important;
+    color: #fff;
+    transition: all 0.4s;
+}
+
+nav div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    justify-items: center;
+    padding: 6px;
+    padding-right: 10px;
+}
+
+nav div a {
+    color: #fff;
+
+    text-decoration: none;
+    margin: 2px;
+    margin-right: 8px;
+    right: 8px;
+    width: auto;
+    height: 100%;
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-transform: capitalize;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+nav div a:hover {
+    background-color: #ffffff41;
+
+}
+
+.logo {
+    height: 50px;
+    object-fit: scale-down;
+}
+
+.profile {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    padding-left: 10px;
+    align-items: center;
+    min-width: 120px;
+    border-radius: 50px;
+    background-color: #fff;
+    margin-right: 20px;
+    color: #121212;
+    transition: all 0.4s;
+
+}
+
+
+.profile img, .pfp {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50px;
+}
+
+.profile name {
+    margin-right: 5px;
+}
+
+.hero {
+    padding: 10px;
+    max-height: fit-content;
+    color: #ffffff;
+    min-height: 85vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 55% 45%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px !important;
+    top: -100px;
+    left: -4px;
+    z-index: 1;
+    padding-top: 50px !important;
+    position: relative;
+
+    transition: background 1s ease;
+}
+
+#loplus {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: auto auto;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.gradient1 {
+    background-color: #03301c;
+}
+
+.gradient2 {
+    background-color: #062f50;
+}
+
+.gradient3 {
+    background-color: #420629;
+}
+
+.gradient1 #imga {
+    filter: drop-shadow(3px 30px 80px #010a06);
+}
+
+.gradient2 #imga {
+    filter: drop-shadow(3px 30px 80px #020f1a);
+}
+
+.gradient3 #imga {
+    filter: drop-shadow(3px 30px 80px #200313);
+}
+
+.slogen {
+    font-size: 35px !important;
+    font-family: "Poppins", Arial, sans-serif !important;
+
+
+}
+
+.slogen i {
+    font-family: "Sofia", sans-serif !important;
+    font-weight: 100;
+}
+
+/* search input */
+div.container_input {
+    width: 90%;
+
+}
+
+div.container_input input[type=text] {
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    background: #f1f1f1;
+    width: 60%;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    border: none;
+    filter: brightness(90%);
+    transition: all 0.3s;
+
+
+}
+
+div.container_input input[type=text]:focus {
+    filter: brightness(105%);
+}
+
+div.container_input button {
+    float: left;
+    width: 10%;
+    transition: all 0.3s;
+    padding: 10px;
+    background: #008844;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 0 5px 5px 0;
+    padding: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+div.container_input button:hover {
+    background: #00b95d;
+}
+
+div.container_input::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.tags {
+    margin-top: 12px;
+    width: 60%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.tags span {
+    padding: 10px !important;
+    font-size: 1vw;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #f1f1f1;
+    border-radius: 50px;
+    margin-left: 4px;
+    cursor: pointer;
+
+}
+
+.tags span:hover {
+    color: #121212;
+    background-color: #fff;
+}
+
+.tags p {
+    font-weight: 600;
+}
+
+@media (max-width: 880px) {
+    
+    .hero {
+        grid-template-columns: auto;
+        justify-content: center;
+        text-align: center;
+
+    }
+    nav a {
+        display: none;
+    }
+    div.container_input {
+        width: 100%;
+
+    }
+
+    div.container_input input[type=text] {
+        width: 80%;
+        margin-left: -30px;
+    }
+
+    .slogen {
+        margin-left: -60px;
+    }
+
+    .tags {
+        margin-left: -50px;
+
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+        justify-items: center;
+    }
+
+    #imga {
+        display: none;
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+@media (max-width: 400px) {
+    nav, .nav2{
+        top: 35px;
+    
+    }}
+    @media (max-width: 321px) {
+    nav, .nav2{
+        top: 45px;
+    
+    }}
+@media (max-width: 650px) {
+    .hero {
+        grid-template-columns: auto;
+        justify-content: center;
+        text-align: left;
+
+    }
+    nav .logo {
+        height: 30px;
+    }
+
+    div.container_input {
+        width: 100%;
+
+    }
+
+    div.container_input input[type=text] {
+        width: 70%;
+    }
+
+    div.container_input button {
+        width: 20%;
+
+    }
+
+    .slogen {
+        font-size: 26px !important;
+    }
+
+    .tags {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    nav a {
+        display: none;
+    }
+    .tab span{
+        font-size: 15px !important;
+    }
+}
+
+#imga {
+    object-fit: contain;
+    max-width: 95%;
+    right: 50%;
+    margin-top: 3vh;
+    transition: all 0.5s;
+
+}
+
+.tabular_parent {
+    width: 98%;
+    position: absolute;
+    z-index: 99999;
+    background-color: #fff;
+    top: 80vh;
+    left: 1%;
+    transition: all 0.2s;
+    border-radius: 30px 30px 00 0;
+    box-shadow: 0px 4px 10px 10px #00000034;
+
+}
+
+#full_page {
+    width: 100%;
+    transition: all 0.4s;
+    min-height: 200%;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    margin-left: -3px;
+    left: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    border-radius: 30 0 0 0;
+    padding-top: 3px;
+    border-right: 1px solid rgb(211, 211, 211);
+
+}
+
+.sidenav a {
+    padding: 16px 16px 16px 32px;
+    top: 10px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #202020;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    transition: 0.3s;
+}
+.sidenav span{
+    top: 0;
+    bottom: 10px;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #202020;
+    display: block;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.sidenav span:hover{
+    color: rgb(255, 140, 140);
+ 
+}
+.sidenav a:hover {
+    color: #000;
+    background-color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width:980px) {
+    #full_page {
+        width: 100%;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+    }
+}
+
+.tab {
+    transition: all 0.4s;
+    position: sticky;
+    top: 100px;
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
+    justify-content: space-evenly;
+    align-items: center;
+        background-color: #fff;
+
+    height: 70px;
+    padding: 4px;
+}
+
+.tab span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #121212;
+    width: 100%;
+    padding: 4px;
+    transition: all 0.4s;
+    cursor: pointer;
+    padding-bottom: 5px;
+    padding-top: 30px;
+    user-select: none;
+    text-align: center;
+    border-bottom: 4px solid lightgray;
+}
+
+.tab span:hover {
+    background-color: #f1f1f1;
+    border-bottom: 4px solid #008cff;
+    filter: brightness(103.6%);
+
+
+}
+.tab span.active {
+    background-color: #f1f1f1;
+    border-bottom: 4px solid #008cff;
+    pointer-events: none;
+
+
+}
+.tab span:active {
+    transform: scale(0.9);
+    background-color: #f1f1f1;
+    filter: brightness(90%);
+    border-bottom: 4px solid #008cff;
+
+}

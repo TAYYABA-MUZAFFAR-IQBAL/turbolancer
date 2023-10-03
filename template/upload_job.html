@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=08">
+    <title>Task Posting Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+        @import url("https://fonts.googleapis.com/css?family=Sofia");
+
+        * {
+            padding: 0;
+            font-family: "Poppins", Arial, sans-serif !important;
+            transition: all 0.1s;
+
+        }
+body{
+    overflow:hidden;
+}
+        .btn.AI {
+            background-color: #007bff;
+            color: #fff;
+transition: all 0.3s;
+            border: none;
+        }
+
+        .btn.AI:hover {
+            background-color: #0068d6;
+            color: #fff;
+
+        }
+
+        .btn.AI.disabledme {
+            background-color: #25baff;
+            cursor: not-allowed;
+        }
+
+        .btn.AI.disabledme:active {
+            pointer-events: none;
+        }
+
+        .container {
+            margin: 0 auto;
+        }
+
+        .card {
+            box-shadow: 0 4px 27px rgba(0, 0, 0, 0.11);
+            
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            z-index: 324234;
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        .form-select {
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .btn.AI {
+            margin-left: 10px;
+            background-color: #007bff;
+            background-image: linear-gradient1(546deg, #007bff, #3596fd);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .btn.btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .btn.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            border: none !important;
+            border-bottom: 1px solid #007bffd7 !important;
+            border-radius: 0 !important;
+            outline: none !important;
+        }
+
+        .button1 {
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #3d405b;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 17px;
+            padding: 16px;
+            width: 220px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .button1 span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            z-index: 2345435 !important;
+            transition: 0.5s;
+        }
+
+        .button1 span:after {
+            content: '»';
+            position: absolute;
+            opacity: 0;
+            z-index: 2345435 !important;
+            top: 0;
+            right: -15px;
+            transition: 0.5s;
+        }
+
+        .button1:hover span {
+            padding-right: 15px;
+            z-index: 2345435 !important;
+
+        }
+
+        .button1:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+        .button {
+  width: fit-content;
+  display: flex;
+  padding: 1.2em 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 10px;
+  text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
+  background: linear-gradient(15deg, #007bffd7, #007bff, #00aaff, #00d69f, #00ffbb, #00d69f, #00aaff, #007bff, #007bffd7) no-repeat;
+  background-size: 300%;
+  color: #fff;
+  border: none;
+  align-items: center;
+  background-position: left center;
+  transition: background .3s ease;
+}
+
+.button:hover {
+  background-size: 320%;
+  background-position: right center;
+}
+
+.button:hover svg {
+  fill: #fff;
+  width: 30px;
+
+}
+
+.button svg {
+  width: 0;
+  fill: #09ff00;
+  transition: .3s ease;
+}
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <form id="taskForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="taskTitle" class="form-label" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Enter a clear and concise title for your task.">Job
+                                    Title</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="taskTitle" name="taskTitle"
+                                        placeholder="Enter task title" required>
+                                        <button class="button">
+                                            <svg class="sparkle" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                              </svg> Genrate with AI
+                                        </button>
+                                    
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="taskCategory" class="form-label" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Select the category that best fits your task.">Job
+                                    Category</label>
+                                <input type="text" class="form-control" id="taskTitle" name="taskTitle"
+                                    placeholder="Example: WebDevelopment, Photo editing, content writting, etc."
+                                    required list="datalist">
+                                <datalist id="datalist">
+                                    <option value="hello"></option>
+                                    <option value="hello"></option>
+                                    <option value="hello"></option>
+                                </datalist>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="taskDescription" class="form-label" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Provide a detailed description of your task, including specific requirements and expectations.">Task
+                                    Description</label>
+                                <div class="input-group">
+
+                                    <textarea class="form-control" id="taskDescription" name="taskDescription" rows="4"
+                                        placeholder="Enter task description" required></textarea>
+
+                                              <button class="button">
+                                                <svg class="sparkle" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                    <path d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z" fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                  </svg> Rephrase with AI
+                                            </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="budget" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Specify your budget for the task, either as a fixed amount or a range.">Budget</label>
+                                <input type="text" class="form-control" id="budget" name="budget"
+                                    placeholder="Enter budget" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deadline" class="form-label" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Set the deadline by which you need the task to be completed.">Deadline</label>
+                                <input type="date" class="form-control" id="deadline" name="deadline" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="attachments" class="form-label" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Paste the link of any website, image file etc.">Attachments</label>
+                                <input placeholder="Paste link here." type="text" class="form-control" id="attachments" name="attachments[]"
+                                    >
+                            </div>
+                            <button class="button1" type="submit">
+                                <span>Continue To Checkout</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Initialize Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+    </script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const taskForm = document.getElementById("taskForm");
+
+  taskForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Collect form data as an object
+    const formData = {};
+    const formElements = taskForm.elements;
+
+    for (let i = 0; i < formElements.length; i++) {
+      const element = formElements[i];
+      if (element.name) {
+        formData[element.name] = element.value;
+      }
+    }
+
+    // Convert the object to a JSON string
+    const jsonData = JSON.stringify(formData);
+
+    // Encode the JSON string to base64
+    const base64Data = btoa(jsonData);
+
+    // Compress the base64 data (you can use a library like lz-string)
+    const compressedData = LZString.compressToBase64(base64Data);
+
+    // Redirect to the next page with the data in the URL
+    const nextPageURL = `option.html?data=${encodeURIComponent(compressedData)}`;
+    window.location.href = nextPageURL;
+  });
+});
+</script>
+</body>
+
+</html>

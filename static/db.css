@@ -22,8 +22,10 @@ body {
     min-height: 100% !important;
     background: #f2f2f2;
     display: flex;
+    position: absolute;
     overflow: hidden;
-    border-radius: 12px;
+    top: 0;
+    left: 0;
     box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.12);
     overflow-x: hidden;
 }
@@ -864,50 +866,57 @@ a {
 body {
     background: #fff; /* Set your default background color */
     transition: all 0.6s ease-in-out;
-    
 }
-body.darkMode  {
-    background: #404040; /* Set the background color for dark mode */
+
+
+* {
+    scroll-behavior: smooth !important;
+}
+/* body.darkMode  {
+    background: #404040; 
 }
 body.lightmode *{
-    animation: showi 1s ease-in-out 1;
+    animation: showi 0.5s ease-in-out 1;
 }
 body.darkMode  * {
-    animation: show 1s ease-in-out 1;
+    animation: show 0.5s ease-in-out 1;
 }
 @keyframes show {
     0% {
-        transform: scale(auto);
+filter: blur(auto);
     }
     50% {
-        transform: scale(.994);
+
+        filter: blur(5px);
+
     }
     100% {
-        transform: scale(auto);
+        filter: blur(auto);
         
 
     }
 }
 @keyframes showi {
     0% {
-        transform: scale(auto);
+        filter: blur(auto);
 
     }
     50% {
-        transform: scale(.994);
+        filter: blur(5px);
 
 
     }
     100% {
-        transform: scale(auto);
+        filter: blur(auto);
 
     }
-}
+} */
 
 :root {
     --primary-bg: #f1f1f1;
+    --spcbg:#fff;
     --secondary-bg: #e5e5e5;
-    --accent-bg: rgb(0, 197, 0);
+    --accent-bg: #00c500;
     --primary-color: #000;
     --secondary-color: rgba(0, 0, 0, 70%);
     --accent-color: rgb(0, 153, 0);
@@ -921,6 +930,8 @@ body.darkMode  * {
 
 /* Dark theme */
 .darkMode {
+    --spcbg:#202020;
+
     --primary-bg: #171717;
     --secondary-bg: #262626;
     --accent-bg: rgb(122, 206, 122);
@@ -1175,7 +1186,7 @@ body.darkMode  * {
 @media screen and (max-width: 968px) {
     .profile-card {
         height: 100%;
-        border-radius: 0;
+        border-radius: 0; 
     }
 
     .bio {
@@ -1565,3 +1576,269 @@ body.darkMode  * {
     /* Cover the text with the image */
 
 }
+.loader {
+  display: block;
+  --height-of-loader: 4px;
+  --loader-color: #0071e2;
+  width: 130px;
+  height: var(--height-of-loader);
+  border-radius: 30px;
+  background-color: rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  background: var(--loader-color);
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  border-radius: 30px;
+  animation: moving 1s ease-in-out infinite;
+  ;
+}
+
+@keyframes moving {
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+    right: 0;
+    left: unset;
+  }
+}
+.splash_screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 59696696969696969696969969696969699;
+  background-color: var(--spcbg);
+  transition: all 0.5s;
+}
+
+/* Style the logo image */
+.splash_screen img {
+  max-width: 60%;
+  height: 100px;
+  object-fit: scale-down;
+}
+.splash_screen *{
+transition: all 0.5s;
+}
+.splash_screen.loaded,.splash_screen.loaded * {
+    transition: all 0.6s;
+    transform: scale(0);
+
+}
+#cpfp{
+    width:50px;
+    height:50px;
+    border-radius:50px;
+    object-fit:cover;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.384);
+  }
+
+  .modal-content {
+    margin: auto;
+    display: block;
+    object-fit: scale-down;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .imgouter {
+    margin: auto;
+    display: flex;
+    overflow: hidden;
+
+    width: 80%;
+    object-fit: scale-down;
+    height: 500px;
+    max-width: 700px;
+  }
+
+  #caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+  }
+
+  .modal {
+    -webkit-animation-name: fadein;
+    -webkit-animation-duration: 0.6s;
+    animation-name: fadein;
+    animation-duration: 0.6s;
+  }
+
+  @-webkit-keyframes fadein {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .modal.out,
+  .bg.out {
+    -webkit-animation-name: fadeout;
+    -webkit-animation-duration: 0.6s;
+    animation-name: fadeout;
+    animation-duration: 0.6s;
+  }
+
+  @-webkit-keyframes fadeout {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  .modal-content,
+  #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+  }
+
+  @-webkit-keyframes zoom {
+    from {
+      opacity: 0;
+      -webkit-transform: scale(0);
+    }
+
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1);
+    }
+  }
+
+  @keyframes zoom {
+    from {
+      opacity: 0;
+
+      transform: scale(0);
+    }
+
+    to {
+      opacity: 1;
+
+      transform: scale(1);
+    }
+  }
+
+  .modal-content.out,
+  #caption.out,
+  .box.out {
+    -webkit-animation-name: zoomOUT;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoomOUT;
+    animation-duration: 0.6s;
+  }
+
+  @-webkit-keyframes zoomOUT {
+    from {
+      opacity: 1;
+      -webkit-transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      -webkit-transform: scale(0);
+    }
+  }
+
+  @keyframes zoomOUT {
+    from {
+      opacity: 1;
+
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+
+      transform: scale(0);
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  @media only screen and (max-width: 700px) {
+    .modal-content {
+      width: 100%;
+    }
+  }
