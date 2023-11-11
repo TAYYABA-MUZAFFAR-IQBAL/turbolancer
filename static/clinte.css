@@ -188,7 +188,7 @@ nav div a:hover {
 .hero::after{
     content: 'the text';
     right: 0;
-    float: left;
+    float: left; 
     top: 0%;
     color: #fff;
 }
