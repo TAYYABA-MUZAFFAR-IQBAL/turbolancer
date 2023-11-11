@@ -439,6 +439,7 @@ def update_result():
         #         'payment_method': 'Visa',
         #         'project_history': []
 
+
 @app.route('/Dashbord/<x>/<y>')
 def Dashbord(x, y):
     try:
@@ -516,11 +517,12 @@ def Dashbord(x, y):
                                check=user_data['email'],
                                year=year,
                                method=method,
-                               zipped_data = zipped_data)
+                               zipped_data=zipped_data)
 
     except Exception as e:
         print("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred'}), 500
+
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -530,9 +532,6 @@ def not_found_error(error):
 @app.route('/try')
 def index():
     return render_template('try.html')
-
-
-
 
 
 def get_user_data(user_id, Atype):
@@ -709,7 +708,7 @@ def delmessageev(data):
 
 @app.route('/get_messages', methods=['POST'])
 def get_messages():
-    data = request.get_json()  
+    data = request.get_json()
     user_id = data.get('user_id')
     print(user_id)
     chat_room_name = data.get('chat_room_name')
@@ -747,17 +746,24 @@ def get_messages():
     # bloaked_by[0] is a lsit
 
     return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
+
+
 @app.route('/home-c')
 def home_c():
     return render_template('clint-side-db.html')
+
+
 @app.route('/upjobpage')
 def page():
     return render_template('upload_job.html')
+
+
 @app.route('/rephrase_text', methods=['POST'])
 def rephrase():
-    data = request.get_json()  
+    data = request.get_json()
     input_text = data.get('text')
-    random_paraphrases = TurboLancer_RePhrase_text.get_random_paraphrases(input_text, num_paraphrases=3)
+    random_paraphrases = TurboLancer_RePhrase_text.get_random_paraphrases(
+        input_text, num_paraphrases=3)
     print(random_paraphrases)
 
     return jsonify(text=random_paraphrases)

@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body class="gradient1">
     <div id="full_page" style="width: 100%;right: 0; position: absolute;">
         <nav class="nav1">
             <div id="loplus">
@@ -257,6 +257,8 @@ function select(x){
 
             function changeGradient() {
                 element.classList.remove(`gradient${currentGradient}`);
+                document.body.classList.remove(`gradient${currentGradient}`);
+
                 currentGradient = (currentGradient % 3) + 1;
                 element.classList.add(`gradient${currentGradient}`);
                 document.body.classList.add(`gradient${currentGradient}`);
@@ -283,7 +285,7 @@ function select(x){
         window.onscroll = function () { scrollFunction() };
 
         function scrollFunction() {
-            if (document.body.scrollTop > 380 || document.documentElement.scrollTop > 380) {
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop >400) {
                 document.querySelector('nav').classList.add('scrolled');
                 document.querySelector('.nav2').classList.remove('scrolled');
                 document.querySelector('.tabular_parent').style.width = '100%';
