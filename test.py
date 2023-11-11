@@ -11,7 +11,7 @@ import datetime
 import turbolancer_data_Security
 from jinja2 import Environment, FileSystemLoader
 from flask_socketio import SocketIO, emit, join_room
-
+import TurboLancer_RePhrase_text
 
 app = Flask(__name__, template_folder='template', static_folder='static')
 env = Environment(loader=FileSystemLoader('template'))
@@ -532,9 +532,7 @@ def index():
     return render_template('try.html')
 
 
-@app.route('/getdevsellerdatafromtrbolancer')
-def getdev():
-    return 'hello'
+
 
 
 def get_user_data(user_id, Atype):
@@ -711,7 +709,7 @@ def delmessageev(data):
 
 @app.route('/get_messages', methods=['POST'])
 def get_messages():
-    data = request.get_json()  # Get the JSON data from the request body
+    data = request.get_json()  
     user_id = data.get('user_id')
     print(user_id)
     chat_room_name = data.get('chat_room_name')
@@ -749,6 +747,20 @@ def get_messages():
     # bloaked_by[0] is a lsit
 
     return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
+@app.route('/home-c')
+def home_c():
+    return render_template('clint-side-db.html')
+@app.route('/upjobpage')
+def page():
+    return render_template('upload_job.html')
+@app.route('/rephrase_text', methods=['POST'])
+def rephrase():
+    data = request.get_json()  
+    input_text = data.get('text')
+    random_paraphrases = TurboLancer_RePhrase_text.get_random_paraphrases(input_text, num_paraphrases=3)
+    print(random_paraphrases)
+
+    return jsonify(text=random_paraphrases)
 
 
 if __name__ == '__main__':

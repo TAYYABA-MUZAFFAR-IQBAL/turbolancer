@@ -19,7 +19,9 @@ body {
     transition: background 1s ease;
 
 }
-
+.dropdown-item{
+    text-transform: capitalize;
+}
 nav {
     z-index: 423424234;
     top: 0px;
@@ -552,14 +554,14 @@ div.container_input::after {
 }
 
 .tab span:hover {
-    background-color: #f1f1f1;
-    border-bottom: 4px solid #008cff;
+    background: #e8f0fe;
+        border-bottom: 4px solid #008cff;
     filter: brightness(103.6%);
 
 
 }
 .tab span.active {
-    background-color: #f1f1f1;
+    background-color: #e9f0fe;
     border-bottom: 4px solid #008cff;
     pointer-events: none;
 

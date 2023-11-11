@@ -26,16 +26,9 @@ def get_random_paraphrases(text, num_paraphrases=3):
         if suggestions:
             # Shuffle the suggestions to make them random
             random.shuffle(suggestions)
+            random.shuffle(suggestions)
             return [suggestion["text"] for suggestion in suggestions[:num_paraphrases]]
         else:
             return ["No suggestions found in the response." for _ in range(num_paraphrases)]
     else:
         return [f"Error: {response.status_code} - {response.text}" for _ in range(num_paraphrases)]
-
-# Example usage
-input_text = input("text: ")
-
-random_paraphrases = get_random_paraphrases(input_text, num_paraphrases=3)
-print("Random texts:")
-for i, paraphrase in enumerate(random_paraphrases):
-    print(f"{i + 1}: {paraphrase}")
