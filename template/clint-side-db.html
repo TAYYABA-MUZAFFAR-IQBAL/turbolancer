@@ -92,6 +92,9 @@
             <iframe class="upload_job_if"  src="/upjobpage" style="width: 100%;margin-top: 10vh;
             height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
             " frameborder="0"></iframe>
+              <iframe class="getsearved"  src="http://127.0.0.1:5000/getserved" style="width: 100%;margin-top: 10vh;
+              height: 130vh; opacity: 1;display: none;     transition: all 0.2s;
+              " frameborder="0"></iframe>
         </section>
     </div>
     <div id="mySidenav" class="sidenav">
@@ -122,6 +125,8 @@ function select(x){
     x.classList.add("active");
     if(document.querySelector('.active[data = "job"]')){
         document.querySelector('.upload_job_if').style.display = 'block'
+        document.querySelector('.getsearved').style.display = 'none';
+
         setTimeout(() => {
             document.querySelector('.upload_job_if').style.opacity = '1'
 
@@ -129,6 +134,7 @@ function select(x){
     }
     else if(document.querySelector('.active[data = "service"]')){
         document.querySelector('.upload_job_if').style.opacity = '0'
+        document.querySelector('.getsearved').style.display = 'block';
         setTimeout(() => {
             document.querySelector('.upload_job_if').style.display = 'none'
 
@@ -139,6 +145,7 @@ function select(x){
     }
  
 }
+
         function openNav() {
             if (!(window.innerWidth < 980)) {
                 document.getElementById("full_page").removeEventListener('click', closeNav)

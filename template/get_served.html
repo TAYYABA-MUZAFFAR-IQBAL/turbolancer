@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5">
+  <title>TurboLancer | Get Served</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+    @import url("https://fonts.googleapis.com/css?family=Sofia");
+
+    * {
+      -webkit-transition: all 0.1s;
+      -o-transition: all 0.1s;
+      transition: all 0.1s;
+      text-wrap: balance;
+      font-family: "Poppins", Arial, sans-serif;
+    }
+
+    .top_panle {
+      width: 100%;
+      height: auto;
+      padding: 15px 0px;
+      min-height: 4rem;
+      border-bottom: 1px solid #0002;
+      position: absolute;
+      top: 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+      justify-content: space-evenly;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      left: 0;
+      z-index: 46546;
+    }
+
+    .top_panle+* {
+      margin-top: 130px;
+    }
+
+    @media (max-width:500px) {
+      .top_panle * {
+        -webkit-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+      }
+
+      .top_panle {
+        padding: 15px 0px;
+        flex-wrap: wrap-reverse;
+
+      }
+    }
+
+    @media (max-width:460px) {
+
+      .dropdownbtn {
+        -webkit-transform: scale(0.7);
+        -ms-transform: scale(0.7);
+        transform: scale(0.7);
+      }
+    }
+
+    .dropdownbtn {
+      padding: 10px 15px;
+      word-break: keep-all;
+      color: #00000079;
+      border: 1px solid #e7e7e7;
+      border-radius: 10px;
+      cursor: pointer;
+      -webkit-box-shadow: 0 1px 4px #0002;
+      box-shadow: 0 1px 4px #0002;
+    }
+
+    .dropdownbtn:hover {
+      -webkit-box-shadow: 0 1px 8px #0002;
+      box-shadow: 0 1px 8px #0002;
+
+    }
+
+    .dropdown-content-box {
+      position: inherit;
+      z-index: 13;
+      background-color: #fff;
+      -webkit-filter: brightness(99%);
+      filter: brightness(99%);
+      margin-right: -60px;
+      margin-top: 10px;
+      border-radius: 8px;
+      position: absolute;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-transform: scale(0);
+      -ms-transform: scale(0);
+      transform: scale(0);
+      overflow: hidden;
+      min-height: 50px;
+      min-width: 8rem;
+      -webkit-box-shadow: 0 3px 5px #0002;
+      box-shadow: 0 3px 5px #0002;
+    }
+
+    .dropdown-content-box.show {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-animation: sho 0.3s ease 0s forwards;
+      animation: sho 0.3s ease 0s forwards;
+      -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+      transform-origin: top left;
+
+    }
+
+    .dropdown-content-box.show * {
+      -webkit-animation: sho 0.4s ease 0s forwards;
+      animation: sho 0.4s ease 0s forwards;
+      -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+      transform-origin: top left;
+    }
+
+    @-webkit-keyframes sho {
+      0% {
+        transform: scale(.8);
+        opacity: 0;
+
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes sho {
+      0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
+    @-webkit-keyframes hide {
+      0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+
+      }
+
+      100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+    }
+
+    @keyframes hide {
+      0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+
+      }
+
+      100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+    }
+
+    .dropdown-content-box.hide {
+      display: none;
+      -webkit-animation: hide 0.3s ease 0s backwards;
+      animation: hide 0.3s ease 0s backwards;
+      -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+      transform-origin: top left;
+
+
+    }
+
+    .dropdown-content-box.hide * {
+      -webkit-animation: hide 0.4s ease 0s backwards;
+      animation: hide 0.4s ease 0s backwards;
+      -webkit-transform-origin: top left;
+      -ms-transform-origin: top left;
+      transform-origin: top left;
+    }
+
+    .dropdown-content-box span {
+      padding: 10px;
+      cursor: pointer;
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+      justify-content: space-evenly;
+      text-align: center;
+      margin-bottom: 1px;
+
+    }
+
+    .dropdown-content-box span:hover {
+      background-color: #e2e2e2;
+      -webkit-transition-timing-function: linear;
+      -o-transition-timing-function: linear;
+      transition-timing-function: linear;
+      -webkit-transition: all 0.2s !important;
+      -o-transition: all 0.2s !important;
+      transition: all 0.2s !important;
+
+    }
+
+    .itemindrop::before {
+      -webkit-transition: all 0.3s !important;
+      -o-transition: all 0.3s !important;
+      transition: all 0.3s !important;
+
+      content: '';
+      height: 10px;
+      border-radius: 50px;
+      width: 10px;
+      left: 3px;
+      z-index: 13;
+      position: absolute;
+      -webkit-transform: translateX(170%);
+      -ms-transform: translateX(170%);
+      transform: translateX(170%);
+      outline: 2px solid #121212;
+      outline-offset: 2px;
+
+
+    }
+
+    .itemindrop.mark::before {
+      -webkit-transition: all 0.3s !important;
+      -o-transition: all 0.3s !important;
+      transition: all 0.3s !important;
+
+      background-color: #121212;
+
+    }
+
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 51px;
+      height: 24px;
+    }
+
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      -o-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 15px;
+      width: 15px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      -o-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #23d300;
+    }
+
+    input:focus+.slider {
+      -webkit-box-shadow: 0 0 1px #23d300;
+      box-shadow: 0 0 1px #23d300;
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .sell_on {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      color: #189100;
+    }
+
+    .btn_box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      -webkit-animation: hide 0.4s ease 0s backwards;
+      animation: hide 0.4s ease 0s backwards;
+
+      -webkit-box-ordinal-group: 2;
+
+      -ms-flex-order: 1;
+
+      order: 1;
+    }
+
+    .btn {
+      padding: 7px 11px !important;
+      font-size: 14px;
+      line-height: 1.5;
+      border-radius: 3px;
+      text-align: center;
+      cursor: pointer;
+      margin: 3px auto;
+      display: block;
+      outline: none;
+      border: none;
+      font-weight: 600;
+      color: #151515;
+      margin: 4px;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn.ss {
+      background-color: #121212;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    * {
+      transition: all 0.3s;
+    }
+
+    .card {
+      text-wrap: balance;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: block;
+      float: left;
+      margin: 10px;
+      width: 100%;
+      transition: all 0.3s;
+      max-width: 300px;
+      color: #fff;
+      position: relative;
+      text-align: left;
+      background-image: linear-gradient(transparent, #ffffff54, transparent);
+    }
+
+    .card .cardimg {
+      display: none;
+      height: 170px;
+      width: 100%;
+      object-fit: fill;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+
+    .card .reqimg {
+      display: block;
+    }
+
+
+    .card p {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .card span {
+      font-size: 16px;
+    }
+
+    .card a {
+      background-color: #f1f1f1;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 14px;
+      margin-top: 10px;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .card a:hover {
+      background-color: #e6e6e6;
+    }
+
+    .pro {
+      display: grid;
+      grid-template-columns: 31px auto;
+      width: 100%;
+      height: 34px;
+      align-items: center;
+      justify-content: left;
+      gap: 4px;
+      font-size: 23px;
+    }
+
+    .pro h5 {
+      line-height: 30px;
+      text-align: left;
+      margin-left: 7px;
+      margin-top: 25px;
+      font-weight: bolder;
+      font-size: 16px;
+      text-transform: capitalize;
+    }
+
+    .pro img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+    }
+
+    .price {
+      text-align: right !important;
+      float: right !important;
+      margin-right: 10px;
+      font-size: 22px !important;
+    }
+
+    .pro,
+    .card p,
+    .price,
+    .ratting {
+      margin-left: 10px;
+    }
+
+    .after {
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      background-color: #fff;
+      box-shadow: 0 5px 10px #0002;
+      position: absolute;
+      color: #000;
+      top: 18%;
+      right: 1%;
+      font-weight: bold;
+      font-size: 26px;
+      display: none;
+      justify-content: center;
+      z-index: 454;
+
+      align-items: center;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.4s;
+      font-family: Arial, Helvetica, sans-serif;
+      cursor: pointer;
+
+    }
+
+    .after.show {
+      transform: translateX(0%);
+      opacity: 1;
+      transition: all 0.4s;
+    }
+
+    .before.show {
+
+      transform: translateX(0%);
+      opacity: 1;
+      transition: all 0.4s;
+
+    }
+
+    .reqimg {
+      animation-name: come;
+      animation-duration: 0.4s;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+    }
+
+    @keyframes come {
+      from {
+        opacity: 0;
+        transform: scale(1.05);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+    }
+
+    .before {
+      transition: all 0.4s;
+      display: none;
+      transform: translateX(-100%);
+      opacity: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      background-color: #fff;
+      box-shadow: 0 5px 10px #0002;
+      position: absolute;
+      z-index: 454;
+      color: #000;
+      top: 18%;
+      left: 1%;
+      font-weight: bold;
+      font-size: 26px;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+      cursor: pointer;
+    }
+
+    .pro img.live {
+      border: none;
+      outline: 3px solid rgb(21, 255, 0);
+      border-radius: 50%;
+
+      outline-offset: 3px;
+
+
+
+
+    }
+    /* .second{
+      display: gri;
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="top_panle">
+    <div onmouseleave="hide(this)" onmouseenter="show(this)">
+      <span class="dropdownbtn">Sort Sellers BY</span>
+      <div style="display: none;" class="dropdown-content-box hide sort">
+        <div class="btn_box"><button id="sort" onclick="clearall(this)" class="btn ff">Clear ALL</button> <button
+            class="btn ss">Aply</button>
+        </div>
+
+        <span class="itemindrop a" id="sort" onclick="mark('a', 'sort')">Top Rated</span>
+        <span class="itemindrop b" id="sort" onclick="mark('b', 'sort')">New Sellers</span>
+        <span class="itemindrop c" id="sort" onclick="mark('c', 'sort')">Random</span>
+      </div>
+    </div>
+
+    <div onmouseleave="hide(this)" onmouseenter="show(this)">
+      <span class="dropdownbtn">Sort Sellers BY</span>
+      <div style="display: none;" class="dropdown-content-box hide sort">
+        <div class="btn_box"><button id="sort" onclick="clearall(this)" class="btn ff">Clear ALL</button> <button
+            class="btn ss">Aply</button>
+        </div>
+
+        <span class="itemindrop a" id="sort" onclick="mark('a', 'sort')">Top Rated</span>
+        <span class="itemindrop b" id="sort" onclick="mark('b', 'sort')">New Sellers</span>
+        <span class="itemindrop c" id="sort" onclick="mark('c', 'sort')">Random</span>
+      </div>
+    </div>
+
+    <div onmouseleave="hide(this)" onmouseenter="show(this)">
+      <span class="dropdownbtn">Sort Sellers BY</span>
+      <div style="display: none;" class="dropdown-content-box hide sort">
+        <div class="btn_box"><button id="sort" onclick="clearall(this)" class="btn ff">Clear ALL</button> <button
+            class="btn ss">Aply</button>
+        </div>
+
+        <span class="itemindrop a" id="sort" onclick="mark('a', 'sort')">Top Rated</span>
+        <span class="itemindrop b" id="sort" onclick="mark('b', 'sort')">New Sellers</span>
+        <span class="itemindrop c" id="sort" onclick="mark('c', 'sort')">Random</span>
+      </div>
+    </div>
+    <span class="sell_on"> online seller&nbsp;
+
+      <label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label></span>
+  </div>
+  <div class="second">
+
+    <div class="imageDiv card" onmouseenter="show2(this)" onmouseleave="hide2(this)">
+      <div class="after" onclick="next(this)">↪</div>
+      <div class="before" onclick="back(this)">↩</div>
+      <img src="/static/image-removebg-preview (1).png" class="cardimg reqimg" alt="Rajib Khan">
+      <img src="/static/global-data-security-personal-data-security-cyber-data-security-online-concept-illustration-internet-security-information-privacy-protection_1150-37375.webp" class="cardimg" alt="Rajib Khan">
+      <img src="/static/nft-4.jpg" class="cardimg" alt="Rajib Khan">
+      <img src="/static/ideogram-removebg-preview.png" class="cardimg" alt="Rajib Khan">
+      <span class="pro">
+        <img class="live" src="/static/freelancer girl.png" alt="Rajib Khan">
+        <h5>mian junaid</h5>
+
+      </span><br>
+      <p>I will do web application in java python c-Sharp with angular.</p> <br><span class="ratting"><b> ★ 5.0</b>
+        <t style="opacity: 0.9;">(56)</t>
+      </span> <br><br>
+      <span class="price"><b>$431</b></span> <br><br>
+    </div>
+    <div class="imageDiv card" onmouseenter="show2(this)" onmouseleave="hide2(this)">
+      <div class="after" onclick="next(this)">↪</div>
+      <div class="before" onclick="back(this)">↩</div>
+      <img src="/static/global-data-security-personal-data-security-cyber-data-security-online-concept-illustration-internet-security-information-privacy-protection_1150-37375.webp" class="cardimg reqimg" alt="Rajib Khan">
+      <img src="/static/nft-4.jpg" class="cardimg" alt="Rajib Khan">
+      <img src="/static/image-removebg-preview (1).png" class="cardimg " alt="Rajib Khan">
+
+      <img src="/static/ideogram-removebg-preview.png" class="cardimg" alt="Rajib Khan">
+      <span class="pro">
+        <img class="live" src="/static/freelancer girl.png" alt="Rajib Khan">
+        <h5>mian junaid</h5>
+
+      </span><br>
+      <p>I will do web application in java python c-Sharp with angular.</p> <br><span class="ratting"><b> ★ 5.0</b>
+        <t style="opacity: 0.9;">(56)</t>
+      </span> <br><br>
+      <span class="price"><b>$431</b></span> <br><br>
+    </div>
+
+
+  </div>
+  <script>
+
+
+    function show(x) {
+      var dropdownContent = x.querySelector('.dropdown-content-box');
+      dropdownContent.style.display = 'flex';
+      dropdownContent.classList.remove('hide');
+      dropdownContent.classList.add('show');
+    }
+    function hide(x) {
+      var dropdownContent = x.querySelector('.dropdown-content-box');
+      dropdownContent.classList.remove('show');
+      dropdownContent.classList.add('hide');
+    }
+    function mark(x, p) {
+      var parent = document.querySelectorAll(`.${p} .itemindrop`)
+      parent.forEach(element => {
+        check = element.classList.contains('mark')
+        if (check) {
+          element.classList.remove('mark')
+
+        }
+      });
+      document.querySelector(`.${p} .itemindrop.${x}`).classList.add('mark')
+
+    }
+
+    function clearall(b) {
+      paent = b.id
+      var parent = document.querySelectorAll(`.${paent} .itemindrop`)
+      parent.forEach(element => {
+        check = element.classList.contains('mark')
+        if (check) {
+          element.classList.remove('mark')
+
+        }
+      });
+    }
+
+    function show2(c) {
+      c.querySelector('.after').style.display = 'flex';
+      c.querySelector('.before').style.display = 'flex';
+      setTimeout(() => {
+        c.querySelector('.after').classList.add('show');
+        c.querySelector('.before').classList.add('show');
+      }, 100);
+
+
+      imgs = c.querySelectorAll('.cardimg');
+      c.setAttribute('data-count', imgs.length)
+
+      num = 0
+      imgs.forEach(element => {
+        console.log(num)
+        element.setAttribute('data-num', num)
+        num += 1;
+      });
+
+      total = c.getAttribute('data-count') - 1;
+      if (total < 0) total += 1;
+      check = c.querySelector('.reqimg').getAttribute('data-num') - 0;
+      console.log(`${check},  ${total}`)
+      if (check == total) {
+        c.querySelector('.after').classList.remove('show');
+
+        setTimeout(() => {
+          c.querySelector('.after').style.display = 'none';
+
+        }, 100);
+
+      }
+      else if (check == total - total) {
+
+        c.querySelector('.before').classList.remove('show');
+        setTimeout(() => {
+          c.querySelector('.before').style.display = 'none';
+
+        }, 100);
+      }
+
+      else {
+        c.querySelector('.after').style.display = 'flex';
+        c.querySelector('.before').style.display = 'flex';
+        setTimeout(() => {
+          c.querySelector('.after').classList.add('show');
+
+          c.querySelector('.before').classList.add('show');
+        }, 100);
+
+      }
+    }
+
+    function hide2(c) {
+
+
+      c.querySelector('.after').classList.remove('show');
+      c.querySelector('.before').classList.remove('show');
+
+
+      setTimeout(() => {
+        c.querySelector('.after').style.display = 'none';
+        c.querySelector('.before').style.display = 'none'
+      }, 200);
+    }
+    function doItAgain(div) {
+      const img = div.querySelector('.reqimg');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const width = img.width;
+      const height = img.height;
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      const imageData = ctx.getImageData(2, 2, width, height).data;
+      const averageRGB = getAverageRGB(imageData);
+      img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
+      img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
+      div.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
+      div.style.boxShadow = `0px 10px 30px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.8)`; // Reduced opacity for the shadow
+
+    }
+
+    function checkImagesAndSetColors() {
+      const divs = document.querySelectorAll('.imageDiv');
+
+      divs.forEach(div => {
+        const img = div.querySelector('.reqimg');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const width = img.width;
+        const height = img.height;
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        const imageData = ctx.getImageData(2, 2, width, height).data;
+        const averageRGB = getAverageRGB(imageData);
+        img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
+        img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
+        div.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
+        div.style.boxShadow = `0px 10px 30px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.8)`; // Reduced opacity for the shadow
+      });
+    }
+
+    function getAverageRGB(imageData) {
+      let r = 0;
+      let g = 0;
+      let b = 0;
+
+      for (let i = 0; i < imageData.length; i += 4) {
+        r += imageData[i];
+        g += imageData[i + 1];
+        b += imageData[i + 2];
+      }
+
+      const totalPixels = imageData.length / 4;
+      r = Math.round(r / totalPixels / 1.1);
+      g = Math.round(g / totalPixels / 1.1);
+      b = Math.round(b / totalPixels / 1.1);
+
+      return { r, g, b };
+    }
+
+    // Call the function when the page loads
+    window.onload = function () {
+      checkImagesAndSetColors();
+    };
+
+
+    function next(button) {
+      par = button.parentElement;
+      count = par.getAttribute('data-c')
+      par.querySelector(`.reqimg`).classList.remove('reqimg')
+      count = count - 0;
+      count = count + 1;
+      par.setAttribute('data-c', count)
+      console.log(par.querySelector(`[data-num = '${count}']`))
+      par.querySelector(`[data-num = '${count}']`).classList.add('reqimg')
+      total = par.getAttribute('data-count') - 1;
+      check = par.querySelector('.reqimg').getAttribute('data-num') - 0;
+      console.log(`${check},  ${total}`)
+      if (check == total) {
+        par.querySelector('.after').classList.remove('show');
+
+        setTimeout(() => {
+          par.querySelector('.after').style.display = 'none';
+
+        }, 100);
+
+      }
+      else if (check == total - total) {
+
+        par.querySelector('.before').classList.remove('show');
+        setTimeout(() => {
+          par.querySelector('.before').style.display = 'none';
+
+        }, 100);
+      }
+
+      else {
+        par.querySelector('.after').style.display = 'flex';
+        par.querySelector('.before').style.display = 'flex';
+        setTimeout(() => {
+          par.querySelector('.after').classList.add('show');
+
+          par.querySelector('.before').classList.add('show');
+        }, 100);
+
+      }
+      doItAgain(par);
+
+    }
+    function back(button) {
+      par = button.parentElement;
+      count = par.getAttribute('data-c')
+      par.querySelector(`.reqimg`).classList.remove('reqimg')
+      count = count - 0;
+      count = count - 1;
+      par.setAttribute('data-c', count)
+      console.log(par.querySelector(`[data-num = '${count}']`))
+      par.querySelector(`[data-num = '${count}']`).classList.add('reqimg')
+      total = par.getAttribute('data-count') - 1;
+      check = par.querySelector('.reqimg').getAttribute('data-num') - 0;
+      console.log(`${check},  ${total}`)
+      if (check == total) {
+        par.querySelector('.after').classList.remove('show');
+
+        setTimeout(() => {
+          par.querySelector('.after').style.display = 'none';
+
+        }, 100);
+
+      }
+      else if (check == total - total) {
+
+        par.querySelector('.before').classList.remove('show');
+        setTimeout(() => {
+          par.querySelector('.before').style.display = 'none';
+
+        }, 100);
+      }
+
+      else {
+        par.querySelector('.after').style.display = 'flex';
+        par.querySelector('.before').style.display = 'flex';
+        setTimeout(() => {
+          par.querySelector('.after').classList.add('show');
+
+          par.querySelector('.before').classList.add('show');
+        }, 100);
+
+      }
+      doItAgain(par);
+
+    }
+  </script>
+</body>
+
+</html>

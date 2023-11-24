@@ -1,9 +1,18 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 5 version
+*/
+
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Sofia");
 
 * {
     padding: 0;
     font-family: "Poppins", Arial, sans-serif;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
     transition: all 0.3s;
 }
 
@@ -29,15 +38,27 @@ nav {
     position: sticky;
     width: 100%;
     top: 5px;
+    height: -webkit-max-content;
+    height: -moz-max-content;
     height: max-content;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: auto auto;
     grid-template-columns: auto auto;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding: 15px;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
     transition: all 0.5s;
-    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#05050577), to(transparent));
+    background-image: -o-linear-gradient(#05050577, transparent);
     background-image: linear-gradient(#05050577, transparent);
-    box-shadow: 0 -10px 1px #05050577;
+    -webkit-box-shadow: 0 -10px 1px #05050577;
+            box-shadow: 0 -10px 1px #05050577;
     color: #fff;
 
 }
@@ -51,25 +72,41 @@ nav.scrolled {
     height: 0;
     opacity: 0;
     pointer-events: none;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
 
 }
 
 .nav2 {
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
     height: auto;
     top: 0;
     opacity: 1;
     pointer-events: all;
     background-color: #fff;
-    box-shadow: 0 4px 10px #0002;
-    backdrop-filter: none;
+    -webkit-box-shadow: 0 4px 10px #0002;
+            box-shadow: 0 4px 10px #0002;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
     background-image: none;
     color: #000 !important;
-    animation-name: come;
-    animation-duration: 0.4s;
-    animation-timing-function: linear;
+    -webkit-animation-name: come;
+            animation-name: come;
+    -webkit-animation-duration: 0.4s;
+            animation-duration: 0.4s;
+    -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
 
+}
+@-webkit-keyframes come {
+    from {
+height: 0;    }
+    to {
+height: auto;    }
+    
 }
 @keyframes come {
     from {
@@ -88,14 +125,25 @@ nav.scrolled a {
 nav.scrolled .profile {
     background: #121212 !important;
     color: #fff;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
 }
 
 nav div {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: right;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: right;
+        -ms-flex-pack: right;
+            justify-content: right;
     justify-items: center;
     padding: 6px;
     padding-right: 10px;
@@ -115,6 +163,8 @@ nav div a {
     padding-bottom: 15px;
     text-transform: capitalize;
     border-radius: 8px;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
     transition: all 0.3s;
 }
 
@@ -125,21 +175,30 @@ nav div a:hover {
 
 .logo {
     height: 50px;
-    object-fit: scale-down;
+    -o-object-fit: scale-down;
+       object-fit: scale-down;
 }
 
 .profile {
     cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     padding: 4px;
     padding-left: 10px;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     min-width: 120px;
     border-radius: 50px;
     background-color: #fff;
     margin-right: 20px;
     color: #121212;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
 
 }
@@ -157,19 +216,31 @@ nav div a:hover {
 
 .hero {
     padding: 10px;
+    max-height: -webkit-fit-content;
+    max-height: -moz-fit-content;
     max-height: fit-content;
     color: #ffffff;
     min-height: 85vh;
     width: 100%;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 55% 45%;
     grid-template-columns: 55% 45%;
-    justify-content: space-between;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     padding: 20px !important;
     top: -100px;
     z-index: 1;
     padding-top: 50px !important;
     position: relative;
+
+    -webkit-transition: background 1s ease;
+
+    -o-transition: background 1s ease;
 
     transition: background 1s ease;
 }
@@ -178,6 +249,7 @@ nav div a:hover {
     position: absolute;
     left: 0;
     right: 0;
+    background-image: -o-linear-gradient(45deg,#000000 20%, transparent, transparent);
     background-image: linear-gradient(45deg,#000000 20%, transparent, transparent);
     width: 100%;
     position: fixed;
@@ -185,20 +257,20 @@ nav div a:hover {
     z-index: -1;
 
 }
-.hero::after{
-    content: 'the text';
-    right: 0;
-    float: left; 
-    top: 0%;
-    color: #fff;
-}
+
 
 #loplus {
+    display: -ms-grid;
     display: grid;
     gap: 20px;
+    -ms-grid-columns: auto 20px auto;
     grid-template-columns: auto auto;
-    justify-content: flex-start;
-    align-items: center;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 
 }
 
@@ -215,15 +287,18 @@ nav div a:hover {
 }
 
 .gradient1 #imga {
-    filter: drop-shadow(3px 30px 80px #010a06af);
+    -webkit-filter: drop-shadow(3px 30px 80px #010a06af);
+            filter: drop-shadow(3px 30px 80px #010a06af);
 }
 
 .gradient2 #imga {
-    filter: drop-shadow(3px 30px 80px #020f1aad);
+    -webkit-filter: drop-shadow(3px 30px 80px #020f1aad);
+            filter: drop-shadow(3px 30px 80px #020f1aad);
 }
 
 .gradient3 #imga {
-    filter: drop-shadow(3px 30px 80px #200313a6);
+    -webkit-filter: drop-shadow(3px 30px 80px #200313a6);
+            filter: drop-shadow(3px 30px 80px #200313a6);
 }
 
 .slogen {
@@ -257,19 +332,25 @@ div.container_input input[type=text] {
     border-radius: 5px 0 0 5px;
     outline: none;
     border: none;
-    filter: brightness(90%);
+    -webkit-filter: brightness(90%);
+            filter: brightness(90%);
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
     transition: all 0.3s;
 
 
 }
 
 div.container_input input[type=text]:focus {
-    filter: brightness(105%);
+    -webkit-filter: brightness(105%);
+            filter: brightness(105%);
 }
 
 div.container_input button {
     float: left;
     width: 10%;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
     transition: all 0.3s;
     padding: 10px;
     background: #008844;
@@ -300,10 +381,19 @@ div.container_input::after {
     margin-top: 12px;
     width: 60%;
     padding: 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     justify-items: center;
 }
 
@@ -331,8 +421,11 @@ div.container_input::after {
 @media (max-width: 880px) {
     
     .hero {
+        -ms-grid-columns: auto;
         grid-template-columns: auto;
-        justify-content: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
         text-align: center;
 
     }
@@ -357,15 +450,20 @@ div.container_input::after {
         margin-left: -50px;
 
         width: 100%;
-        justify-content: space-around;
-        align-items: center;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         justify-items: center;
     }
 
     #imga {
         display: none;
         opacity: 0;
-        transform: scale(0);
+        -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+                transform: scale(0);
     }
 }
 @media (max-width: 400px) {
@@ -380,8 +478,11 @@ div.container_input::after {
     }}
 @media (max-width: 650px) {
     .hero {
+        -ms-grid-columns: auto;
         grid-template-columns: auto;
-        justify-content: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
         text-align: left;
 
     }
@@ -422,10 +523,13 @@ div.container_input::after {
 }
 
 #imga {
-    object-fit: contain;
+    -o-object-fit: contain;
+       object-fit: contain;
     max-width: 95%;
     right: 50%;
     margin-top: 3vh;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
     transition: all 0.5s;
 
 }
@@ -437,14 +541,19 @@ div.container_input::after {
     background-color: #fff;
     top: 80vh;
     left: 1%;
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
     transition: all 0.2s;
     border-radius: 30px 30px 00 0;
-    box-shadow: 0px 4px 10px 10px #00000034;
+    -webkit-box-shadow: 0px 4px 10px 10px #00000034;
+            box-shadow: 0px 4px 10px 10px #00000034;
 
 }
 
 #full_page {
     width: 100%;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
     min-height: 200%;
 }
@@ -459,6 +568,8 @@ div.container_input::after {
     left: 0;
     background-color: #fff;
     overflow-x: hidden;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
     transition: 0.5s;
     border-radius: 30 0 0 0;
     padding-top: 3px;
@@ -473,10 +584,23 @@ div.container_input::after {
     font-size: 25px;
     color: #202020;
     
+    display: -webkit-box;
+    
+    display: -ms-flexbox;
+    
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
 }
 .sidenav span{
@@ -487,6 +611,8 @@ div.container_input::after {
     font-size: 25px;
     color: #202020;
     display: block;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
     transition: 0.3s;
     cursor: pointer;
 }
@@ -508,6 +634,8 @@ div.container_input::after {
 }
 
 #main {
+    -webkit-transition: margin-left .5s;
+    -o-transition: margin-left .5s;
     transition: margin-left .5s;
     padding: 16px;
 }
@@ -535,6 +663,8 @@ div.container_input::after {
         top: 0;
         left: 0;
         overflow-x: hidden;
+        -webkit-transition: 0.5s;
+        -o-transition: 0.5s;
         transition: 0.5s;
         padding-top: 60px;
     }
@@ -551,13 +681,21 @@ div.container_input::after {
 }
 
 .tab {
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
     position: sticky;
     top: 100px;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 32% 32% 32%;
     grid-template-columns: 32% 32% 32%;
-    justify-content: space-evenly;
-    align-items: center;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
         background-color: #fff;
 
     height: 70px;
@@ -565,19 +703,30 @@ div.container_input::after {
 }
 
 .tab span {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     font-size: 20px;
     font-weight: 600;
     color: #121212;
     width: 100%;
     padding: 4px;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
     transition: all 0.4s;
     cursor: pointer;
     padding-bottom: 5px;
     padding-top: 30px;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
     text-align: center;
     border-bottom: 4px solid lightgray;
 }
@@ -585,7 +734,8 @@ div.container_input::after {
 .tab span:hover {
     background: #e8f0fe;
         border-bottom: 4px solid #008cff;
-    filter: brightness(103.6%);
+    -webkit-filter: brightness(103.6%);
+            filter: brightness(103.6%);
 
 
 }
@@ -597,9 +747,12 @@ div.container_input::after {
 
 }
 .tab span:active {
-    transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+            transform: scale(0.9);
     background-color: #f1f1f1;
-    filter: brightness(90%);
+    -webkit-filter: brightness(90%);
+            filter: brightness(90%);
     border-bottom: 4px solid #008cff;
 
 }

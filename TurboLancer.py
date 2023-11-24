@@ -756,7 +756,9 @@ def home_c():
 @app.route('/upjobpage')
 def page():
     return render_template('upload_job.html')
-
+@app.route('/getserved')
+def get_searved():
+    return render_template('get_served.html')
 
 @app.route('/rephrase_text', methods=['POST'])
 def rephrase():
