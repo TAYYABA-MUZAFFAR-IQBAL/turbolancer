@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.7">
     <link rel="stylesheet" href="style.css">
     <title>Turbolancer</title>
     <link rel="icon" type="image/png" href="/static/icon.png" />
@@ -335,6 +335,12 @@
             /* styles for the pseudo-element with red background */
             background-color: red;
         }
+        input[type='date']{
+            color: transparent;
+        } 
+         input[type='date']:focus{
+            color: #000;
+        }
     </style>
 </head>
 
@@ -343,6 +349,7 @@
         <button class="back-button" onclick="goBack()">&#8249;</button><br>
         <h3 style="font-size: 25px; color: red; font-weight: bold; text-align: center;" id="error"></h3>
         <h1>Sign Up</h1>
+
 
         <form id="signupForm" class="signup-form" action="#" method="POST">
             <div class="avatar-upload">
@@ -373,8 +380,11 @@
                 <label for="tel">Phone Number</label>
             </div>
             <div class="input-group">
-                <input type="text" id="country" name="con" required>
-                <label for="country">Country</label>
+                <input type="date" id="country" name="bir" required>
+                <label for="country">Birthday</label>
+            </div>
+            <div class="input-group">
+                <input type="hidden" id="userCountry" name="con" required>
             </div>
             <div class="content">
                 <button type="submit" class="btn-download">Sign UP</button>
@@ -454,6 +464,24 @@
                 document.getElementById(target).classList.add("hidden");
             });
         });
+
+  // Function to fetch user's country based on IP address
+  function getUserCountry() {
+    fetch('http://ip-api.com/json/')
+      .then(response => response.json())
+      .then(data => {
+        const userCountry = data.country;
+        document.getElementById('userCountry').value = userCountry;
+      })
+      .catch(error => {
+        console.error('Error fetching user country:', error);
+        document.getElementById('userCountry').textContent = 'Not available';
+      });
+  }
+
+  getUserCountry();
+
+
     </script>
 
 </body>

@@ -37,7 +37,6 @@ nav {
 
     position: sticky;
     width: 100%;
-    top: 5px;
     height: -webkit-max-content;
     height: -moz-max-content;
     height: max-content;
@@ -238,11 +237,11 @@ nav div a:hover {
     padding-top: 50px !important;
     position: relative;
 
-    -webkit-transition: background 1s ease;
+    -webkit-transition: all 1s ease;
 
-    -o-transition: background 1s ease;
+    -o-transition: all 1s ease;
 
-    transition: background 1s ease;
+    transition: all 1s ease;
 }
 .hero::before{
     content: '';
@@ -755,4 +754,30 @@ div.container_input::after {
             filter: brightness(90%);
     border-bottom: 4px solid #008cff;
 
+}
+
+.sec{
+    display: none;
+    opacity: 0;
+    height: 0;
+}
+
+.first{
+    display: grid;
+    opacity: 1;
+    height: auto;}
+
+@media (max-width:740px) {
+
+    .sec{
+        display: grid;
+        opacity: 1;
+        height: auto;
+    }
+    .first{
+        display: none;
+        opacity: 0;
+        height: 0;  
+    }
+    
 }

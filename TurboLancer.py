@@ -1,5 +1,5 @@
 import random
-from flask import Flask, request, render_template, redirect, url_for, jsonify, send_file, send_from_directory, render_template_string
+from flask import Flask, request, render_template, redirect, url_for, jsonify, send_file, send_from_directory, render_template_string, abort
 from flask_wtf import FlaskForm
 from wtforms import FileField
 from pymongo import MongoClient
@@ -61,11 +61,11 @@ def signup():
         encoded_country = turbolancer_data_Security.encrypt(
             key, request.form['con'])
         d = 'd'
-        skils = []
 
         # Check if the developer already exists in the database
         print(encoded_email)
         user = developer_collection.find_one({"email": encoded_email})
+        user_id = generate_id()
 
         if user:
             return render_template("signup-c.html",  x='This  Seller already exists!', y='onload= this.click')
@@ -74,12 +74,34 @@ def signup():
             tag = '@' + t
             user_id = generate_id()
             count = developer_collection.count_documents({"name": name})
-            count = int(count)+1
+            count = str((int(count) + 1) * 1000)[::-1]
+
             year = datetime.date.today().year
             count = str(count)
+            if count:
+                count += str(random.randint(0, 9))
             user = {
-
+                "_id":  user_id,
+                "image": '',
+                "name": name,
+                "tag": tag + count,
+                "email": encoded_email,
+                "password": encoded_password,
+                "country": encoded_country,
+                "phone_number": encoded_phone,
+                "about_self": '',
+                "d": d,
+                "sk": [],
+                "grade": "C",
+                "earnings": 0,
+                "rating": 0,
+                "english": '',
+                "payment_method": "Visa",
+                "project_history": [],
+                "chat_rooms": [],
+                "account_created_in": year
             }
+
             developer_collection.insert_one(user)
 
             return render_template('dataform.html', id=user_id, name=name, email=encoded_email)
@@ -118,7 +140,7 @@ def signup_and_upload_image():
         user_id = generate_id()
         year = datetime.date.today().year
         user = {
-            "_id": user_id,
+            "_id":  user_id,
             "image": "/get_image/" + str(image_id),
             "name": name,
             "email": encoded_email,
@@ -420,24 +442,6 @@ def update_result():
             return jsonify({'error': 'Developer not found.'})
     else:
         return jsonify({'error': 'Invalid data.'})
-        # "_id": user_id,
-        #         'image': '',
-        #         "name": name,
-        #         'tag': tag + str(count),
-        #         "email": encoded_email,
-        #         "password": encoded_password,
-        #         "country": encoded_country,
-        #         'phone_number': encoded_phone,
-        #         'about_self': '',
-        #         'd': d,
-        #         'sk': skils,
-        #         'grade': 'C',
-        #         'earnings': 0,
-        #         'rating': 0.0,
-        #         'member_since': year,
-        #         'english': '',
-        #         'payment_method': 'Visa',
-        #         'project_history': []
 
 
 @app.route('/Dashbord/<x>/<y>')
@@ -458,7 +462,7 @@ def Dashbord(x, y):
         earnings = user_data['earnings']
         ratting = user_data['rating']
         en = user_data['english']
-        year = user_data['member_since']
+        year = user_data['account_created_in']
         method = user_data["payment_method"]
         user_id = x
         account = y
@@ -526,7 +530,7 @@ def Dashbord(x, y):
 
 @app.errorhandler(404)
 def not_found_error(error):
-    return jsonify({'error': 'Resource not found'}), 404
+    return jsonify({'error': 'Sorry! Resource not found'}), 404
 
 
 @app.route('/try')
@@ -748,17 +752,112 @@ def get_messages():
     return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
 
 
-@app.route('/home-c')
-def home_c():
-    return render_template('clint-side-db.html')
+@app.route('/home-c/<x>/<y>')
+def home_c(x, y):
+    #   user = {
+    #         "_id": user_id,
+    #         "image": "/get_image/" + str(image_id),
+    #         "name": name,
+    #         "email": encoded_email,
+    #         "password": encoded_password,
+    #         "country": encoded_country,
+    #         "phone_number": encoded_phone,
+    #         "d": d,
+    #         "spending": 0,
+    #         "account_created_in": year,
+    #         "payment_method": "Visa",
+    #         "orders_history": [],
+    #     }
+
+    user_data = user_collection.find_one({"_id": x})
+    email = turbolancer_data_Security.decrypt(key, user_data["email"])
+    image = user_data["image"]
+    name = user_data["name"]
+    # tag = user_data["tag"]
+    country = turbolancer_data_Security.decrypt(key, user_data["country"])
+    ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
+    # grade = user_data['grade']
+    # earnings = user_data['earnings']
+    # ratting = user_data['rating']
+    # en = user_data['english']
+    year = user_data['account_created_in']
+    method = user_data["payment_method"]
+    user_id = x
+    account = y
+    if 'c' in account:
+        return render_template('clint-side-db.html', name=name, image=image)
+    raise not_found_error
+
+
+def get_user_data(user_id):
+    user_data = user_collection.find_one({"_id": user_id})
+    if user_data:
+        email = turbolancer_data_Security.decrypt(key, user_data["email"])
+        image = user_data["image"]
+        name = user_data["name"]
+        country = turbolancer_data_Security.decrypt(key, user_data["country"])
+        ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
+        year = user_data['account_created_in']
+        method = user_data["payment_method"]
+        return name, image, email, country, ph, year, method
+    return None
+
+
+
+def get_developer_data(developer_id):
+    developer_data = developer_collection.find_one({"_id": developer_id})
+    if developer_data:
+        email = turbolancer_data_Security.decrypt(key, developer_data["email"])
+        image = developer_data["image"]
+        name = developer_data["name"]
+        country = turbolancer_data_Security.decrypt(key, developer_data["country"])
+        ph = turbolancer_data_Security.decrypt(key, developer_data["phone_number"])
+        year = developer_data['account_created_in']
+        method = developer_data["payment_method"]
+        grade = developer_data['grade']
+        rating = developer_data['rating']
+        about_self = developer_data['about_self']
+        return name, image, email, country, ph, year, method, about_self, rating, grade
+    return None
+
+@app.route('/account/<x>/<y>')
+def account(x, y):
+    grer = ['Hi', 'Hello', 'Nice to see you', 'Welcome']
+    random.shuffle(grer)
+
+    if y in ['c', 'd']:
+        if y == 'c':
+            user_data = get_user_data(x)
+            if user_data:
+                name, image, email, country, ph, year, method = user_data
+                return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0])
+        elif y == 'd':
+            developer_data = get_developer_data(x)
+            if developer_data:
+                name, image, email, country, ph, year, method, about_self, rating, grade = developer_data
+                return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self, rating=float(rating), grade=grade)
+
+    abort(404)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return '404'
 
 
 @app.route('/upjobpage')
 def page():
     return render_template('upload_job.html')
+
+
 @app.route('/getserved')
 def get_searved():
     return render_template('get_served.html')
+
+
+@app.route('/proj')
+def proj():
+    return render_template('project.html')
+
 
 @app.route('/rephrase_text', methods=['POST'])
 def rephrase():

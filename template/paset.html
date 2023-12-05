@@ -1,449 +1,540 @@
 <!DOCTYPE html>
-<html data-lt-installed="true"
->
+<html lang="en">
 
 <head>
-  <title>Check Existing Images and Set Div Colors</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    *{
-      transition: all 0.3s;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.6">
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    .card {
-      text-wrap:balance;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: block;
-      float: left;
-      margin: 10px;
-      width: 100%;
-      transition: all 0.3s;
-      max-width: 300px;
-      color: #fff;
+    <style>
+        /* Imported fonts */
+        @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+        @import url("https://fonts.googleapis.com/css?family=Sofia");
+
+        /* Global styles */
+        html * {
+            transition: all 0.5s linear !important;
+            text-wrap: balance;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+        /* Body and parent container */
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .parent {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            position: absolute;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        /* Image panel styles */
+        .imgpanel {
+            background: linear-gradient(80deg, #464646, #464646, #464646 62%, transparent, transparent);
+            width: 100%;
+            min-height: 22rem;
+            max-height: 32rem;
+            display: flex;
+            justify-content: space-between;
             position: relative;
-      text-align: left;
-      background-image: linear-gradient(transparent, #ffffff54, transparent);
-    }
+            margin: 0;
+        }
 
-    .card .cardimg {
-      display: none;
-      height: 170px;
-      width: 100%;
-      object-fit: fill;
-      margin-bottom: 10px;
-      border-radius: 8px;
-    }
-.card .reqimg{
-  display: block;
+        .imgpanel::after {
+            content: "";
+            width: 100%;
+            height: 50vh;
+            opacity: 0.9;
+            position: absolute;
+            background-image: var(--pseudo-element-color);
+            bottom: -50vh;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Image styling */
+        .proimg {
+            width: 40%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Portion styles */
+        .PORTIONF {
+            color: #fff;
+            padding: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 22px;
+            max-width: 60%;
+        }
+
+        .PORTIONF h1 {
+            font-weight: 700;
+            text-transform: capitalize;
+            text-align: center;
+        }
+
+        .PORTIONF h4 {
+            margin-top: -10px;
+            filter: brightness(90%);
+        }
+
+        .info_p {
+            width: 100%;
+            max-width: 60rem;
+            margin-top: 34px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 100%;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
+        /* Styling for odd-numbered .info_p elements */
+        .info_p .odd {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 11px;
+            width: 100%;
+
+        }
+.cen{
+    display: grid;
+            grid-template-columns:97%;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 11px;
+            width: 100%;
 }
- 
+        .info_p .even {
+            display: grid;
+            grid-template-columns: 33.3333336% 33.3333336% 33.3333336%;
+            justify-content: space-between;
+            align-items: center;
+            gap: 7px;
+            margin-top: 11px;
 
-    .card p {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 10px;
-    }
+            width: 100%;
 
-    .card span {
-      font-size: 16px;
-    }
+        }
 
-    .card a {
-      background-color: #f1f1f1;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      display: inline-block;
-      font-size: 14px;
-      margin-top: 10px;
-      padding: 8px 16px;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
+        /* Borders for descendants of even-numbered .info_p elements */
+        .info_p .odd .items,
+        .info_p .even .items {
+            border: 1px solid #bbbbbb;
+            width: 97%;
+            margin: 1.5%;
+            padding: 17px;
+            background-color: #fff;
 
-    .card a:hover {
-      background-color: #e6e6e6;
-    }
+            border-radius: 10px;
+        }
+        .info_p .cen .items {
+            border: 1px solid #bbbbbb;
+            width: auto;
+            padding: 17px;
+            background-color: #fff;
 
-    .pro {
-      display: grid;
-      grid-template-columns: 31px auto;
-      width: 100%;
-      height: 34px;
-      align-items: center;
-      justify-content: left;
-      gap: 4px;
-      font-size: 23px;
-    }
-
-    .pro h5 {
-      line-height: 30px;
-      text-align: left;
-      margin-left: 7px;
-      margin-top: 25px;
-      font-weight: bolder;
-      font-size: 16px;
-    }
-
-    .pro img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50px;
-    }
-    .price{
-      text-align: right !important;
-      float: right !important;
-      margin-right: 10px;
-      font-size: 22px !important;
-    }
-    .pro,.card p, .price, .ratting  {
-      margin-left: 10px;
-    }
-
-    .after{
-      width: 50px;
-      height:50px;
-      border-radius: 50px;
-      background-color: #fff;
-      box-shadow: 0 5px 10px #0002;
-      position: absolute;
-      color: #000;
-      top: 18%;
-      right: 1%;
-      font-weight: bold;
-      font-size: 26px;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      transform: translateX(100%);
-      opacity: 0;
-      transition: all 0.4s;
-      font-family: Arial, Helvetica, sans-serif;
-cursor: pointer;
-
-    }
-.after.show{
-  transform: translateX(0%);
-      opacity: 1;
-      transition: all 0.4s;
-}
-.before.show{
-
-  transform: translateX(0%);
-      opacity: 1;
-      transition: all 0.4s;
-
-}
-.reqimg{
-  animation-name: come;
-  animation-duration: 0.4s;
-  animation-timing-function: linear;
-  animation-iteration-count: 1;
-}
-
-@keyframes come {
-  from{
-    opacity: 0;
-    transform: scale(1.05);
-  }
-  to{
-    opacity: 1;
-    transform: scale(1);
-  }
-  
-}
-    .before{
-      transition: all 0.4s;
-display: none;
-      transform: translateX(-100%);
-      opacity: 0;
-      width: 50px;
-      height:50px;
-      border-radius: 50px;
-      background-color: #fff;
-      box-shadow: 0 5px 10px #0002;
-      position: absolute;
-      color: #000;
-      top: 18%;
-      left: 1%;
-      font-weight: bold;
-      font-size: 26px;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, Helvetica, sans-serif;
-cursor: pointer;
-    }
- .pro img.live{
-border: none;
-outline:3px solid rgb(21, 255, 0);
-border-radius: 50%;
-
-outline-offset: 3px;
+            border-radius: 10px;
+        }
+        .heading {
+            line-height: 2.25rem;
+            font-size: 1.75rem;
+            letter-spacing: 0;
+            font-weight: 400;
+            hyphens: auto;
+            word-break: break-word;
+            word-wrap: break-word;
+            color: #ffffff;
+            margin: 0 0 8px;
+            padding: 0;
+            text-align: center;
 
 
+        }
+
+        .haf {
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0;
+            line-height: 24px;
+            hyphens: auto;
+            word-break: break-word;
+            word-wrap: break-word;
+            color: #fff;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        /* Media queries for responsiveness */
+        @media screen and (max-width: 551px) {
+            .info_p {
+                width: 100%;
+                max-width: 60rem;
+                margin-top: 17px;
+                padding: 2px;
+                display: grid;
+                grid-template-columns: 100%;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+
+            .info_p .odd {
+                grid-template-columns: 98%;
+                /* Two columns */
+                margin-left: 1%;
+            }
+
+            .info_p .even {
+
+                grid-template-columns: 98%;
+                /* Two columns */
+                margin-left: 1%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .info_p .odd .items,
+            .info_p .even .items {
+                border: 1px solid #bbbbbb;
+                width: 100%;
+                margin-left: 20%;
+                padding: 17px;
+                background-color: #fff;
+
+                border-radius: 10px;
+            }
+            .info_p .cen .items {
+                border: 1px solid #bbbbbb;
+                width: 97%;
+                padding: 17px;
+                background-color: #fff;
+                margin-left: 20%;
+
+                border-radius: 10px;
+            }
+            .heading,
+            .haf {
+
+                margin-top: 17px;
+                color: #282828;
+            }
+
+            .haf {
+                display: none;
+            }
+
+            .info_p {
+
+                padding: 2px;
+
+                margin-top: -10%;
 
 
- }
-  </style>
+            }
+
+            .info_p .odd {
+
+                grid-template-columns: 70%;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+
+            .info_p .even {
+
+                grid-template-columns: 70%;
+                margin-left: auto;
+                margin-right: auto;
+
+            }
+            .info_p .cen {
+                grid-template-columns: 70%;
+
+                margin-left: auto;
+                margin-right: auto;
+                width: auto;
+            }
+
+            .imgpanel {
+                transition: all 0.5s;
+                background: none !important;
+                width: 100%;
+                min-height: 22rem;
+                max-height: 32rem;
+                display: flex;
+                flex-direction: column-reverse;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                margin: 0;
+                text-align: center;
+                color: #121212 !important;
+            }
+
+            .imgpanel::after {
+                content: "";
+                width: 100%;
+                height: 70vh;
+                opacity: 0.9;
+                position: absolute;
+                background-image: var(--pseudo-element-color);
+                top: 0vh;
+                left: 0;
+                z-index: -1;
+            }
+
+            /* Image styling */
+            .proimg {
+                width: 10rem;
+                height: 10rem;
+                object-fit: cover;
+                border-radius: 50%;
+                z-index: 1;
+                outline: 4px solid rgb(0, 223, 0);
+                outline-offset: 5px;
+            }
+
+            /* Portion styles */
+            .PORTIONF {
+                color: #fff;
+                padding: 11px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding-left: 22px;
+                max-width: 60%;
+            }
+
+            .PORTIONF h1 {
+                font-weight: 700;
+                text-transform: capitalize;
+                text-align: center;
+                transform: scale(0.8);
+                color: #252525 !important;
+
+            }
+
+            .PORTIONF h4 {
+                display: none;
+                margin-top: -10px;
+                filter: brightness(140%);
+                color: #121212 !important;
+
+            }
+
+        }
+
+
+        .item_pro {
+            width: 60px;
+            height: 60px;
+            border-radius: 50px;
+            margin: 4px;
+        }
+        .bak{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            border: none;
+            outline: none;
+            align-items: center;
+            background-color: rgba(63, 63, 63, 0.418);
+            color: #fff;
+            box-shadow:  0px 4px 15px #1212124f;
+            font-size: 25px;
+            font-weight: 100;
+        }
+        .cen .items{
+            height: auto;
+        }
+        .cen h5{
+            height: auto;
+            text-wrap: balance;
+            line-break: anywhere;
+            overflow: hidden;
+            line-height: 24px;
+            padding: 12px;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="imageDiv card" onmouseenter="show(this)" onmouseleave="hide(this)">
-     <div class="after" onclick="next(this)">↪</div>
-    <div class="before" onclick="back(this)">↩</div>
-     <img src="banner.jpg" class="cardimg reqimg" alt="Rajib Khan">
-     <img src="download.jpg" class="cardimg" alt="Rajib Khan">
-     <img src="OIP.jpg" class="cardimg" alt="Rajib Khan">
-     <img src="4723250.jpg" class="cardimg" alt="Rajib Khan">
-    <span class="pro">
-      <img class="live" src="4723250.jpg" alt="Rajib Khan">
-      <h5>Rajib Khan</h5>     
-
-    </span><br>
-    <p>I will do web application in java python c-Sharp with angular.</p> <br><span class="ratting"><b> ★ 5.0</b> <t style="opacity: 0.9;">(56)</t></span> <br><br>
-    <span class="price"><b>$431</b></span> <br><br>
-  </div>
-  <div class="imageDiv card" onmouseenter="show(this)" onmouseleave="hide(this)">
-    <div class="after" onclick="next(this)">↪</div>
-   <div class="before" onclick="back(this)">↩</div>
-    <img src="4723250.jpg" class="cardimg reqimg" alt="Rajib Khan">
-    <img src="banner.jpg" class="cardimg" alt="Rajib Khan">
-    <img src="OIP.jpg" class="cardimg" alt="Rajib Khan">
-   <span class="pro">
-     <img src="4723250.jpg" alt="Rajib Khan">
-     <h5>Rajib Khan</h5>     
-
-   </span><br>
-   <p>I will do web application in java python c-Sharp with angular.</p> <br><span class="ratting"><b> ★ 5.0</b> <t style="opacity: 0.9;">(56)</t></span> <br><br>
-   <span class="price"><b>$431</b></span> <br><br>
- </div>
+    <div class="parent">
+        <div class="imgpanel">
+            <button class="bak"><i class="fas fa-arrow-left"></i></button>
+            <DIV class="PORTIONF">
+                <h1>{{greeting}}, {{name}}</h1>
+                <h4>@mianjunaid123</h4>
+            </DIV>
+            <img class="proimg" src="{{image}}" alt="Profile Image">
+        </div>
 
 
+        <div class="info_p">
+            <h1 class="heading">Personal info</h1>
+            <div class="haf">Info about you and your preferences across TurboLancer services</div>
+            <div class="odd">
+                <div class="items">
+                    <p><i class="fas fa-user"></i> Name</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{name}}</h5>
+                </div>
+                <div class="items" style="display: flex; justify-content: space-between; align-items: center;">
+                    <p><i class="fas fa-image"></i> Profile picture</p>
+                    <img class="item_pro" src="{{image}}" alt="">
+                </div>
+            </div>
+            <div class="even">
+                <div class="items">
+                    <p><i class="fas fa-envelope"></i> Email</p>
+                    <h5 style="line-height: 10px; font-size:medium;">&nbsp;&nbsp;&nbsp; {{email}}</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-lock"></i> Password</p>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; hidden......</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-phone"></i> Phone Number</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{ph}}</h5>
+                </div>
+            </div>
+            <div class="odd">
+                <div class="items">
+                    <p><i class="fas fa-venus-mars"></i> Gender</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; Male</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-birthday-cake"></i> Birthday</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; December 23 2005</h5>
+                </div>
+            </div>
+            <div class="even">
+                <div class="items">
+                    <p><i class="fas fa-globe"></i> Country</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{country}}</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-at"></i> Public Tag</p>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; @mianjunaid123</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-user-alt-slash"></i> Other Profiles</p>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; No other profiles</h5>
+                </div>
+            </div>
+{% if d %}
+            <div class="even">
+                <div class="items">
+                    <p><i class="fas fa-trophy"></i> Grade</p>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{grade}}</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-star"></i> Rating</p>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; {{rating}}</h5>
+                </div>
+                <div class="items">
+                    <p><i class="fas fa-user-clock"></i> Working Since</p>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp;{{year}}</h5>
+                </div>
+            </div>
+            <div class="cen">
+                <div class="items">
+                    <p><i class="fas fa-info-circle"></i> About self</p>
+                    <h5 >&nbsp;&nbsp;&nbsp; {{abs}}</h5>
+                </div>
+            </div>
+            {% endif %}
+            <button class="btn btn-danger" style="margin-top: 12px;">LogOut</button>
 
-  <script>
-
-function show(c){
-  c.querySelector('.after').style.display = 'flex';
-  c.querySelector('.before').style.display = 'flex';
-  setTimeout(() => {
-    c.querySelector('.after').classList.add('show');
-  c.querySelector('.before').classList.add('show');
-  }, 100);
-
-
-  imgs = c.querySelectorAll('.cardimg');
-  c.setAttribute('data-count', imgs.length)
- 
-num = 0
-imgs.forEach(element => {
-  console.log(num)
-  element.setAttribute('data-num', num)
-  num += 1;
-}); 
-
-total = c.getAttribute('data-count') - 1;
-  if (total < 0) total +=1;
-          check = c.querySelector('.reqimg').getAttribute('data-num') - 0;
-          console.log(`${check},  ${total}`)
-          if (check == total) {
-            c.querySelector('.after').classList.remove('show');
-
-            setTimeout(() => {
-              c.querySelector('.after').style.display = 'none';
-
-            }, 100);
-
-          }
-          else if (check == total - total) {
-
-            c.querySelector('.before').classList.remove('show');
-            setTimeout(() => {
-              c.querySelector('.before').style.display = 'none';
-
-            }, 100);
-          }
-
-          else {
-            c.querySelector('.after').style.display = 'flex';
-            c.querySelector('.before').style.display = 'flex';
-            setTimeout(() => {
-              c.querySelector('.after').classList.add('show');
-
-c.querySelector('.before').classList.add('show');
-            }, 100);
-
-          }
-}
-
-function hide(c){
-  
-
-  c.querySelector('.after').classList.remove('show');
-  c.querySelector('.before').classList.remove('show');
-
-
-  setTimeout(() => {
-    c.querySelector('.after').style.display ='none';
-  c.querySelector('.before').style.display = 'none'
-  }, 200);
-}
-function doItAgain(div){
-  const img = div.querySelector('.reqimg');
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const width = img.width;
-        const height = img.height;
-
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const imageData = ctx.getImageData(2, 2, width, height).data;
-        const averageRGB = getAverageRGB(imageData);
-        img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
-        img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
-        div.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
-        div.style.boxShadow = `0px 10px 30px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.8)`; // Reduced opacity for the shadow
-      
-}
-
-    function checkImagesAndSetColors() {
-      const divs = document.querySelectorAll('.imageDiv');
-
-      divs.forEach(div => {
-        const img = div.querySelector('.reqimg');
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const width = img.width;
-        const height = img.height;
-
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const imageData = ctx.getImageData(2, 2, width, height).data;
-        const averageRGB = getAverageRGB(imageData);
-        img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
-        img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
-        div.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
-        div.style.boxShadow = `0px 10px 30px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.8)`; // Reduced opacity for the shadow
-      });
-    }
-
-    function getAverageRGB(imageData) {
-      let r = 0;
-      let g = 0;
-      let b = 0;
-
-      for (let i = 0; i < imageData.length; i += 4) {
-        r += imageData[i];
-        g += imageData[i + 1];
-        b += imageData[i + 2];
-      }
-
-      const totalPixels = imageData.length / 4;
-      r = Math.round(r / totalPixels / 1.1);
-      g = Math.round(g / totalPixels / 1.1);
-      b = Math.round(b / totalPixels / 1.1);
-
-      return { r, g, b };
-    }
-
-    // Call the function when the page loads
-    window.onload = function () {
-      checkImagesAndSetColors();
-    };
+        </div>
 
 
-    function next(button){
-      par = button.parentElement;
-      count = par.getAttribute('data-c')
-      par.querySelector(`.reqimg`).classList.remove('reqimg')
-      count = count-0;
-      count = count +1;
-      par.setAttribute('data-c',count)
-      console.log(par.querySelector(`[data-num = '${count}']`))
-      par.querySelector(`[data-num = '${count}']`).classList.add('reqimg')
-      total = par.getAttribute('data-count') - 1;
-          check = par.querySelector('.reqimg').getAttribute('data-num') - 0;
-          console.log(`${check},  ${total}`)
-          if (check == total) {
-            par.querySelector('.after').classList.remove('show');
+    </div>
 
-            setTimeout(() => {
-              par.querySelector('.after').style.display = 'none';
+    <script>
 
-            }, 100);
+        function checkImagesAndSetColors() {
+            const divs = document.querySelectorAll('.imgpanel');
 
-          }
-          else if (check == total - total) {
+            divs.forEach(div => {
+                const img = div.querySelector('.proimg');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const width = img.width;
+                const height = img.height;
 
-            par.querySelector('.before').classList.remove('show');
-            setTimeout(() => {
-              par.querySelector('.before').style.display = 'none';
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+                const imageData = ctx.getImageData(2, 2, width, height).data;
+                const averageRGB = getAverageRGB(imageData);
+                img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
+                img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
+                div.style.backgroundImage = `linear-gradient(80deg,rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}), rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}),rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}) 62%, transparent,transparent)`;
 
-            }, 100);
-          }
+                div.style.setProperty('--pseudo-element-color', `linear-gradient(180deg,rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}), transparent,transparent)`);
+                img.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
+            });
+        }
 
-          else {
-            par.querySelector('.after').style.display = 'flex';
-            par.querySelector('.before').style.display = 'flex';
-            setTimeout(() => {
-              par.querySelector('.after').classList.add('show');
+        function getAverageRGB(imageData) {
+            let r = 0;
+            let g = 0;
+            let b = 0;
 
-par.querySelector('.before').classList.add('show');
-            }, 100);
+            for (let i = 0; i < imageData.length; i += 4) {
+                r += imageData[i];
+                g += imageData[i + 1];
+                b += imageData[i + 2];
+            }
 
-          }
-          doItAgain(par);
+            const totalPixels = imageData.length / 4;
+            r = Math.round(r / totalPixels / 1.1);
+            g = Math.round(g / totalPixels / 1.1);
+            b = Math.round(b / totalPixels / 1.1);
 
-    }
-    function back(button){
-      par = button.parentElement;
-      count = par.getAttribute('data-c')
-      par.querySelector(`.reqimg`).classList.remove('reqimg')
-      count = count-0;
-      count = count -1;
-      par.setAttribute('data-c',count)
-      console.log(par.querySelector(`[data-num = '${count}']`))
-      par.querySelector(`[data-num = '${count}']`).classList.add('reqimg')
-      total = par.getAttribute('data-count') - 1;
-          check = par.querySelector('.reqimg').getAttribute('data-num') - 0;
-          console.log(`${check},  ${total}`)
-          if (check == total) {
-            par.querySelector('.after').classList.remove('show');
+            return { r, g, b };
+        }
 
-            setTimeout(() => {
-              par.querySelector('.after').style.display = 'none';
-
-            }, 100);
-
-          }
-          else if (check == total - total) {
-
-            par.querySelector('.before').classList.remove('show');
-            setTimeout(() => {
-              par.querySelector('.before').style.display = 'none';
-
-            }, 100);
-          }
-
-          else {
-            par.querySelector('.after').style.display = 'flex';
-            par.querySelector('.before').style.display = 'flex';
-            setTimeout(() => {
-              par.querySelector('.after').classList.add('show');
-
-par.querySelector('.before').classList.add('show');
-            }, 100);
-
-          }
-          doItAgain(par);
-
-    }
-  </script>
+        // Call the function when the page loads
+        window.onload = function () {
+            checkImagesAndSetColors();
+        };
+    </script>
 </body>
 
 </html>

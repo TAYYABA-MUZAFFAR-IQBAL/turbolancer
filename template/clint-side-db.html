@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/clinte.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -25,17 +25,17 @@
                 <a href="#about_me"><i class="fa-solid fa-envelope"></i>&nbsp; Contect us</a>
                 <a href="#skills"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
                 <div class="dropdown">
-                   
+
                     <span class="profile dropdown-toggle" data-bs-toggle="dropdown" type="button">
-                    <name>Mian Junaid</name><img src="/static/4543.png" title="{{name}}" alt="{{name}}">
-                </span>
+                        <name>{{name}}</name><img src="{{image}}" title="{{name}}" alt="{{name}}">
+                    </span>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">see profile</a></li>
-                      <li><a class="dropdown-item" href="#">create seller account</a></li>
-                      <li><a class="dropdown-item" href="#">LogOut</a></li>
+                        <li><a class="dropdown-item" href="#">see profile</a></li>
+                        <li><a class="dropdown-item" href="#">create seller account</a></li>
+                        <li><a class="dropdown-item" href="#">LogOut</a></li>
                     </ul>
-                  </div>
-                
+                </div>
+
 
             </div>
 
@@ -65,43 +65,40 @@
 
                     <img src="/static/dark_logo.png" class="logo" alt="logo" title="TurboLancer">
                 </div>
-                <div>
-                    <a href="#about_me"><i class="fa-solid fa-envelope"></i>&nbsp; Contect us</a>
-                      <a href="#skills"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
-
-                      <div class="dropdown">
-                   
-                        <span class="profile dropdown-toggle" data-bs-toggle="dropdown" type="button">
-                        <name>Mian Junaid</name><img src="/static/4543.png" title="{{name}}" alt="{{name}}">
-                    </span>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">see profile</a></li>
-                        <li><a class="dropdown-item" href="#">create seller account</a></li>
-                        <li><a class="dropdown-item" href="#">LogOut</a></li>
-                      </ul>
-                      </div>
-
+                <div class="tab first">
+                    <span onclick="select(this)" data="projects" class="active"><i
+                            class="fa-solid fa-cart-shopping"></i>&nbsp;Buy Projects</span>
+                    <span onclick="select(this)" data="service"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find
+                        service</span>
+                    <span onclick="select(this)" data="job"><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload
+                        Job</span>
                 </div>
-
             </nav>
-            <div class="tab">
-                <span onclick="select(this)" data="projects" class="active"><i class="fa-solid fa-cart-shopping"></i>&nbsp;Buy Projects</span>
-                <span onclick="select(this)" data="service"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find service</span>
-                <span onclick="select(this)" data="job"><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload Job</span>
+            <div class="tab sec">
+                <span onclick="select(this)" data="projects" class="active"><i
+                        class="fa-solid fa-cart-shopping"></i>&nbsp;Buy Projects</span>
+                <span onclick="select(this)" data="service"><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find
+                    service</span>
+                <span onclick="select(this)" data="job"><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload
+                    Job</span>
             </div>
-            <iframe class="upload_job_if"  src="/upjobpage" style="width: 100%;margin-top: 10vh;
-            height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
+            <iframe class="upload_job_if" src="/upjobpage" style="width: 100%;margin-top: 10vh;
+            min-height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
             " frameborder="0"></iframe>
-              <iframe class="getsearved"  src="http://127.0.0.1:5000/getserved" style="width: 100%;margin-top: 10vh;
-              height: 130vh; opacity: 1;display: none;     transition: all 0.2s;
+            <iframe class="getsearved" src="/getserved" style="width: 100%;margin-top: 6vh;
+              min-height: 130vh; opacity: 1;display: none;     transition: all 0.2s;
               " frameborder="0"></iframe>
+
+            <iframe class="proj" src="/proj" style="width: 100%;margin-top: 3vh;
+min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
+" frameborder="0"></iframe>
         </section>
     </div>
     <div id="mySidenav" class="sidenav">
         <span href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa-solid fa-xmark"></i></span>
         <br>
         <br>
-        <a href="#"><img src="/static/4543.png" class="pfp" title="{{name}}" alt="{{name}}">&nbsp;Profile</a>
+        <a href="#"><img src="{{image}}" class="pfp" title="{{name}}" alt="{{name}}">&nbsp;Profile</a>
         <a href="#"><i class="fa-regular fa-bell"></i>&nbsp; Notification</a>
 
         <a href="#"><i class="fa-solid fa-envelope"></i>&nbsp; Messages</a>
@@ -117,35 +114,49 @@
         <a href="#" style="color: rgb(253, 58, 58);"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
 
 
- 
+
     </div>
     <script>
-function select(x){
-    document.querySelector('.tab span.active').classList.remove('active');
-    x.classList.add("active");
-    if(document.querySelector('.active[data = "job"]')){
-        document.querySelector('.upload_job_if').style.display = 'block'
-        document.querySelector('.getsearved').style.display = 'none';
+        function select(x) {
+            document.querySelectorAll('.upload_job_if, .getsearved, .proj').forEach(element => {
+                element.style.opacity = '0';
+                element.style.display = 'none';
+            });
 
-        setTimeout(() => {
-            document.querySelector('.upload_job_if').style.opacity = '1'
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.querySelectorAll('span').forEach(element => {
+                    element.classList.remove('active');
 
-        }, 1000);
-    }
-    else if(document.querySelector('.active[data = "service"]')){
-        document.querySelector('.upload_job_if').style.opacity = '0'
-        document.querySelector('.getsearved').style.display = 'block';
-        setTimeout(() => {
-            document.querySelector('.upload_job_if').style.display = 'none'
+                });
+            });
+            const dataAttr = x.getAttribute('data');
 
-        }, 1000);
-    }
-    else{
-        return 0
-    }
- 
-}
+            x.classList.add('active');
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.querySelectorAll(`[data = '${dataAttr}']`).forEach(element => {
+                    element.classList.add('active');
 
+                });
+            });
+
+
+            switch (dataAttr) {
+                case 'job':
+                    document.querySelector('.upload_job_if').style.display = 'block';
+                    document.querySelector('.upload_job_if').style.opacity = '1';
+                    break;
+                case 'service':
+                    document.querySelector('.getsearved').style.display = 'block';
+                    document.querySelector('.getsearved').style.opacity = '1';
+                    break;
+                case 'projects':
+                    document.querySelector('.proj').style.display = 'block';
+                    document.querySelector('.proj').style.opacity = '1';
+                    break;
+                default:
+                    break;
+            }
+        }
         function openNav() {
             if (!(window.innerWidth < 980)) {
                 document.getElementById("full_page").removeEventListener('click', closeNav)
@@ -292,7 +303,7 @@ function select(x){
         window.onscroll = function () { scrollFunction() };
 
         function scrollFunction() {
-            if (document.body.scrollTop > 400 || document.documentElement.scrollTop >400) {
+            if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
                 document.querySelector('nav').classList.add('scrolled');
                 document.querySelector('.nav2').classList.remove('scrolled');
                 document.querySelector('.tabular_parent').style.width = '100%';
