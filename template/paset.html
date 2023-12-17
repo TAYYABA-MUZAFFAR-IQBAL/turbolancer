@@ -87,7 +87,7 @@
         .PORTIONF h1 {
             font-weight: 700;
             text-transform: capitalize;
-            text-align: center;
+            text-align: left;
         }
 
         .PORTIONF h4 {
@@ -119,15 +119,17 @@
             width: 100%;
 
         }
-.cen{
-    display: grid;
-            grid-template-columns:97%;
+
+        .cen {
+            display: grid;
+            grid-template-columns: 97%;
             justify-content: space-between;
             align-items: center;
             gap: 10px;
             margin-top: 11px;
             width: 100%;
-}
+        }
+
         .info_p .even {
             display: grid;
             grid-template-columns: 33.3333336% 33.3333336% 33.3333336%;
@@ -151,6 +153,7 @@
 
             border-radius: 10px;
         }
+
         .info_p .cen .items {
             border: 1px solid #bbbbbb;
             width: auto;
@@ -159,6 +162,7 @@
 
             border-radius: 10px;
         }
+
         .heading {
             line-height: 2.25rem;
             font-size: 1.75rem;
@@ -231,6 +235,7 @@
 
                 border-radius: 10px;
             }
+
             .info_p .cen .items {
                 border: 1px solid #bbbbbb;
                 width: 97%;
@@ -240,6 +245,7 @@
 
                 border-radius: 10px;
             }
+
             .heading,
             .haf {
 
@@ -275,6 +281,7 @@
                 margin-right: auto;
 
             }
+
             .info_p .cen {
                 grid-template-columns: 70%;
 
@@ -360,7 +367,8 @@
             border-radius: 50px;
             margin: 4px;
         }
-        .bak{
+
+        .bak {
             position: absolute;
             top: 10px;
             left: 10px;
@@ -375,14 +383,16 @@
             align-items: center;
             background-color: rgba(63, 63, 63, 0.418);
             color: #fff;
-            box-shadow:  0px 4px 15px #1212124f;
+            box-shadow: 0px 4px 15px #1212124f;
             font-size: 25px;
             font-weight: 100;
         }
-        .cen .items{
+
+        .cen .items {
             height: auto;
         }
-        .cen h5{
+
+        .cen h5 {
             height: auto;
             text-wrap: balance;
             line-break: anywhere;
@@ -390,16 +400,105 @@
             line-height: 24px;
             padding: 12px;
         }
+
+        .otpa {
+            display: flex;
+            width: auto;
+            text-wrap: balance;
+            height: auto;
+            justify-content: space-evenly;
+            flex-direction: column;
+            align-items: center;
+            padding: 7px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.1s ease-in-out;
+            font-size: 10px !important;
+            background-color: #fff;
+            float: left;
+            text-decoration: none;
+            margin: 5px;
+            text-transform: capitalize;
+            color: #121212 !important;
+        }
+
+        .otpa:hover {
+            background-color: #cfcfcfd5;
+        }
+
+        .cen.se {
+            border: 1px solid #bbbbbb;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .cen.se .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .cen.se .profile-item {
+            text-align: center;
+        }
+
+        .cen.se .item_pro {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Media query for responsiveness */
+        @media (max-width: 768px) {
+            .cen.se .profiles-grid {
+                display: grid;
+grid-template-columns: 33.3333%  33.3333%  33.3333%;                width: 100%;
+justify-content: space-evenly;
+            }
+
+            .info_p .cen.se {
+                grid-template-columns: 70%;
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 20px;
+            }
+
+        }
+
+        @media (max-width: 670px) {
+            .cen.se .profiles-grid {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 48% 48%;
+                justify-content: space-evenly;
+                align-items: center;
+                        }
+         
+
+        }
+        @media (max-width: 570px) {
+            .cen.se .profiles-grid {
+                display: grid;
+                grid-template-columns: 97%;
+                justify-content: space-evenly;
+                align-items: center;
+                        }}
+                        .info_p .cen.se {
+               justify-content: center;
+            }
     </style>
 </head>
 
 <body>
     <div class="parent">
         <div class="imgpanel">
-            <button class="bak"><i class="fas fa-arrow-left"></i></button>
+            <button onclick=" window.history.back();" class="bak"><i class="fas fa-arrow-left"></i></button>
             <DIV class="PORTIONF">
                 <h1>{{greeting}}, {{name}}</h1>
-                <h4>@mianjunaid123</h4>
+                <h4>{{tag}}</h4>
             </DIV>
             <img class="proimg" src="{{image}}" alt="Profile Image">
         </div>
@@ -439,24 +538,24 @@
                 </div>
                 <div class="items">
                     <p><i class="fas fa-birthday-cake"></i> Birthday</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; December 23 2005</h5>
+                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{bir}}</h5>
                 </div>
             </div>
-            <div class="even">
+            <div class="odd">
                 <div class="items">
                     <p><i class="fas fa-globe"></i> Country</p>
                     <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{country}}</h5>
                 </div>
+                {% if tag %}
                 <div class="items">
                     <p><i class="fas fa-at"></i> Public Tag</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; @mianjunaid123</h5>
+                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; {{tag}}</h5>
                 </div>
-                <div class="items">
-                    <p><i class="fas fa-user-alt-slash"></i> Other Profiles</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; No other profiles</h5>
-                </div>
+{% endif %}
             </div>
-{% if d %}
+
+
+            {% if d %}
             <div class="even">
                 <div class="items">
                     <p><i class="fas fa-trophy"></i> Grade</p>
@@ -474,7 +573,7 @@
             <div class="cen">
                 <div class="items">
                     <p><i class="fas fa-info-circle"></i> About self</p>
-                    <h5 >&nbsp;&nbsp;&nbsp; {{abs}}</h5>
+                    <h5>&nbsp;&nbsp;&nbsp; {{abs}}</h5>
                 </div>
             </div>
             {% endif %}

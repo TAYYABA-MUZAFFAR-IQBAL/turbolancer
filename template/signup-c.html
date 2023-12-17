@@ -256,7 +256,7 @@
   </style>
 </head>
 
-<body onload="check()">
+<body>
   <div class="container">
     <h3 style="color: red; text-align: center;">{{ x }}
     </h3>
@@ -318,6 +318,7 @@
           document.querySelector('.btn-open').style.color = 'red';
         } else if (response.success) {
           document.querySelector('.btn-open').textContent = 'Sign Up successful';
+          window.location.href = response.redirect_url;
           document.querySelector('.btn-open').style.color = '#00a56e';
         }
       },

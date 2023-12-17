@@ -567,9 +567,9 @@ div.container_input::after {
     left: 0;
     background-color: #fff;
     overflow-x: hidden;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s;
+    -webkit-transition: 0.3s linear;
+    -o-transition: 0.3s linear;
+    transition: 0.3s linear;
     border-radius: 30 0 0 0;
     padding-top: 3px;
     border-right: 1px solid rgb(211, 211, 211);
@@ -767,7 +767,7 @@ div.container_input::after {
     opacity: 1;
     height: auto;}
 
-@media (max-width:740px) {
+@media (max-width:880px) {
 
     .sec{
         display: grid;

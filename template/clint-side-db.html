@@ -30,9 +30,9 @@
                         <name>{{name}}</name><img src="{{image}}" title="{{name}}" alt="{{name}}">
                     </span>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">see profile</a></li>
+                        <li><a class="dropdown-item" href="{{aclink}}">see profile</a></li>
                         <li><a class="dropdown-item" href="#">create seller account</a></li>
-                        <li><a class="dropdown-item" href="#">LogOut</a></li>
+                        <li id="deleteCookieButton"><a class="dropdown-item" href="#">LogOut</a></li>
                     </ul>
                 </div>
 
@@ -89,16 +89,16 @@
               min-height: 130vh; opacity: 1;display: none;     transition: all 0.2s;
               " frameborder="0"></iframe>
 
-            <iframe class="proj" src="/proj" style="width: 100%;margin-top: 3vh;
+            <iframe class="proj" src="/proj" style="width: 100%;margin-top: 6vh;
 min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
 " frameborder="0"></iframe>
         </section>
     </div>
-    <div id="mySidenav" class="sidenav">
+    <div id="Sidenav" class="sidenav">
         <span href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa-solid fa-xmark"></i></span>
         <br>
         <br>
-        <a href="#"><img src="{{image}}" class="pfp" title="{{name}}" alt="{{name}}">&nbsp;Profile</a>
+        <a href="{{aclink}}"><img src="{{image}}" class="pfp" title="{{name}}" alt="{{name}}">&nbsp;Profile</a>
         <a href="#"><i class="fa-regular fa-bell"></i>&nbsp; Notification</a>
 
         <a href="#"><i class="fa-solid fa-envelope"></i>&nbsp; Messages</a>
@@ -111,12 +111,27 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
 
         <a href="#"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
 
-        <a href="#" style="color: rgb(253, 58, 58);"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
+        <a href="#" id="deleteCookieButton" style="color: rgb(253, 58, 58);"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
 
 
 
     </div>
     <script>
+        function deleteCookie(cookieName) {
+    var expirationDate = new Date(0); // Create a Date object set to the epoch time (January 1, 1970)
+    var formattedDate = expirationDate.toUTCString(); // Get the UTC string representation of the date
+
+    document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
+}
+
+document.getElementById('deleteCookieButton').addEventListener('click', function() {
+list = ['ideo','emalo']
+for(i=0; i<=list.length; i++){
+    deleteCookie(list[i]);
+}
+   window.location.reload()
+});
+
         function select(x) {
             document.querySelectorAll('.upload_job_if, .getsearved, .proj').forEach(element => {
                 element.style.opacity = '0';
@@ -161,17 +176,27 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
             if (!(window.innerWidth < 980)) {
                 document.getElementById("full_page").removeEventListener('click', closeNav)
 
-                document.getElementById("mySidenav").style.width = "322px";
+                document.getElementById("Sidenav").style.width = "322px";
+                document.getElementById("Sidenav").style.opacity = "1";
+                document.getElementById("Sidenav").style.transformOrigin = "left";
+
+                document.getElementById("Sidenav").style.transform = "scalex(1)";
                 document.getElementById("full_page").style.width = "calc(100% - 322px)";
-                document.getElementById("mySidenav").style.marginLeft = "0px";
+                document.getElementById("Sidenav").style.marginLeft = "0px";
 
             }
             else {
                 document.getElementById("full_page").removeEventListener('click', closeNav)
 
-                document.getElementById("mySidenav").style.width = "322px";
-                document.getElementById("mySidenav").style.zIndex = "9999999999";
-                document.getElementById("mySidenav").style.marginLeft = "0px";
+                document.getElementById("Sidenav").style.width = "322px";
+                document.getElementById("Sidenav").style.opacity = "1";
+
+                document.getElementById("Sidenav").style.transformOrigin = "left";
+
+                document.getElementById("Sidenav").style.transform = "scalex(1)";
+
+                document.getElementById("Sidenav").style.zIndex = "9999999999";
+                document.getElementById("Sidenav").style.marginLeft = "0px";
 
                 document.getElementById("full_page").style.filter = "brightness(80%)";
                 setTimeout(() => {
@@ -185,8 +210,12 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
         function closeNav() {
             document.getElementById("full_page").removeEventListener('click', closeNav)
 
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("mySidenav").style.marginLeft = "-3px";
+            document.getElementById("Sidenav").style.transform = "scalex(0)";
+            document.getElementById("Sidenav").style.marginLeft = "-3px";
+            document.getElementById("Sidenav").style.opacity = "0";
+
+            document.getElementById("Sidenav").style.transformOrigin = "left";
+
             document.getElementById("full_page").style.width = "100%";
             document.getElementById("full_page").style.filter = "brightness(100%)";
 
@@ -194,8 +223,11 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
         }
         window.addEventListener("resize", function () {
             if (window.innerWidth < 980) {
-                document.getElementById("mySidenav").style.width = "0";
-                document.getElementById("mySidenav").style.marginLeft = "-3px";
+                document.getElementById("Sidenav").style.transform = "scalex(0)";
+                document.getElementById("Sidenav").style.transformOrigin = "left";
+                document.getElementById("Sidenav").style.opacity = "0";
+
+                document.getElementById("Sidenav").style.marginLeft = "-3px";
 
                 document.getElementById("full_page").style.width = "100%";
             }
@@ -237,7 +269,7 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
                     })
                     .catch(error => {
                         console.error(`Error loading image from ${url}: ${error}`);
-                        callback(null);
+                        callback(null); 
                     });
             }
             const base64Array = [];
