@@ -145,7 +145,7 @@ def signup():
             developer_collection.insert_one(user)
             ide = user_id
             user_id = turbolancer_data_Security.encrypt(key, user_id)
-        return render_template('save_cook.html',keys =[ ['ideo', 'emalo','tp'], [user_id, encoded_email, 'd']],redi = f'home-c/{ide}/{name}/{encoded_email}/d')
+        return render_template('save_cook.html',keys =[ ['ideo', 'emalo','tp'], [user_id, encoded_email, 'd']],redi = f'addinfo/{ide}/{name}/{encoded_email}')
 
     return render_template("signup-c.html")
 @app.route('/addinfo/<x>/<y>/<z>')
@@ -924,12 +924,12 @@ def account(x, y):
                     user_data = get_user_data(x)
                     if user_data:
                         name, image, email, country, ph, year, method, bir,  tag = user_data
-                        return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0], tag = tag)
+                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0], tag = tag)
                 elif y == 'd':
                     developer_data = get_developer_data(x)
                     if developer_data:
                         name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                        return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade)
+                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade)
                 return redirect(url_for('main'))
         return redirect(url_for('main'))
 
@@ -942,12 +942,12 @@ def account(x, y):
             user_data = get_user_data(x)
             if user_data:
                 name, image, email, country, ph, year, method, bir,  tag = user_data
-                return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0],  tag = tag)
+                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0],  tag = tag)
         elif y == 'd':
             developer_data = get_developer_data(x)
             if developer_data:
                 name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                return render_template('paset.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade,)
+                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade,)
         return redirect(url_for('main'))
 
     return redirect(url_for('main'))

@@ -1,41 +1,47 @@
-import requests
-import json
-import random
+import smtplib
+import ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-def get_random_paraphrases(text, num_paraphrases=3):
-    url = "https://api.ai21.com/studio/v1/paraphrase"
+sender_email = "mianjunaid2312@gmail.com"
+receiver_email = "mianjunaid2312@gmail.com"
+password = "Allahsadaro"  # Enter your email password here
 
-    payload = {
-        "style": "formal",
-        "text": text
-    }
+message = MIMEMultipart("alternative")
+message["Subject"] = "multipart test"
+message["From"] = sender_email
+message["To"] = receiver_email
 
-    headers = {
-        "accept": "application/json",
-        "content-type": "application/json",
-        "Authorization": "Bearer XQ6FT29zUsRTW7r4HK1lzJmin6hD7Oee"
-    }
+# Create the plain-text and HTML version of your message
+text = """\
+Hi,
+How are you?
+this message is from Mina junaid
+"""
+html = """\
+<html>
+  <body>
+    <p>Hi,<br>
+       How are you?<br>
+       <a href="http://www.turbolancer.com">Real Python</a> 
+       this message is from Mina junaid
 
-    response = requests.post(url, json=payload, headers=headers)
+    </p>
+  </body>
+</html>
+"""
 
-    # Check if the request was successful
-    if response.status_code == 200:
-        data = json.loads(response.text)
-        suggestions = data.get("suggestions", [])
-        
-        if suggestions:
-            # Shuffle the suggestions to make them random
-            random.shuffle(suggestions)
-            return [suggestion["text"] for suggestion in suggestions[:num_paraphrases]]
-        else:
-            return ["No suggestions found in the response." for _ in range(num_paraphrases)]
-    else:
-        return [f"Error: {response.status_code} - {response.text}" for _ in range(num_paraphrases)]
+# Turn these into plain/html MIMEText objects
+part1 = MIMEText(text, "plain")
+part2 = MIMEText(html, "html")
 
-# Example usage
-input_text = input("text: ")
+# Add HTML/plain-text parts to MIMEMultipart message
+# The email client will try to render the last part first
+message.attach(part1)
+message.attach(part2)
 
-random_paraphrases = get_random_paraphrases(input_text, num_paraphrases=3)
-print("Random texts:")
-for i, paraphrase in enumerate(random_paraphrases):
-    print(f"{i + 1}: {paraphrase}")
+# Create secure connection with server and send email
+context = ssl.create_default_context()
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    server.login(sender_email, password)
+    server.sendmail(sender_email, receiver_email, message.as_string())
