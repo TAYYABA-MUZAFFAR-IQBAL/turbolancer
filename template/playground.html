@@ -26,7 +26,7 @@
 
         .container {
             width: 100%;
-margin-top: 2.5%;
+            margin-top: 2.5%;
             max-width: 46.875rem;
             margin-left: 50%;
             transform: translateX(-50%);
@@ -196,15 +196,16 @@ margin-top: 2.5%;
             margin-top: 30px;
             margin-left: calc(100% - 95px);
             transition: all 0.2s !important;
+
+            &:hover {
+                transform: scale(1.1);
+            }
         }
 
         .next.B {
             margin-left: 10px !important;
         }
 
-        .next:hover {
-            transform: scale(1.1);
-        }
 
         .prev {
             background-color: #f0f0f0;
@@ -469,8 +470,60 @@ margin-top: 2.5%;
         }
 
         #submitbtn:disabled {
-        opacity: 0.6 !important;
-        pointer-events: none;
+            opacity: 0.6 !important;
+            pointer-events: none;
+        }
+
+        .logo {
+            view-transition-name: logo;
+        }
+
+        ::view-transition-old(logo),
+        ::view-transition-new(logo) {
+            display: block;
+        }
+
+        ::view-transition-old(root) {
+            animation: 1s transition-out 0s ease;
+        }
+
+        ::view-transition-new(root) {
+            animation: 1s transition-in 0s ease;
+        }
+
+        @keyframes transition-out {
+            from {
+                opacity: 1;
+                scale: 1;
+                filter: blur(1px);
+            }
+
+            to {
+                opacity: 0;
+                scale: 1.1;
+                filter: blur(10px);
+
+            }
+        }
+
+        @keyframes transition-in {
+            from {
+                opacity: 0;
+                scale: 1.1;
+                filter: blur(10px);
+
+
+
+
+            }
+
+            to {
+                opacity: 1;
+                scale: 1;
+                filter: blur(1px);
+
+
+            }
         }
     </style>
 </head>
@@ -534,7 +587,9 @@ margin-top: 2.5%;
                     <h1 for="about-yourself">About yourself:</h1>
                     <div class="ta-container">
                         <textarea id="about-yourself" class="textarea" name="about-yourself" rows="12" cols="75"
-                            data-maxchars="500" data-over="false" placeholder="Ensure the text exceeds 250 characters for a stronger impact." required></textarea>
+                            data-maxchars="500" data-over="false"
+                            placeholder="Ensure the text exceeds 250 characters for a stronger impact."
+                            required></textarea>
                         <div class="status-bar">
                             <table>
                                 <tr>
@@ -544,6 +599,12 @@ margin-top: 2.5%;
                                 <tr>
                                     <td class="remaining-label">Remaining:</td>
                                     <td class="remaining"></td>
+
+                                </tr>
+                                <tr>
+                                    <td class="less" style=" text-align: right;color: hsl(0,80%,60%);">Less then 250
+                                    </td>
+
                                 </tr>
                             </table>
                         </div>
@@ -552,162 +613,244 @@ margin-top: 2.5%;
             </div>
             <div style="display:flex;flex-direction: row; width: 100%;">
                 <button onclick="prev(this)" class="prev C B" data-parent='C'>preveus</button>
-                <button id="submitbtn" class="next B">Continue</button>
+                <button id="submitbtn" class="next B" onclick="updateData()">Continue</button>
             </div>
 
         </div>
 
     </div>
     <script>
+        function updateData() {
+            var email = "{{ email }}";
+            var textAreaValue = document.querySelector('.textarea').value;
+
+            var data = {
+                email: email,
+                textAreaValue: textAreaValue
+            };
+
+            fetch('/update_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // Data successfully updated
+                        console.log("Data updated in data.json");
+                        // Proceed to the next step or perform any other action
+                    } else {
+                        // Error occurred while updating data
+                        throw new Error('Error updating data: ' + response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
         const html_header = document.querySelector('.header').innerHTML
         function remove_img() {
-            console.log(html_header)
-            document.querySelector('.header').innerHTML = html_header;
-            var fileInput = document.getElementById('file');
-            fileInput.value = '';
-            document.querySelector('.name').innerText = 'Click to select picture';
+            function doit() {
+                console.log(html_header)
+                document.querySelector('.header').innerHTML = html_header;
+                var fileInput = document.getElementById('file');
+                fileInput.value = '';
+                document.querySelector('.name').innerText = 'Click to select picture';
+            }
+            if (!document.startViewTransition) {
+                doit();
+                return;
+            }
 
-
+            // With View Transitions:
+            const transition = document.startViewTransition(() => doit());
         }
 
         function next(x) {
-            let data = x.getAttribute('data-parent');
-            console.log(data);
-            let current = document.querySelector(`.${data}`);
-            let next = current.nextElementSibling;
+            function doit(x) {
+                let data = x.getAttribute('data-parent');
+                let current = document.querySelector(`.${data}`);
+                let next = current.nextElementSibling;
 
-            current.classList.add('revers');
-            next.classList.add('farwored');
+                // Add classes for animation preparation
+                current.classList.add('revers');
+                next.classList.add('farwored');
 
-            setTimeout(() => {
-                next.style.display = 'flex';
-                current.style.display = 'none';
-            }, 50);
+                const transition = document.startViewTransition(() => {
+                    current.style.setProperty('display', 'none');
+                    next.style.setProperty('display', 'flex');
+                });
 
-            console.log(current.className);
+                // Signal update completed to trigger animation
+                transition.updateCallbackDone();
+            }
+
+            if (!document.startViewTransition) {
+                doit(x);
+                return;
+            }
+
+            // With View Transitions:
+            const transition = document.startViewTransition(() => doit(x));
         }
+
 
         function prev(x) {
-            let data = x.getAttribute('data-parent');
-            console.log(data);
-            let current = document.querySelector(`.${data}`);
-            let prev = current.previousElementSibling;
+            function doit(x) {
+                let data = x.getAttribute('data-parent');
+                console.log(data);
+                let current = document.querySelector(`.${data}`);
+                let prev = current.previousElementSibling;
 
-            current.classList.remove('farwored');
-            prev.classList.remove('revers');
+                current.classList.remove('farwored');
+                prev.classList.remove('revers');
 
-            setTimeout(() => {
-                prev.style.display = 'flex';
-                current.style.display = 'none';
-            }, 50);
+                setTimeout(() => {
+                    prev.style.display = 'flex';
+                    current.style.display = 'none';
+                }, 50);
+            }
 
-            console.log(current.className);
+            if (!document.startViewTransition) {
+                doit(x);
+                return;
+            }
+
+            // With View Transitions:
+            const transition = document.startViewTransition(() => doit(x));
         }
         function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    var imageBase64 = e.target.result;
-                    console.log("<img src='" + e.target.result + "'alt = 'profile picture'>")
-                    document.querySelector('.header').innerHTML = "<div class='header'><div class='image-container'><img  src='" + e.target.result + "'onclick='remove_img()' alt = 'profile picture'><span onclick='remove_img()' class='delete-icon'>  <svg   id='delete' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><g id='SVGRepo_bgCarrier' stroke-width='0'></g><g id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'></g><g id='SVGRepo_iconCarrier'> <path d='M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z' stroke='#000000' stroke-width='1'></path> <path d='M19.5 5H4.5' stroke='#000000' stroke-width='1' stroke-linecap='round'></path> <path d='M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z' stroke='#000000' stroke-width='1'></path> </g></svg></span></div></div"
+            function doit(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var imageBase64 = e.target.result;
+                        console.log("<img src='" + e.target.result + "'alt = 'profile picture'>")
+                        document.querySelector('.header').innerHTML = "<div class='header'><div class='image-container'><img  src='" + e.target.result + "'onclick='remove_img()' alt = 'profile picture'><span onclick='remove_img()' class='delete-icon'>  <svg   id='delete' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><g id='SVGRepo_bgCarrier' stroke-width='0'></g><g id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'></g><g id='SVGRepo_iconCarrier'> <path d='M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z' stroke='#000000' stroke-width='1'></path> <path d='M19.5 5H4.5' stroke='#000000' stroke-width='1' stroke-linecap='round'></path> <path d='M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z' stroke='#000000' stroke-width='1'></path> </g></svg></span></div></div"
 
-                    document.querySelector('.name').innerText = input.files[0].name;
-                    var email = "{{ email }}";
+                        document.querySelector('.name').innerText = input.files[0].name;
+                        var email = "{{ email }}";
 
-                    // Create a new FormData object
-                    var formData = new FormData();
-                    formData.append("image", input.files[0]);
-                    formData.append("email", email);
+                        // Create a new FormData object
+                        var formData = new FormData();
+                        formData.append("image", input.files[0]);
+                        formData.append("email", email);
 
-                    // Send the AJAX request
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/UPLOAD_IMAGE");
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            if (xhr.status === 200) {
-                                var response = JSON.parse(xhr.responseText);
-                                console.log(response.message);
-                            } else {
-                                console.log("Error: " + xhr.status);
+                        // Send the AJAX request
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "/UPLOAD_IMAGE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === XMLHttpRequest.DONE) {
+                                if (xhr.status === 200) {
+                                    var response = JSON.parse(xhr.responseText);
+                                    console.log(response.message);
+                                } else {
+                                    console.log("Error: " + xhr.status);
+                                }
                             }
-                        }
+                        };
+                        xhr.send(formData);
                     };
-                    xhr.send(formData);
-                };
-                reader.readAsDataURL(input.files[0]);
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
+            if (!document.startViewTransition) {
+                doit(input);
+                return;
+            }
+
+            // With View Transitions:
+            const transition = document.startViewTransition(() => doit(input));
         }
         function setFocus(container) {
-    container.classList.add('hasfocus');
-}
+            container.classList.add('hasfocus');
+        }
 
-function removeFocus(container) {
-    container.classList.remove('hasfocus');
-}
+        function removeFocus(container) {
+            container.classList.remove('hasfocus');
+        }
 
-function setSubmitBtnDisabledStatus(disabled) {
-    const submitBtn = document.querySelector('#submitbtn');
-    submitBtn.disabled = disabled;
-}
+        function setSubmitBtnDisabledStatus(disabled) {
+            const submitBtn = document.querySelector('#submitbtn');
+            submitBtn.disabled = disabled;
+        }
 
-function checkOverLimit(container, textarea, maxLength) {
-    const charCount = textarea.value.length;
-    const charCountElement = container.querySelector('.charcount');
-    const remainingElement = container.querySelector('.remaining');
-    const remainingLabel = container.querySelector('.remaining-label');
+        function checkOverLimit(container, textarea, maxLength) {
+            const charCount = textarea.value.length;
+            const charCountElement = container.querySelector('.charcount');
+            const remainingElement = container.querySelector('.remaining');
+            const remainingLabel = container.querySelector('.remaining-label');
 
-    charCountElement.innerHTML = `${charCount}/${maxLength}`;
-    const remainingChars = maxLength - charCount;
-    remainingElement.innerHTML = Math.abs(remainingChars);
+            charCountElement.innerHTML = `${charCount}/${maxLength}`;
+            const remainingChars = maxLength - charCount;
+            remainingElement.innerHTML = Math.abs(remainingChars);
 
-    if (charCount > maxLength) {
-        remainingLabel.classList.add('over');
-        remainingLabel.innerHTML = 'exceeded by:';
-        remainingElement.classList.add('over');
-        textarea.style.color = 'hsl(0,80%,60%)';
-        textarea.setAttribute('data-over', 'true');
-        setSubmitBtnDisabledStatus(true);
-    } else {
-        remainingLabel.classList.remove('over');
-        remainingLabel.innerHTML = 'Remaining:';
-        remainingElement.classList.remove('over');
-        textarea.style.color = 'hsl(0,0%,50%)';
-        textarea.setAttribute('data-over', 'false');
-        setSubmitBtnDisabledStatus(false);
-    }
-}
+            if (charCount > maxLength) {
+                remainingLabel.classList.add('over');
+                remainingLabel.innerHTML = 'exceeded by:';
+                remainingElement.classList.add('over');
+                textarea.style.color = 'hsl(0,80%,60%)';
+                textarea.setAttribute('data-over', 'true');
+                setSubmitBtnDisabledStatus(true);
+                document.querySelector('.less').style.display = 'none'
 
-function initializeTextarea(container) {
-    const textarea = container.querySelector('.textarea');
-    const maxLength = parseInt(textarea.getAttribute('data-maxchars'), 10);
-    const charCount = textarea.value.length;
-    const charCountElement = container.querySelector('.charcount');
-    const remainingElement = container.querySelector('.remaining');
+            }
+            else if (charCount < 250) {
+                remainingLabel.classList.remove('over');
+                remainingLabel.innerHTML = 'Remaining:';
+                remainingElement.classList.remove('over');
+                textarea.style.color = 'hsl(0,80%,60%)';
+                textarea.setAttribute('data-over', 'false');
+                setSubmitBtnDisabledStatus(false);
+                document.querySelector('.less').style.display = 'block'
+            }
 
-    charCountElement.innerHTML = `${charCount}/${maxLength}`;
-    remainingElement.innerHTML = maxLength - charCount;
+            else {
+                remainingLabel.classList.remove('over');
+                remainingLabel.innerHTML = 'Remaining:';
+                remainingElement.classList.remove('over');
+                textarea.style.color = 'hsl(0,0%,50%)';
+                textarea.setAttribute('data-over', 'false');
+                setSubmitBtnDisabledStatus(false);
+                document.querySelector('.less').style.display = 'none'
 
-    textarea.addEventListener('input', () => {
-        checkOverLimit(container, textarea, maxLength);
-    });
+            }
+        }
 
-    textarea.addEventListener('focus', () => {
-        setFocus(container);
-    });
+        function initializeTextarea(container) {
+            const textarea = container.querySelector('.textarea');
+            const maxLength = parseInt(textarea.getAttribute('data-maxchars'), 10);
+            const charCount = textarea.value.length;
+            const charCountElement = container.querySelector('.charcount');
+            const remainingElement = container.querySelector('.remaining');
 
-    textarea.addEventListener('blur', () => {
-        removeFocus(container);
-    });
-}
+            charCountElement.innerHTML = `${charCount}/${maxLength}`;
+            remainingElement.innerHTML = maxLength - charCount;
+            checkOverLimit(container, textarea, maxLength);
 
-function initializeAllTextareas() {
-    const textareaContainers = theform.querySelectorAll('.ta-container');
-    textareaContainers.forEach((container) => {
-        initializeTextarea(container);
-    });
-}
+            textarea.addEventListener('input', () => {
+                checkOverLimit(container, textarea, maxLength);
+            });
 
-initializeAllTextareas();
+            textarea.addEventListener('focus', () => {
+                setFocus(container);
+            });
+
+            textarea.addEventListener('blur', () => {
+                removeFocus(container);
+            });
+        }
+
+        function initializeAllTextareas() {
+            const textareaContainers = theform.querySelectorAll('.ta-container');
+            textareaContainers.forEach((container) => {
+                initializeTextarea(container);
+            });
+        }
+
+        initializeAllTextareas();
 
     </script>
 </body>

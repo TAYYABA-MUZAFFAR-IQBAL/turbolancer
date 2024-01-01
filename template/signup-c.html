@@ -293,7 +293,7 @@
         </span>
       </div>
       <p class="privacy-policy">By signing up, you agree to our <a href="#">Privacy Policy</a>.</p>
-      <p class="signin-link">Already have an account? <a href="/signins">Sign in</a></p>
+      <p class="signin-link">Already have an account? <a href="/signin">Sign in</a></p>
     </form>
 
   </div>
@@ -309,7 +309,7 @@
 
     // Send the AJAX request to sign up
     $.ajax({
-      url: "/signup_d",
+      url: "/start_selling_now",
       type: "POST",
       data: formData,
       success: function (response) {

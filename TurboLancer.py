@@ -13,6 +13,7 @@ from jinja2 import Environment, FileSystemLoader
 from flask_socketio import SocketIO, emit, join_room
 import TurboLancer_RePhrase_text
 from werkzeug.datastructures import ImmutableMultiDict
+from urllib.parse import unquote
 
 app = Flask(__name__, template_folder='template', static_folder='static')
 env = Environment(loader=FileSystemLoader('template'))
@@ -38,30 +39,37 @@ image_collection = db['images']
 def generate_id():
     return str(uuid.uuid4())
 
+
 def getkey(data):
-    keys_to_find = ['ideo', 'emalo']
+    keys_to_find = ['ideo', 'emalo','deno']
 
     found_items = {key: data.get(key) for key in keys_to_find if key in data}
-    #(found_items)
+    # (found_items)
     return found_items
 
 
-def check(data,file):
+def check(data, file):
     compound = getkey(data)
     if compound:
-        id_ = turbolancer_data_Security.decrypt(key, compound.get('ideo', None))
-        #(id_)
-        ud = developer_collection.find_one({"_id": id_}) or user_collection.find_one({"_id": id_})
+        if compound.get('ideo', None):
+            id_ = turbolancer_data_Security.decrypt(
+                key, compound.get('ideo', None)) 
+        # (id_)
+            ud = developer_collection.find_one(
+                {"_id": id_}) or user_collection.find_one({"_id": id_})
 
-        if ud:
-            if ud.get('email') == compound.get('emalo'):
-                return file
+            if ud:
+                if compound.get('emalo') == ud['email'] and ud['d'] == 'd' and not compound.get('deno'):
+                    return None
+                elif compound.get('emalo') == ud['email'] and ud['d'] == 'd' and compound.get('deno'):
+                    return file
+                elif compound.get('emalo') == ud['email'] and ud['d'] == 'c':
+                    return file
             else:
                 return None
         else:
             return None
-    else:
-        return  None
+    else:return None
 
 
 # Form for uploading images
@@ -74,16 +82,22 @@ def main():
     cookies = getkey(request.cookies)
     if cookies.get('ideo'):
         id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
-        #("\n" +id_)
-        ud = developer_collection.find_one({"_id": id_}) or user_collection.find_one({"_id": id_})
-        if cookies.get('emalo') == ud['email']:
+        # ("\n" +id_)
+        ud = developer_collection.find_one(
+            {"_id": id_}) or user_collection.find_one({"_id": id_})
+        if cookies.get('emalo') == ud['email'] and ud['d'] == 'd' and not cookies.get('deno'):
+            return redirect(f'/addinfo/{id_}/{ud["name"]}/{ud["email"]}')
+        elif cookies.get('emalo') == ud['email'] and ud['d'] == 'd' and cookies.get('deno'):
             return redirect(f'/home-c/{id_}/{ud["d"]}')
+        elif cookies.get('emalo') == ud['email'] and ud['d'] == 'c':
+            return redirect(f'/home-c/{id_}/{ud["d"]}')
+
     return render_template('index.html')
 
 
-@app.route("/signup_d", methods=["GET", "POST"])
+@app.route("/start_selling_now", methods=["GET", "POST"])
 def signup():
-    if  check(request.cookies, 'file') is not None:
+    if check(request.cookies, 'file') is not None:
         return redirect(url_for('main'))
     if (not check(request.cookies, 'file')) and (request.method == "POST"):
         name = request.form["name"]
@@ -99,13 +113,15 @@ def signup():
         d = 'd'
 
         # Check if the developer already exists in the database
-        #(encoded_email)
-        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one({"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
-        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        # (encoded_email)
+        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one(
+            {"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
+            {"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
         user_id = generate_id()
 
         if user or user_ph:
-            
+
             return render_template("signup-c.html",  x='Account already exists with this email/phone.', y='onload= this.click')
         else:
             t = name.replace(' ', '')
@@ -145,18 +161,29 @@ def signup():
             developer_collection.insert_one(user)
             ide = user_id
             user_id = turbolancer_data_Security.encrypt(key, user_id)
-        return render_template('save_cook.html',keys =[ ['ideo', 'emalo','tp'], [user_id, encoded_email, 'd']],redi = f'addinfo/{ide}/{name}/{encoded_email}')
+        return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp'], [user_id, encoded_email, 'd']], redi=f'addinfo/{ide}/{name}/{encoded_email}')
 
     return render_template("signup-c.html")
+
+
 @app.route('/addinfo/<x>/<y>/<z>')
-def addinfo(x, y,z):
-        return render_template('dataform.html', id=x, name=y, email=z) 
+def addinfo(x, y, z):
+        cookies = getkey(request.cookies)
+        if cookies:
+            print(cookies.get('emalo'))
+            if cookies.get('emalo') in z:
+                return render_template('dataform.html', id=x, name=y, email=z, emaloz = turbolancer_data_Security.decrypt(key, cookies.get('emalo')) )
+            else:
+                return redirect(url_for('main'))
+        else:
+            return redirect(url_for('main'))
+
+    
 
 
-
-@app.route("/signup_and_upload_image", methods=['GET', 'POST'])
+@app.route("/begin_client_journey", methods=['GET', 'POST'])
 def signup_and_upload_image():
-    if  check(request.cookies, 'file') is not None:
+    if check(request.cookies, 'file') is not None:
         return redirect(url_for('main'))
     if (not check(request.cookies, 'file')) and (request.method == "POST"):
         name = request.form.get("name")
@@ -170,24 +197,25 @@ def signup_and_upload_image():
         encoded_country = turbolancer_data_Security.encrypt(
             key, request.form['con'])
         d = 'c'
-        encoded_bir = turbolancer_data_Security.encrypt(key, request.form.get("bir"))
+        encoded_bir = turbolancer_data_Security.encrypt(
+            key, request.form.get("bir"))
 
         # Check if the developer already exists in the database
-        #(encoded_email)
-        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one({"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
-        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        # (encoded_email)
+        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one(
+            {"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
+            {"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
         user_id = generate_id()
 
-
-      
-     
         if 'image' not in request.files:
             return render_template("error.html", message="No image uploaded")
         else:
             image = request.files["image"]
             print(image)
             image_data = image.read()
-            image_id = image_collection.insert_one({"data": image_data}).inserted_id
+            image_id = image_collection.insert_one(
+                {"data": image_data}).inserted_id
 
         if user or user_ph:
             return render_template("sin-c.html", x='Account already exists with this email/phone.', y='onload= this.click')
@@ -207,195 +235,213 @@ def signup_and_upload_image():
                 count += str(random.randint(0, 9))
             user = {
                 "_id": user_id,
-            "image": "/get_image/" + str(image_id),
-            "name": name,
-            "tag": tag + count,
-            "email": encoded_email,
-            "password": encoded_password,
-            "country": encoded_country,
-            "phone_number": encoded_phone,
-            "d": d,
-            "spending": 0,
-            "account_created_in": year,
-            "payment_method": "Visa",
-            "orders_history": [],
-            'bir': encoded_bir
+                "image": "/get_image/" + str(image_id),
+                "name": name,
+                "tag": tag + count,
+                "email": encoded_email,
+                "password": encoded_password,
+                "country": encoded_country,
+                "phone_number": encoded_phone,
+                "d": d,
+                "spending": 0,
+                "account_created_in": year,
+                "payment_method": "Visa",
+                "orders_history": [],
+                'bir': encoded_bir
             }
 
             user_collection.insert_one(user)
             ide = user_id
             print(f'/redi/{user_id}/{encoded_email}/{ide}/{user["d"]}')
             user_id = turbolancer_data_Security.encrypt(key, user_id)
-            return jsonify({"success": True,"redirect_url":f'/redi/{user_id}/{encoded_email}/{ide}/{user["d"]}'})
+            return jsonify({"success": True, "redirect_url": f'/redi/{user_id}/{encoded_email}/{ide}/{user["d"]}'})
         return render_template("sin-c.html")
 
     return render_template("sin-c.html")
 
+
 @app.route("/signin", methods=["GET", "POST"])
 def signin():
-    if  check(request.cookies, 'file') is not None:
+    if check(request.cookies, 'file') is not None:
         return redirect(url_for('main'))
     if (not check(request.cookies, 'file')) and (request.method == "POST"):
 
-        encoded_email = turbolancer_data_Security.encrypt(key, request.form["email"])
-        encoded_password = turbolancer_data_Security.encrypt(key, request.form["ps"])
+        encoded_email = turbolancer_data_Security.encrypt(
+            key, request.form["email"])
+        encoded_password = turbolancer_data_Security.encrypt(
+            key, request.form["ps"])
 
-        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one({"email": encoded_email})
+        user = developer_collection.find_one(
+            {"email": encoded_email}) or user_collection.find_one({"email": encoded_email})
 
         if user:
-            #(user['email'] +" heelo")
+            # (user['email'] +" heelo")
             stored_password = user['password']
             if stored_password != encoded_password:
                 return jsonify({"error": "Incorrect password!"})
             else:
                 ide = user['_id']
                 user_id = turbolancer_data_Security.encrypt(key, ide)
-                return  jsonify({"success": True, "redirect_url":f'redi/{user_id}/{encoded_email}/{ide}/{user["d"]}'})
+                print(user['d'] == 'd' and (user['image'] == "" or user['about_self'] == ""))
+
+                if user['d'] == 'd' and (user['image'] == "" or user['about_self'] == ""):
+                    return jsonify({"success": True, "redirect_url": f'redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/none'})
+
+                return jsonify({"success": True, "redirect_url": f'redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/_[__xxx__%12*79)(56)[:]-++784kdd]_'})
+                
         else:
             return jsonify({"error": "Account does not exist!"})
 
-    return render_template("singin.html")  
+    return render_template("singin.html")
 
-@app.route('/redi/<user_id>/<encoded_email>/<ide>/<user_d>')
-def redi(user_id,encoded_email,ide,user_d):
+
+@app.route('/redi/<user_id>/<encoded_email>/<ide>/<user_d>/<deno>')
+def redi(user_id, encoded_email, ide, user_d,deno):
+    expected_deno = '_[__xxx__%12*79)(56)[:]-++784kdd]_'
+    print(unquote(expected_deno) == deno)
+    if unquote(expected_deno) == deno:
+        return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp','deno'], [user_id, encoded_email, user_d,deno]], redi=f'/home-c/{ide}/{user_d}')
+    
     return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp'], [user_id, encoded_email, user_d]], redi=f'/home-c/{ide}/{user_d}')
 
 ##############################################################################################
-############################portion to be deleted ####################################
+############################ portion to be deleted ####################################
 ##############################################################################################
-@app.route('/insert_skill', methods=['GET', 'POST'])
-def insert_skill():
-    if request.method == 'POST':
-        skill = request.form['skill']
-        image = request.form['image']
-        req = request.form['test_req']
-        skill_id = generate_id()
-
-        skill_data = {"_id": skill_id, "skill": skill,
-                      "image": image, 'req': req}
-        serving_sectors_collection.insert_one(skill_data)
-
-        return redirect(url_for('insert_skill'))
-
-    return render_template('insert_skill.html')
 
 
-@app.route('/insert_tech', methods=['GET', 'POST'])
-def insert_tech():
-    if request.method == 'POST':
-        sec = request.form.get('sector')
-        tech = request.form.get('tech')
-        image = request.form.get('image')
-        req = request.form.get('req')
-        skill_id = generate_id()
+# @app.route('/insert_skill', methods=['GET', 'POST'])
+# def insert_skill():
+#     if request.method == 'POST':
+#         skill = request.form['skill']
+#         image = request.form['image']
+#         req = request.form['test_req']
+#         skill_id = generate_id()
 
-        skill_data = {"_id": skill_id, "sector": sec,
-                      "tech": tech, "image": image, 'req': req}
-        sectors_technologies_collection.insert_one(skill_data)
+#         skill_data = {"_id": skill_id, "skill": skill,
+#                       "image": image, 'req': req}
+#         serving_sectors_collection.insert_one(skill_data)
 
-        return redirect(url_for('insert_tech'))
+#         return redirect(url_for('insert_skill'))
 
-    return render_template('technology.html')
-
-
-@app.route('/test')
-def test():
-    return render_template('test.html')
+#     return render_template('insert_skill.html')
 
 
-@app.route('/api/quiz/<path:x>', methods=['GET'])
-def get_quiz_data(x):
-    topics = x.split('|')  # Split the path parameter into individual topics
-    all_questions = []
-    answer = 40/len(topics)
-    rounded_answer = round(answer)
-    #(rounded_answer)
-    for topic in topics:
-        topic = topic.replace('_', ' ')
-        filtered_data = list(question_collection.find({"topic": topic}))
-        random.shuffle(filtered_data)
-        # Select the first 40 questions or all available questions if there are fewer
-        selected_questions = filtered_data[:min(
-            len(filtered_data), rounded_answer)]
-        all_questions.extend(selected_questions)
+# @app.route('/insert_tech', methods=['GET', 'POST'])
+# def insert_tech():
+#     if request.method == 'POST':
+#         sec = request.form.get('sector')
+#         tech = request.form.get('tech')
+#         image = request.form.get('image')
+#         req = request.form.get('req')
+#         skill_id = generate_id()
 
-    # Shuffle all the selected questions from different topics
-    random.shuffle(all_questions)
-    serializable_data = [{'topic': item['topic'], 'question': item['question'],
-                          'options': item['options'], 'correctIndex': item['correctIndex']} for item in all_questions]
+#         skill_data = {"_id": skill_id, "sector": sec,
+#                       "tech": tech, "image": image, 'req': req}
+#         sectors_technologies_collection.insert_one(skill_data)
 
-    return jsonify(serializable_data)
+#         return redirect(url_for('insert_tech'))
+
+#     return render_template('technology.html')
 
 
-@app.route('/update_value', methods=['POST'])
-def update_value():
-    data = request.get_json()
-
-    value = data['rangeValue']
-    encoded_email = data['email']
-    #(encoded_email)
-
-    developer = developer_collection.find_one({"email": encoded_email})
-
-    if developer:
-        developer_collection.update_one(
-            {"email": encoded_email}, {"$set": {"english": value}})
-        return jsonify({'link': f'/selects_skill/{encoded_email}'})
-    else:
-        return jsonify({'error': 'Developer not found.'})
+# @app.route('/test')
+# def test():
+#     return render_template('test.html')
 
 
-@app.route('/selects_skill/<email>')
-def selects_skill(email):
-    if email:
-        developer = developer_collection.find_one({"email": email})
-        img = developer['image']
-        name = developer['name']
-        email = turbolancer_data_Security.decrypt(key, email)
-        #(email)
-        skills = serving_sectors_collection.find()
-        encoded_skills = skills
+# @app.route('/api/quiz/<path:x>', methods=['GET'])
+# def get_quiz_data(x):
+#     topics = x.split('|')  # Split the path parameter into individual topics
+#     all_questions = []
+#     answer = 40/len(topics)
+#     rounded_answer = round(answer)
+#     # (rounded_answer)
+#     for topic in topics:
+#         topic = topic.replace('_', ' ')
+#         filtered_data = list(question_collection.find({"topic": topic}))
+#         random.shuffle(filtered_data)
+#         # Select the first 40 questions or all available questions if there are fewer
+#         selected_questions = filtered_data[:min(
+#             len(filtered_data), rounded_answer)]
+#         all_questions.extend(selected_questions)
 
-        template_path = 'template/select_sk.html'
-        with open(template_path, 'r') as file:
-            template_content = file.read()
+#     # Shuffle all the selected questions from different topics
+#     random.shuffle(all_questions)
+#     serializable_data = [{'topic': item['topic'], 'question': item['question'],
+#                           'options': item['options'], 'correctIndex': item['correctIndex']} for item in all_questions]
 
-        rendered_template = render_template_string(template_content, x='hi', h1='Select your serving sector', function2='next(this)', function1=None, disc='Click to select tecknology for ',
-                                                   b='Select technology', o=encoded_skills, image=img, name=name, email2=turbolancer_data_Security.encrypt(key, email), email=email)
-
-        return rendered_template
-    else:
-        return '<h1><b>Method Not Allowd</b></h1>'
+#     return jsonify(serializable_data)
 
 
-@app.route('/select_technology/<email>/<topic>')
-def select_technology(email, topic):
-    if email and topic:
-        developer = developer_collection.find_one({"email": email})
-        img = developer['image']
-        name = developer['name']
-        email = turbolancer_data_Security.decrypt(key, email)
-        #(email)
+# @app.route('/update_value', methods=['POST'])
+# def update_value():
+#     data = request.get_json()
 
-        # Filter skills based on the provided topic
-        skills = sectors_technologies_collection.find({"sector": topic})
+#     value = data['rangeValue']
+#     encoded_email = data['email']
+#     # (encoded_email)
 
-        encoded_skills = []
-        for skill in skills:
-            encoded_skill = {'skill': skill['tech'], 'image': skill['image']}
-            encoded_skills.append(encoded_skill)
+#     developer = developer_collection.find_one({"email": encoded_email})
 
-        template_path = 'template/select_sk.html'
-        with open(template_path, 'r') as file:
-            template_content = file.read()
+#     if developer:
+#         developer_collection.update_one(
+#             {"email": encoded_email}, {"$set": {"english": value}})
+#         return render_template('save_cook.html', keys=[['deno'], ['_{__xxx__%12*79)(56)[:]-++784kdd}_']], redi=f'addinfo/{ide}/{name}/{encoded_email}')
+#     else:
+#         return jsonify({'error': 'Developer not found.'})
 
-        rendered_template = render_template_string(
-            template_content, h1=f'Select technology for {topic}', function2=None, function1='select(this)', disc='Click to choose technology', b='Take test', o=encoded_skills, image=img, name=name, email=email)
 
-        return rendered_template
+# @app.route('/selects_skill/<email>')
+# def selects_skill(email):
+#     if email:
+#         developer = developer_collection.find_one({"email": email})
+#         img = developer['image']
+#         name = developer['name']
+#         email = turbolancer_data_Security.decrypt(key, email)
+#         # (email)
+#         skills = serving_sectors_collection.find()
+#         encoded_skills = skills
 
-    else:
-        return '<h1><b>Method Not Allowd</b></h1>'
+#         template_path = 'template/select_sk.html'
+#         with open(template_path, 'r') as file:
+#             template_content = file.read()
+
+#         rendered_template = render_template_string(template_content, x='hi', h1='Select your serving sector', function2='next(this)', function1=None, disc='Click to select tecknology for ',
+#                                                    b='Select technology', o=encoded_skills, image=img, name=name, email2=turbolancer_data_Security.encrypt(key, email), email=email)
+
+#         return rendered_template
+#     else:
+#         return '<h1><b>Method Not Allowd</b></h1>'
+
+
+# @app.route('/select_technology/<email>/<topic>')
+# def select_technology(email, topic):
+#     if email and topic:
+#         developer = developer_collection.find_one({"email": email})
+#         img = developer['image']
+#         name = developer['name']
+#         email = turbolancer_data_Security.decrypt(key, email)
+#         # (email)
+
+#         # Filter skills based on the provided topic
+#         skills = sectors_technologies_collection.find({"sector": topic})
+
+#         encoded_skills = []
+#         for skill in skills:
+#             encoded_skill = {'skill': skill['tech'], 'image': skill['image']}
+#             encoded_skills.append(encoded_skill)
+
+#         template_path = 'template/select_sk.html'
+#         with open(template_path, 'r') as file:
+#             template_content = file.read()
+
+#         rendered_template = render_template_string(
+#             template_content, h1=f'Select technology for {topic}', function2=None, function1='select(this)', disc='Click to choose technology', b='Take test', o=encoded_skills, image=img, name=name, email=email)
+
+#         return rendered_template
+
+#     else:
+#         return '<h1><b>Method Not Allowd</b></h1>'
 
 
 @app.route('/UPLOAD_IMAGE', methods=['POST'])
@@ -404,7 +450,7 @@ def upload_image():
         # Obtain the uploaded image and the email from the request payload
         image = request.files['image']
         encoded_email = request.form.get('email')
-        #(encoded_email)
+        # (encoded_email)
 
         # Retrieve the developer document
         developer = developer_collection.find_one({"email": encoded_email})
@@ -439,7 +485,7 @@ def send_image():
         # Obtain the uploaded image and the email from the request payload
         image = request.files['image']
         chatroom_Id = request.form.get('chatroom')
-        #(chatroom_Id)
+        # (chatroom_Id)
 
         # Retrieve the developer document
         chatroom = chat_rooms.find_one({"_id": ObjectId(chatroom_Id)})
@@ -484,7 +530,7 @@ def mess(image_id):
 def update_data():
     data = request.get_json()
     encoded_email = data.get('email')
-    #(encoded_email)
+    # (encoded_email)
 
     text_area_value = data.get('textAreaValue')
 
@@ -494,9 +540,10 @@ def update_data():
         if developer:
             developer_collection.update_one({"email": encoded_email}, {
                                             "$set": {"about_self": text_area_value}})
-            return jsonify({'message': 'Data updated successfully.'})
+            print(f"home-c/{developer['_id']}/d")
+            return jsonify({'message': '_{__xxx__%12*79)(56)[:]-++784kdd}_','ne':'deno','re':f"/home-c/{developer['_id']}/d"})
         else:
-            return jsonify({'error': 'Developer not found.'})
+            return jsonify({'error': 'seller not found.'})
     else:
         return jsonify({'error': 'Invalid data.'})
 
@@ -505,7 +552,7 @@ def update_data():
 def update_result():
     data = request.get_json()
     encoded_email = data.get('email')
-    #(encoded_email)
+    # (encoded_email)
 
     text_area_value = data.get('result')
 
@@ -575,7 +622,7 @@ def Dashbord(x, y):
             for user in other_users:
                 name = user.get('name')
                 img = user.get('image')
-                #(img)
+                # (img)
                 id = user.get('_id')
                 chid = chat_room_data.get('_id')
                 chid = str(chid)
@@ -603,7 +650,7 @@ def Dashbord(x, y):
                                zipped_data=zipped_data)
 
     except Exception as e:
-        #("An error occurred:", str(e))
+        # ("An error occurred:", str(e))
         return jsonify({'error': 'An error occurred'}), 500
 
 
@@ -638,7 +685,7 @@ def handle_join(data):
         return
 
     chat_rooms_list = user_data.get("chat_rooms", [])
-    #(chat_rooms_list)
+    # (chat_rooms_list)
 
     namesli = []
     img_s = []
@@ -689,7 +736,7 @@ def handle_send_message(data):
     current_time = data['currentTime']
     chat_room_name = data['chatRoomName']
     message = data.get('message')
-    #(message)
+    # (message)
     image_link = data.get('imageLink')
     diff = data.get('diff')
 
@@ -730,18 +777,18 @@ def delmessage(data):
         messages = chat_room.get('messages', [])
         x = 0
         for message in messages:
-            #(message.get('timestamp'))
-            #(time)
+            # (message.get('timestamp'))
+            # (time)
             if message.get('timestamp') == time and x == index:
                 # Add new_blocked_by to the 'blocked_by' list in the specific message
                 message.setdefault('blocked_by', []).append(new_blocked_by)
-                #(message)
+                # (message)
                 # Update the chat room with the modified messages list
                 chat_rooms.update_one(
                     {"_id": ObjectId(chatroomname)},
                     {"$set": {"messages": messages}}, upsert=True
                 )
-                #(chat_room.get('chat_room_name'))
+                # (chat_room.get('chat_room_name'))
                 # Broadcast the message_deleted event to all clients in the chat room
                 emit('messagedeleted', {'index': x, 'sender': sender},
                      broadcast=True, include_self=True)
@@ -755,7 +802,7 @@ def delmessageev(data):
     time = data.get('time')
     typee = data.get('type')
     name = get_user_data(sender, typee)
-    #(name['name'])
+    # (name['name'])
     message = data.get('message')
     index = data.get('index')
     chatroomname = data.get('chatroomname')
@@ -768,19 +815,19 @@ def delmessageev(data):
         messages = chat_room.get('messages', [])
         x = 0
         for message in messages:
-            #(message.get('timestamp'))
-            #(time)
+            # (message.get('timestamp'))
+            # (time)
 
             if message.get('timestamp') == time and x == index:
                 # Add new_blocked_by to the 'blocked_by' list in the specific message
                 message.setdefault('blocked_by', []).append(new_blocked_by)
-                #(message)
+                # (message)
                 # Update the chat room with the modified messages list
                 chat_rooms.update_one(
                     {"_id": ObjectId(chatroomname)},
                     {"$set": {"messages": messages}}, upsert=True
                 )
-                #(chat_room.get('chat_room_name'))
+                # (chat_room.get('chat_room_name'))
                 # Broadcast the message_deleted event to all clients in the chat room
                 emit('messagedeletedbyall', {'index': x, 'by': new_blocked_by, 'sender': sender},
                      broadcast=True, include_self=True)
@@ -793,9 +840,9 @@ def delmessageev(data):
 def get_messages():
     data = request.get_json()
     user_id = data.get('user_id')
-    #(user_id)
+    # (user_id)
     chat_room_name = data.get('chat_room_name')
-    #(chat_room_name)
+    # (chat_room_name)
 
     if not user_id or not chat_room_name:
         return jsonify(messages=[], time=[])
@@ -817,7 +864,7 @@ def get_messages():
         a = m.get('message')
         b = m.get('timestamp')
         diff = m.get('diff')
-        #(b)
+        # (b)
         c = m.get('sender')
         d = m.get('blocked_by')
         messages.append(a)
@@ -825,7 +872,7 @@ def get_messages():
         sender.append(c)
         bloaked_by.append(d)
         diffl.append(diff)
-    #(time)
+    # (time)
     # bloaked()_by[0] is a lsit
 
     return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
@@ -835,10 +882,11 @@ def get_messages():
 def home_c(x, y):
     if not check(request.cookies, 'file'):
         return redirect(url_for('main'))
-    
+
     elif check(request.cookies, 'file') and turbolancer_data_Security.decrypt(key, getkey(request.cookies)['ideo']) != x:
         return redirect(url_for('main'))
-    user_data = user_collection.find_one({"_id": x, 'd': y}) or developer_collection.find_one({"_id": x})
+    user_data = user_collection.find_one(
+        {"_id": x, 'd': y}) or developer_collection.find_one({"_id": x})
 
     if user_data:
         email = turbolancer_data_Security.decrypt(key, user_data["email"])
@@ -860,9 +908,6 @@ def home_c(x, y):
     return redirect(url_for('main'))
 
 
-    
-
-
 def get_user_data(user_id):
     user_data = user_collection.find_one({"_id": user_id})
     if user_data:
@@ -876,8 +921,7 @@ def get_user_data(user_id):
         bir = turbolancer_data_Security.decrypt(key, user_data["bir"])
         tag = user_data['tag'] or None
 
-        return  name, image,email, country, ph, year, method,bir, tag
-        
+        return name, image, email, country, ph, year, method, bir, tag
 
     return None
 
@@ -899,9 +943,7 @@ def get_developer_data(developer_id):
         about_self = developer_data['about_self']
         tag = developer_data['tag'] or None
 
-
-      
-                #(profile['name'], 'd')
+        # (profile['name'], 'd')
         return name, image, email, country, ph, year, method, about_self, rating, grade, tag
     return None
 
@@ -911,10 +953,11 @@ def account(x, y):
     if not check(request.cookies, 'file'):
         return redirect(url_for('main'))
     elif check(request.cookies, 'file') and turbolancer_data_Security.decrypt(
-        key, getkey(request.cookies)['ideo']) != x:
+            key, getkey(request.cookies)['ideo']) != x:
         ud = get_user_data(x) or get_developer_data(x)
-        lud = get_user_data(turbolancer_data_Security.decrypt(key,request.cookies.get('ideo'))) or get_developer_data(turbolancer_data_Security.decrypt(key, request.cookies.get('ideo')))
-    
+        lud = get_user_data(turbolancer_data_Security.decrypt(key, request.cookies.get(
+            'ideo'))) or get_developer_data(turbolancer_data_Security.decrypt(key, request.cookies.get('ideo')))
+
         if ud[4] == lud[4]:
             grer = ['Hi', 'Hello', 'Nice to see you', 'Welcome']
             random.shuffle(grer)
@@ -924,15 +967,14 @@ def account(x, y):
                     user_data = get_user_data(x)
                     if user_data:
                         name, image, email, country, ph, year, method, bir,  tag = user_data
-                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0], tag = tag)
+                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0], tag=tag)
                 elif y == 'd':
                     developer_data = get_developer_data(x)
                     if developer_data:
                         name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade)
+                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self, tag=tag, rating=float(rating), grade=grade)
                 return redirect(url_for('main'))
         return redirect(url_for('main'))
-
 
     grer = ['Hi', 'Hello', 'Nice to see you', 'Welcome']
     random.shuffle(grer)
@@ -942,16 +984,15 @@ def account(x, y):
             user_data = get_user_data(x)
             if user_data:
                 name, image, email, country, ph, year, method, bir,  tag = user_data
-                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0],  tag = tag)
+                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0],  tag=tag)
         elif y == 'd':
             developer_data = get_developer_data(x)
             if developer_data:
                 name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self,tag = tag, rating=float(rating), grade=grade,)
+                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self, tag=tag, rating=float(rating), grade=grade,)
         return redirect(url_for('main'))
 
     return redirect(url_for('main'))
-
 
 
 @app.errorhandler(404)
@@ -980,7 +1021,7 @@ def rephrase():
     input_text = data.get('text')
     random_paraphrases = TurboLancer_RePhrase_text.get_random_paraphrases(
         input_text, num_paraphrases=3)
-    #(random_paraphrases)
+    # (random_paraphrases)
 
     return jsonify(text=random_paraphrases)
 

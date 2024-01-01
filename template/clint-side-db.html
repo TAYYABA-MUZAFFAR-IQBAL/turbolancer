@@ -86,7 +86,7 @@
             min-height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
             " frameborder="0"></iframe>
             <iframe class="getsearved" src="/getserved" style="width: 100%;margin-top: 6vh;
-              min-height: 130vh; opacity: 1;display: none;     transition: all 0.2s;
+              min-height: 130vh; opacity: 0;display: none;     transition: all 0.2s;
               " frameborder="0"></iframe>
 
             <iframe class="proj" src="/proj" style="width: 100%;margin-top: 6vh;
@@ -111,69 +111,81 @@ min-height: 130vh; opacity: 1;display: block;     transition: all 0.2s;
 
         <a href="#"><i class="fa-solid fa-info"></i>&nbsp; About Us</a>
 
-        <a href="#" id="deleteCookieButton" style="color: rgb(253, 58, 58);"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
+        <a href="#" id="deleteCookieButton" style="color: rgb(253, 58, 58);"><i
+                class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
 
 
 
     </div>
     <script>
-        function deleteCookie(cookieName) {
-    var expirationDate = new Date(0); // Create a Date object set to the epoch time (January 1, 1970)
-    var formattedDate = expirationDate.toUTCString(); // Get the UTC string representation of the date
+        function _(cookieName) {
+            var expirationDate = new Date(0); // Create a Date object set to the epoch time (January 1, 1970)
+            var formattedDate = expirationDate.toUTCString(); // Get the UTC string representation of the date
 
-    document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
-}
+            document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
+        }
 
-document.getElementById('deleteCookieButton').addEventListener('click', function() {
-list = ['ideo','emalo']
-for(i=0; i<=list.length; i++){
-    deleteCookie(list[i]);
-}
-   window.location.reload()
-});
+        document.getElementById('deleteCookieButton').addEventListener('click', function () {
+            list = ['ideo', 'emalo','deno','tp']
+            for (i = 0; i <= list.length; i++) {
+                _(list[i]);
+            }
+            window.location.reload()
+        });
 
         function select(x) {
-            document.querySelectorAll('.upload_job_if, .getsearved, .proj').forEach(element => {
-                element.style.opacity = '0';
-                element.style.display = 'none';
-            });
-
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.querySelectorAll('span').forEach(element => {
-                    element.classList.remove('active');
-
+            function doit(x) {
+                document.querySelectorAll('.upload_job_if, .getsearved, .proj').forEach(element => {
+                    element.style.opacity = '0';
+                    element.style.display = 'none';
                 });
-            });
-            const dataAttr = x.getAttribute('data');
 
-            x.classList.add('active');
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.querySelectorAll(`[data = '${dataAttr}']`).forEach(element => {
-                    element.classList.add('active');
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.querySelectorAll('span').forEach(element => {
+                        element.classList.remove('active');
 
+                    });
                 });
-            });
+                const dataAttr = x.getAttribute('data');
+
+                x.classList.add('active');
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.querySelectorAll(`[data = '${dataAttr}']`).forEach(element => {
+                        element.classList.add('active');
+
+                    });
+                });
 
 
-            switch (dataAttr) {
-                case 'job':
-                    document.querySelector('.upload_job_if').style.display = 'block';
-                    document.querySelector('.upload_job_if').style.opacity = '1';
-                    break;
-                case 'service':
-                    document.querySelector('.getsearved').style.display = 'block';
-                    document.querySelector('.getsearved').style.opacity = '1';
-                    break;
-                case 'projects':
-                    document.querySelector('.proj').style.display = 'block';
-                    document.querySelector('.proj').style.opacity = '1';
-                    break;
-                default:
-                    break;
+                switch (dataAttr) {
+                    case 'job':
+                        document.querySelector('.upload_job_if').style.display = 'block';
+                        document.querySelector('.upload_job_if').style.opacity = '1';
+                        break;
+                    case 'service':
+                        document.querySelector('.getsearved').style.display = 'block';
+                        document.querySelector('.getsearved').style.opacity = '1';
+                        break;
+                    case 'projects':
+                        document.querySelector('.proj').style.display = 'block';
+                        document.querySelector('.proj').style.opacity = '1';
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            if (!document.startViewTransition) {
+                doit(x);
+                return;
+            }
+
+            // With View Transitions:
+            document.startViewTransition(() => doit(x));
         }
         function openNav() {
             if (!(window.innerWidth < 980)) {
+
                 document.getElementById("full_page").removeEventListener('click', closeNav)
 
                 document.getElementById("Sidenav").style.width = "322px";
@@ -269,7 +281,7 @@ for(i=0; i<=list.length; i++){
                     })
                     .catch(error => {
                         console.error(`Error loading image from ${url}: ${error}`);
-                        callback(null); 
+                        callback(null);
                     });
             }
             const base64Array = [];
@@ -352,6 +364,49 @@ for(i=0; i<=list.length; i++){
 
             }
         }
+        function handleBreakpoints() {
+            function okay() {
+                const screenWidth = window.innerWidth;
+
+                if (screenWidth <= 880) {
+                    const secElement = document.querySelector('.sec');
+                    secElement.style.display = 'grid';
+                    secElement.style.opacity = 1;
+                    secElement.style.height = 'auto';
+
+                    const firstElement = document.querySelector('.first');
+                    firstElement.style.display = 'none';
+                    firstElement.style.opacity = 0;
+                    firstElement.style.height = 0;
+                }
+
+                else{
+                    const firstElement = document.querySelector('.first');
+                    firstElement.style.display = 'grid';
+                    firstElement.style.opacity = 1;
+                    firstElement.style.height = 'auto';
+
+                    const secElement = document.querySelector('.sec');
+                    secElement.style.display = 'none';
+                    secElement.style.opacity = 0;
+                    secElement.style.height = 0;
+
+                }
+            }
+            if (!document.startViewTransition) {
+                okay();
+                return;
+            }
+
+            // With View Transitions:
+            document.startViewTransition(() => okay());
+        }
+
+        window.addEventListener('resize', handleBreakpoints);
+        handleBreakpoints();
+
+
+
     </script>
 </body>
 

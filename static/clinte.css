@@ -767,7 +767,7 @@ div.container_input::after {
     opacity: 1;
     height: auto;}
 
-@media (max-width:880px) {
+/* @media (max-width:880px) {
 
     .sec{
         display: grid;
@@ -780,4 +780,56 @@ div.container_input::after {
         height: 0;  
     }
     
+} */
+
+iframe {
+    view-transition-name: iframe !important;
 }
+
+
+
+::view-transition-old(iframe) {
+    animation: 1s transition-out 0s ease;
+}
+
+::view-transition-new(iframe) {
+    animation: 1s transition-in 0s ease;
+}
+
+@keyframes transition-out {
+    from {
+        opacity: 1;
+        scale: 1;
+        filter: blur(1px);
+    }
+
+    to {
+        opacity: 0;
+        scale: 1.05;
+        filter: blur(10px);
+
+    }
+}
+
+@keyframes transition-in {
+    from {
+        opacity: 0;
+        scale: 1.05;
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+        filter: blur(1px);
+    }
+}
+::view-transition-old(root) {
+    transform-origin: left;
+}
+
+::view-transition-new(root) {
+    transform-origin: right;
+}
+
+
