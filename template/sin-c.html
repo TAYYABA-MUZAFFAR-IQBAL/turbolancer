@@ -381,6 +381,17 @@
                 <label for="country">Birthday</label>
             </div>
             <div class="input-group">
+                <input type="text" list="ganderL" id="gander" name="gan" required>
+
+                <datalist id="ganderL">
+                    <option value="Male">
+                    <option value="Female">
+                    <option value="Other...">
+                    <option value="Not interested to tell">
+                </datalist>
+                <label for="gander">Gander</label>
+            </div>
+            <div class="input-group">
                 <input type="hidden" id="userCountry" name="con" required>
             </div>
             <div class="content">
@@ -442,7 +453,7 @@
                 const age = Math.floor(ageDiff / (1000 * 60 * 60 * 24 * 365.25));
 
                 // Check if the user is at least 18 years old
-                if (age >= 18) {
+                if (age >= 17) {
                     // Allow form submission
                     var email = $("#email").val(); // Get the email value from the input field with the ID "email"
                     var formData = new FormData(this); // Create a FormData object with the form data
@@ -473,7 +484,7 @@
                         },
                     });
                 } else {
-                    document.getElementById('erroro').textContent = 'You must be at least 18 years old to SignUp.';
+                    document.getElementById('erroro').textContent = 'You must be at least 17 years old to SignUp.';
                 }
             }
 
@@ -497,7 +508,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching user country:', error);
-                    document.getElementById('userCountry').textContent = 'Not available';
+                    document.getElementById('userCountry').textContent = 'Please enter your country';
                 });
         }
 

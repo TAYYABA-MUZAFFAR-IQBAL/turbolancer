@@ -41,7 +41,7 @@ def generate_id():
 
 
 def getkey(data):
-    keys_to_find = ['ideo', 'emalo','deno']
+    keys_to_find = ['ideo', 'emalo', 'deno']
 
     found_items = {key: data.get(key) for key in keys_to_find if key in data}
     # (found_items)
@@ -53,7 +53,7 @@ def check(data, file):
     if compound:
         if compound.get('ideo', None):
             id_ = turbolancer_data_Security.decrypt(
-                key, compound.get('ideo', None)) 
+                key, compound.get('ideo', None))
         # (id_)
             ud = developer_collection.find_one(
                 {"_id": id_}) or user_collection.find_one({"_id": id_})
@@ -69,7 +69,8 @@ def check(data, file):
                 return None
         else:
             return None
-    else:return None
+    else:
+        return None
 
 
 # Form for uploading images
@@ -107,6 +108,10 @@ def signup():
             key, request.form["ps"])
         encoded_phone = turbolancer_data_Security.encrypt(
             key, request.form['ph'])
+        encoded_bir = turbolancer_data_Security.encrypt(
+            key, request.form.get("bir"))
+        encoded_gan = turbolancer_data_Security.encrypt(
+            key, request.form.get("gan"))
 
         encoded_country = turbolancer_data_Security.encrypt(
             key, request.form['con'])
@@ -155,7 +160,9 @@ def signup():
                 "payment_method": "Visa",
                 "project_history": [],
                 "chat_rooms": [],
-                "account_created_in": year
+                "account_created_in": year,
+                'bir': encoded_bir,
+                'gan': encoded_gan
             }
 
             developer_collection.insert_one(user)
@@ -168,17 +175,15 @@ def signup():
 
 @app.route('/addinfo/<x>/<y>/<z>')
 def addinfo(x, y, z):
-        cookies = getkey(request.cookies)
-        if cookies:
-            print(cookies.get('emalo'))
-            if cookies.get('emalo') in z:
-                return render_template('dataform.html', id=x, name=y, email=z, emaloz = turbolancer_data_Security.decrypt(key, cookies.get('emalo')) )
-            else:
-                return redirect(url_for('main'))
+    cookies = getkey(request.cookies)
+    if cookies:
+        print(cookies.get('emalo'))
+        if cookies.get('emalo') in z:
+            return render_template('dataform.html', id=x, name=y, email=z, emaloz=turbolancer_data_Security.decrypt(key, cookies.get('emalo')))
         else:
             return redirect(url_for('main'))
-
-    
+    else:
+        return redirect(url_for('main'))
 
 
 @app.route("/begin_client_journey", methods=['GET', 'POST'])
@@ -199,7 +204,8 @@ def signup_and_upload_image():
         d = 'c'
         encoded_bir = turbolancer_data_Security.encrypt(
             key, request.form.get("bir"))
-
+        encoded_gan = turbolancer_data_Security.encrypt(
+            key, request.form.get("gan"))
         # Check if the developer already exists in the database
         # (encoded_email)
         user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one(
@@ -247,7 +253,8 @@ def signup_and_upload_image():
                 "account_created_in": year,
                 "payment_method": "Visa",
                 "orders_history": [],
-                'bir': encoded_bir
+                'bir': encoded_bir,
+                'gan': encoded_gan
             }
 
             user_collection.insert_one(user)
@@ -282,13 +289,14 @@ def signin():
             else:
                 ide = user['_id']
                 user_id = turbolancer_data_Security.encrypt(key, ide)
-                print(user['d'] == 'd' and (user['image'] == "" or user['about_self'] == ""))
+                print(user['d'] == 'd' and (user['image']
+                      == "" or user['about_self'] == ""))
 
                 if user['d'] == 'd' and (user['image'] == "" or user['about_self'] == ""):
                     return jsonify({"success": True, "redirect_url": f'redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/none'})
 
                 return jsonify({"success": True, "redirect_url": f'redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/_[__xxx__%12*79)(56)[:]-++784kdd]_'})
-                
+
         else:
             return jsonify({"error": "Account does not exist!"})
 
@@ -296,12 +304,12 @@ def signin():
 
 
 @app.route('/redi/<user_id>/<encoded_email>/<ide>/<user_d>/<deno>')
-def redi(user_id, encoded_email, ide, user_d,deno):
+def redi(user_id, encoded_email, ide, user_d, deno):
     expected_deno = '_[__xxx__%12*79)(56)[:]-++784kdd]_'
     print(unquote(expected_deno) == deno)
     if unquote(expected_deno) == deno:
-        return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp','deno'], [user_id, encoded_email, user_d,deno]], redi=f'/home-c/{ide}/{user_d}')
-    
+        return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp', 'deno'], [user_id, encoded_email, user_d, deno]], redi=f'/home-c/{ide}/{user_d}')
+
     return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp'], [user_id, encoded_email, user_d]], redi=f'/home-c/{ide}/{user_d}')
 
 ##############################################################################################
@@ -541,7 +549,7 @@ def update_data():
             developer_collection.update_one({"email": encoded_email}, {
                                             "$set": {"about_self": text_area_value}})
             print(f"home-c/{developer['_id']}/d")
-            return jsonify({'message': '_{__xxx__%12*79)(56)[:]-++784kdd}_','ne':'deno','re':f"/home-c/{developer['_id']}/d"})
+            return jsonify({'message': '_{__xxx__%12*79)(56)[:]-++784kdd}_', 'ne': 'deno', 're': f"/home-c/{developer['_id']}/d"})
         else:
             return jsonify({'error': 'seller not found.'})
     else:
@@ -919,9 +927,20 @@ def get_user_data(user_id):
         year = user_data['account_created_in']
         method = user_data["payment_method"]
         bir = turbolancer_data_Security.decrypt(key, user_data["bir"])
+        gan = turbolancer_data_Security.decrypt(key, user_data.get("gan", None)) or None
         tag = user_data['tag'] or None
 
-        return name, image, email, country, ph, year, method, bir, tag
+        return {
+            'name': name,
+            'image': image,
+            'email': email,
+            'country': country,
+            'ph': ph,
+            'year': year,
+            'bir': bir,
+            'tag': tag,
+            'gan': gan
+        }
 
     return None
 
@@ -932,68 +951,78 @@ def get_developer_data(developer_id):
         email = turbolancer_data_Security.decrypt(key, developer_data["email"])
         image = developer_data["image"]
         name = developer_data["name"]
-        country = turbolancer_data_Security.decrypt(
-            key, developer_data["country"])
-        ph = turbolancer_data_Security.decrypt(
-            key, developer_data["phone_number"])
+        country = turbolancer_data_Security.decrypt(key, developer_data["country"])
+        ph = turbolancer_data_Security.decrypt(key, developer_data["phone_number"])
         year = developer_data['account_created_in']
         method = developer_data["payment_method"]
         grade = developer_data['grade']
         rating = developer_data['rating']
         about_self = developer_data['about_self']
         tag = developer_data['tag'] or None
+        bir = turbolancer_data_Security.decrypt(key, developer_data["bir"]) or None
+        gan = turbolancer_data_Security.decrypt(key, developer_data.get("gan", None)) or None
 
-        # (profile['name'], 'd')
-        return name, image, email, country, ph, year, method, about_self, rating, grade, tag
+        return {
+            'name': name,
+            'image': image,
+            'email': email,
+            'country': country,
+            'ph': ph,
+            'year': year,
+            'about_self': about_self,
+            'rating': rating,
+            'grade': grade,
+            'tag': tag,
+            'bir': bir,
+            'gan': gan
+        }
     return None
-
-
 @app.route('/account/<x>/<y>')
 def account(x, y):
+    grer = [
+        'Welcome', 'Greetings', 'Hello', 'Salutations', 'Good to see you', 'Pleased to see you',
+        'Nice to see you', 'Glad to see you', 'Happy to see you', 'Delighted to see you',
+        'Honored to meet you', 'Esteemed greetings'
+    ]
+    
     if not check(request.cookies, 'file'):
         return redirect(url_for('main'))
-    elif check(request.cookies, 'file') and turbolancer_data_Security.decrypt(
-            key, getkey(request.cookies)['ideo']) != x:
+    
+    decrypted_x = turbolancer_data_Security.decrypt(key, getkey(request.cookies)['ideo'])
+    
+    if check(request.cookies, 'file') and decrypted_x != x:
         ud = get_user_data(x) or get_developer_data(x)
-        lud = get_user_data(turbolancer_data_Security.decrypt(key, request.cookies.get(
-            'ideo'))) or get_developer_data(turbolancer_data_Security.decrypt(key, request.cookies.get('ideo')))
+        lud = get_user_data(decrypted_x) or get_developer_data(decrypted_x)
 
-        if ud[4] == lud[4]:
-            grer = ['Hi', 'Hello', 'Nice to see you', 'Welcome']
+        if ud['ph'] == lud['ph']:
             random.shuffle(grer)
 
             if y in ['c', 'd']:
                 if y == 'c':
                     user_data = get_user_data(x)
                     if user_data:
-                        name, image, email, country, ph, year, method, bir,  tag = user_data
-                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0], tag=tag)
+                        return render_template('profile_page.html', **user_data, greeting=grer[0])
                 elif y == 'd':
                     developer_data = get_developer_data(x)
                     if developer_data:
-                        name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                        return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self, tag=tag, rating=float(rating), grade=grade)
+                        return render_template('profile_page.html', **developer_data, greeting=grer[0], d='avail', rating=float(developer_data['rating']), grade=developer_data['grade'])
                 return redirect(url_for('main'))
         return redirect(url_for('main'))
 
-    grer = ['Hi', 'Hello', 'Nice to see you', 'Welcome']
     random.shuffle(grer)
 
     if y in ['c', 'd']:
         if y == 'c':
             user_data = get_user_data(x)
             if user_data:
-                name, image, email, country, ph, year, method, bir,  tag = user_data
-                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, bir=bir, greeting=grer[0],  tag=tag)
+                return render_template('profile_page.html', **user_data, greeting=grer[0])
         elif y == 'd':
             developer_data = get_developer_data(x)
             if developer_data:
-                name, image, email, country, ph, year, method, about_self, rating, grade,  tag = developer_data
-                return render_template('profile_page.html', name=name, image=image, email=email, country=country, ph=ph, greeting=grer[0], d='avail', year=year, abs=about_self, tag=tag, rating=float(rating), grade=grade,)
-        return redirect(url_for('main'))
+                return render_template('profile_page.html', **developer_data, greeting=grer[0], d='avail', rating=float(developer_data['rating']), grade=developer_data['grade'])
+            return redirect(url_for('main'))
 
     return redirect(url_for('main'))
-
 
 @app.errorhandler(404)
 def page_not_found(error):

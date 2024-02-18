@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+    scroll-behavior: smooth;
+}
+
+
+.card {
+    position: relative;
+    cursor: pointer;
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #e4e5e7;
+    float: left;
+    flex-shrink: 0;
+    margin: 12px;
+    scroll-snap-align: start;
+
+}
+.slider {
+    display: flex;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+}
+.slider img {
+    width: 300px;
+}
+.slider span {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bolder;
+    font-size: 30px;
+    width: 65px;
+    height: 100%;
+    padding: 0 7px;
+    z-index: 99;
+    top: 50%;
+
+}
+.arrow{
+    color: #fff;
+}
+.slider span.next {
+    right: -65px;
+    transform: translatey(-50%);
+    background-image: linear-gradient(to right,transparent , #000000a0);
+
+}
+.slider span.prev{
+    text-align: right;
+    left: -65px;
+    transform: translatey(-50%);
+    background-image: linear-gradient(to left, transparent , #000000);
+
+}
+
+.slider:hover span.next {
+    right: -14px;
+}
+.slider:hover span.prev {
+    left: -14px;
+}
+
+.user_details {
+    display: flex;
+    padding: 10px 0;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.user_details img {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #d7d7d7;
+    border-radius: 50%;
+    display: block;
+    margin: 0 10px;
+}
+
+.user_details h4 {
+    font-weight: 400;
+    font-size: 12px;
+}
+.user_details h4 small{
+    font-weight: 400;
+    font-size: 12px;
+    color: orange;
+    display: block;
+}
+
+.card .title h3 {
+    font-weight: 400;
+    font-size: 15px;
+    color: #000000;
+    padding: 0 10px;
+}
+
+.card .rating {
+    padding: 10px;
+    color: orange;
+    font-size: 15px;
+}
+.card .rating span {
+    color: #555;
+}
+
+.card .card_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; 
+    margin-top: 10px;
+    border-top: 1px solid #e4e5e7;
+}
+.card_footer .icon-list {
+    display: flex;
+    padding: 0 5px;
+}
+
+.fa-heart {
+    color: #555555;
+    font-size: 20px;
+    padding: 0 5px;
+}
+.fa-bars {
+    color: #555555;
+    font-size: 20px;
+    padding: 0 5px;
+}
+
+.card_footer .price {
+    padding-right: 10px;
+    font-weight: 400;
+    font-size: 12px;
+    color: #555;
+    text-transform: uppercase;
+}
+.card_footer .price span {
+    font-size: 18px;
+    font-weight: 700;
+    color: #148d8d;
+}

@@ -2,857 +2,749 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.7">
-    <title>TurboLancer | Add info</title>
-    <link rel="icon" type="image/png" href="/static/icon.png" />
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;');
-
-        * {
-            font-family: "Poppins", sans-serif;
-            transition: all 0.5s;
-            --main-height: auto-fit;
-            text-wrap: balance;
-        }
-
-        body {
-            padding: 30px;
-            background: #fff;
-
-        }
-
-        .container {
-            width: 100%;
-            margin-top: 2.5%;
-            max-width: 46.875rem;
-            margin-left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 1px 10px 12px rgba(0, 3, 0, 0.439);
-            border-radius: 8px;
-            padding: 16px;
-            background: #fff;
-            --gap: 8em;
-            --line: 1px;
-            --color: rgba(0, 0, 0, 0.02);
-
-            background-image: linear-gradient(-120deg,
-                    transparent calc(var(--gap) - var(--line)),
-                    var(--color) calc(var(--gap) - var(--line) + 1px),
-                    var(--color) var(--gap)),
-                linear-gradient(20deg,
-                    transparent calc(var(--gap) - var(--line)),
-                    var(--color) calc(var(--gap) - var(--line) + 1px),
-                    var(--color) var(--gap));
-            background-size: var(--gap) var(--gap);
-            z-index: 1;
-            height: var(--main-height);
-            transition: height 0.5s ease-in-out;
-
-
-        }
-
-        .logo {
-            opacity: 1;
-            width: 100px;
-            object-fit: scale-down;
-            height: 60px;
-        }
-
-        .section {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: auto;
-            padding: 3px;
-            display: none;
-        }
-
-        .section.A {
-            opacity: 0;
-
-        }
-
-        .section.A h1,
-        .section.C h1,
-        .section.A h4 {
-            font-weight: 100;
-            text-align: center;
-            color: rgb(34, 34, 34);
-
-        }
-
-
-        .gmail {
-            padding: 8px;
-            border: 1px solid #12121260;
-            border-radius: 50px;
-            text-align: center;
-            font-weight: 100;
-            width: fit-content;
-            color: #202020;
-            margin-left: 50%;
-            transform: translateX(-50%);
-            background-color: #ffffff;
-        }
-
-        .section.A h2 {
-            font-weight: 100;
-            color: rgb(61, 61, 61);
-            margin-left: 10%;
-            max-width: 85%;
-            font-size: 18px;
-
-
-        }
-
-        .group {
-            position: relative;
-            margin-top: 30px;
-            margin-left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .input {
-            font-size: 16px;
-            padding: 10px 10px 10px 5px;
-            display: block;
-            width: 340px;
-            border: none;
-            border-bottom: 1px solid #515151;
-            background: transparent;
-        }
-
-        .input:focus {
-            outline: none;
-        }
-
-        label {
-            color: #999;
-            font-size: 18px;
-            font-weight: normal;
-            position: absolute;
-            pointer-events: none;
-            left: 5px;
-            top: 10px;
-            transition: 0.2s ease all;
-            -moz-transition: 0.2s ease all;
-            -webkit-transition: 0.2s ease all;
-        }
-
-        .input:focus~label,
-        .input:valid~label {
-            top: -20px;
-            font-size: 14px;
-            color: #007e02;
-        }
-
-        .bar {
-            position: relative;
-            display: block;
-            width: 340px;
-        }
-
-        .bar:before,
-        .bar:after {
-            content: '';
-            height: 2px;
-            width: 0;
-            bottom: 1px;
-            position: absolute;
-            background: #007e02;
-            transition: 0.2s ease all;
-            -moz-transition: 0.2s ease all;
-            -webkit-transition: 0.2s ease all;
-        }
-
-        .bar:before {
-            left: 50%;
-        }
-
-        .bar:after {
-            right: 50%;
-        }
-
-        .input:focus~.bar:before,
-        .input:focus~.bar:after {
-            width: 50%;
-        }
-
-        .next {
-            background-color: #007202;
-            color: #fff;
-            outline: none;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            padding: 10px;
-            height: 60px;
-            min-width: 80px;
-            font-size: larger;
-            position: relative;
-            margin-top: 30px;
-            margin-left: calc(100% - 95px);
-            transition: all 0.2s !important;
-
-            &:hover {
-                transform: scale(1.1);
-            }
-        }
-
-        .next.B {
-            margin-left: 10px !important;
-        }
-
-
-        .prev {
-            background-color: #f0f0f0;
-            color: #000;
-            outline: none;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            padding: 10px;
-            height: 60px;
-            min-width: 80px;
-            font-size: larger;
-            position: relative;
-            margin-top: 30px;
-            margin-left: calc(100% - 95px);
-            transition: all 0.2s !important;
-        }
-
-        .prev.B {
-            margin-left: calc(100% - 185px);
-
-        }
-
-        .prev:hover {
-            transform: scale(1.1);
-        }
-
-        .revers {
-            animation: reverseAnimation 1s reverse;
-        }
-
-        @keyframes reverseAnimation {
-            from {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            to {
-                transform: scale(1.1);
-                opacity: 0;
-            }
-        }
-
-        .farwored {
-            animation: forwardAnimation 1s forwards;
-        }
-
-        @keyframes forwardAnimation {
-            from {
-                opacity: 0;
-                transform: scale(1.1);
-
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-
-            }
-        }
-
-        .section {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: auto;
-            padding: 3px;
-        }
-
-        /*##########################################_____AVATAR_CSS___####################################*/
-        .container_p {
-            height: 300px;
-            width: 300px;
-            border-radius: 10px;
-            box-shadow: 4px 4px 30px rgba(0, 0, 0, .2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            padding-left: 10px;
-            margin-left: 50%;
-            transform: translateX(-50%);
-            gap: 5px;
-            background-color: #3cff000a;
-        }
-
-        .header {
-            flex: 1;
-            width: 100%;
-            border: 2px dashed #239600b7;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .header svg {
-            height: 100px;
-        }
-
-        .header p {
-            text-align: center;
-            color: black;
-        }
-
-        .footer {
-            background-color: #3cff000a;
-            width: 100%;
-            height: 40px;
-            padding: 8px;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            color: black;
-            border: none;
-            position: relative;
-        }
-
-        .footer svg {
-            height: 130%;
-            fill: #2ec400b7;
-            background-color: rgba(70, 66, 66, 0.103);
-            border-radius: 50%;
-            padding: 2px;
-            cursor: pointer;
-            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.205);
-        }
-
-        #delete {
-            height: 40px;
-            fill: #ff0000e7;
-            padding: 2px;
-            cursor: pointer;
-        }
-
-        .footer p {
-            flex: 1;
-            white-space: nowrap;
-            float: right;
-            width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        #file {
-            display: block;
-            margin-top: -30px;
-            cursor: pointer;
-            width: 100%;
-            z-index: 100;
-            opacity: 0;
-        }
-
-        .image-container {
-            position: relative;
-            display: inline-block;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        .image-container img {
-            width: 300px;
-            height: auto;
-            max-height: 230px;
-            object-fit: cover;
-            /* You might want to adjust this based on your needs */
-            border-radius: 10px;
-        }
-
-        .delete-icon {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            top: 0;
-            right: 0;
-            border-radius: 10px;
-            background-color: rgba(255, 244, 244, 0.119);
-            transition: all 0.3s ease;
-            transform: scale(1.2);
-            opacity: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .image-container:hover .delete-icon {
-            transform: scale(1);
-            opacity: 1;
-
-        }
-
-
-        body {
-            font-family: sans-serif
-        }
-
-        table {
-            width: auto;
-            margin-left: auto;
-            line-height: 1em
-        }
-
-        .container_t {
-            width: 600px;
-            margin: 1em auto
-        }
-
-        .ta-container {
-            width: 100%;
-            border: 1px solid hsl(0, 0%, 70%);
-            border-radius: .25em;
-            margin: .25em 0 1.5em
-        }
-
-        .hasfocus {
-            box-shadow: 0 0 6px hsl(210, 50%, 60%)
-        }
-
-        .textarea {
-            padding: .25em;
-            text-wrap: wrap !important;
-            padding: 7px;
-            width: 100%;
-            max-width: 100%;
-            border: none;
-            font-size: large;
-            vertical-align: bottom;
-            color: hsl(0, 0%, 50%);
-            border-radius: .25em;
-            outline: none
-        }
-
-        .status-bar {
-            background: hsl(0, 0%, 90%);
-            padding: .25em;
-            text-align: right;
-            font-size: .7em;
-            width: 100%;
-            color: hsl(0, 0%, 50%);
-            border-radius: 0 0 .25em .25em
-        }
-
-        .charcount,
-        .remaining {
-            font-weight: bold
-        }
-
-        .over {
-            color: hsl(0, 80%, 60%)
-        }
-
-        #submitbtn:enabled:hover {
-            filter: brightness(90%) !important;
-        }
-
-        #submitbtn:enabled:active {
-            filter: brightness(80%) !important;
-        }
-
-        #submitbtn:disabled {
-            opacity: 0.6 !important;
-            pointer-events: none;
-        }
-
-        .logo {
-            view-transition-name: logo;
-        }
-
-        ::view-transition-old(logo),
-        ::view-transition-new(logo) {
-            display: block;
-        }
-
-        ::view-transition-old(root) {
-            animation: 1s transition-out 0s ease;
-        }
-
-        ::view-transition-new(root) {
-            animation: 1s transition-in 0s ease;
-        }
-
-        @keyframes transition-out {
-            from {
-                opacity: 1;
-                scale: 1;
-                filter: blur(1px);
-            }
-
-            to {
-                opacity: 0;
-                scale: 1.1;
-                filter: blur(10px);
-
-            }
-        }
-
-        @keyframes transition-in {
-            from {
-                opacity: 0;
-                scale: 1.1;
-                filter: blur(10px);
-
-
-
-
-            }
-
-            to {
-                opacity: 1;
-                scale: 1;
-                filter: blur(1px);
-
-
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.6">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Jn538ooSDFYxTCWF8M/bYFRUADT3PB2B5Zl4cPaWxXwEca0E84R9K5cP1ZuAi6Pd"
+    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+  <title>TurboLancer | {{name}}</title>
+
+  <link rel="stylesheet" href="/static/gig card.css">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+    @import url("https://fonts.googleapis.com/css?family=Sofia");
+
+    * {
+      font-family: 'Poppins', sans-serif !important;
+      text-wrap: balance;
+    }
+
+    body {
+      padding: 0%;
+      overflow: hidden;
+
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+      border-radius: 50px;
+
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #4e4e4e56 transparent;
+      border-radius: 5px;
+
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #323232;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+
+    nav {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      height: 110px;
+      padding: 10px;
+      width: 100%;
+      z-index: 40;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: top;
+      background-color: #ffffff00;
+    }
+
+
+    .tab {
+      padding: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #1d1d1dc8;
+      height: 60px;
+      width: max-content;
+    }
+
+    .tab span {
+      height: fit-content;
+      padding: 10px;
+      padding-left: 6px;
+      padding-right: 6px;
+      margin: 6px;
+      text-align: center;
+      text-transform: capitalize;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .tab span.active {
+      color: rgb(0, 168, 0);
+    }
+
+    .tab span.active::before {
+      height: 1px;
+      content: "";
+      border: 2px solid rgb(0, 168, 0);
+      background-color: rgb(0, 168, 0);
+      border-radius: 50px;
+      z-index: 2;
+      position: absolute;
+      width: 40px;
+      transform: translateY(15px);
+
+    }
+
+    .view {
+      min-width: 100%;
+      border-radius: 30px 30px 0 0;
+      margin-top: 70px;
+      position: absolute;
+      overflow: auto !important;
+      height: 95%;
+    }
+
+    .logo {
+      max-height: 50px;
+      object-fit: contain;
+    }
+
+
+
+    .main_view {
+      width: 100%;
+      height: auto;
+      min-height: 95vh;
+
+      background: url(/static/lines.png), radial-gradient(#00351d, #005030);
+      backdrop-filter: blur(10px);
+      padding: 10px;
+      position: relative;
+      background-position: bottom;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      box-shadow: inset 0px 0px 100px 30px #00000080;
+
+
+    }
+
+    .main_view::before {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background-image: linear-gradient(transparent , #fff 50%);
+    }
+
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      height: 45vh;
+      margin-top: 10%;
+
+
+    }
+
+    .hero input {
+      border: none;
+      outline: none;
+      width: clamp(500px, 70%, 100px);
+      height: 50px;
+      border-radius: 50px;
+      padding: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 20px;
+
+    }
+
+    .searchbox {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .blobP {
+      z-index: 1;
+      position: absolute;
+      left: 40%;
+      top: 16.875rem;
+      height: 200px;
+      width: 200px;
+
+      z-index: -1;
+
+    }
+
+
+    .blob {
+      position: absolute;
+      display: block;
+      width: 15rem;
+      height: 15rem;
+      border-radius: 45%;
+      filter: blur(40px);
+      animation-duration: 50s;
+      animation-iteration-count: infinite;
+    }
+
+    .blob.a {
+      background: linear-gradient(65deg, #d96570 25%, #4285f4 50%, #00ff8cad 25%);
+      background-size: cover;
+      animation-name: animate-a;
+    }
+
+    .blob.b {
+      background: linear-gradient(65deg, #4285f4 25%, #00ff8cad 50%, #d96570 25%);
+      background-size: cover;
+      animation-name: animate-b;
+    }
+
+    .blob.c {
+      background: linear-gradient(65deg, #4285f4 25%, #d96570 50%, #00ff8cad 25%);
+      background-size: cover;
+      animation-name: animate-c;
+    }
+
+    @keyframes animate-a {
+      0% {
+        transform: rotate(0deg) translateY(140px) translateX(10px);
+      }
+
+      50% {
+        transform: rotate(-360deg) translateY(-160px) translateX(-90px);
+      }
+
+      100% {
+        transform: rotate(0deg) translateY(140px) translateX(10px);
+      }
+    }
+
+    @keyframes animate-b {
+      0% {
+        transform: rotate(0deg) translateY(-80px) translateX(100px);
+      }
+
+      50% {
+        transform: rotate(-360deg) translateY(140px) translateX(-100px);
+      }
+
+      100% {
+        transform: rotate(0deg) translateY(-80px) translateX(100px);
+      }
+    }
+
+    @keyframes animate-c {
+      0% {
+        transform: rotate(0deg) translateY(120px) translateX(-60px);
+      }
+
+      50% {
+        transform: rotate(-360deg) translateY(-200px) translateX(150px);
+      }
+
+      100% {
+        transform: rotate(0deg) translateY(120px) translateX(-60px);
+      }
+    }
+
+    .slogen {
+      font-size: 3.125rem !important;
+      font-family: "Poppins", Arial, sans-serif !important;
+      text-align: center;
+
+
+    }
+
+    .h1s {
+      font-size: 3.125rem !important;
+      font-family: "Poppins", Arial, sans-serif !important;
+      font-weight: bold;
+      color: #acacac;
+      margin: 0.6rem;
+
+    }
+
+    .grad-text {
+      background: linear-gradient(#ffffff 50%, transparent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .slogen i {
+      font-family: "Sofia", sans-serif !important;
+      font-weight: 100;
+    }
+
+    .bt-icon {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 50px;
+      width: 50px;
+      height: 50px;
+      margin-left: 10px;
+      background-color: #fff;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #232323;
+      font-size: 20px;
+      padding-top: 10px;
+      padding-left: 16px;
+
+    }
+
+    .tags {
+      display: flex;
+      width: clamp(500px, 70%, 100px);
+      justify-content: space-evenly;
+      align-items: center;
+    }
+
+    .tags span {
+      padding: 7px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-radius: 50px;
+      background-color: aliceblue;
+      cursor: pointer;
+    }
+
+    .proview {
+      background-color: #fff;
+      width: 100%;
+      position: relative;
+      padding: 10px;
+      padding-bottom:25px;
+    }
+    .card_slider{
+  padding: 10px;
+  display: inline-flex;
+  width: 98vw;
+  background-color: #f9f9f9;
+overflow-y: hidden;
+  overflow-x: scroll; 
+  scroll-snap-type: x mandatory;
+  margin-bottom: 40px;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <img class='logo' src="/static/icon.png" alt="">
-        <div class="section A farwored" style='display: block;'>
-            <h1 class="title">Account verification</h1>
-            <h4>"This helps ensure the safety of your account.</h4>
-            <h3 class="gmail"><i class='fas fa-user-circle'></i>&nbsp; mianjuanid4455@gmail.com</h3>
-            <h2>An email with a verification code was just sent to mianjuanid4455@gmail.com.</h2>
-
-            <div class="group">
-                <input autocomplete="none" required="" type="text" class="input">
-                <span class="highlight"></span>
-                <span class="bar"></span>
-                <label>Enter verification code</label>
-            </div>
-            <button onclick="next(this)" class="next A" data-parent='A'>Next</button>
-        </div>
-        <div class="section B" style="display: none;">
-            <div class="container_p">
-                <div class="header">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path
-                                d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15"
-                                stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            </path>
-                        </g>
-                    </svg>
-                    <p>Browse profile picture to upload!</p>
-                </div>
-                <label for="file" class="footer">
-                    <svg fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M15.331 6H8.5v20h15V14.154h-8.169z"></path>
-                            <path d="M18.153 6h-.009v5.342H23.5v-.002z"></path>
-                        </g>
-                    </svg>
-                    <p class="name">Click to select picture</p>
-
-                </label>
-                <input accept=".png, .jpg, .jpeg" onchange="readURL(this)" id="file" type="file">
-            </div>
-            <div style="display:flex;flex-direction: row; width: 100%;">
-                <button onclick="prev(this)" class="prev B" data-parent='B'>preveus</button>
-                <button onclick="next(this)" class="next B" data-parent='B'>Next</button>
-            </div>
-
-        </div>
-        <div class="section C" style='display: none;'>
-
-            <div class="container_t">
-                <form id="theform" action="javascript:void(0);">
-                    <h1 for="about-yourself">About yourself:</h1>
-                    <div class="ta-container">
-                        <textarea id="about-yourself" class="textarea" name="about-yourself" rows="12" cols="75"
-                            data-maxchars="500" data-over="false"
-                            placeholder="Ensure the text exceeds 250 characters for a stronger impact."
-                            required></textarea>
-                        <div class="status-bar">
-                            <table>
-                                <tr>
-                                    <td>Characters:</td>
-                                    <td class="charcount"></td>
-                                </tr>
-                                <tr>
-                                    <td class="remaining-label">Remaining:</td>
-                                    <td class="remaining"></td>
-
-                                </tr>
-                                <tr>
-                                    <td class="less" style=" text-align: right;color: hsl(0,80%,60%);">Less then 250
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div style="display:flex;flex-direction: row; width: 100%;">
-                <button onclick="prev(this)" class="prev C B" data-parent='C'>preveus</button>
-                <button id="submitbtn" class="next B" onclick="updateData()">Continue</button>
-            </div>
-
-        </div>
-
+  <nav>
+    <img class="logo" src="/static/dark_logo.png" alt="">
+    <div class="tab">
+      <span>projects</span>
+      <span class="active">services</span>
+      <span>create job</span>
     </div>
-    <script>
-        function updateData() {
-            var email = "{{ email }}";
-            var textAreaValue = document.querySelector('.textarea').value;
+  </nav>
 
-            var data = {
-                email: email,
-                textAreaValue: textAreaValue
-            };
+  <div class="view">
 
-            fetch('/update_data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Data successfully updated
-                        console.log("Data updated in data.json");
-                        // Proceed to the next step or perform any other action
-                    } else {
-                        // Error occurred while updating data
-                        throw new Error('Error updating data: ' + response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-        const html_header = document.querySelector('.header').innerHTML
-        function remove_img() {
-            function doit() {
-                console.log(html_header)
-                document.querySelector('.header').innerHTML = html_header;
-                var fileInput = document.getElementById('file');
-                fileInput.value = '';
-                document.querySelector('.name').innerText = 'Click to select picture';
-            }
-            if (!document.startViewTransition) {
-                doit();
-                return;
-            }
+    <div class="main_view">
+      <div class="blobP">
+        <span class="blob a"></span>
+        <span class="blob b"></span>
+        <span class="blob c"></span>
+      </div>
+      <div class="hero">
+        <h1 class="slogen"><b class="grad-text"> Discover the perfect <i> freelance</i></b> <br> <b
+            class="grad-text">service instantly.</b></h1>
+        <div class="searchbox">
+          <input type="text" placeholder="Search something...">
+          <button class="bt-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 812 812">
+              <path
+                d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                stroke-width="0.3" stroke="#232323" />
+            </svg>
+          </button>
 
-            // With View Transitions:
-            const transition = document.startViewTransition(() => doit());
-        }
+        </div>
+        <div class="tags">
+          <span>web development</span>
+          <span>logo designing</span>
+          <span>database</span>
 
-        function next(x) {
-            function doit(x) {
-                let data = x.getAttribute('data-parent');
-                let current = document.querySelector(`.${data}`);
-                let next = current.nextElementSibling;
+        </div>
+      </div>
+    </div>
 
-                // Add classes for animation preparation
-                current.classList.add('revers');
-                next.classList.add('farwored');
+    <div class="proview">
+      <h1 class="h1s"><b style="background: linear-gradient(-65deg, #00ff8cad ,  #4285f4 , #ff7582  );
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-size: 150%  150%;
 
-                const transition = document.startViewTransition(() => {
-                    current.style.setProperty('display', 'none');
-                    next.style.setProperty('display', 'flex');
-                });
+        -webkit-text-fill-color: transparent;">Find</b> Services</h1>
+     <div class="card_slider">
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-                // Signal update completed to trigger animation
-                transition.updateCallbackDone();
-            }
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-            if (!document.startViewTransition) {
-                doit(x);
-                return;
-            }
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-            // With View Transitions:
-            const transition = document.startViewTransition(() => doit(x));
-        }
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-        function prev(x) {
-            function doit(x) {
-                let data = x.getAttribute('data-parent');
-                console.log(data);
-                let current = document.querySelector(`.${data}`);
-                let prev = current.previousElementSibling;
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-                current.classList.remove('farwored');
-                prev.classList.remove('revers');
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-                setTimeout(() => {
-                    prev.style.display = 'flex';
-                    current.style.display = 'none';
-                }, 50);
-            }
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-            if (!document.startViewTransition) {
-                doit(x);
-                return;
-            }
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-            // With View Transitions:
-            const transition = document.startViewTransition(() => doit(x));
-        }
-        function readURL(input) {
-            function doit(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        var imageBase64 = e.target.result;
-                        console.log("<img src='" + e.target.result + "'alt = 'profile picture'>")
-                        document.querySelector('.header').innerHTML = "<div class='header'><div class='image-container'><img  src='" + e.target.result + "'onclick='remove_img()' alt = 'profile picture'><span onclick='remove_img()' class='delete-icon'>  <svg   id='delete' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><g id='SVGRepo_bgCarrier' stroke-width='0'></g><g id='SVGRepo_tracerCarrier' stroke-linecap='round' stroke-linejoin='round'></g><g id='SVGRepo_iconCarrier'> <path d='M5.16565 10.1534C5.07629 8.99181 5.99473 8 7.15975 8H16.8402C18.0053 8 18.9237 8.9918 18.8344 10.1534L18.142 19.1534C18.0619 20.1954 17.193 21 16.1479 21H7.85206C6.80699 21 5.93811 20.1954 5.85795 19.1534L5.16565 10.1534Z' stroke='#000000' stroke-width='1'></path> <path d='M19.5 5H4.5' stroke='#000000' stroke-width='1' stroke-linecap='round'></path> <path d='M10 3C10 2.44772 10.4477 2 11 2H13C13.5523 2 14 2.44772 14 3V5H10V3Z' stroke='#000000' stroke-width='1'></path> </g></svg></span></div></div"
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-                        document.querySelector('.name').innerText = input.files[0].name;
-                        var email = "{{ email }}";
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-                        // Create a new FormData object
-                        var formData = new FormData();
-                        formData.append("image", input.files[0]);
-                        formData.append("email", email);
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-                        // Send the AJAX request
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "/UPLOAD_IMAGE");
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === XMLHttpRequest.DONE) {
-                                if (xhr.status === 200) {
-                                    var response = JSON.parse(xhr.responseText);
-                                    console.log(response.message);
-                                } else {
-                                    console.log("Error: " + xhr.status);
-                                }
-                            }
-                        };
-                        xhr.send(formData);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-            if (!document.startViewTransition) {
-                doit(input);
-                return;
-            }
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-            // With View Transitions:
-            const transition = document.startViewTransition(() => doit(input));
-        }
-        function setFocus(container) {
-            container.classList.add('hasfocus');
-        }
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-        function removeFocus(container) {
-            container.classList.remove('hasfocus');
-        }
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-        function setSubmitBtnDisabledStatus(disabled) {
-            const submitBtn = document.querySelector('#submitbtn');
-            submitBtn.disabled = disabled;
-        }
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-        function checkOverLimit(container, textarea, maxLength) {
-            const charCount = textarea.value.length;
-            const charCountElement = container.querySelector('.charcount');
-            const remainingElement = container.querySelector('.remaining');
-            const remainingLabel = container.querySelector('.remaining-label');
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-            charCountElement.innerHTML = `${charCount}/${maxLength}`;
-            const remainingChars = maxLength - charCount;
-            remainingElement.innerHTML = Math.abs(remainingChars);
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-            if (charCount > maxLength) {
-                remainingLabel.classList.add('over');
-                remainingLabel.innerHTML = 'exceeded by:';
-                remainingElement.classList.add('over');
-                textarea.style.color = 'hsl(0,80%,60%)';
-                textarea.setAttribute('data-over', 'true');
-                setSubmitBtnDisabledStatus(true);
-                document.querySelector('.less').style.display = 'none'
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slider">
+          <span onclick="goNext(this)" class="arrow next"><i class="bi bi-chevron-right"></i></span>
+          <span onclick="goPrv(this)" class="arrow prev"><i class="bi bi-chevron-left"></i></span>
+          <div class="slide"><img src="/static/6071fdco.png" alt=""></div>
+          <div class="slide"><img src="/static/765.png" alt=""></div>
+          <div class="slide"><img src="/static/banner.jpg" alt=""></div>
+          <div class="slide"><img src="/static/image-removebg-preview (1).png" alt=""></div>
+        </div>
 
-            }
-            else if (charCount < 250) {
-                remainingLabel.classList.remove('over');
-                remainingLabel.innerHTML = 'Remaining:';
-                remainingElement.classList.remove('over');
-                textarea.style.color = 'hsl(0,80%,60%)';
-                textarea.setAttribute('data-over', 'false');
-                setSubmitBtnDisabledStatus(false);
-                document.querySelector('.less').style.display = 'block'
-            }
+        <!-- User Details -->
+        <div class="user_details">
+          <img src="/static/1.png" alt="">
+          <h4>mrizwan <br><small>Top Rated Seller</small></h4>
+        </div>
 
-            else {
-                remainingLabel.classList.remove('over');
-                remainingLabel.innerHTML = 'Remaining:';
-                remainingElement.classList.remove('over');
-                textarea.style.color = 'hsl(0,0%,50%)';
-                textarea.setAttribute('data-over', 'false');
-                setSubmitBtnDisabledStatus(false);
-                document.querySelector('.less').style.display = 'none'
+        <!-- Gig Title -->
+        <div class="title">
+          <h3>I will design awesome website or landing page</h3>
+        </div>
+        <!-- Gig rating -->
+        <div class="rating">
+          <i class="bi bi-star"></i> 5.0 <span>(900)</span>
+        </div>
 
-            }
-        }
+        <!-- Gig Footer -->
+        <div class="card_footer">
+          <div class="icon-list">
+            <i class="bi bi-list"></i>
+            <i class="bi bi-heart"></i>
+          </div>
+          <div class="price">
+            Starting at <span>$US300</span>
+          </div>
+        </div>
+      </div>
 
-        function initializeTextarea(container) {
-            const textarea = container.querySelector('.textarea');
-            const maxLength = parseInt(textarea.getAttribute('data-maxchars'), 10);
-            const charCount = textarea.value.length;
-            const charCountElement = container.querySelector('.charcount');
-            const remainingElement = container.querySelector('.remaining');
+      <!-- card slider parent end -->
+      </div>
 
-            charCountElement.innerHTML = `${charCount}/${maxLength}`;
-            remainingElement.innerHTML = maxLength - charCount;
-            checkOverLimit(container, textarea, maxLength);
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/bootstrap-icons.min.js"></script>
+    </div>
+  </div>
 
-            textarea.addEventListener('input', () => {
-                checkOverLimit(container, textarea, maxLength);
-            });
+  <script>
+    let counter = 0;
+    const countMinLimit = 0;
 
-            textarea.addEventListener('focus', () => {
-                setFocus(container);
-            });
+    const slideImages = (x) => {
+      x.forEach((slide) => {
+        slide.style.transform = `translateX(-${counter * 100}%)`;
+      });
+    };
 
-            textarea.addEventListener('blur', () => {
-                removeFocus(container);
-            });
-        }
+    const goNext = (x) => {
+      
+      const slideContainer = x.parentElement;
+      const loop = slideContainer.querySelectorAll('.slide')
+      
+      const numSlides = slideContainer.querySelectorAll('.slide').length;
+      const countMaxLimit = numSlides - 1;
 
-        function initializeAllTextareas() {
-            const textareaContainers = theform.querySelectorAll('.ta-container');
-            textareaContainers.forEach((container) => {
-                initializeTextarea(container);
-            });
-        }
+      if (counter < countMaxLimit) {
+        counter = counter + 1;
+      } else {
+        counter = 0;
+      }
+      slideImages(loop);
+    };
 
-        initializeAllTextareas();
+    const goPrv = (x) => {
+      const slideContainer = x.parentElement;
+      const loop = slideContainer.querySelectorAll('.slide')
 
-    </script>
+      const numSlides = slideContainer.querySelectorAll('.slide').length;
+      
+      const countMaxLimit = numSlides - 1;
+
+      if (counter > countMinLimit) {
+        counter = counter - 1;
+      } else {
+        counter = countMaxLimit;
+      }
+      slideImages(loop);
+    };
+    var container = document.querySelector('.card_slider');
+    var isMouseDown = false;
+    var startX;
+    var scrollLeft;
+
+    container.addEventListener('mousedown', function(e) {
+        isMouseDown = true;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        container.style.cursor = 'grabbing'; /* Change cursor to grabbing hand */
+    });
+
+    container.addEventListener('mouseleave', function() {
+        isMouseDown = false;
+        container.style.cursor = 'grab'; /* Restore cursor to grabbing hand when mouse leaves */
+    });
+
+    container.addEventListener('mouseup', function() {
+        isMouseDown = false;
+        container.style.cursor = 'grab'; /* Restore cursor to grabbing hand when mouse is released */
+    });
+
+    container.addEventListener('mousemove', function(e) {
+        if (!isMouseDown) return;
+        e.preventDefault();
+        var x = e.pageX - container.offsetLeft;
+        var walk = (x - startX) * 2;
+        container.scrollLeft = scrollLeft - walk;
+    });
+
+    container.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        container.scrollLeft += e.deltaY;
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 
 </html>
