@@ -84,7 +84,7 @@ def main():
     if cookies.get('ideo'):
         id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
         # ("\n" +id_)
-        ud = developer_collection.find_one(
+        ud:str = developer_collection.find_one(
             {"_id": id_}) or user_collection.find_one({"_id": id_})
         if cookies.get('emalo') == ud['email'] and ud['d'] == 'd' and not cookies.get('deno'):
             return redirect(f'/addinfo/{id_}/{ud["name"]}/{ud["email"]}')
@@ -130,7 +130,7 @@ def signup():
             return render_template("signup-c.html",  x='Account already exists with this email/phone.', y='onload= this.click')
         else:
             t = name.replace(' ', '')
-            tag = '@' + t
+            tag:str = '@' + t
             user_id = generate_id()
             count = developer_collection.count_documents({"name": name})
             count_s = user_collection.count_documents({"name": name})
@@ -1056,4 +1056,4 @@ def rephrase():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0')
+    socketio.run(app, debug=True)
