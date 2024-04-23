@@ -1,0 +1,139 @@
+
+##############################################################################################
+############################ portion to be deleted ####################################
+##############################################################################################
+
+
+# @app.route('/insert_skill', methods=['GET', 'POST'])
+# def insert_skill():
+#     if request.method == 'POST':
+#         skill = request.form['skill']
+#         image = request.form['image']
+#         req = request.form['test_req']
+#         skill_id = generate_id()
+
+#         skill_data = {"_id": skill_id, "skill": skill,
+#                       "image": image, 'req': req}
+#         serving_sectors_collection.insert_one(skill_data)
+
+#         return redirect(url_for('insert_skill'))
+
+#     return render_template('insert_skill.html')
+
+
+# @app.route('/insert_tech', methods=['GET', 'POST'])
+# def insert_tech():
+#     if request.method == 'POST':
+#         sec = request.form.get('sector')
+#         tech = request.form.get('tech')
+#         image = request.form.get('image')
+#         req = request.form.get('req')
+#         skill_id = generate_id()
+
+#         skill_data = {"_id": skill_id, "sector": sec,
+#                       "tech": tech, "image": image, 'req': req}
+#         sectors_technologies_collection.insert_one(skill_data)
+
+#         return redirect(url_for('insert_tech'))
+
+#     return render_template('technology.html')
+
+
+# @app.route('/test')
+# def test():
+#     return render_template('test.html')
+
+
+# @app.route('/api/quiz/<path:x>', methods=['GET'])
+# def get_quiz_data(x):
+#     topics = x.split('|')  # Split the path parameter into individual topics
+#     all_questions = []
+#     answer = 40/len(topics)
+#     rounded_answer = round(answer)
+#     # (rounded_answer)
+#     for topic in topics:
+#         topic = topic.replace('_', ' ')
+#         filtered_data = list(question_collection.find({"topic": topic}))
+#         random.shuffle(filtered_data)
+#         # Select the first 40 questions or all available questions if there are fewer
+#         selected_questions = filtered_data[:min(
+#             len(filtered_data), rounded_answer)]
+#         all_questions.extend(selected_questions)
+
+#     # Shuffle all the selected questions from different topics
+#     random.shuffle(all_questions)
+#     serializable_data = [{'topic': item['topic'], 'question': item['question'],
+#                           'options': item['options'], 'correctIndex': item['correctIndex']} for item in all_questions]
+
+#     return jsonify(serializable_data)
+
+
+# @app.route('/update_value', methods=['POST'])
+# def update_value():
+#     data = request.get_json()
+
+#     value = data['rangeValue']
+#     encoded_email = data['email']
+#     # (encoded_email)
+
+#     developer = developer_collection.find_one({"email": encoded_email})
+
+#     if developer:
+#         developer_collection.update_one(
+#             {"email": encoded_email}, {"$set": {"english": value}})
+#         return render_template('save_cook.html', keys=[['deno'], ['_{__xxx__%12*79)(56)[:]-++784kdd}_']], redi=f'addinfo/{ide}/{name}/{encoded_email}')
+#     else:
+#         return jsonify({'error': 'Developer not found.'})
+
+
+# @app.route('/selects_skill/<email>')
+# def selects_skill(email):
+#     if email:
+#         developer = developer_collection.find_one({"email": email})
+#         img = developer['image']
+#         name = developer['name']
+#         email = turbolancer_data_Security.decrypt(key, email)
+#         # (email)
+#         skills = serving_sectors_collection.find()
+#         encoded_skills = skills
+
+#         template_path = 'template/select_sk.html'
+#         with open(template_path, 'r') as file:
+#             template_content = file.read()
+
+#         rendered_template = render_template_string(template_content, x='hi', h1='Select your serving sector', function2='next(this)', function1=None, disc='Click to select tecknology for ',
+#                                                    b='Select technology', o=encoded_skills, image=img, name=name, email2=turbolancer_data_Security.encrypt(key, email), email=email)
+
+#         return rendered_template
+#     else:
+#         return '<h1><b>Method Not Allowd</b></h1>'
+
+
+# @app.route('/select_technology/<email>/<topic>')
+# def select_technology(email, topic):
+#     if email and topic:
+#         developer = developer_collection.find_one({"email": email})
+#         img = developer['image']
+#         name = developer['name']
+#         email = turbolancer_data_Security.decrypt(key, email)
+#         # (email)
+
+#         # Filter skills based on the provided topic
+#         skills = sectors_technologies_collection.find({"sector": topic})
+
+#         encoded_skills = []
+#         for skill in skills:
+#             encoded_skill = {'skill': skill['tech'], 'image': skill['image']}
+#             encoded_skills.append(encoded_skill)
+
+#         template_path = 'template/select_sk.html'
+#         with open(template_path, 'r') as file:
+#             template_content = file.read()
+
+#         rendered_template = render_template_string(
+#             template_content, h1=f'Select technology for {topic}', function2=None, function1='select(this)', disc='Click to choose technology', b='Take test', o=encoded_skills, image=img, name=name, email=email)
+
+#         return rendered_template
+
+#     else:
+#         return '<h1><b>Method Not Allowd</b></h1>'
