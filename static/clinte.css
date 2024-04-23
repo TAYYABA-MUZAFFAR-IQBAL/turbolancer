@@ -6,9 +6,9 @@
 * {
     padding: 0;
     font-family: "Poppins", Arial, sans-serif;
-    -webkit-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
     max-height:calc(100% + 3px) !important;
 }
 
@@ -77,24 +77,28 @@ body {
   }
 
   
-  @container nav (max-width: 1035px) {
+  /* @container nav (max-width: 1035px) {
     .nav .nl{
         display: none;
         
     }
-}
+} */
   nav.scrolled{
     background-image: none;
+    border-bottom: 1px solid rgba(179, 179, 179, 0.604);
+
     background-color: #fff;
   }
   nav.scrolled a {
-    color: #000;
-    transition: color 0.6 ease; /* Add transition for color change */
+    color: #202020;
+    transition: color 0.4 ease; /* Add transition for color change */
   }
   
   .tab.first {
-    transition: all 0.6 ease; /* Increase transition duration and use ease timing function */
+    transition: all 0.5 ease; /* Increase transition duration and use ease timing function */
     width: 0%;
+    transform: scaleX(0);
+
     opacity: 0 !important;
     transform-origin: right;
   }
@@ -114,6 +118,8 @@ body {
     opacity: 1  !important;
     margin: 0 !important; /* or specify individual margin values */
     height: 50px;
+    transform: scaleX(1);
+
     width: 150%;
     transform-origin: left;
   }
@@ -127,18 +133,16 @@ body {
 
   }
   .cd1 {
-    display: flex;
-    flex-direction: row;
-    width: fit-content;
+   
     height: 50px;
   }
-  
+/*   
   .nl {
     opacity: 1;
     width: auto;
     transform: scaleX(1);
     transform-origin: left;
-    transition: all 0.3 ease; /* Add transition for .nl */
+    transition: all 0.3 ease; 
   }
   
   nav.scrolled .nl {
@@ -146,7 +150,7 @@ body {
     opacity: 0;
     transform: scaleX(0);
     transform-origin: left;
-  }
+  } */
   
   nav.scrolled .profile {
     background: #121212 !important;
@@ -177,7 +181,7 @@ body {
     padding-bottom: 15px;
     text-transform: capitalize;
     border-radius: 8px;
-    transition: all 0.3s; /* Increase transition duration */
+    transition: all 0.4s; /* Increase transition duration */
   }
   
   nav div a:hover {
@@ -193,16 +197,18 @@ body {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    gap: 4px;
+    gap: 5px;
     padding: 4px;
     padding-left: 10px;
     align-items: center;
     border-radius: 50px;
     background-color: #fff;
-
+    width: auto;
     margin-right: 20px;
     color: #121212;
-    transition: all 0.6 ease; /* Increase transition duration and use ease timing function */
+    transition: all 0.4s, width 1s ease;
+    outline: 2px solid rgb(150, 150, 150);
+    outline-offset: 3px;
   }
   
   .profile img,
@@ -210,28 +216,35 @@ body {
     width: 40px !important;
     height: 40px !important;
     border-radius: 50px;
+    z-index: 23;
   }
   
   .profile name {
     opacity: 1;
+    font-size: 15px;
     transform: scaleX(1);
-
+    text-transform: capitalize;
+    white-space: nowrap; 
+    text-align: center;
+    overflow: hidden; 
+    text-overflow: ellipsis;
     transform-origin: right;
-    transition: all 0.6 ease; /* Add transition for .profile name */
+    transition: all 0.4s ease;
+    
   }
   
   nav.scrolled .profile {
     border-radius: 46px !important;
     padding: 4px;
+    outline: 2px solid rgb(150, 150, 150);
+    outline-offset: 3px;
     transform-origin: right;
   }
   
   nav.scrolled .profile name {
     opacity: 0;
-    width: 0;
+    width: 0 !important;
     transform: scaleX(0);
-    display: none;
-    transform-origin: right;
   }
 
 .hero {
@@ -354,9 +367,9 @@ div.container_input input[type=text] {
     border: none;
     -webkit-filter: brightness(90%);
             filter: brightness(90%);
-    -webkit-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
 
 
 }
@@ -369,9 +382,9 @@ div.container_input input[type=text]:focus {
 div.container_input button {
     float: left;
     width: 10%;
-    -webkit-transition: all 0.3s;
-    -o-transition: all 0.3s;
-    transition: all 0.3s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
     padding: 10px;
     background: #008844;
     color: white;
@@ -548,9 +561,9 @@ div.container_input::after {
     max-width: 95%;
     right: 50%;
     margin-top: 3vh;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    transition: all 0.5s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
 
 }
 
@@ -559,13 +572,14 @@ div.container_input::after {
     width: 98%;
     position: fixed;
     float: right;
+    height:calc(100% - 90px) ;
     z-index: 99999;
     background-color: #ffffff;
     top: 80vh;
     right: 1%;
-    -webkit-transition: all 0.2s;
-    -o-transition: all 0.2s;
-    transition: all 0.2s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
     border-radius: 30px 30px 00 0;
     -webkit-box-shadow: 0px 4px 10px 10px #00000034;
             box-shadow: 0px 4px 10px 10px #00000034;
@@ -591,9 +605,9 @@ right: 0;
     left: 0;
     background-color: #fff;
     overflow-x: hidden;
-    -webkit-transition: 0.3s linear;
-    -o-transition: 0.3s linear;
-    transition: 0.3s linear;
+    -webkit-transition: 0.4s linear;
+    -o-transition: 0.4s linear;
+    transition: 0.4s linear;
     border-radius: 30 0 0 0;
     padding-top: 3px;
     border-right: 1px solid rgb(211, 211, 211);
@@ -622,9 +636,9 @@ right: 0;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
 }
 .sidenav span{
     top: 0;
@@ -634,9 +648,9 @@ right: 0;
     font-size: 25px;
     color: #202020;
     display: block;
-    -webkit-transition: 0.3s;
-    -o-transition: 0.3s;
-    transition: 0.3s;
+    -webkit-transition: 0.4s;
+    -o-transition: 0.4s;
+    transition: 0.4s;
     cursor: pointer;
 }
 .sidenav span:hover{
@@ -657,9 +671,9 @@ right: 0;
 }
 
 #main {
-    -webkit-transition: margin-left .5s;
-    -o-transition: margin-left .5s;
-    transition: margin-left .5s;
+    -webkit-transition: margin-left .4s;
+    -o-transition: margin-left .4s;
+    transition: margin-left .4s;
     padding: 16px;
 }
 
@@ -686,9 +700,9 @@ right: 0;
         top: 0;
         left: 0;
         overflow-x: hidden;
-        -webkit-transition: 0.5s;
-        -o-transition: 0.5s;
-        transition: 0.5s;
+        -webkit-transition: 0.4s;
+        -o-transition: 0.4s;
+        transition: 0.4s;
         padding-top: 60px;
     }
 
@@ -704,13 +718,14 @@ right: 0;
 }
 
 .tab {
-    -webkit-transition: all 0.2s;
-    -o-transition: all 0.2s;
-    transition: all 0.2s;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
     position: sticky;
     top: 100px;
     display: -ms-grid;
     display: grid;
+    gap: 4px;
     -ms-grid-columns: 32% 32% 32%;
     grid-template-columns: 32% 32% 32%;
     -webkit-box-pack: space-evenly;
@@ -741,9 +756,9 @@ right: 0;
     width: max-content;
     border-radius: 6px;
     padding: 8px;
-    -webskit-transition: all 0.2s;
-    -o-transition: all 0.2s;
-    transition: all 0.2s;
+    -webskit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
     cursor: pointer;
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -781,6 +796,13 @@ right: 0;
 
 .sec{
     display: none;
+    width: 100%;
+    height: 70px;
+    display: flex !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+    
+    padding: 10px;
     opacity: 0;
     height: 0;
 }
@@ -809,6 +831,7 @@ iframe {
     overflow-y: auto !important;
 min-height: 81vh !important;
     view-transition-name: iframe !important;
+    margin-top: 10px;
 }
 
 
