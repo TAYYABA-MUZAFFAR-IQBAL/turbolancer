@@ -543,7 +543,7 @@ def get_user_data(user_id, Atype):
 
 @socketio.on('join')
 def handle_join(data):
-    user_id = data['-userId']
+    user_id = data['userId']
     account = data['account']
 
     # Retrieve the user's chat room list from the user collection
