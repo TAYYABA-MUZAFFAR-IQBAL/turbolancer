@@ -138,7 +138,7 @@ body {
     width: auto;
     transform: scaleX(1);
     transform-origin: left;
-    transition: all 0.6 ease; /* Add transition for .nl */
+    transition: all 0.3 ease; /* Add transition for .nl */
   }
   
   nav.scrolled .nl {
