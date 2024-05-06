@@ -527,16 +527,24 @@ def not_found_error(error):
     return jsonify({'error': 'Sorry! Resource not found'}), 404
 
 
-@app.route('/try')
+@app.route('/chat')
 def index():
-    return render_template('try.html')
+    cookies = getkey(request.cookies)
+    if cookies.get('ideo'):
+        id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
+        print (id_)
+        return render_template('try.html', _id = id_)
+    return render_template('try.html', id_ = '')
 
 
 def get_user_data(user_id, Atype):
+    print('id ' + user_id)
     if 'd' in Atype:
         user_data = developer_collection.find_one({"_id": user_id})
+        print(user_data)
     elif 'c' in Atype:
         user_data = user_collection.find_one({'_id': user_id})
+        print(user_data)
     return user_data
 
 
@@ -544,10 +552,12 @@ def get_user_data(user_id, Atype):
 def handle_join(data):
     user_id = data['userId']
     account = data['account']
+    print(user_id )
+    print('this is from user id')
 
     # Retrieve the user's chat room list from the user collection
-    user_data = get_user_data(user_id, account)
-
+    user_data = get_user_data(user_id,account)
+    print( user_data)
     if user_data is None:
         emit('join_response', {"status": "USER_NOT_FOUND"})
         return
@@ -776,7 +786,7 @@ def home_c(x, y):
     return redirect(url_for('main'))
 
 
-def get_user_data(user_id):
+def get_user_dataA(user_id):
     user_data = user_collection.find_one({"_id": user_id})
     if user_data:
         email = turbolancer_data_Security.decrypt(key, user_data["email"])
@@ -851,15 +861,15 @@ def account(x, y):
     decrypted_x = turbolancer_data_Security.decrypt(key, getkey(request.cookies)['ideo'])
     
     if check(request.cookies, 'file') and decrypted_x != x:
-        ud = get_user_data(x) or get_developer_data(x)
-        lud = get_user_data(decrypted_x) or get_developer_data(decrypted_x)
+        ud = get_user_dataA(x) or get_developer_data(x)
+        lud = get_user_dataA(decrypted_x) or get_developer_data(decrypted_x)
 
         if ud['ph'] == lud['ph']:
             random.shuffle(grer)
 
             if y in ['c', 'd']:
                 if y == 'c':
-                    user_data = get_user_data(x)
+                    user_data = get_user_dataA(x)
                     if user_data:
                         return render_template('profile_page.html', **user_data, greeting=grer[0])
                 elif y == 'd':
@@ -874,7 +884,7 @@ def account(x, y):
 
     if y in ['c', 'd']:
         if y == 'c':
-            user_data = get_user_data(x)
+            user_data = get_user_dataA(x)
             if user_data:
                 return render_template('profile_page.html', **user_data, greeting=grer[0])
         elif y == 'd':

@@ -28,7 +28,9 @@ height: calc(100% + 40px) !important;
     text-transform: capitalize;
   }
  
-
+#deleteCookieButton:hover{
+color: #f11919;
+}
   
 
   body::-webkit-scrollbar-thumb {
@@ -623,10 +625,10 @@ right: 0;
 
 .sidenav a {
     padding: 16px 16px 16px 32px;
-    top: 10px;
+    top: 5px;
     text-decoration: none;
-    font-size: 25px;
-    color: #202020;
+    font-size: 20px;
+    color: #101010;
     
     display: -webkit-box;
     
@@ -655,13 +657,13 @@ right: 0;
     font-size: 25px;
     color: #202020;
     display: block;
-    -webkit-transition: 0.4s;
-    -o-transition: 0.4s;
-    transition: 0.4s;
+    -webkit-transition: 0.1s !important;
+    -o-transition: 0.1s !important;
+    transition:all  0.1s !important;
     cursor: pointer;
 }
 .sidenav span:hover{
-    color: rgb(255, 140, 140);
+    color: rgb(241, 65, 65);
  
 }
 .sidenav a:hover {
