@@ -9,12 +9,13 @@
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
-    max-height:calc(100% + 3px) !important;
 }
 
 html {
     padding: 0%;
 text-wrap: balance;
+max-height:calc(100% + 3px) !important;
+
 
 }
 
@@ -153,6 +154,7 @@ body {
   } */
   
   nav.scrolled .profile {
+    padding: 2px;
     background: #121212 !important;
     color: #fff;
     transition: all 0.6 ease; /* Increase transition duration and use ease timing function */
@@ -510,6 +512,11 @@ div.container_input::after {
     
     }}
 @media (max-width: 650px) {
+    .left{
+        width: 97%;
+        margin-left: 3%;
+       
+    }
     .hero {
         -ms-grid-columns: auto;
         grid-template-columns: auto;
@@ -726,8 +733,8 @@ right: 0;
     display: -ms-grid;
     display: grid;
     gap: 4px;
-    -ms-grid-columns: 32% 32% 32%;
-    grid-template-columns: 32% 32% 32%;
+    -ms-grid-columns: 34% 32% 32%;
+    grid-template-columns: 34% 32% 32%;
     -webkit-box-pack: space-evenly;
         -ms-flex-pack: space-evenly;
             justify-content: space-evenly;
@@ -744,11 +751,9 @@ right: 0;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
+
+            justify-content: space-evenly;
+  
             align-items: center;
     font-size: 15px;
     font-weight: 500;

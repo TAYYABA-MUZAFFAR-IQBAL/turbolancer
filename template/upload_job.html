@@ -1,633 +1,739 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-ur6sXcI7OQfJoK4t7RbY0Gqk0aZUQxbl7rJGlZN5r2gLt/rtOUZ3QykOaLSwVmukBmcpukh5mwWVRfvEM4ItFQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="/static/toast.css">
+<script src="/static/toast.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <title>Task Posting Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
-        @import url("https://fonts.googleapis.com/css?family=Sofia");
+  <style>
+    * {
+      scroll-behavior: smooth;
+      transition: all 0.4s !important;
+      text-wrap: balance;
+    }
 
-        * {
-            padding: 0;
-            font-family: "Poppins", Arial, sans-serif !important;
-            transition: all 0.1s;
+    textarea {
+      width: 100%;
+    }
+    .parent {
+      width: 80%;
+      max-width: 800px;
+    }
 
-        }
+    .input-group {
+      gap: 4px;
+      align-items: center;
+      border-radius: 5px;
+    }
+    .tb_ai-button {
+      transition: all 0.4s;
+      display: block;
+      cursor: pointer;
+      color: #333;
+      margin: 0 auto;
+      position: relative;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 50px;
+      overflow: hidden;
+      padding: 3px;
+      width: 150px;
+      height: 50px;
+    }
 
+    .tb_ai-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 400%;
+      height: 100%;
+      background: linear-gradient(
+        115deg,
+        #4caf50,
+        #ffeb3b,
+        #9c27b0,
+        #03a9f4,
+        #4caf50
+      );
+      background-size: 25% 100%;
+      animation: playit 0.75s
+        linear infinite;
+      animation-play-state: paused;
+      translate: -5% 0%;
+      transition: translate 0.25s ease-out;
+    }
+    .tb_ai-button.run {
+      width: 50px;
+      padding: 5px;
+    }
+    .tb_ai-button.run::before {
+      animation-play-state: running;
+      transition-duration: 0.75s;
+      translate: 0% 0%;
+    }
+
+    @keyframes playit  {
+      to {
+        transform: translateX(-25%);
+      }
+    }
+
+    .tb_ai-button span {
+      position: relative;
+      display: block;
+      transform-origin: center;
+
+      padding: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      background: #fff;
+      color: #333;
+      border-radius: 50px;
+      height: 100%;
+      width: 143px;
+    }
+
+    .tb_ai-button span.second {
+      transform: scaleX(0);
+      width: 0;
+      display: flex;
+      opacity: 0;
+      color: transparent;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tb_ai-button.run span.second {
+      transform: scaleX(1);
+      width: 45px !important ;
+      height: 44px;
+      opacity: 1;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+    }
+
+    .tb_ai-button.run span.first {
+      transform: scaleX(0);
+      width: 0;
+      opacity: 0;
+    }
+
+    .icon {
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(
+        115deg,
+        #4caf50,
+        #ffeb3b,
+        #9c27b0,
+        #03a9f4,
+        #4caf50
+      );
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      transform-origin: center;
+
+      animation: moveBackgroundd 5s ease infinite;
+    }
+
+    @keyframes moveBackgroundd {
+      0% {
+        background-position: 0% 50%;
+        opacity: 1;
+      }
+      50% {
+        background-position: 100% 50%;
+        opacity: 0.7;
+      }
+      100% {
+        background-position: 0% 50%;
+        opacity: 1;
+      }
+    }
+
+    .suggest {
+      font-size: 15px !important;
+    }
+    input {
+      outline: none;
+      border-radius: 5px !important;
+    }
+
+    .modal {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.1);
+      transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 2rem 2.5rem;
+      width: 30em;
+      border-radius: 0.5rem;
+    }
+    .close-button {
+      float: right;
+      width: 1.5rem;
+      font-size: 1.2em;
+      line-height: 1;
+      padding: 0 0.2em 0.15em;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 0.25rem;
+      background-color: var(--clr-neutral);
+      color: var(--clr-dark);
+      transition: color 0.12s ease-in-out;
+    }
+    .close-button:hover {
+      color: var(--clr-main);
+    }
+    .show-modal {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+      transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+    }
+    .animate-scale {
+      animation: scale 0.2s ease-in-out;
+    }
+
+    .animate-scale-out {
+      animation: scaleOut 0.2s ease-in-out forwards;
+    }
+
+    @keyframes scale {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleOut {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
+    #paste{
+      background-color: #4caf50;
+      color: #fff;
+      outline: none;
+    }
+    .empty-field input, .empty-field textarea{
+      border: 1px solid red !important;
+    }
+  /* Container styles */
+  .container {
+  
+  text-align: center;
+}
+/* Define variables */
+:root {
+    --green: #4caf50;
+    --gray: #bbbbbb;
+  }
+  
+
+  
+  /* Button styles */
+  button {
+    outline: none;
+    height: 50px;
+    text-align: center;
+    width: 150px;
+    border-radius: 50px;
+    background: #fff;
+    border: 2px solid var(--green);
+    color: var(--green);
+    letter-spacing: 1px;
+    text-shadow: 0;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  
+  #button:hover {
+    color: white;
+    background: var(--green);
+  }
+  
+  #button:active {
+    letter-spacing: 2px;
+  }
+  
+  #button:after {
+    content: "Publish";
+  }
+  
+  /* Onclic animation */
+  .onclic {
+    width: 50px;
+    border-color: var(--gray);
+    border-width: 3px;
+    font-size: 0;
+    border-left-color: var(--green);
+    animation: rotating 2s 0.25s linear infinite;
+  }
+  
+  .onclic:hover {
+    color: var(--green);
+    background: white;
+  }
+  
+  /* Validate styles */
+  .validate {
+    font-size: 13px;
+    color: white;
+    background: var(--green);
+  }
+  
+  #button.validate:after {
+    content: "✔️";
+    background:#fff ;
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        transform-origin: center;
+  }
+  
+  @keyframes rotating {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  </style>
+  <body>
+    <div class="parent mx-auto bg-base-100 p-8 rounded-lg shadow">
+      <!-- Task Title field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Task Title</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="text"
+            placeholder="Enter task title"
+            id="title"
+            class="input input-bordered w-full"
+          />
+          <div>
+            <a onclick="run(this)" class="tb_ai-button" data-id="title"
+              ><span class="first"> Rephrase it!</span
+              ><span class="second">
+                <strong class="icon">✨</strong>
+              </span></a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Job Category field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Job Category</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="text"
+            id="Category"
+            placeholder="Enter job category"
+            class="input input-bordered w-full"
+          />
+        </div>
+      </div>
+      <!-- Task Description field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Task Description</span>
+        </label>
+        <div class="input-group">
+          <textarea
+            class="textarea textarea-bordered h-32 resize-none"
+            id="disc"
+            placeholder="Enter task description"
+          ></textarea>
+          <div>
+            <a onclick="run(this)" data-id="disc" class="tb_ai-button texta"
+              ><span class="first"> Rephrase it!</span
+              ><span class="second">
+                <strong class="icon">✨</strong>
+              </span></a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Deadline field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Deadline</span>
+        </label>
+        <div class="input-group">
+          <input
+            type="date"
+            id="Deadline"
+            class="input input-bordered w-full"
+          />
+        </div>
+      </div>
+      <!-- Attachments field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Attachments</span>
+        </label>
+        <label class="input input-bordered flex items-center gap-2">
+          <input type="text" class="grow" placeholder="Paste link here" />
+          <span
+            class="badge badge-info"
+            style="padding: 5px; background-color: #03a9f4; color: #fff"
+            >Optional</span
+          >
+        </label>
+      </div>
+      <!-- Budget field -->
+      <div class="form-control mb-6">
+        <label class="label">
+          <span class="label-text font-bold">Your budget (Range)</span>
+        </label>
+        <div class="input-group">
+          <div class="input-group">
+            <label class="input input-bordered flex items-center gap-2 w-full">
+              $
+              <input type="number" id="bida" class="grow" placeholder="From" />
+            </label>
+            <label class="input input-bordered flex items-center gap-2 w-full">
+              $
+              <input type="number" id="bidb" class="grow" placeholder="To" />
+            </label>
+          </div>
+          <div>
+            <a onclick="run(this)" class="tb_ai-button" data-id="bida"
+              ><span class="first suggest">Suggest Budget</span
+              ><span class="second">
+                <strong class="icon">✨</strong>
+              </span></a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Continue To Checkout button -->
+      <div class="form-control mb-6">
+        <div class="container">
+          <button id="button"></button>
+        </div>
+        
+      </div>
+    </div>
+    <div
+      id="successModal"
+      class="fixed z-10 inset-0 overflow-y-auto hidden"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div
+          class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          aria-hidden="true"
+        ></div>
+        <span
+          class="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+          >&#8203;</span
+        >
+        <div
+          class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate-scale"
+        >
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div
+                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10"
+              >
+                <svg
+                  class="h-6 w-6 text-green-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3
+                  class="text-lg leading-6 font-medium text-gray-900"
+                  id="modal-title"
+                >
+                  Here it is!
+                </h3>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500" id="mtext">
+                   
+                  </p>
+                  <sub style="color: #a1a1a1;">Sometimes Ai can make mistakes. Consider checking important information.</sub>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-revers" style="gap: 6px;" >
+            <button class="btn" id="paste"style='display:none;' onclick="pasteit(this)">input the price</button>
+
+            <button class="btn"id="closeModal">Close</button>
+
+         
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+
+
+const successModal = document.getElementById("successModal");
+const modalContent = successModal.querySelector(".inline-block");
+const closeButton = successModal.querySelector("#closeModal");
+const closeButton2 = successModal.querySelector("#paste");
+
+function closeModal() {
+  modalContent.classList.remove("animate-scale");
+  modalContent.classList.add("animate-scale-out");
+  setTimeout(() => {
+    successModal.classList.add("hidden");
+    modalContent.classList.remove("animate-scale-out");
+  }, 200);
+}
+const title = document.getElementById("title");
+const disc = document.getElementById("disc");
+const Category = document.getElementById("Category");
+const Deadline = document.getElementById("Deadline");
+
+ currentDate = new Date(); 
+
+function pasteit(button) {
+  const data = button.getAttribute('data-arr');
+  const [bid1, bid2] = data.split(",");
+  document.querySelector('#bida').value = bid1;
+  document.querySelector('#bidb').value = bid2;
+}
+function isFutureDate(dateString) {
+  const inputDate = new Date(dateString);
+  const currentDate = new Date();
+  const maxFutureDate = new Date(currentDate.getTime() + (50 * 24 * 60 * 60 * 1000)); // 50 days from current date
+
+
+  if (inputDate > currentDate && inputDate <= maxFutureDate) {
+    return true;
+  } else if (inputDate > maxFutureDate) {
+    toast('d', 'The deadline can be no more than 50 days after the current date.')
+    return false;
+  } else {
+    toast('d', 'The deadline should fall on a future date.')
+    return false;
+  }
+}
+function extractPrices(str) {
+  const pricePattern = /\[(\$?\d+(?:,\d+)?)\s*->\s*(\$?\d+(?:,\d+)?)\]/g;
+  const prices = [];
+  let remainingStr = str;
+
+  let match;
+
+  while ((match = pricePattern.exec(str)) !== null) {
+    const [_, startPrice, endPrice] = match;
+    const startPriceValue = parseFloat(startPrice.replace(/[$,]/g, ''));
+    const endPriceValue = parseFloat(endPrice.replace(/[$,]/g, ''));
+    prices.push(startPriceValue, endPriceValue);
+    remainingStr = remainingStr.replace(match[0], '');
+  }
+
+  return { prices, remainingStr };
+}
+function checkDateInput() {
+    var dateInput = document.querySelector('#Deadline');
+    var selectedDate = dateInput.value;
+
+  
+  return selectedDate != '' && isFutureDate(dateInput.value)
+}
+
+
+function checkInputs() {
+  const inputs = [title, disc, Category, Deadline];
+  const emptyClass = "empty-field";
+  let isEmpty = true;
+
+  inputs.forEach((input) => {
+  
+    if (input.id !== 'Deadline' && input.value.replace(' ', '').length >= 10) {
+    if (input.parentElement.classList.contains(emptyClass)) {
+        input.parentElement.classList.remove(emptyClass);
+    }
+} else if (input.id === 'Deadline' && checkDateInput()) {
+    if (input.parentElement.classList.contains(emptyClass)) {
+        input.parentElement.classList.remove(emptyClass);
+    }
+} else {
+    input.parentElement.classList.add(emptyClass);
+    isEmpty = false;
+}
+  });
+
+  return isEmpty;
+}
+function checkIn(input) {
+  const emptyClass = "empty-field";
+  let isEmpty = true;
+
+    if (!(input.value.length >= 10)) {
+      input.parentElement.classList.add(emptyClass);
+      isEmpty = false;
+    } else {
+      input.parentElement.classList.remove(emptyClass);
+    }
+  
+  return isEmpty;
+}
+function run(button) {
+  const inputId = button.getAttribute("data-id");
+  const input = document.getElementById(inputId);
+  let given;
+
+  if (inputId === "bida") {
+    if (checkInputs()) {
+      const today = new Date().toDateString();
+      given = `title = ${title.value}, description of task = ${disc.value}, Category of task = ${Category.value}, deadline of task = ${Deadline.value} and -> today is ${today}`;
+    } else {
+      toast('d','pleas fill all requared feilds')
       
 
-        .btn.AI {
-            background-color: #007bff;
-            color: #fff;
-            transition: all 0.3s;
-            border: none;
+      
+    }
+  } else {
+    if (checkIn(input)) {
+      given = input.value;
+    } else {
+      toast('w', 'Please enter a text of at least 10 characters.')
+
+    }
+  }
+
+  const isValidInput = (inputId === "bida" && checkInputs()) || input.value.replace(' ', '').length >= 10;
+
+  if (isValidInput ) {
+    button.classList.add("run");
+    fetch("/rephrase_text", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        main: inputId,
+        text: given,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
-        .btn.AI:hover {
-            background-color: #0068d6;
-            color: #fff;
-
+        return response.json();
+      })
+      .then((data) => {
+        button.classList.remove("run");
+        if (inputId === "bida") {
+          const { prices, remainingStr } = extractPrices(data.text);
+          if (prices) {
+            const paste = document.getElementById('paste');
+            paste.style.display = 'block';
+            paste.setAttribute('data-arr', prices);
+          } else {
+            document.getElementById('paste').style.display = 'none';
+          }
+          const re = remainingStr.replace('[', '').replace(']', '');
+          document.getElementById('mtext').innerText = re;
+          successModal.classList.remove("hidden");
+          modalContent.classList.add("animate-scale");
+        } else {
+          toast('s', 'Text rephreased successfully.')
+          const re = data.text.replace('[', '').replace(']', '');
+          input.value = re;
         }
+      })
+      .catch((error) => {
+        toast('d', 'An Error occurred.')
 
-        .btn.AI.disabledme {
-            background-color: #25baff;
-            cursor: not-allowed;
-        }
+        console.error("Error:", error);
+      });
+  }
+}
+closeButton.addEventListener("click", closeModal);
+closeButton2.addEventListener("click", closeModal);
+document.addEventListener("DOMContentLoaded", function() {
+  var button = document.getElementById("button");
 
-        .btn.AI.disabledme:active {
-            pointer-events: none;
-        }
+  button.addEventListener("click", function() {
+    button.classList.add("onclic");
+    setTimeout(function() {
+      button.classList.remove("onclic");
+      button.classList.add("validate");
+      setTimeout(function() {
+        button.classList.remove("validate");
+      }, 1250);
+    }, 2250);
+  });
+});
 
-        .container {
-            margin: 0 auto;
-        }
-
-        .card {
-            box-shadow: 0 4px 27px rgba(0, 0, 0, 0.11);
-
-        }
-
-        .card-header {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 15px;
-        }
-
-        .form-label {
-            font-weight: bold;
-            z-index: 324234;
-        }
-
-        .form-control {
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            padding: 10px;
-        }
-
-        .form-select {
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            padding: 10px;
-        }
-
-        textarea.form-control {
-            resize: vertical;
-        }
-
-        .btn.AI {
-            margin-left: 10px;
-            background-color: #007bff;
-            background-image: linear-gradient1(546deg, #007bff, #3596fd);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        .btn.btn-primary {
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            color: white;
-        }
-
-        .btn.btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .mb-3 {
-            margin-bottom: 20px;
-        }
-
-        input {
-            border: none !important;
-            border-bottom: 1px solid #007bffd7 !important;
-            border-radius: 0 !important;
-            outline: none !important;
-        }
-
-        .button1 {
-            display: inline-block;
-            border-radius: 4px;
-            background-color: #3d405b;
-            border: none;
-            color: #FFFFFF;
-            text-align: center;
-            font-size: 17px;
-            padding: 16px;
-            width: 220px;
-            transition: all 0.5s;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .button1 span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            z-index: 2345435 !important;
-            transition: 0.5s;
-        }
-
-        .button1 span:after {
-            content: '»';
-            position: absolute;
-            opacity: 0;
-            z-index: 2345435 !important;
-            top: 0;
-            right: -15px;
-            transition: 0.5s;
-        }
-
-        .button1:hover span {
-            padding-right: 15px;
-            z-index: 2345435 !important;
-
-        }
-
-        .button1:hover span:after {
-            opacity: 1;
-            right: 0;
-        }
-
-        .button {
-            width: fit-content;
-            display: flex;
-            height: 100% !important;
-            padding: 1.2em 1rem;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 10px;
-            text-shadow: 2px 2px 3px rgb(136 0 136 / 50%);
-            background: linear-gradient(15deg, #007bffd7, #007bff, #00aaff, #00c997, #05a100, #00c997, #00aaff, #007bff, #007bffd7) no-repeat;
-            background-size: 200%;
-            color: #fff;
-            border: none;
-            align-items: center;
-            background-position: left center;
-            transition: all .3s ease;
-        }
-
-        .button:hover {
-            background-size: 330%;
-            background-position: right center;
-        }
-
-        .button:hover svg {
-            fill: #fff;
-            width: 30px;
-
-        }
-
-        .button svg {
-            width: 0;
-            fill: #09ff00;
-            transition: .3s ease;
-        }
-
-
-        .dropdown-item {
-            cursor: pointer;
-        }
-
-        .dropdown-item:hover {
-            background-color: #e7e7e7;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                    </div>
-                    <div class="card-body">
-                        <for id="taskForm" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="taskTitle" class="form-label" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Enter a clear and concise title for your task.">Job
-                                    Title</label>
-                                <div class="input-group">
-                                    <input onkeydown="returnButton(0)" type="text" class="form-control" id="taskTitle"
-                                        name="taskTitle" placeholder="Enter task title" required>
-                                    <button onclick="rephase(this)" name="taskTitle" class="button">
-                                        <svg class="sparkle" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                            <path
-                                                d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                            <path
-                                                d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </svg> Rephrase with AI
-                                    </button>
-
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-
-                                <label for="taskCategory" class="form-label" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="Select the category that best fits your task.">Job
-                                    Category</label>
-                                <input type="text" class="form-control" id="taskTitle" name="taskTitle"
-                                    placeholder="Example: WebDevelopment, Photo editing, content writting, etc."
-                                    required list="datalist">
-                                <datalist id="datalist">
-                                    <option value="hello"></option>
-                                    <option value="hello"></option>
-                                    <option value="hello"></option>
-                                </datalist>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="taskDescription" class="form-label" data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Provide a detailed description of your task, including specific requirements and expectations.">Task
-                                    Description</label>
-                                <div class="input-group">
-
-                                    <textarea onkeydown="returnButton(1)" class="form-control" id="taskDescription"
-                                        name="taskDescription" rows="4" placeholder="Enter task description"
-                                        required></textarea>
-
-                                    <button onclick="rephase(this)" type="button" name="taskDescription"
-                                        id="taskdiscription" class="button">
-                                        <svg class="sparkle" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                            <path
-                                                d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                            <path
-                                                d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z"
-                                                fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </svg> Rephrase with AI
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="budget" class="form-label" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Specify your budget for the task, either as a fixed amount or a range.">Budget</label>
-                                <input type="text" class="form-control" id="budget" name="budget"
-                                    placeholder="Enter budget" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="deadline" class="form-label" data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Set the deadline by which you need the task to be completed.">Deadline</label>
-                                <input type="date" class="form-control" id="deadline" name="deadline" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="attachments" class="form-label" data-bs-toggle="tooltip"
-                                    data-bs-placement="top"
-                                    title="Paste the link of any website, image file etc.">Attachments</label>
-                                <input placeholder="Paste link here." type="text" class="form-control" id="attachments"
-                                    name="attachments[]">
-                            </div>
-                            <button class="button1" type="submit">
-                                <span>Continue To Checkout</span>
-                            </button>
-                            </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Initialize Bootstrap tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
 
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const taskForm = document.getElementById("taskForm");
-
-            taskForm.addEventListener("submit", function (event) {
-                event.preventDefault();
-
-                // Collect form data as an object
-                const formData = {};
-                const formElements = taskForm.elements;
-
-                for (let i = 0; i < formElements.length; i++) {
-                    const element = formElements[i];
-                    if (element.name) {
-                        formData[element.name] = element.value;
-                    }
-                }
-
-                // Convert the object to a JSON string
-                const jsonData = JSON.stringify(formData);
-
-                // Encode the JSON string to base64
-                const base64Data = btoa(jsonData);
-
-                // Compress the base64 data (you can use a library like lz-string)
-                const compressedData = LZString.compressToBase64(base64Data);
-
-                // Redirect to the next page with the data in the URL
-                const nextPageURL = `option.html?data=${encodeURIComponent(compressedData)}`;
-                window.location.href = nextPageURL;
-            });
-        });
-
-
-        function rephase(x) {
-
-            x.preventDefault
-            input = document.getElementById(x.name);
-            console.log(x.name)
-
-            console.log(input)
-            if (input.value.length >= 1) {
-                fetch("/rephrase_text", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        text: input.value,
-                    }),
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const suggestions = data.text || [];
-                        if (suggestions.length > 0) {
-                            input.name = input.value;
-                            input.value = suggestions[0]
-                            // Create the dropdown container
-                            const dropdown = document.createElement('div');
-                            dropdown.classList.add('dropdown', x.name);
-
-                            const button = document.createElement('button');
-                            button.classList.add('button', 'dropdown-toggle');
-                            button.setAttribute('data-bs-toggle', 'dropdown');
-                            button.textContent = 'Draft 1';
-
-                            // Create the dropdown menu
-                            const dropdownMenu = document.createElement('ul');
-                            dropdownMenu.classList.add('dropdown-menu');
-
-                            // Create and append list items
-                            const listItem1 = document.createElement('li');
-                            const link1 = document.createElement('a');
-                            link1.classList.add('dropdown-item', 'first');
-                            link1.classList.add('selected' + x.name)
-
-                            link1.dataset.info = x.name
-                            link1.setAttribute('data-name', suggestions[0]);
-                            link1.textContent = 'Draft 1';
-                            listItem1.appendChild(link1);
-
-                            const listItem2 = document.createElement('li');
-                            const link2 = document.createElement('a');
-                            link2.classList.add('dropdown-item', 'second');
-                            link2.textContent = 'Draft 2';
-                            link2.setAttribute('data-name', suggestions[1]);
-                            link2.dataset.info = x.name
-                            listItem2.appendChild(link2);
-
-                            const listItem3 = document.createElement('li');
-                            const link3 = document.createElement('a');
-                            link3.classList.add('dropdown-item', 'third');
-                            link3.textContent = 'Draft 3';
-                            link3.setAttribute('data-name', suggestions[2]);
-                            link3.dataset.info = x.name
-
-                            listItem3.appendChild(link3);
-
-                            const listItem4 = document.createElement('li');
-                            const link4 = document.createElement('a');
-                            link4.classList.add('dropdown-item', 'four');
-                            link4.textContent = 'Regenrate';
-                            link4.setAttribute('data-name', input.name);
-                            console.log(input.name, x.name)
-                            link4.dataset.info = x.name
-
-                            listItem4.appendChild(link4);
-                            // Append the list items to the dropdown menu
-                            dropdownMenu.appendChild(listItem1);
-                            dropdownMenu.appendChild(listItem2);
-                            dropdownMenu.appendChild(listItem3);
-                            dropdownMenu.appendChild(listItem4);
-
-                            // Append the button and dropdown menu to the dropdown container
-                            dropdown.appendChild(button);
-                            dropdown.appendChild(dropdownMenu);
-                            link1.addEventListener('click', write)
-                            link2.addEventListener('click', write)
-                            link3.addEventListener('click', write)
-                            link4.addEventListener('click', regenrate)
-
-                            // Insert the new select element before the button
-                            x.parentNode.insertBefore(dropdown, x);
-                            document.querySelector('.selected' + x.name).style.background = '#0056b3'
-                            document.querySelector('.selected' + x.name).style.color = '#fff'
-
-                            // Remove the button element from the DOM
-                            x.parentNode.removeChild(x);
-
-
-                        } else {
-                            console.log("No suggestions found in the response.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-            }
-        }
-        function regenrate(x) {
-            x.preventDefault
-            x = x.target
-            input_t = x.getAttribute('data-name');
-            console.log("hello{}{}{}")
-            console.log(x.getAttribute('data-name'))
-            console.log(x.dataset.info)
-            input = document.getElementById(x.dataset.info)
-
-            if (input_t.length >= 1) {
-                fetch("/rephrase_text", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        text: input_t,
-                    }),
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const suggestions = data.text || [];
-                        if (suggestions.length > 0) {
-                            input.name = input.value;
-                            input.value = suggestions[0]
-                            // Create the dropdown container
-                            const dropdown = document.createElement('div');
-                            dropdown.classList.add('dropdown', x.dataset.info);
-
-                            const button = document.createElement('button');
-                            button.classList.add('button', 'dropdown-toggle');
-                            button.setAttribute('data-bs-toggle', 'dropdown');
-                            button.textContent = 'Draft 1';
-
-                            // Create the dropdown menu
-                            const dropdownMenu = document.createElement('ul');
-                            dropdownMenu.classList.add('dropdown-menu');
-
-                            // Create and append list items
-                            const listItem1 = document.createElement('li');
-                            const link1 = document.createElement('a');
-                            link1.classList.add('dropdown-item', 'first');
-                            link1.classList.add('selected' + x.dataset.info)
-
-                            link1.dataset.info = x.dataset.info
-                            link1.setAttribute('data-name', suggestions[0]);
-                            link1.textContent = 'Draft 1';
-                            listItem1.appendChild(link1);
-
-                            const listItem2 = document.createElement('li');
-                            const link2 = document.createElement('a');
-                            link2.classList.add('dropdown-item', 'second');
-                            link2.textContent = 'Draft 2';
-                            link2.setAttribute('data-name', suggestions[1]);
-                            link2.dataset.info = x.dataset.info
-                            listItem2.appendChild(link2);
-
-                            const listItem3 = document.createElement('li');
-                            const link3 = document.createElement('a');
-                            link3.classList.add('dropdown-item', 'third');
-                            link3.textContent = 'Draft 3';
-                            link3.setAttribute('data-name', suggestions[2]);
-                            link3.dataset.info = x.dataset.info
-
-                            listItem3.appendChild(link3);
-
-                            const listItem4 = document.createElement('li');
-                            const link4 = document.createElement('a');
-                            link4.classList.add('dropdown-item', 'four');
-                            link4.textContent = 'Regenrate';
-                            link4.setAttribute('data-name', input.name);
-                            console.log(input.name, x.dataset.info)
-                            link4.dataset.info = x.dataset.info
-
-                            listItem4.appendChild(link4);
-                            // Append the list items to the dropdown menu
-                            dropdownMenu.appendChild(listItem1);
-                            dropdownMenu.appendChild(listItem2);
-                            dropdownMenu.appendChild(listItem3);
-                            dropdownMenu.appendChild(listItem4);
-
-                            // Append the button and dropdown menu to the dropdown container
-                            dropdown.appendChild(button);
-                            dropdown.appendChild(dropdownMenu);
-                            link1.addEventListener('click', write)
-                            link2.addEventListener('click', write)
-                            link3.addEventListener('click', write)
-                            link4.addEventListener('click', regenrate)
-
-                            xx = document.getElementsByClassName(x.dataset.info)[0]
-                            xx.parentNode.insertBefore(dropdown, xx);
-                            document.querySelector('.selected' + x.dataset.info).style.background = '#0056b3'
-                            document.querySelector('.selected' + x.dataset.info).style.color = '#fff'
-
-                            xx.parentNode.removeChild(xx);
-
-
-                        } else {
-                            alert("No Text found in the response OR text was too long.");
-                        }
-
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                    });
-            }
-        }
-        function write(e) {
-            e.preventDefault
-            console.log(e.target)
-            var text = e.target;
-            input = document.getElementById(text.dataset.info)
-            input.value = text.getAttribute('data-name');
-            const dropdown = document.querySelector('.' + text.dataset.info);
-
-            const button = document.querySelector('.' + text.dataset.info + ' button');
-            dropdown.querySelector('.selected' + text.dataset.info).style.background = '#fff'
-            dropdown.querySelector('.selected' + text.dataset.info).style.color = '#121212'
-
-            dropdown.querySelector('.selected' + text.dataset.info).className = 'dropdown-item'
-            text.classList.add('selected' + text.dataset.info)
-            button.textContent = text.innerHTML
-
-            dropdown.querySelector('.selected' + text.dataset.info).style.background = '#0056b3'
-            dropdown.querySelector('.selected' + text.dataset.info).style.color = '#fff'
-
-        }
-
-        function returnButton(x) {
-            const elm = [[' <button onclick="rephase(this)" name="taskTitle" class="button">    <svg class="sparkle" viewBox="0 0 24 24" fill="none"        xmlns="http://www.w3.org/2000/svg">        <path            d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>        <path            d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>        <path            d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>    </svg> Rephrase with AI</button>',
-                'taskTitle']
-                , [' <button onclick="rephase(this)" type="button" name="taskDescription"    id="taskdiscription" class="button">    <svg class="sparkle" viewBox="0 0 24 24" fill="none"        xmlns="http://www.w3.org/2000/svg">        <path            d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50062 16.9577 10.0413C17.4984 10.5819 18.1679 10.9759 18.903 11.186L21.75 12L18.904 12.813C18.1689 13.0231 17.4994 13.4171 16.9587 13.9577C16.4181 14.4984 16.0241 15.1679 15.814 15.903L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4994 13.0423 13.9587C12.5016 13.4181 11.8321 13.0241 11.097 12.814L8.25 12L11.096 11.187C11.8311 10.9769 12.5006 10.5829 13.0413 10.0423C13.5819 9.50162 13.9759 8.83214 14.186 8.097L14.187 8.096Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>        <path            d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>        <path            d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z"            fill="var(--svgcolor)" stroke="var(--svgcolor)" stroke-linecap="round"            stroke-linejoin="round"></path>    </svg> Rephrase with AI</button>'
-                , 'taskDescription']]
-            var tempContainer = document.createElement('div');
-
-            tempContainer.innerHTML = elm[x][0];
-            xx = document.getElementsByClassName(elm[x][1])[0]
-            if (xx) {
-                xx.parentNode.insertBefore(tempContainer, xx);
-
-
-                xx.parentNode.removeChild(xx);
-            }
-            else{
-                console.log('enterde')
-            }
-        }
-        returnButton(1) 
-    </script>
-</body>
-
+  </body>
 </html>

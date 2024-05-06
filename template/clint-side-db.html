@@ -6,6 +6,8 @@
     <title>TurboLancer | {{name}}</title>
     <link rel="icon" type="image/png" href="/static/icon.png" />
     <link rel="stylesheet" href="/static/clinte.css" />
+        <link rel="stylesheet" href="/static/toast.css">
+    <script src="/static/toast.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -19,6 +21,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
   </head>
 
   <body class="gradient1">
@@ -45,17 +48,14 @@
               ><i class="fa-solid fa-info"></i>&nbsp; About Us</a
             ></div> -->
             <div class="tab first">
-              <span onclick="select(this)" data="projects" class="active"
-                ><i class="fa-solid fa-cart-shopping"></i>&nbsp;Buy
-                Projects</span
+              <span onclick="select(this)" data="projects" class="active" style="font-size: 13px; margin-right: 5px;"
+                ><i class="fa-solid fa-cart-shopping"></i>&nbsp;Project Marketplace</span
               >
-              <span onclick="select(this)" data="service"
-                ><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find
-                service</span
+              <span onclick="select(this)" data="service"style="font-size: 13px; margin-right: -10px;"
+                ><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find Talent</span
               >
               <span onclick="select(this)" data="job"
-                ><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload
-                Job</span
+                ><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Post a Job</span
               >
             </div>
           </div>
@@ -114,15 +114,15 @@
 
       <section class="tabular_parent" id="tabular_parent">
         <div class="tab sec">
-          <span onclick="select(this)" data="projects" class="active"
-            ><i class="fa-solid fa-cart-shopping"></i>&nbsp;Buy Projects</span
+          <span onclick="select(this)" style="font-size: 13px; margin-right: 5px;" data="projects" class="active"
+            ><i class="fa-solid fa-cart-shopping"></i>&nbsp;Project Marketplace</span
           >
           <span onclick="select(this)" data="service"
-            ><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find
-            service</span
+            ><i class="fa-solid fa-magnifying-glass"></i>&nbsp;Find Talent</span
           >
           <span onclick="select(this)" data="job"
-            ><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Upload Job</span
+            ><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;
+            Post a Job</span
           >
         </div>
         <iframe
@@ -313,6 +313,7 @@
           document.startViewTransition(() => doit(x));
         }
         function openNav() {
+
           if (!(window.innerWidth < 1220)) {
             document
               .getElementById("full_page")
@@ -441,6 +442,8 @@
                 reader.readAsDataURL(blob);
               })
               .catch((error) => {
+                toast('d','Error: Cannot load image',20)
+
                 console.error(`Error loading image from ${url}: ${error}`);
                 callback(null);
               });
@@ -516,10 +519,8 @@
   if (c === 1){
       return numericValue
   }
-    // Perform the calculation
     const result = numericValue - ((2 / 100) * numericValue);
   
-    console.log("Result:", `${result}px`);
     return result;
   }
         function scrollFunction() {

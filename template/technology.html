@@ -1,51 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
-    <!-- Add your head content here -->
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=">
+    <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script></head>
 
+    <style>
+*{
+  scroll-behavior: smooth;
+  transition: all 0.4s !important;
+  text-wrap: balance;
+}
+
+
+
+textarea {
+  width: 100%;
+}
+        .parent
+        {
+            width: 80%;
+            max-width: 800px;
+        }
+  
+      .input-group{
+        gap: 4px;
+        align-items: center;
+      }
+.tb_ai-button {
+    transition: all 0.4s;
+  display: block;
+  cursor: pointer;
+  color: #333;
+  margin: 0 auto;
+  position: relative;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 50px;
+  overflow: hidden;
+  padding: 3px;
+  width: 150px;
+  height: 50px;
+}
+
+.tb_ai-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 100%;
+  background: linear-gradient(115deg, #4caf50, #ffeb3b, #9c27b0, #03a9f4, #4caf50);
+  background-size: 25% 100%;
+  animation: an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation\_-We-use-the-translate-property-to-have-a-nice-transition-so-it\_s-not-a-jerk-of-a-start-or-stop 0.75s linear infinite;
+  animation-play-state: paused;
+  translate: -5% 0%;
+  transition: translate 0.25s ease-out;
+}
+.tb_ai-button.run{
+    width: 50px;
+    padding: 5px;
+}
+.tb_ai-button.run::before{
+  animation-play-state: running;
+  transition-duration: 0.75s;
+  translate: 0% 0%;
+}
+
+@keyframes an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation\_-We-use-the-translate-property-to-have-a-nice-transition-so-it\_s-not-a-jerk-of-a-start-or-stop {
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.tb_ai-button span {
+  position: relative;
+  display: block;
+  transform-origin:center ;
+
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  background: #fff;
+  color: #333;
+  border-radius: 50px;
+  height: 100%;
+  width: 143px;
+}
+
+.tb_ai-button span.second {
+  transform: scaleX(0);
+  width: 0;
+  display: flex;
+  opacity: 0;
+  color: transparent;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tb_ai-button.run span.second {
+  transform: scaleX(1);
+  width:45px !important ;
+  height: 44px;
+  opacity: 1;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  
+}
+
+.tb_ai-button.run span.first {
+    transform: scaleX(0);
+  width: 0;
+  opacity: 0;
+}
+
+.icon {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(115deg, #4caf50, #ffeb3b, #9c27b0, #03a9f4, #4caf50);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  transform-origin: center;
+
+  animation: moveBackground 5s ease infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 50%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.7;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 1;
+  }
+}
+
+.suggest{
+    font-size: 15px !important;
+}
+    </style>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">My Skills</a>
+    <div class="parent mx-auto bg-base-100 p-8 rounded-lg shadow">
+        <!-- Task Title field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Task Title</span>
+            </label>
+            <div class="input-group">
+                <input type="text" placeholder="Enter task title" id="title" class="input input-bordered w-full" />
+               <div> <a onclick="run(this)" class="tb_ai-button" data-id="title"><span class="first"> Rephrase it!</span><span class="second">
+               <strong class="icon">✨</strong>
+               </span></a> </div>           </div>
         </div>
-    </nav>
-
-    <div class="container py-5">
-        <h2 class="text-center mb-4">Insert New Skill</h2>
-
-        <form action="{{ url_for('insert_tech') }}" method="POST">
-            <div class="form-group">
-                <label for="skill">sector:</label>
-                <input type="text" class="form-control" id="sector" name="sector" required>
+        <!-- Job Category field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Job Category</span>
+            </label>
+            <input type="text" placeholder="Enter job category" class="input input-bordered w-full" />
+        </div>
+        <!-- Task Description field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Task Description</span>
+            </label>
+            <div class="input-group">
+                <textarea class="textarea textarea-bordered h-32 resize-none" id="disc" placeholder="Enter task description"></textarea>
+                <div> <a onclick="run(this)" data-id="disc" class="tb_ai-button texta"><span class="first"> Rephrase it!</span><span class="second">
+                    <strong class="icon">✨</strong>
+                    </span></a> </div>
             </div>
-
-            <div class="form-group">
-                <label for="image">tech:</label>
-                <input type="text" class="form-control" id="tech" name="tech" required>
+        </div>
+        <!-- Budget field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Budget</span>
+            </label>
+            <div class="input-group">
+                <input type="number" placeholder="Enter budget" id="bid" class="input input-bordered w-full" />
+                <div> <a onclick="run(this)" class="tb_ai-button" data-id="bid"><span class="first suggest">Suggest Budget</span><span class="second">
+                    <strong class="icon">✨</strong>
+                    </span></a> </div>
             </div>
-
-            <div class="form-group">
-                <label for="image">Image URL:</label>
-                <input type="text" class="form-control" id="image" name="image" required>
-            </div>
-            <div class="form-group">
-                <label for="image">requared(op):</label>
-                <input type="text" class="form-control" id="image" name="req" >
-            </div>
-
-
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
+        <!-- Deadline field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Deadline</span>
+            </label>
+            <input type="date" class="input input-bordered w-full" />
+        </div>
+        <!-- Attachments field -->
+        <div class="form-control mb-6">
+            <label class="label">
+                <span class="label-text font-bold">Attachments</span>
+            </label>
+            <input type="text" placeholder="Paste link here" class="input input-bordered w-full" />
+        </div>
+        <!-- Continue To Checkout button -->
+        <div class="form-control mb-6">
+            <button class="btn btn-primary">Continue To Checkout</button>
+        </div>
     </div>
 
-    <!-- Bootstrap JS (Place this at the end of the body to improve page load speed) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+XjUp6lHzfK6jG97Lz+B8b1rGH2KKm6axXCL3l5gAn3t3Rx"
-        crossorigin="anonymous"></script>
-</body>
+    <script>
+        function run(button){
 
+            button.preventDefault
+            console.log(button.getAtribute('data-id'))
+
+input = document.getElementById(document.getAtribute('data-id'));
+
+if (input.value.length >= 1) {
+    button.classList.add('run');
+
+    fetch("/rephrase_text", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            main:document.getAtribute('data-id'),
+            text: input.value
+        }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            else{
+                console.log(response.text)
+                input.value = response.text
+            }
+        })
+
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+        }
+
+    </script>
+</body>
 </html>

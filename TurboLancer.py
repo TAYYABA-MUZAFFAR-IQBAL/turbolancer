@@ -4,8 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import FileField
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import os
-import io
+import os, re, io
 import uuid
 import datetime
 import turbolancer_data_Security
@@ -905,16 +904,49 @@ def get_searved():
 def proj():
     return render_template('project.html')
 
-
+def remove_word_without_space(text, word):
+    pattern = rf'\b{word}(?!\s)'
+    return re.sub(pattern, '', text)
+def remove_first_uppercase(s):
+    if len(s) >= 2 and s[:2].isupper():
+        return s[1:]
+    return s
 @app.route('/rephrase_text', methods=['POST'])
 def rephrase():
     data = request.get_json()
     input_text = data.get('text')
-    random_paraphrases = TurboLancer_RePhrase_text.get_random_paraphrases(
-        input_text, num_paraphrases=3)
-    # (random_paraphrases)
+    main = data.get('main')
+    print(main)
+    print(input_text)
+    response = TurboLancer_RePhrase_text.do(input_text,main)
+  
+    response = response.replace('\n','')
+    response = response.replace(']]','')
+    response = response.replace('[[','')
+    response = response.replace('[[[','')
+    response = response.replace(']]]','')
+    response = response.replace('IIPlease','')
+    response = response.replace('IPlease','')
+    response = response.replace('IIIPlease','')
+    response = response.replace('IIIIPlease','')
+    response = response.replace('TheI','I')
+    response = response.replace('I I','I')
+    response = response.replace('II','I')
+    response = response.replace('BasedBased on','Based')
+    response = response.replace('BasedBased','')
+    response = response.replace('Based the','Based on the')
+    response = response.replace('the client form','this project')
+    response = response.replace('is is','is')    
+    response = response.replace('ForFor','For')    
+    response = response.replace('BasedI','I')
+    response = response.replace('[IBased','Based')
+    response = remove_word_without_space(response, 'Based')
+    response = remove_word_without_space(response, 'The')
+    response = remove_word_without_space(response, 'For')
+    # response = remove_first_uppercase(response)
 
-    return jsonify(text=random_paraphrases)
+    print(response)
+    return jsonify(text=response)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,131 @@
+* {
+  scroll-behavior: smooth;
+  transition: all 0.4s !important;
+  text-wrap: balance;
+ }
+ 
+ #toast_parent-TurboLancer {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 423424235;
+ }
+ 
+ #toast_parent-TurboLancer #s,
+ #toast_parent-TurboLancer #w,
+ #toast_parent-TurboLancer #d {
+  position: relative !important;
+  animation-name: popup;
+  animation-duration: 0.4s;
+  animation-timing-function: ease;
+  animation-iteration-count: 1;
+ }
+ 
+ @keyframes popup {
+  0% {
+    transform: translateY(-110%);
+  }
+  70% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+ }
+ 
+ #toast_parent-TurboLancer #s.go,
+ #toast_parent-TurboLancer #w.go,
+ #toast_parent-TurboLancer #d.go {
+  z-index: 1121;
+  animation-name: popdown;
+  animation-duration: 0.4s;
+  animation-timing-function: ease;
+  animation-iteration-count: 1;
+ }
+ 
+ @keyframes popdown {
+  0% {
+    transform: translateY(0%);
+  }
+  30% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(-110%);
+  }
+ }
+ 
+ #toast_parent-TurboLancer #s.none,
+ #toast_parent-TurboLancer #w.none,
+ #toast_parent-TurboLancer #d.none {
+  display: none;
+ }
+ 
+ #toast_parent-TurboLancer #s svg {
+  fill: #4caf50;
+ }
+ 
+ #toast_parent-TurboLancer #w svg {
+  fill: #f87171;
+ }
+ 
+ #toast_parent-TurboLancer #d svg {
+  fill: red;
+ }
+ 
+ #toast_parent-TurboLancer .toast-TurboLancer {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+  justify-content: space-evenly;
+  height: 45px;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 10px;
+
+ }
+ 
+ #toast_parent-TurboLancer .toast-contentt {
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+ }
+ 
+
+ 
+ #toast_parent-TurboLancer .toast-icont svg {
+  width: 1rem;
+  margin-top: 0.125rem;
+ }
+ 
+ #toast_parent-TurboLancer .toasttextt {
+  margin-left: 0.75rem;
+ }
+ 
+ #toast_parent-TurboLancer .toasttextt p {
+  font-size: 0.875rem;
+ line-height: 45px !important;
+ 
+  color: #374151;
+ }
+ 
+ #toast_parent-TurboLancer .success .toast-icont svg {
+  color: #14b8a6;
+ }
+ 
+ #toast_parent-TurboLancer .error .toast-icont svg {
+  color: #f87171;
+ }
+ 
+ #toast_parent-TurboLancer .warning .toast-icont svg {
+  color: #fbbf24;
+ }
