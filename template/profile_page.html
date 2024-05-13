@@ -1,639 +1,825 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.6">
-    <title>Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=0.97">
+    <title>Profile | {{name.capitalize()}}</title>
+    <link rel="icon" type="image/png" href="/static/icon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/profie_page.css">
+    <link rel="stylesheet" href="/static/toast.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/toast.js"></script>
 
-    <style>
-        /* Imported fonts */
-        @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
-        @import url("https://fonts.googleapis.com/css?family=Sofia");
-
-        /* Global styles */
-        html * {
-            transition: all 0.5s linear !important;
-            text-wrap: balance;
-            font-family: "Poppins", Arial, sans-serif;
-        }
-
-        /* Body and parent container */
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .parent {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-
-            position: absolute;
-            overflow-y: auto;
-            overflow-x: auto;
-        }
-
-        /* Image panel styles */
-        .imgpanel {
-            background: linear-gradient(80deg, #464646, #464646, #464646 62%, transparent, transparent);
-            width: 100%;
-            min-height: 22rem;
-            max-height: 32rem;
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin: 0;
-        }
-
-        .imgpanel::after {
-            content: "";
-            width: 100%;
-            height: 50vh;
-            opacity: 0.9;
-            position: absolute;
-            background-image: var(--pseudo-element-color);
-            bottom: -50vh;
-            left: 0;
-            z-index: -1;
-        }
-
-        /* Image styling */
-        .proimg {
-            width: 40%;
-            min-height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-
-        /* Portion styles */
-        .PORTIONF {
-            color: #fff;
-            padding: 11px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding-left: 22px;
-            max-width: 60%;
-        }
-
-        .PORTIONF h1 {
-            font-weight: 700;
-            text-transform: capitalize;
-            text-align: left;
-        }
-
-        .PORTIONF h4 {
-            margin-top: -10px;
-            filter: brightness(90%);
-        }
-
-        .info_p {
-            width: 100%;
-            max-width: 60rem;
-            margin-top: 34px;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 100%;
-            justify-content: center;
-            margin-left: auto;
-            margin-right: auto;
-
-        }
-
-        /* Styling for odd-numbered .info_p elements */
-        .info_p .odd {
-            display: grid;
-            grid-template-columns: 50% 50%;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-top: 11px;
-            width: 100%;
-
-        }
-
-        .cen {
-            display: grid;
-            grid-template-columns: 97%;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-top: 11px;
-            width: 100%;
-        }
-
-        .info_p .even {
-            display: grid;
-            grid-template-columns: 33.3333336% 33.3333336% 33.3333336%;
-            justify-content: space-between;
-            align-items: center;
-            gap: 7px;
-            margin-top: 11px;
-
-            width: 100%;
-
-        }
-
-        /* Borders for descendants of even-numbered .info_p elements */
-        .info_p .odd .items,
-        .info_p .even .items {
-            border: 1px solid #bbbbbb;
-            width: 97%;
-            margin: 1.5%;
-            padding: 17px;
-            background-color: #fff;
-
-            border-radius: 10px;
-        }
-
-        .info_p .cen .items {
-            border: 1px solid #bbbbbb;
-            width: auto;
-            padding: 17px;
-            background-color: #fff;
-
-            border-radius: 10px;
-        }
-
-        .heading {
-            line-height: 2.25rem;
-            font-size: 1.75rem;
-            letter-spacing: 0;
-            font-weight: 400;
-            hyphens: auto;
-            word-break: break-word;
-            word-wrap: break-word;
-            color: #ffffff;
-            margin: 0 0 8px;
-            padding: 0;
-            text-align: center;
-
-
-        }
-
-        .haf {
-            font-size: 16px;
-            font-weight: 400;
-            letter-spacing: 0;
-            line-height: 24px;
-            hyphens: auto;
-            word-break: break-word;
-            word-wrap: break-word;
-            color: #fff;
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        /* Media queries for responsiveness */
-        @media screen and (max-width: 551px) {
-            .info_p {
-                width: 100%;
-                max-width: 60rem;
-                margin-top: 17px;
-                padding: 2px;
-                display: grid;
-                grid-template-columns: 100%;
-                justify-content: center;
-                margin-left: auto;
-                margin-right: auto;
-
-            }
-
-            .info_p .odd {
-                grid-template-columns: 98%;
-                /* Two columns */
-                margin-left: 1%;
-            }
-
-            .info_p .even {
-
-                grid-template-columns: 98%;
-                /* Two columns */
-                margin-left: 1%;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-
-            .info_p .odd .items,
-            .info_p .even .items {
-                border: 1px solid #bbbbbb;
-                width: 100%;
-                margin-left: 20%;
-                padding: 17px;
-                background-color: #fff;
-
-                border-radius: 10px;
-            }
-
-            .info_p .cen .items {
-                border: 1px solid #bbbbbb;
-                width: 97%;
-                padding: 17px;
-                background-color: #fff;
-                margin-left: 20%;
-
-                border-radius: 10px;
-            }
-
-            .heading,
-            .haf {
-
-                margin-top: 17px;
-                color: #282828;
-            }
-
-            .haf {
-                display: none;
-            }
-
-            .info_p {
-
-                padding: 2px;
-
-                margin-top: -10%;
-
-
-            }
-
-            .info_p .odd {
-
-                grid-template-columns: 70%;
-                margin-left: auto;
-                margin-right: auto;
-
-            }
-
-            .info_p .even {
-
-                grid-template-columns: 70%;
-                margin-left: auto;
-                margin-right: auto;
-
-            }
-
-            .info_p .cen {
-                grid-template-columns: 70%;
-
-                margin-left: auto;
-                margin-right: auto;
-                width: auto;
-            }
-
-            .imgpanel {
-                transition: all 0.5s;
-                background: none !important;
-                width: 100%;
-                min-height: 22rem;
-                max-height: 32rem;
-                display: flex;
-                flex-direction: column-reverse;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-                margin: 0;
-                text-align: center;
-                color: #121212 !important;
-            }
-
-            .imgpanel::after {
-                content: "";
-                width: 100%;
-                height: 70vh;
-                opacity: 0.9;
-                position: absolute;
-                background-image: var(--pseudo-element-color);
-                top: 0vh;
-                left: 0;
-                z-index: -1;
-            }
-
-            /* Image styling */
-            .proimg {
-                width: 10rem;
-                height: 10rem;
-                object-fit: cover;
-                border-radius: 50%;
-                z-index: 1;
-                outline: 4px solid rgb(0, 223, 0);
-                outline-offset: 5px;
-            }
-
-            /* Portion styles */
-            .PORTIONF {
-                color: #fff;
-                padding: 11px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                padding-left: 22px;
-                max-width: 60%;
-            }
-
-            .PORTIONF h1 {
-                font-weight: 700;
-                text-transform: capitalize;
-                text-align: center;
-                transform: scale(0.8);
-                color: #252525 !important;
-
-            }
-
-            .PORTIONF h4 {
-                display: none;
-                margin-top: -10px;
-                filter: brightness(140%);
-                color: #121212 !important;
-
-            }
-
-        }
-
-
-        .item_pro {
-            width: 60px;
-            height: 60px;
-            border-radius: 50px;
-            margin: 4px;
-        }
-
-        .bak {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 65px;
-            height: 65px;
-            border-radius: 50px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            border: none;
-            outline: none;
-            align-items: center;
-            background-color: rgba(63, 63, 63, 0.418);
-            color: #fff;
-            box-shadow: 0px 4px 15px #1212124f;
-            font-size: 25px;
-            font-weight: 100;
-        }
-
-        .cen .items {
-            height: auto;
-        }
-
-        .cen h5 {
-            height: auto;
-            text-wrap: balance;
-            line-break: anywhere;
-            overflow: hidden;
-            line-height: 24px;
-            padding: 12px;
-        }
-
-        .otpa {
-            display: flex;
-            width: auto;
-            text-wrap: balance;
-            height: auto;
-            justify-content: space-evenly;
-            flex-direction: column;
-            align-items: center;
-            padding: 7px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.1s ease-in-out;
-            font-size: 10px !important;
-            background-color: #fff;
-            float: left;
-            text-decoration: none;
-            margin: 5px;
-            text-transform: capitalize;
-            color: #121212 !important;
-        }
-
-        .otpa:hover {
-            background-color: #cfcfcfd5;
-        }
-
-        .cen.se {
-            border: 1px solid #bbbbbb;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .cen.se .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            justify-items: center;
-        }
-
-        .cen.se .profile-item {
-            text-align: center;
-        }
-
-        .cen.se .item_pro {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* Media query for responsiveness */
-        @media (max-width: 768px) {
-            .cen.se .profiles-grid {
-                display: grid;
-grid-template-columns: 33.3333%  33.3333%  33.3333%;                width: 100%;
-justify-content: space-evenly;
-            }
-
-            .info_p .cen.se {
-                grid-template-columns: 70%;
-                width: 70%;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 20px;
-            }
-
-        }
-
-        @media (max-width: 670px) {
-            .cen.se .profiles-grid {
-                width: 100%;
-                display: grid;
-                grid-template-columns: 48% 48%;
-                justify-content: space-evenly;
-                align-items: center;
-                        }
-         
-
-        }
-        @media (max-width: 570px) {
-            .cen.se .profiles-grid {
-                display: grid;
-                grid-template-columns: 97%;
-                justify-content: space-evenly;
-                align-items: center;
-                        }}
-                        .info_p .cen.se {
-               justify-content: center;
-            }
-    </style>
 </head>
 
 <body>
-    <div class="parent">
-        <div class="imgpanel">
-            <button onclick=" window.history.back();" class="bak"><i class="fas fa-arrow-left"></i></button>
-            <DIV class="PORTIONF">
-                <h1>{{greeting}}, {{name}}</h1>
-                <h4>{{tag}}</h4>
-            </DIV>
-            <img class="proimg" src="{{image}}" alt="Profile Image">
+    <div class="container">
+        <div class="section-card" style="display:flex;flex-direction: row; align-items: center; gap: 6px;">
+            <a id="back" href="">
+                <button class="btn btn-square btn-ghost back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </a>
+            <strong>Go Back</strong>
+        </div>
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="profile-initials" >
+                    <img onclick="openit(this)" src="{{image}}" alt="{{ name.upper() }}">
+                </div>
+                <div class="profile-info">
+                    <h2 class="profile-name">{{ name.upper() }}</h2>
+                    {% if x %}
+                    <p class="profile-details">{{ email }} , {{ ph }}, <i class="fas ico fa-globe"></i> {{ country }}
+                    </p>
+                    <p class="profile-role" style="color: #00b800; text-decoration: underline;">{{ tag }}</p>
+                    {% else %}
+                    <p class="profile-details">
+                        <tag style="color: #00b800; text-decoration: underline;">{{ tag }}</tag> , <i
+                            class="fas ico fa-globe"></i> {{ country }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="profile-stats stats shadow " style="width: 100%;">
+                {% if x %}
+                <div class="stat">
+
+                    <div class="stat-title"> <i class="fas ico  fa-dollar-sign"></i> Total Earnings</div>
+                    <div class="stat-value">${% if earnings %}{{ earnings }}{% else %}0{% endif %}</div>
+                </div>
+                {% endif %}
+                <div class="stat">
+
+                    <div class="stat-title"><i class="fas ico  fa-box"></i> Total Catalog Items</div>
+                    <div class="stat-value">{{ total_catalog_items }}</div>
+                </div>
+                <div class="stat">
+
+                    <div class="stat-title"><i class="fas ico  fa-project-diagram"></i> Total Projects</div>
+                    <div class="stat-value">{{ total_projects }}</div>
+                </div>
+                <div class="stat">
+
+                    <div class="stat-title"><i class="fas ico  fa-star"></i> User Rating</div>
+                    <div class="stat-value">{{ rating }}</div>
+                </div>
+            </div>
+            <div class="profile-bio mb-3 text-gray-500 dark:text-gray-400" style="margin-left: 3%;">
+                <p>{{ about_self }}</p>
+            </div>
         </div>
 
+        <div class="section-card">
+            <div class="profile-stats stats shadow" style="width: 100%;">
+                <div class="stat">
 
-        <div class="info_p">
-            <h1 class="heading">Personal info</h1>
-            <div class="haf">Info about you and your preferences across TurboLancer services</div>
-            <div class="odd">
-                <div class="items">
-                    <p><i class="fas fa-user"></i> Name</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{name}}</h5>
+                    <div class="stat-title"> <i class="fas ico  fa-calendar-alt"></i> Joined in</div>
+                    <div class="stat-value">{{ year }}</div>
                 </div>
-                <div class="items" style="display: flex; justify-content: space-between; align-items: center;">
-                    <p><i class="fas fa-image"></i> Profile picture</p>
-                    <img class="item_pro" src="{{image}}" alt="">
+                <div class="stat">
+                    <div class="stat-title"><i class="fas ico  fa-cake"></i> Date of Birth</div>
+                    <div class="stat-value">{{ bir }}</div>
                 </div>
-            </div>
-            <div class="even">
-                <div class="items">
-                    <p><i class="fas fa-envelope"></i> Email</p>
-                    <h5 style="line-height: 10px; font-size:medium;">&nbsp;&nbsp;&nbsp; {{email}}</h5>
-                </div>
-                <div class="items">
-                    <p><i class="fas fa-lock"></i> Password</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; hidden......</h5>
-                </div>
-                <div class="items">
-                    <p><i class="fas fa-phone"></i> Phone Number</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{ph}}</h5>
-                </div>
-            </div>
-            <div class="odd">
-                <div class="items">
-                    <p><i class="fas fa-venus-mars"></i> Gender</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{gan}}</h5>
-                </div>
-                <div class="items">
-                    <p><i class="fas fa-birthday-cake"></i> Birthday</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{bir}}</h5>
-                </div>
-            </div>
-            <div class="odd">
-                <div class="items">
-                    <p><i class="fas fa-globe"></i> Country</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{country}}</h5>
-                </div>
-                {% if tag %}
-                <div class="items">
-                    <p><i class="fas fa-at"></i> Public Tag</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; {{tag}}</h5>
-                </div>
-{% endif %}
-            </div>
+                <div class="stat">
 
+                    <div class="stat-title"><i class="fas ico  fa-solid fa-venus-mars"></i> Gander</div>
+                    <div class="stat-value">{{ gan }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="section-card">
+            <h3 class="section-title"><i class="fas ico fa-graduation-cap"></i> Skills <tag class="stat-title">(Claimed by Seller)</tag></h3>
+            {% if sk %}
+            {% for x in sk %}
+            <div style="margin-top: 15px;">
+                <div class="flex justify-between mb-1">
+                    <span class="text-base font-medium text-{{x[2]}}-700 light:text-white">{{x[0]}}</span>
+                    <span class="text-sm font-medium text-{{x[2]}}-700 light:text-white">{{x[1]}}%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 light:bg-gray-700">
+                    <div class="bg-{{x[2]}}-600 h-2.5 rounded-full" style="width: {{x[1]}}%"></div>
+                </div>
+           
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="artboard artboard-horizontal phone-5">Nothing to show!</div>
 
-            {% if d %}
-            <div class="even">
-                <div class="items">
-                    <p><i class="fas fa-trophy"></i> Grade</p>
-                    <h5 style="line-height: 10px;">&nbsp;&nbsp;&nbsp; {{grade}}</h5>
-                </div>
-                <div class="items">
-                    <p><i class="fas fa-star"></i> Rating</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp; {{rating}}</h5>
-                </div>
-                <div class="items">
-                    <p><i class="fas fa-user-clock"></i> Working Since</p>
-                    <h5 style="line-height: 10px; opacity: 0.8;">&nbsp;&nbsp;&nbsp;{{year}}</h5>
-                </div>
-            </div>
-            <div class="cen">
-                <div class="items">
-                    <p><i class="fas fa-info-circle"></i> About self</p>
-                    <h5>&nbsp;&nbsp;&nbsp; {{abs}}</h5>
-                </div>
-            </div>
             {% endif %}
-            <button class="btn btn-danger" style="margin-top: 12px;">LogOut</button>
+        </div>
+        <div class="section-card">
+            {% if x and not c %}
+            <h3 class="section-title"><i class="fas ico fa-project-diagram"></i> Your Projects</h3>
+            {% elif x and c %}
+            <h3 class="section-title"><i class="fas ico fa-heart"></i> Projects You Liked</h3>
+            {% elif not x and not c %}
+            <h3 class="section-title"><i class="fas ico fa-project-diagram"></i> Projects made by {{name.upper()}}</h3>
+            {% endif %}
+            <div class="flex gridparent">
+                <div class="card bg-base-100 shadow-xl w-80 reqimg" onmouseleave="hide(this)" onmouseenter="show(this)"
+                    data-c="320">
+                    <div class="after" onclick="next(this)">↪</div>
+                    <div class="before" onclick="back(this)">↩</div>
+                    <figure class="relative">
+                        <div class="slideshow">
+                            <img src="/static/4543.png" data-num="1" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover"> <!-- Adjusted image size -->
+                            <img src="/static/6krbcxk4.png" data-num="2" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover "> <!-- Adjusted image size -->
+                            <img src="/static/banner.jpg" data-num="3" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover "> <!-- Adjusted image size -->
+                            <img src="/static/bh.jpg" data-num="3" alt="Product Image" class="rounded-t-box w-full h-48 object-cover ">
+                            <!-- Adjusted image size -->
+                        </div>
+                        <button class="btn btn-circle btn-ghost absolute top-2 right-2 heart " onclick="like(this)">
+                            <i class="fa-regular fa-heart" style="color: #d1d1d1;"></i>
+                            <i class="fa-solid fa-heart text-red-500"></i>
+                        </button>
 
+
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title"> Product Name <div class="badge badge-secondary">NEW</div>
+                        </h2>
+                        <p class="disc">Product description goes here...</p>
+                        <div class="card-actions justify-between">
+                            <div class="badge badge-lg">Audio</div>
+                            <div class="text-black  text-base-200 font-semibold" style="font-size: larger;">
+                                <bold>$40</bold>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat similar structure for other projects -->
+            </div>
         </div>
 
+        <div class="section-card">
+            {% if x and not c %}
+            <h3 class="section-title"><i class="fas ico fa-box"></i> Your Catalogs</h3>
+            {% elif x and c %}
+            <h3 class="section-title"><i class="fas ico fa-heart"></i> Catalogs You Liked</h3>
+            {% elif not x and not c %}
+            <h3 class="section-title"><i class="fas ico fa-box"></i> Catalogs by {{name.upper()}}</h3>
+            {% endif %}
+            <div class="flex gridparent">
+                <div class="card bg-base-100 shadow-xl w-80 reqimg" onmouseleave="hide(this)" onmouseenter="show(this)"
+                    data-c="320">
+                    <div class="after" onclick="next(this)">↪</div>
+                    <div class="before" onclick="back(this)">↩</div>
+                    <figure class="relative">
+                        <div class="slideshow">
+                            <img src="/static/6krbcxk4.png" data-num="2" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover">
+                            <img src="/static/banner.jpg" data-num="3" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover">
+                            <img src="/static/bh.jpg-" data-num="3" alt="Product Image"
+                                class="rounded-t-box w-full h-48 object-cover">
+                        </div>
+                        <button class="btn btn-circle btn-ghost absolute top-2 right-2 heart" onclick="like(this)">
+                            <i class="fa-regular fa-heart" style="color: #d1d1d1;"></i>
+                            <i class="fa-solid fa-heart text-red-500"></i>
+                        </button>
+                    </figure>
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <span>Product Name</span>
+                        </h2>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="avatar online">
+                                    <div class="w-8 rounded-full">
+                                        <img
+                                            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                    </div>
+                                </div>
+                                <span class="ml-2 text-sm font-semibold">SELLER Name</span>
+                            </div>
+                            <div class="badge badge-secondary">NEW</div>
+                        </div>
+                        <div class="card-actions justify-between mt-4">
+                            <div class="badge badge-lg">10 orders</div>
+                            <div class="text-base-content font-semibold">
+                                <span class="text-gray-500">Starting at:</span>
+                                <span class="text-lg">$40</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat similar structure for other liked catalogs -->
+            </div>
+        </div>
+        {% if x %}
 
+        <div class="section-card bp flex justify-between">
+            <label for="editProfileModal" class="btn bg-green-500 gap-2 action_button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Edit profile
+            </label>
+            <label  for="popup-logout" class="btn btn-error gap-2 action_button logout modal-button" >
+                <i class="fas fa-sign-out-alt"></i> Log Out
+            </label>
+        </div>
+        {% endif %}
     </div>
+    {% if x %}
+
+    <!-- Modal -->
+    <input type="checkbox" id="editProfileModal" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative">
+            <label onclick="document.querySelector('form').reset();document.getElementById('avatarPreview').src='{{image}}'" for="editProfileModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <h3 class="text-lg font-bold">Edit Profile</h3>
+            <form>
+                <!-- Form fields here -->
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Change Avatar</span>
+                    </label>
+                    <div class="profile-initials mx-auto mb-3" >
+                        <img onclick="openit(this)" id="avatarPreview" src="{{image}}" alt="{{ name.upper() }}">
+                    </div>
+                    <input type="file" class="file-input file-input-bordered" id="image" accept="image/*"
+                        onchange="previewImage(event)">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Edit Name</span>
+                    </label>
+                    <input type="text" class="input input-bordered" id="name" value="{{name}}">
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Select Gender</span>
+                    </label>
+                    <input type="text" class="input input-bordered" list="ganderL" id="gan" value="{{gan}}" name="gan">
+                    <datalist id="ganderL">
+                        <option value="Male">
+                        <option value="Female">
+                        <option value="Other...">
+                        <option value="Not interested to tell">
+                    </datalist>
+                </div>
+                <div class="form-control">
+                    <label class="label"> 
+                        <span class="label-text">Edit Date of Birth </span>
+                    </label>
+                    <input type="date" class="input input-bordered" id="bir" value='{{bir}}'>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="card-title ">Edit Skills Stat <tag class="text-red-700 light:text-white">(Max 6)</tag></span>
+                    </label>
+                    {% if sk %}
+                    {% for x in sk %}
+
+                    <div style="margin-top: 15px;">
+                        <div class="flex justify-between mb-1">
+                                
+                            <label for="popup-modal" data-skill="{{x[0]}}" onclick="transfer(this)" class="btn modal-button text-red-500" style="background-color: transparent;border: none;text-decoration: underline;">
+                                <i class="fas fa-trash"></i>&nbsp;
+                                <span class="text-base font-medium">{{x[0]}}</span>
+                              </label>
+                                
+                            <span class="text-sm font-medium text-{{x[2]}}-700 light:text-white" id="percent">{{x[1]}}%</span>
+                        </div>
+                        <input type="range" data-skill='{{x[0]}}' oninput="update_live(this)" min="0" max="100" id="sk" value="{{x[1]}}" class="range range-xs" />                   
+                    </div>
+                    {% endfor %} 
+                    {%if len < 6%}
+                    <label type="button" class="btn action_button" onclick="addElement(this)"  style="width: 100%;">Add skill</label>
+{% endif %}
+                    {% else %}
+                    <label type="button" class="btn action_button" onclick="addElement(this)" style="width: 100%;">Add skill</label>
+
+                    {% endif %}
+                </div>
+                <div class="form-control">
+
+                    <div class="container mx-auto">
+                        <div class="form-control w-full">
+                            <label class="label">
+                                <span class="label-text">About Yourself</span>
+                            </label>
+                            <textarea oninput="initializeTextarea()" class="textarea textarea-bordered h-48 max-w-full"
+                                id="about_self" name="about-yourself" maxlength="500"
+                                placeholder="Ensure the text exceeds 250 characters for a stronger impact."
+                                required>{{about_self}}</textarea>
+                            <label class="label">
+                                <span class="label-text-alt">Characters: <span class="charcount"></span></span>
+                                <span class="label-text-alt">Remaining: <span class="remaining"></span></span>
+                                <span class="label-text-alt text-error less" style="display: none;">Less than 250</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <button type="submit" class="btn bg-green-500 submitbtn"><span class="A1" style="display: none;"> <span class="loading loading-spinner"></span> Saving Changes</span> <span class="A2"><span class="loading loading-spinner"></span>  Save Changes</span></button>
+                    <label for="editProfileModal" class="btn" onclick="document.querySelector('form').reset();document.getElementById('avatarPreview').src='{{image}}'">Cancel</label>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+
+
+<input type="checkbox" id="popup-modal" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box relative">
+    <label for="popup-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="py-4 text-center">
+      <svg class="mx-auto mb-4 w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <h3 class="text-lg font-normal text-base-content">Are you sure you want to delete this Item?</h3>
+      <div class="mt-6 flex justify-center space-x-4">
+        <label for="popup-modal" class="btn bg-error logout"  id="dellitem" onclick="delitem(this)">Yes, I'm sure</label>
+        <label for="popup-modal" class="btn btn-outline">No, cancel</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<input type="checkbox" id="popup-logout" class="modal-toggle" />
+<div class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box relative">
+    <label for="popup-logout" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="py-4 text-center">
+      <svg class="mx-auto mb-4 w-12 h-12 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+      </svg>
+      <h3 class="text-lg font-normal text-base-content">Are you sure you want to LogOut?</h3>
+      <div class="mt-6 flex justify-center space-x-4">
+        <label for="popup-logout" class="btn bg-error logout"  id="deleteCookieButton">Yes, I'm sure</label>
+        <label for="popup-logout" class="btn btn-outline">No, cancel</label>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
     <script>
+        '{% if x %}'
+        function addElement(button) {
+  const element = document.createElement('div');
+  element.style.marginTop = '15px';
+  element.id = 'newproduct';
+  randomDigitString = generateRandomDigitString()
+  element.insertAdjacentHTML('beforeend', `
+    <div class="flex justify-between mb-1">
+      <span class="text-base font-medium text-gray-700 light:text-white" style="padding: 3px;border: solid 1px #4b4b4b; border-radius: 5px;outline: none;" oninput='changedata(this),changeprev(this)' data-prev='Click Here Provide Name' data-inputclass = '${randomDigitString}' contenteditable='true'>Click Here Provide Name</span>
+      <span class="text-sm font-medium text-gray-700 light:text-white" id="percent">0%</span>
+    </div>
+    <input type="range" id="sk" data-skill='Click Here Provide Name'  oninput="update_live(this)" min="0" max="100"  value="0" class="range range-xs ${randomDigitString}"  />
+  `);
 
-        function checkImagesAndSetColors() {
-            const divs = document.querySelectorAll('.imgpanel');
+  button.parentNode.insertBefore(element, button);
+  button.remove()
+  setupElement(randomDigitString)
+}
+function generateRandomDigitString() {
+  let randomDigitString = '';
+  const digits = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
 
-            divs.forEach(div => {
-                const img = div.querySelector('.proimg');
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const width = img.width;
-                const height = img.height;
+  // Generate 10 random digits
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * digits.length);
+    randomDigitString += digits[randomIndex];
+  }
 
-                canvas.width = width;
-                canvas.height = height;
-                ctx.drawImage(img, 0, 0, width, height);
-                const imageData = ctx.getImageData(2, 2, width, height).data;
-                const averageRGB = getAverageRGB(imageData);
-                img.setAttribute('data-bg', `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`)
-                img.setAttribute('data-shadow', `0px 5px 15px rgba(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}, 0.3)`)
-                div.style.backgroundImage = `linear-gradient(80deg,rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}), rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}),rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}) 62%, transparent,transparent)`;
+  return randomDigitString;
+}
+function changedata(x) {
+  const inputElement = x.getAttribute('data-inputclass');
+  document.querySelector(`.${inputElement}`).setAttribute('data-skill', x.innerText);
+}
 
-                div.style.setProperty('--pseudo-element-color', `linear-gradient(180deg,rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b}), transparent,transparent)`);
-                img.style.backgroundColor = `rgb(${averageRGB.r}, ${averageRGB.g}, ${averageRGB.b})`;
+       function update_live(x){
+        x.parentElement.querySelector('#percent').innerText = x.value + '%'
+        let color;
+        if (parseInt(x.value) < 50) {
+            color = 'gray';
+        } else if (parseInt(x.value) >= 50 && parseInt(x.value) < 85) {
+            color = 'blue';
+        } else {
+            color = 'green';
+        }
+        x.style.accentColor = color
+       }
+        const queryString = window.location.search;
+        if (queryString) {
+            const urlParams = new URLSearchParams(queryString);
+            if (urlParams) {
+                const userParam = urlParams.get('referrer');
+
+                if (userParam) {
+                    decoded = atob(userParam)
+                    document.querySelector('#back').href = decodeURIComponent(decoded)
+                }
+                else{
+                    document.querySelector('#back').href= '/'
+
+                }
+       
+
+            }
+            else{
+                    document.querySelector('#back').href= '/'
+                }
+        }
+        else{
+                    document.querySelector('#back').href= '/'
+                }
+
+        const form = document.querySelector('form');
+const initialValues = {};
+const changedFields = { 'sk': [] };
+
+Array.from(form.elements).forEach(field => {
+    if (field.tagName.toLowerCase() === 'input' || field.tagName.toLowerCase() === 'textarea' || field.tagName.toLowerCase() === 'select') {
+        initialValues[field.id] = field.value;
+        // Add event listener to input elements
+        if (field.tagName.toLowerCase() === 'input' || field.tagName.toLowerCase() === 'textarea') {
+            field.addEventListener('input', handleInputChange);
+        } else if (field.tagName.toLowerCase() === 'select') {
+            field.addEventListener('change', handleInputChange);
+        }
+    }
+});
+function setupElement(elementId) {
+    element = document.querySelector(`.${elementId}`);
+    console.log('done');
+    element.addEventListener('input', handleInputChange);
+
+}
+function changeprev(x){
+    const prevdata = x.getAttribute('data-prev');
+    if (prevdata && changedFields['sk'].length > 0){
+        for(i=0;i<=changedFields['sk'].length;i++){
+            if(changedFields['sk'][i][0]===prevdata || changedFields['sk'][i][0]===''){
+                changedFields['sk'][i][0] = x.innerText;
+            }
+        }
+    }
+    x.setAttribute('data-prev',x.innerText);
+    console.log('changed')
+}
+
+function handleInputChange(event) {
+    const target = event.target;
+    console.log(target)
+    if (target.type === 'file') {
+        handleFileChange(target);
+    } else if (target.id === 'sk') {
+        console.log('yes it is sk')
+
+        const skill = target.getAttribute('data-skill');
+        let color;
+        if (parseInt(target.value) < 50) {
+            color = 'gray';
+        } else if (parseInt(target.value) >= 50 && parseInt(target.value) < 85) {
+            color = 'blue';
+        } else {
+            color = 'green';
+        }
+
+        const skillData = [skill, parseInt(target.value), color]; // Convert value to integer
+        console.log(skill)
+        console.log(parseInt(target.value))
+        console.log(color)
+        console.log(skillData)
+        const existingSkillIndex = changedFields['sk'].findIndex(sk => sk[0] === skill);
+        if (existingSkillIndex !== -1) {
+            changedFields['sk'][existingSkillIndex] = skillData;
+        } else {
+            changedFields['sk'].push(skillData);
+        }
+            console.log(changedFields)
+
+    } else if (target.value !== initialValues[target.id]) {
+        changedFields[target.id] = target.value;
+    } else {
+        delete changedFields[target.id];
+    }
+}
+
+
+function handleFileChange(fileInput) {
+    if (fileInput.files.length > 0) {
+        changedFields[fileInput.id] = fileInput.files[0];
+    } else {
+        delete changedFields[fileInput.id];
+    }
+}
+
+form.addEventListener('submit', (event) => {
+    btn  = document.querySelector('.submitbtn')
+    btn.querySelector('.A1').style.display = 'block';
+    btn.querySelector('.A2').style.display = 'none'
+    event.preventDefault();
+    update(changedFields);
+    console.log('Changed fields:', changedFields);
+});
+
+
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+            reader.onload = function () {
+                var avatarPreview = document.getElementById('avatarPreview');
+                avatarPreview.src = reader.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        function update(dataInput) {
+            const formData = new FormData();
+
+            for (const [key, value] of Object.entries(dataInput)) {
+                if (value instanceof File) {
+                    formData.append(key, value);
+                } else {
+                    formData.append(key, value);
+                }
+            }
+            console.log(formData)
+            fetch("/update_profile", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    toast('s', 'Successfully updated your profile.');
+                    btn  = document.querySelector('.submitbtn')
+
+                    btn.querySelector('.A2').style.display = 'block';
+                    btn.querySelector('.A1').style.display = 'none'
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    toast('d', 'An Error occurred.');
+                    btn  = document.querySelector('.submitbtn')
+
+btn.querySelector('.A2').style.display = 'block';
+btn.querySelector('.A1').style.display = 'none'
+                    console.error("Error:", error);
+                });
+        }
+
+       
+        function _(cookieName) {
+            var expirationDate = new Date(0); // Create a Date object set to the epoch time (January 1, 1970)
+            var formattedDate = expirationDate.toUTCString(); // Get the UTC string representation of the date
+
+            document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
+        }
+        document.getElementById("deleteCookieButton").addEventListener("click", function () {
+            list = ["ideo", "emalo", "deno", "tp"];
+            for (i = 0; i <= list.length; i++) {
+                _(list[i]);
+            }
+            window.location.reload();
+        });
+
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('prevUrl', window.location.href);
+        });
+ '{% endif %}'        
+        const SLIDE_WIDTH = 320;
+        const TRANSITION_DURATION = 100; // in milliseconds
+
+        function show(container) {
+            const afterElement = container.querySelector('.after');
+            const beforeElement = container.querySelector('.before');
+            const imgElements = container.querySelectorAll('img');
+            const imageCount = imgElements.length;
+
+            // Show the before and after elements
+            afterElement.style.display = 'flex';
+            beforeElement.style.display = 'flex';
+
+            // Add a delay for the transition effect
+            setTimeout(() => {
+                afterElement.classList.add('show');
+                beforeElement.classList.add('show');
+            }, TRANSITION_DURATION);
+
+            // Set data attributes for each image
+            imgElements.forEach((img, index) => {
+                img.setAttribute('data-num', index);
+            });
+
+            container.setAttribute('data-count', imageCount);
+        }
+
+        function hide(container) {
+            const afterElement = container.querySelector('.after');
+            const beforeElement = container.querySelector('.before');
+
+            // Hide the before and after elements
+            afterElement.classList.remove('show');
+            beforeElement.classList.remove('show');
+
+            // Add a delay for the transition effect
+            setTimeout(() => {
+                afterElement.style.display = 'none';
+                beforeElement.style.display = 'none';
+            }, TRANSITION_DURATION);
+        }
+
+        function scrollHorizontalByPixels(element, scrollAmount) {
+            if (element) {
+                element.scrollLeft += scrollAmount;
+            }
+        }
+
+        function next(button) {
+            const parent = button.parentElement;
+
+            const container = parent;
+            show(container);
+
+            let currentOffset = parseInt(parent.getAttribute('data-c'), 10) || 0;
+            const slideshow = parent.querySelector('.slideshow');
+            const imageCount = parseInt(parent.getAttribute('data-count'), 10);
+
+            if (currentOffset === (imageCount) * SLIDE_WIDTH) {
+                // If at the end of the slideshow, scroll back to the beginning
+                scrollHorizontalByPixels(slideshow, -currentOffset);
+                parent.setAttribute('data-c', 0);
+            } else {
+                // Otherwise, scroll to the next slide
+                scrollHorizontalByPixels(slideshow, SLIDE_WIDTH);
+                currentOffset += SLIDE_WIDTH;
+                parent.setAttribute('data-c', currentOffset);
+            }
+        }
+
+        function back(button) {
+            const parent = button.parentElement;
+
+            const container = parent;
+            show(container);
+
+            let currentOffset = parseInt(parent.getAttribute('data-c'), 10) || 0;
+            const slideshow = parent.querySelector('.slideshow');
+
+            if (currentOffset === 0) {
+                // If at the beginning of the slideshow, scroll to the end
+                const lastOffset = (parseInt(parent.getAttribute('data-count'), 10) - 1) * SLIDE_WIDTH;
+                scrollHorizontalByPixels(slideshow, lastOffset);
+                parent.setAttribute('data-c', lastOffset);
+            } else {
+                // Otherwise, scroll to the previous slide
+                scrollHorizontalByPixels(slideshow, -SLIDE_WIDTH);
+                currentOffset -= SLIDE_WIDTH;
+                parent.setAttribute('data-c', currentOffset);
+            }
+        }
+        const clickDelays = new WeakMap();
+        const clickCounts = new WeakMap();
+        const maxClicks = 2;
+        const delay = 1000;
+
+        function like(button) {
+            if (!clickDelays.has(button)) {
+                clickDelays.set(button, 0);
+                clickCounts.set(button, 0);
+            }
+
+            const lastClickTime = clickDelays.get(button);
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - lastClickTime;
+            let clickCount = clickCounts.get(button);
+
+            if (elapsedTime >= delay && clickCount < maxClicks) {
+                button.classList.toggle('liked');
+                clickCount++;
+                clickCounts.set(button, clickCount);
+                clickDelays.set(button, currentTime);
+            }
+
+            if (clickCount === maxClicks) {
+                // Reset the click count after reaching the maximum limit
+                clickCounts.set(button, 0);
+            }
+        }
+
+        '{% if x %}'
+        function checkOverLimit(textarea, maxLength) {
+            const charCount = textarea.value.length;
+            const charCountElement = document.querySelector('.charcount');
+            const remainingElement = document.querySelector('.remaining');
+            const remainingLabel = document.querySelector('.remaining-label');
+            const lessLabel = document.querySelector('.less');
+
+            charCountElement.innerHTML = `${charCount}/${maxLength}`;
+            const remainingChars = maxLength - charCount;
+            remainingElement.innerHTML = Math.abs(remainingChars);
+
+            if (charCount > maxLength) {
+                remainingLabel.classList.add('over');
+                remainingLabel.innerHTML = 'exceeded by:';
+                remainingElement.classList.add('over');
+                textarea.style.color = 'hsl(0, 80%, 60%)';
+                textarea.setAttribute('data-over', 'true');
+                setSubmitBtnDisabledStatus(true);
+                lessLabel.style.display = 'none';
+            } else if (charCount < 250) {
+                remainingLabel.classList.remove('over');
+                remainingLabel.innerHTML = 'Remaining:';
+                remainingElement.classList.remove('over');
+                textarea.style.color = 'hsl(0, 80%, 60%)';
+                textarea.setAttribute('data-over', 'false');
+                setSubmitBtnDisabledStatus(false);
+                lessLabel.style.display = 'block';
+            } else {
+                remainingLabel.innerHTML = 'Remaining:';
+                remainingElement.classList.remove('over');
+                textarea.style.color = 'hsl(0, 0%, 50%)';
+                textarea.setAttribute('data-over', 'false');
+                setSubmitBtnDisabledStatus(false);
+                lessLabel.style.display = 'none';
+            }
+        }
+
+        function initializeTextarea() {
+            const textarea = document.querySelector('.textarea');
+            const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
+            const charCount = textarea.value.length;
+            const charCountElement = document.querySelector('.charcount');
+            const remainingElement = document.querySelector('.remaining');
+
+            charCountElement.innerHTML = `${charCount}/${maxLength}`;
+            remainingElement.innerHTML = maxLength - charCount;
+            checkOverLimit(textarea, maxLength);
+
+            textarea.addEventListener('input', () => {
+                checkOverLimit(textarea, maxLength);
             });
         }
 
-        function getAverageRGB(imageData) {
-            let r = 0;
-            let g = 0;
-            let b = 0;
+        initializeTextarea();
+function transfer(element){
 
-            for (let i = 0; i < imageData.length; i += 4) {
-                r += imageData[i];
-                g += imageData[i + 1];
-                b += imageData[i + 2];
-            }
+    button = document.querySelector('#dellitem');
+    console.log(button)
 
-            const totalPixels = imageData.length / 4;
-            r = Math.round(r / totalPixels / 1.1);
-            g = Math.round(g / totalPixels / 1.1);
-            b = Math.round(b / totalPixels / 1.1);
+    name = element.getAttribute('data-skill');
+    console.log(name)
+    button.setAttribute('data-skill',name);
+    console.log('transfer done');
 
-            return { r, g, b };
+}
+        function delitem(element){
+            console.log(element.getAttribute('data-skill'))
+            const formData = new FormData();
+formData.append('sk', element.getAttribute('data-skill'));
+            fetch("/delItem", {
+                method: "POST",
+                body:formData,
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    toast('s', 'Item deleted Successfully');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    toast('d', 'An Error occurred.');
+                    console.error("Error:", error);
+                });
         }
 
-        // Call the function when the page loads
-        window.onload = function () {
-            checkImagesAndSetColors();
-        };
-    </script>
+        '{% endif %}'
+
+
+  </script>
 </body>
 
 </html>

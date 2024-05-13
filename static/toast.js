@@ -72,3 +72,40 @@ function toast(type, text, padding = 0) {
 
   activeToasts.push({ element: toastElement, timeout: toastTimeout });
 }
+
+
+function openit(x){
+  const div = document.createElement('div')
+    div.id='imgvp'
+    document.body.appendChild(div)
+    const img = x.cloneNode(true)
+    div.appendChild(img)
+    div.addEventListener('click', function() {
+    this.classList.add('go')
+    setTimeout(() => {
+        this.remove()
+    }, 400);
+  });
+}
+function openit(x){
+  const div = document.createElement('div')
+    div.id='imgvp'
+    document.body.appendChild(div)
+    const img = x.cloneNode(true)
+    img.id = '';
+    img.className = ''; 
+    img.onclick = null;
+    
+    img.style.width = 'auto';
+    img.style.maxWidth = '800px';
+    img.style.maxHeight = '80%';
+    img.style.borderRadius = '10px';
+    img.style.animation = 'showupimg 0.4s ease';
+    div.appendChild(img)
+    div.addEventListener('click', function() {
+    this.classList.add('go')
+    setTimeout(() => {
+        this.remove()
+    }, 400);
+  });
+}

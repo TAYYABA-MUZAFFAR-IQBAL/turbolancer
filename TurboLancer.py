@@ -6,6 +6,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import os, re, io
 import uuid
+import json
 import datetime
 import turbolancer_data_Security
 from jinja2 import Environment, FileSystemLoader
@@ -26,7 +27,7 @@ client = MongoClient(
 db = client["Tasker"]
 key = b'||/:?"(:@junaid)'
 # Set collection names
-developer_collection = db['developers']
+seller_collection = db['developers']
 user_collection = db['users']
 serving_sectors_collection = db['serving_sectors']
 sectors_technologies_collection = db['technologies']
@@ -54,8 +55,7 @@ def check(data, file):
             id_ = turbolancer_data_Security.decrypt(
                 key, compound.get('ideo', None))
         # (id_)
-            ud = developer_collection.find_one(
-                {"_id": id_}) or user_collection.find_one({"_id": id_})
+            ud = seller_collection.find_one({"_id": id_}) or user_collection.find_one({"_id": id_})
 
             if ud:
                 if compound.get('emalo') == ud['email'] and ud['d'] == 'd' and not compound.get('deno'):
@@ -83,7 +83,7 @@ def main():
     if cookies.get('ideo'):
         id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
         # ("\n" +id_)
-        ud:str = developer_collection.find_one(
+        ud:str = seller_collection.find_one(
             {"_id": id_}) or user_collection.find_one({"_id": id_})
         if cookies.get('emalo') == ud['email'] and ud['d'] == 'd' and not cookies.get('deno'):
             return redirect(f'/addinfo/{id_}/{ud["name"]}/{ud["email"]}')
@@ -118,10 +118,10 @@ def signup():
 
         # Check if the developer already exists in the database
         # (encoded_email)
-        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one(
-            {"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
-        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
-            {"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user = seller_collection.find_one({"email": encoded_email}) or user_collection.find_one(
+            {"email": encoded_email}) or seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user_ph = seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
+            {"ph": encoded_phone}) or seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
         user_id = generate_id()
 
         if user or user_ph:
@@ -131,7 +131,7 @@ def signup():
             t = name.replace(' ', '')
             tag:str = '@' + t
             user_id = generate_id()
-            count = developer_collection.count_documents({"name": name})
+            count = seller_collection.count_documents({"name": name})
             count_s = user_collection.count_documents({"name": name})
 
             count = str((int(count + count_s) + 1) * 1000)[::-1]
@@ -164,7 +164,7 @@ def signup():
                 'gan': encoded_gan
             }
 
-            developer_collection.insert_one(user)
+            seller_collection.insert_one(user)
             ide = user_id
             user_id = turbolancer_data_Security.encrypt(key, user_id)
         return render_template('save_cook.html', keys=[['ideo', 'emalo', 'tp'], [user_id, encoded_email, 'd']], redi=f'addinfo/{ide}/{name}/{encoded_email}')
@@ -207,10 +207,10 @@ def signup_and_upload_image():
             key, request.form.get("gan"))
         # Check if the developer already exists in the database
         # (encoded_email)
-        user = developer_collection.find_one({"email": encoded_email}) or user_collection.find_one(
-            {"email": encoded_email}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
-        user_ph = developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
-            {"ph": encoded_phone}) or developer_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user = seller_collection.find_one({"email": encoded_email}) or user_collection.find_one(
+            {"email": encoded_email}) or seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
+        user_ph = seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one(
+            {"ph": encoded_phone}) or seller_collection.find_one({"ph": encoded_phone}) or user_collection.find_one({"ph": encoded_phone})
         user_id = generate_id()
 
         if 'image' not in request.files:
@@ -229,7 +229,7 @@ def signup_and_upload_image():
             t = name.replace(' ', '')
             tag = '@' + t
             user_id = generate_id()
-            count = developer_collection.count_documents({"name": name})
+            count = seller_collection.count_documents({"name": name})
             count_s = user_collection.count_documents({"name": name})
 
             count = str((int(count + count_s) + 1) * 1000)[::-1]
@@ -277,7 +277,7 @@ def signin():
         encoded_password = turbolancer_data_Security.encrypt(
             key, request.form["ps"])
 
-        user = developer_collection.find_one(
+        user = seller_collection.find_one(
             {"email": encoded_email}) or user_collection.find_one({"email": encoded_email})
 
         if user:
@@ -321,7 +321,7 @@ def upload_image():
         # (encoded_email)
 
         # Retrieve the developer document
-        developer = developer_collection.find_one({"email": encoded_email})
+        developer = seller_collection.find_one({"email": encoded_email})
 
         if developer and 'image' in developer:
             # Get the previous image ID
@@ -339,7 +339,7 @@ def upload_image():
             {'data': image_data}).inserted_id
 
         # Update the developer document with the associated image ID
-        developer_collection.update_one({"email": encoded_email}, {
+        seller_collection.update_one({"email": encoded_email}, {
                                         "$set": {"image": '/get_image/' + str(image_id)}})
 
         return jsonify({'image_id': str(image_id)})
@@ -347,25 +347,42 @@ def upload_image():
         return jsonify({'error': 'No image file found'})
 
 
-@app.route('/send_IMAGE', methods=['POST'])
-def send_image():
-    if 'image' in request.files:
-        # Obtain the uploaded image and the email from the request payload
-        image = request.files['image']
-        chatroom_Id = request.form.get('chatroom')
-        # (chatroom_Id)
+def upload_image_local(image_data, encoded_email, ideo):
+    collection = seller_collection.find_one({'_id': ideo, "email": encoded_email}) or user_collection.find_one({'_id': ideo, "email": encoded_email})
+    if 'image' in collection:
+        previous_image_link = collection['image']
+        if previous_image_link != '':
+            previous_image_id = previous_image_link.split('/')[-1]
+            image_collection.delete_one({'_id': ObjectId(previous_image_id)})
+    image_id = image_collection.insert_one({'data': image_data}).inserted_id
 
-        # Retrieve the developer document
-        chatroom = chat_rooms.find_one({"_id": ObjectId(chatroom_Id)})
-
-        # Save the uploaded image to the database
-        image_data = image.read()
-        image_id = image_collection.insert_one(
-            {'data': image_data}).inserted_id
-
-        return jsonify({'image_id': '/turbolancer/gett_image/chats/turbolancer_qazwsxedcrfvqwerty/'+str(image_id)})
+    # Update the 'image' field in the appropriate collection
+    if seller_collection.find_one({'_id': ideo, "email": encoded_email}):
+        seller_collection.update_one({"_id": ideo, "email": encoded_email}, {"$set": {"image": '/get_image/' + str(image_id)}})
     else:
-        return jsonify({'error': 'No image file found'})
+        user_collection.update_one({"_id": ideo, "email": encoded_email}, {"$set": {"image": '/get_image/' + str(image_id)}})
+
+    return jsonify({'image_id': str(image_id)})
+    
+# @app.route('/send_IMAGE', methods=['POST'])
+# def send_image():
+#     if 'image' in request.files:
+#         # Obtain the uploaded image and the email from the request payload
+#         image = request.files['image']
+#         chatroom_Id = request.form.get('chatroom')
+#         # (chatroom_Id)
+
+#         # Retrieve the developer document
+#         chatroom = chat_rooms.find_one({"_id": ObjectId(chatroom_Id)})
+
+#         # Save the uploaded image to the database
+#         image_data = image.read()
+#         image_id = image_collection.insert_one(
+#             {'data': image_data}).inserted_id
+
+#         return jsonify({'image_id': '/turbolancer/gett_image/chats/turbolancer_qazwsxedcrfvqwerty/'+str(image_id)})
+#     else:
+#         return jsonify({'error': 'No image file found'})
 
 
 @app.route('/get_image/<image_id>', methods=['GET'])
@@ -382,16 +399,16 @@ def get_image(image_id):
     ##############################################################################################
 
 
-@app.route('/turbolancer/gett_image/chats/turbolancer_qazwsxedcrfvqwerty/<image_id>', methods=['GET'])
-def mess(image_id):
-    # Retrieve the image from the database
-    image_data = image_collection.find_one({'_id': ObjectId(image_id)})
+# @app.route('/turbolancer/gett_image/chats/turbolancer_qazwsxedcrfvqwerty/<image_id>', methods=['GET'])
+# def mess(image_id):
+#     # Retrieve the image from the database
+#     image_data = image_collection.find_one({'_id': ObjectId(image_id)})
 
-    if image_data and 'data' in image_data:
-        # Serve the image data with appropriate content type
-        return send_file(io.BytesIO(image_data['data']), mimetype='image/jpeg')
-    else:
-        return jsonify({'error': 'Image not found'})
+#     if image_data and 'data' in image_data:
+#         # Serve the image data with appropriate content type
+#         return send_file(io.BytesIO(image_data['data']), mimetype='image/jpeg')
+#     else:
+#         return jsonify({'error': 'Image not found'})
 
 
 @app.route('/update_data', methods=['POST'])
@@ -403,10 +420,10 @@ def update_data():
     text_area_value = data.get('textAreaValue')
 
     if encoded_email and text_area_value:
-        developer = developer_collection.find_one({"email": encoded_email})
+        developer = seller_collection.find_one({"email": encoded_email})
 
         if developer:
-            developer_collection.update_one({"email": encoded_email}, {
+            seller_collection.update_one({"email": encoded_email}, {
                                             "$set": {"about_self": text_area_value}})
             print(f"home-c/{developer['_id']}/d")
             return jsonify({'message': '_{__xxx__%12*79)(56)[:]-++784kdd}_', 'ne': 'deno', 're': f"/home-c/{developer['_id']}/d"})
@@ -416,110 +433,110 @@ def update_data():
         return jsonify({'error': 'Invalid data.'})
 
 
-@app.route('/update_result', methods=['POST'])
-def update_result():
-    data = request.get_json()
-    encoded_email = data.get('email')
-    # (encoded_email)
+# @app.route('/update_result', methods=['POST'])
+# def update_result():
+#     data = request.get_json()
+#     encoded_email = data.get('email')
+#     # (encoded_email)
 
-    text_area_value = data.get('result')
+#     text_area_value = data.get('result')
 
-    if encoded_email and text_area_value:
-        developer = developer_collection.find_one({"email": encoded_email})
-        skill = developer_collection.find_one({"sk": encoded_email})
+#     if encoded_email and text_area_value:
+#         developer = seller_collection.find_one({"email": encoded_email})
+#         skill = seller_collection.find_one({"sk": encoded_email})
 
-        if developer:
-            developer_collection.update_one({"email": encoded_email}, {
-                                            "$set": {"about_self": text_area_value}})
-            return jsonify({'message': 'Data updated successfully.'})
-        else:
-            return jsonify({'error': 'Developer not found.'})
-    else:
-        return jsonify({'error': 'Invalid data.'})
+#         if developer:
+#             seller_collection.update_one({"email": encoded_email}, {
+#                                             "$set": {"about_self": text_area_value}})
+#             return jsonify({'message': 'Data updated successfully.'})
+#         else:
+#             return jsonify({'error': 'Developer not found.'})
+#     else:
+#         return jsonify({'error': 'Invalid data.'})
 
 
-@app.route('/Dashbord/<x>/<y>')
-def Dashbord(x, y):
-    try:
-        if y != 'd':
-            return jsonify({'error': 'Invalid value for "y"'}), 400
+# @app.route('/Dashbord/<x>/<y>')
+# def Dashbord(x, y):
+#     try:
+#         if y != 'd':
+#             return jsonify({'error': 'Invalid value for "y"'}), 400
 
-        user_data = developer_collection.find_one({"_id": x})
-        email = turbolancer_data_Security.decrypt(key, user_data["email"])
-        image = user_data["image"]
-        name = user_data["name"]
-        tag = user_data["tag"]
-        country = turbolancer_data_Security.decrypt(key, user_data["country"])
-        ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
-        about = user_data['about_self']
-        grade = user_data['grade']
-        earnings = user_data['earnings']
-        ratting = user_data['rating']
-        en = user_data['english']
-        year = user_data['account_created_in']
-        method = user_data["payment_method"]
-        user_id = x
-        account = y
+#         user_data = seller_collection.find_one({"_id": x})
+#         email = turbolancer_data_Security.decrypt(key, user_data["email"])
+#         image = user_data["image"]
+#         name = user_data["name"]
+#         tag = user_data["tag"]
+#         country = turbolancer_data_Security.decrypt(key, user_data["country"])
+#         ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
+#         about = user_data['about_self']
+#         grade = user_data['grade']
+#         earnings = user_data['earnings']
+#         ratting = user_data['rating']
+#         en = user_data['english']
+#         year = user_data['account_created_in']
+#         method = user_data["payment_method"]
+#         user_id = x
+#         account = y
 
-        # Call your get_user_data function here
-        user_data = get_user_data(user_id, account)
-        chat_rooms_list = user_data.get("chat_rooms", [])
+#         # Call your get_user_data function here
+#         user_data = get_user_dataA(user_id, account)
+#         chat_rooms_list = user_data.get("chat_rooms", [])
 
-        namesli = []
-        img_s = []
-        chids = []
-        last_message = []
+#         namesli = []
+#         img_s = []
+#         chids = []
+#         last_message = []
 
-        for names in chat_rooms_list:
-            user_users = user_collection.find({"chat_rooms": {"$in": [names]}})
+#         for names in chat_rooms_list:
+#             user_users = user_collection.find({"chat_rooms": {"$in": [names]}})
 
-            developer_users = developer_collection.find(
-                {"chat_rooms": {"$in": [names]}})
+#             developer_users = seller_collection.find(
+#                 {"chat_rooms": {"$in": [names]}})
 
-            chat_room_data = chat_rooms.find_one({"chat_room_name": names})
-            if chat_room_data is None:
-                new_chat_room_id = ObjectId()
-                new_chat_room_name = str(new_chat_room_id)
-                chat_rooms.insert_one(
-                    {"_id": new_chat_room_id, "chat_room_name": new_chat_room_name})
-                chat_room_data = {"_id": new_chat_room_id,
-                                  "chat_room_name": new_chat_room_name}
+#             chat_room_data = chat_rooms.find_one({"chat_room_name": names})
+#             if chat_room_data is None:
+#                 new_chat_room_id = ObjectId()
+#                 new_chat_room_name = str(new_chat_room_id)
+#                 chat_rooms.insert_one(
+#                     {"_id": new_chat_room_id, "chat_room_name": new_chat_room_name})
+#                 chat_room_data = {"_id": new_chat_room_id,
+#                                   "chat_room_name": new_chat_room_name}
 
-            other_users = list(user_users) + list(developer_users)
+#             other_users = list(user_users) + list(developer_users)
 
-            for user in other_users:
-                name = user.get('name')
-                img = user.get('image')
-                # (img)
-                id = user.get('_id')
-                chid = chat_room_data.get('_id')
-                chid = str(chid)
+#             for user in other_users:
+#                 name = user.get('name')
+#                 img = user.get('image')
+#                 # (img)
+#                 id = user.get('_id')
+#                 chid = chat_room_data.get('_id')
+#                 chid = str(chid)
 
-                if str(id) != user_id:
-                    namesli.append(name)
-                    img_s.append(img)
-                    chids.append(chid)
-        zipped_data = zip(namesli, img_s)
+#                 if str(id) != user_id:
+#                     namesli.append(name)
+#                     img_s.append(img)
+#                     chids.append(chid)
+#         zipped_data = zip(namesli, img_s)
 
-        return render_template('home.html', email=email,
-                               image=image,
-                               name=name,
-                               tag=tag,
-                               cont=country,
-                               ph=ph,
-                               abs=about,
-                               grade=grade,
-                               ern=earnings,
-                               ratting=ratting,
-                               el=en,
-                               check=user_data['email'],
-                               year=year,
-                               method=method,
-                               zipped_data=zipped_data)
+#         return render_template('home.html', email=email,
+#                                image=image,
+#                                name=name,
+#                                tag=tag,
+#                                cont=country,
+#                                ph=ph,
+#                                abs=about,
+#                                grade=grade,
+#                                ern=earnings,
+#                                ratting=ratting,
+#                                el=en,
+#                                check=user_data['email'],
+#                                year=year,
+#                                method=method,
+#                                zipped_data=zipped_data)
 
-    except Exception as e:
-        # ("An error occurred:", str(e))
-        return jsonify({'error': 'An error occurred'}), 500
+#     except Exception as e:
+#         # ("An error occurred:", str(e))
+#         return jsonify({'error': 'An error occurred'}), 500
 
 
 @app.errorhandler(404)
@@ -527,233 +544,233 @@ def not_found_error(error):
     return jsonify({'error': 'Sorry! Resource not found'}), 404
 
 
-@app.route('/chat')
-def index():
-    cookies = getkey(request.cookies)
-    if cookies.get('ideo'):
-        id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
-        print (id_)
-        return render_template('try.html', _id = id_)
-    return render_template('try.html', id_ = '')
+# @app.route('/chat')
+# def index():
+#     cookies = getkey(request.cookies)
+#     if cookies.get('ideo'):
+#         id_ = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
+#         print (id_)
+#         return render_template('try.html', _id = id_)
+#     return render_template('try.html', id_ = '')
 
 
-def get_user_data(user_id, Atype):
-    print('id ' + user_id)
-    if 'd' in Atype:
-        user_data = developer_collection.find_one({"_id": user_id})
-        print(user_data)
-    elif 'c' in Atype:
-        user_data = user_collection.find_one({'_id': user_id})
-        print(user_data)
-    return user_data
+# def get_user_data(user_id, Atype):
+#     print('id ' + user_id)
+#     if 'd' in Atype:
+#         user_data = seller_collection.find_one({"_id": user_id})
+#         print(user_data)
+#     elif 'c' in Atype:
+#         user_data = user_collection.find_one({'_id': user_id})
+#         print(user_data)
+#     return user_data
 
 
-@socketio.on('join')
-def handle_join(data):
-    user_id = data['userId']
-    account = data['account']
-    print(user_id )
-    print('this is from user id')
+# @socketio.on('join')
+# def handle_join(data):
+#     user_id = data['userId']
+#     account = data['account']
+#     print(user_id )
+#     print('this is from user id')
 
-    # Retrieve the user's chat room list from the user collection
-    user_data = get_user_data(user_id,account)
-    print( user_data)
-    if user_data is None:
-        emit('join_response', {"status": "USER_NOT_FOUND"})
-        return
+#     # Retrieve the user's chat room list from the user collection
+#     user_data = get_user_data(user_id,account)
+#     print( user_data)
+#     if user_data is None:
+#         emit('join_response', {"status": "USER_NOT_FOUND"})
+#         return
 
-    chat_rooms_list = user_data.get("chat_rooms", [])
-    # (chat_rooms_list)
+#     chat_rooms_list = user_data.get("chat_rooms", [])
+#     # (chat_rooms_list)
 
-    namesli = []
-    img_s = []
-    chids = []
-    last_message = []
+#     namesli = []
+#     img_s = []
+#     chids = []
+#     last_message = []
 
-    for names in chat_rooms_list:
-        # Search for users in the 'user_collection'
-        user_users = user_collection.find({"chat_rooms": {"$in": [names]}})
+#     for names in chat_rooms_list:
+#         # Search for users in the 'user_collection'
+#         user_users = user_collection.find({"chat_rooms": {"$in": [names]}})
 
-        # Search for users in the 'developer_collection'
-        developer_users = developer_collection.find(
-            {"chat_rooms": {"$in": [names]}})
+#         # Search for users in the 'seller_collection'
+#         developer_users = seller_collection.find(
+#             {"chat_rooms": {"$in": [names]}})
 
-        # Find or create the chat room
-        chat_room_data = chat_rooms.find_one({"chat_room_name": names})
-        if chat_room_data is None:
-            new_chat_room_id = ObjectId()
-            new_chat_room_name = str(new_chat_room_id)
-            chat_rooms.insert_one(
-                {"_id": new_chat_room_id, "chat_room_name": new_chat_room_name})
-            chat_room_data = {"_id": new_chat_room_id,
-                              "chat_room_name": new_chat_room_name}
+#         # Find or create the chat room
+#         chat_room_data = chat_rooms.find_one({"chat_room_name": names})
+#         if chat_room_data is None:
+#             new_chat_room_id = ObjectId()
+#             new_chat_room_name = str(new_chat_room_id)
+#             chat_rooms.insert_one(
+#                 {"_id": new_chat_room_id, "chat_room_name": new_chat_room_name})
+#             chat_room_data = {"_id": new_chat_room_id,
+#                               "chat_room_name": new_chat_room_name}
 
-        # Combine results from both collections
-        other_users = list(user_users) + list(developer_users)
+#         # Combine results from both collections
+#         other_users = list(user_users) + list(developer_users)
 
-        for user in other_users:
-            name = user.get('name')
-            img = user.get('image')
-            id = user.get('_id')
-            chid = chat_room_data.get('_id')
-            chid = str(chid)
+#         for user in other_users:
+#             name = user.get('name')
+#             img = user.get('image')
+#             id = user.get('_id')
+#             chid = chat_room_data.get('_id')
+#             chid = str(chid)
 
-            # Compare ObjectId to user_id
-            if str(id) != user_id:
-                namesli.append(name)
-                img_s.append(img)
-                chids.append(chid)
+#             # Compare ObjectId to user_id
+#             if str(id) != user_id:
+#                 namesli.append(name)
+#                 img_s.append(img)
+#                 chids.append(chid)
 
-    emit('join_response', {'status': 'OK',
-         "name": namesli, "imgs": img_s, 'chid': chids, 'last_message': last_message})
-
-
-@socketio.on('sendMessage')
-def handle_send_message(data):
-    user_id = data['userId']
-    current_time = data['currentTime']
-    chat_room_name = data['chatRoomName']
-    message = data.get('message')
-    # (message)
-    image_link = data.get('imageLink')
-    diff = data.get('diff')
-
-    if image_link:
-        chat_rooms.update_one(
-            {"_id": ObjectId(chat_room_name)},
-            {"$push": {"messages": {'message': image_link,
-                                    'timestamp': current_time, 'sender': user_id, 'diff': diff}}},
-            upsert=True
-        )
-        emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id, 'ch': chat_room_name, 'diff': diff},
-             broadcast=True, include_self=True)
-
-    else:
-        chat_rooms.update_one(
-            {"_id": ObjectId(chat_room_name)},
-            {"$push": {"messages": {'message': message,
-                                    'timestamp': current_time, 'sender': user_id, 'diff': diff}}},
-            upsert=True
-        )
-        emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id, 'ch': chat_room_name, 'diff': diff},
-             broadcast=True, include_self=True)
+#     emit('join_response', {'status': 'OK',
+#          "name": namesli, "imgs": img_s, 'chid': chids, 'last_message': last_message})
 
 
-@socketio.on('delete_message')
-def delmessage(data):
-    sender = data.get('sender')
-    time = data.get('time')
-    message = data.get('message')
-    index = data.get('index')
-    chatroomname = data.get('chatroomname')
-    new_blocked_by = sender
+# @socketio.on('sendMessage')
+# def handle_send_message(data):
+#     user_id = data['userId']
+#     current_time = data['currentTime']
+#     chat_room_name = data['chatRoomName']
+#     message = data.get('message')
+#     # (message)
+#     image_link = data.get('imageLink')
+#     diff = data.get('diff')
 
-    # Find the chat room by its _id and the specific message by time
-    chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
+#     if image_link:
+#         chat_rooms.update_one(
+#             {"_id": ObjectId(chat_room_name)},
+#             {"$push": {"messages": {'message': image_link,
+#                                     'timestamp': current_time, 'sender': user_id, 'diff': diff}}},
+#             upsert=True
+#         )
+#         emit('newMessage', {'message': image_link, 'timestamp': current_time, 'sender': user_id, 'ch': chat_room_name, 'diff': diff},
+#              broadcast=True, include_self=True)
 
-    if chat_room:
-        messages = chat_room.get('messages', [])
-        x = 0
-        for message in messages:
-            # (message.get('timestamp'))
-            # (time)
-            if message.get('timestamp') == time and x == index:
-                # Add new_blocked_by to the 'blocked_by' list in the specific message
-                message.setdefault('blocked_by', []).append(new_blocked_by)
-                # (message)
-                # Update the chat room with the modified messages list
-                chat_rooms.update_one(
-                    {"_id": ObjectId(chatroomname)},
-                    {"$set": {"messages": messages}}, upsert=True
-                )
-                # (chat_room.get('chat_room_name'))
-                # Broadcast the message_deleted event to all clients in the chat room
-                emit('messagedeleted', {'index': x, 'sender': sender},
-                     broadcast=True, include_self=True)
-            x += 1
-    return {'response': "Message with the specified items not found."}
+#     else:
+#         chat_rooms.update_one(
+#             {"_id": ObjectId(chat_room_name)},
+#             {"$push": {"messages": {'message': message,
+#                                     'timestamp': current_time, 'sender': user_id, 'diff': diff}}},
+#             upsert=True
+#         )
+#         emit('newMessage', {'message': message, 'timestamp': current_time, 'sender': user_id, 'ch': chat_room_name, 'diff': diff},
+#              broadcast=True, include_self=True)
 
 
-@socketio.on('delete_message_from_evryone')
-def delmessageev(data):
-    sender = data.get('sender')
-    time = data.get('time')
-    typee = data.get('type')
-    name = get_user_data(sender, typee)
-    # (name['name'])
-    message = data.get('message')
-    index = data.get('index')
-    chatroomname = data.get('chatroomname')
-    new_blocked_by = 'h4d64bdy4b4hf74hhh44jfuff848vfn4u48f '+name['name']
+# @socketio.on('delete_message')
+# def delmessage(data):
+#     sender = data.get('sender')
+#     time = data.get('time')
+#     message = data.get('message')
+#     index = data.get('index')
+#     chatroomname = data.get('chatroomname')
+#     new_blocked_by = sender
 
-    # Find the chat room by its _id and the specific message by time
-    chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
+#     # Find the chat room by its _id and the specific message by time
+#     chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
 
-    if chat_room:
-        messages = chat_room.get('messages', [])
-        x = 0
-        for message in messages:
-            # (message.get('timestamp'))
-            # (time)
-
-            if message.get('timestamp') == time and x == index:
-                # Add new_blocked_by to the 'blocked_by' list in the specific message
-                message.setdefault('blocked_by', []).append(new_blocked_by)
-                # (message)
-                # Update the chat room with the modified messages list
-                chat_rooms.update_one(
-                    {"_id": ObjectId(chatroomname)},
-                    {"$set": {"messages": messages}}, upsert=True
-                )
-                # (chat_room.get('chat_room_name'))
-                # Broadcast the message_deleted event to all clients in the chat room
-                emit('messagedeletedbyall', {'index': x, 'by': new_blocked_by, 'sender': sender},
-                     broadcast=True, include_self=True)
-            x += 1
-
-    return {'response': "Message with the specified items not found."}
+#     if chat_room:
+#         messages = chat_room.get('messages', [])
+#         x = 0
+#         for message in messages:
+#             # (message.get('timestamp'))
+#             # (time)
+#             if message.get('timestamp') == time and x == index:
+#                 # Add new_blocked_by to the 'blocked_by' list in the specific message
+#                 message.setdefault('blocked_by', []).append(new_blocked_by)
+#                 # (message)
+#                 # Update the chat room with the modified messages list
+#                 chat_rooms.update_one(
+#                     {"_id": ObjectId(chatroomname)},
+#                     {"$set": {"messages": messages}}, upsert=True
+#                 )
+#                 # (chat_room.get('chat_room_name'))
+#                 # Broadcast the message_deleted event to all clients in the chat room
+#                 emit('messagedeleted', {'index': x, 'sender': sender},
+#                      broadcast=True, include_self=True)
+#             x += 1
+#     return {'response': "Message with the specified items not found."}
 
 
-@app.route('/get_messages', methods=['POST'])
-def get_messages():
-    data = request.get_json()
-    user_id = data.get('user_id')
-    # (user_id)
-    chat_room_name = data.get('chat_room_name')
-    # (chat_room_name)
+# @socketio.on('delete_message_from_evryone')
+# def delmessageev(data):
+#     sender = data.get('sender')
+#     time = data.get('time')
+#     typee = data.get('type')
+#     name = get_user_data(sender, typee)
+#     # (name['name'])
+#     message = data.get('message')
+#     index = data.get('index')
+#     chatroomname = data.get('chatroomname')
+#     new_blocked_by = 'h4d64bdy4b4hf74hhh44jfuff848vfn4u48f '+name['name']
 
-    if not user_id or not chat_room_name:
-        return jsonify(messages=[], time=[])
+#     # Find the chat room by its _id and the specific message by time
+#     chat_room = chat_rooms.find_one({"_id": ObjectId(chatroomname)})
 
-    # Retrieve messages from the chat room collection
-    chat_room_data = chat_rooms.find_one({"_id": ObjectId(chat_room_name)})
-    if not chat_room_data:
-        # Handle the case where the chat room data is not found
-        return jsonify(messages=[], time=[])
+#     if chat_room:
+#         messages = chat_room.get('messages', [])
+#         x = 0
+#         for message in messages:
+#             # (message.get('timestamp'))
+#             # (time)
 
-    messagesli = chat_room_data.get("messages", [])
-    messages = []
-    time = []
-    sender = []
-    bloaked_by = []
-    diffl = []
+#             if message.get('timestamp') == time and x == index:
+#                 # Add new_blocked_by to the 'blocked_by' list in the specific message
+#                 message.setdefault('blocked_by', []).append(new_blocked_by)
+#                 # (message)
+#                 # Update the chat room with the modified messages list
+#                 chat_rooms.update_one(
+#                     {"_id": ObjectId(chatroomname)},
+#                     {"$set": {"messages": messages}}, upsert=True
+#                 )
+#                 # (chat_room.get('chat_room_name'))
+#                 # Broadcast the message_deleted event to all clients in the chat room
+#                 emit('messagedeletedbyall', {'index': x, 'by': new_blocked_by, 'sender': sender},
+#                      broadcast=True, include_self=True)
+#             x += 1
 
-    for m in messagesli:
-        a = m.get('message')
-        b = m.get('timestamp')
-        diff = m.get('diff')
-        # (b)
-        c = m.get('sender')
-        d = m.get('blocked_by')
-        messages.append(a)
-        time.append(b)
-        sender.append(c)
-        bloaked_by.append(d)
-        diffl.append(diff)
-    # (time)
-    # bloaked()_by[0] is a lsit
+#     return {'response': "Message with the specified items not found."}
 
-    return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
+
+# @app.route('/get_messages', methods=['POST'])
+# def get_messages():
+#     data = request.get_json()
+#     user_id = data.get('user_id')
+#     # (user_id)
+#     chat_room_name = data.get('chat_room_name')
+#     # (chat_room_name)
+
+#     if not user_id or not chat_room_name:
+#         return jsonify(messages=[], time=[])
+
+#     # Retrieve messages from the chat room collection
+#     chat_room_data = chat_rooms.find_one({"_id": ObjectId(chat_room_name)})
+#     if not chat_room_data:
+#         # Handle the case where the chat room data is not found
+#         return jsonify(messages=[], time=[])
+
+#     messagesli = chat_room_data.get("messages", [])
+#     messages = []
+#     time = []
+#     sender = []
+#     bloaked_by = []
+#     diffl = []
+
+#     for m in messagesli:
+#         a = m.get('message')
+#         b = m.get('timestamp')
+#         diff = m.get('diff')
+#         # (b)
+#         c = m.get('sender')
+#         d = m.get('blocked_by')
+#         messages.append(a)
+#         time.append(b)
+#         sender.append(c)
+#         bloaked_by.append(d)
+#         diffl.append(diff)
+#     # (time)
+#     # bloaked()_by[0] is a lsit
+
+#     return jsonify(messages=messages, time=time, sender=sender, blb=bloaked_by, diff=diffl)
 
 
 @app.route('/home-c/<x>/<y>')
@@ -764,7 +781,7 @@ def home_c(x, y):
     elif check(request.cookies, 'file') and turbolancer_data_Security.decrypt(key, getkey(request.cookies)['ideo']) != x:
         return redirect(url_for('main'))
     user_data = user_collection.find_one(
-        {"_id": x, 'd': y}) or developer_collection.find_one({"_id": x})
+        {"_id": x, 'd': y}) or seller_collection.find_one({"_id": x})
 
     if user_data:
         email = turbolancer_data_Security.decrypt(key, user_data["email"])
@@ -784,6 +801,116 @@ def home_c(x, y):
                 'clint-side-db.html', name=name, image=image, aclink=f'/account/{user_id}/{y}')
 
     return redirect(url_for('main'))
+
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    cookies = getkey(request.cookies)
+    image_data = ''
+    encoded_email = cookies.get('emalo')
+    ideo = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
+    check_result = check(request.cookies, 'file')
+    if not check_result:
+        return redirect(url_for('main'))
+
+    elif check_result and request.method == 'POST':
+        data = dict(request.form)
+        file = request.files.get('image')
+        if file:
+            image_data = file.read()
+            upload_image_local(image_data, encoded_email, ideo)
+
+        data = handle_data_encryption(data)
+
+        collection = get_collection(ideo, encoded_email)
+        update_database(collection, ideo, encoded_email, data)
+
+        print(data)
+        return jsonify({"success": True})
+
+    return jsonify({"success": False})
+
+def handle_data_encryption(data):
+    if data.get('bir'):
+        data['bir'] = turbolancer_data_Security.encrypt(key, data['bir'])
+    if data.get('gan'):
+        data['gan'] = turbolancer_data_Security.encrypt(key, data['gan'])
+    return data
+
+def get_collection(ideo, encoded_email):
+    if seller_collection.find_one({'_id': ideo, "email": encoded_email}):
+        return seller_collection
+    else:
+        return user_collection
+def split_into_child_arrays(original_array):
+    child_arrays = []
+    for i in range(0, len(original_array), 3):
+        child_array = original_array[i:i+3]
+        child_arrays.append(child_array)
+    return child_arrays
+
+
+@app.route('/delItem', methods=['POST'])
+def delItem():
+    cookies = getkey(request.cookies)
+    encoded_email = cookies.get('emalo')
+    ideo = turbolancer_data_Security.decrypt(key, cookies.get('ideo'))
+    check_result = check(request.cookies, 'file')
+    if not check_result:
+        return redirect(url_for('main'))
+
+    elif check_result and request.method == 'POST':
+        data = request.form
+        print(data['sk'])
+        ud = seller_collection.find_one({'_id': ideo, "email": encoded_email})
+        if ud and ud['sk']:
+            base : list = ud['sk']
+            for x in range(len(ud['sk'])):
+                if base[x][0] == data['sk']:
+                    base.pop(x)
+                    seller_collection.update_one({"_id": ideo, "email": encoded_email}, {"$set": {'sk': base}})
+                    return jsonify({"success": True})
+        return jsonify({"success": False})
+    return jsonify({"success": False})
+
+
+
+
+def update_database(collection, ideo, encoded_email, data):
+    for field in ['bir', 'gan', 'name', 'about_self', 'sk']:
+        if field == 'sk' and data.get(field):
+            arr = data['sk'].split(',')
+            arr = split_into_child_arrays(arr)  # Assuming this function is defined elsewhere
+            ud = collection.find_one({'_id': ideo, "email": encoded_email})
+            if ud and 'sk' in ud:
+                main_arr = ud['sk']
+                print(main_arr)
+                for x in range(len(arr)):
+                    found = False
+                    for y in range(len(main_arr)):
+                        if main_arr[y][0] == arr[x][0]:
+                            main_arr[y] = arr[x]
+                            found = True
+                            break
+                    if not found:
+                        main_arr.append(arr[x])
+                print(main_arr)
+
+                collection.update_one({"_id": ideo, "email": encoded_email}, {"$set": {'sk': main_arr}})
+        elif data.get(field):
+            collection.update_one({"_id": ideo, "email": encoded_email}, {"$set": {field: data[field]}})
+
+
+def delete_image(image_id):
+    image_id = image_id.split('/')[-1]
+    filter = {'_id': ObjectId(image_id)}
+
+    result = image_collection.delete_one(filter)
+
+    if result.deleted_count > 0:
+        print(f'Image with ID {image_id} deleted successfully.')
+    else:
+        print(f'No image found with ID {image_id}.')
 
 
 def get_user_dataA(user_id):
@@ -816,7 +943,7 @@ def get_user_dataA(user_id):
 
 
 def get_developer_data(developer_id):
-    developer_data = developer_collection.find_one({"_id": developer_id})
+    developer_data = seller_collection.find_one({"_id": developer_id})
     if developer_data:
         email = turbolancer_data_Security.decrypt(key, developer_data["email"])
         image = developer_data["image"]
@@ -829,9 +956,11 @@ def get_developer_data(developer_id):
         rating = developer_data['rating']
         about_self = developer_data['about_self']
         tag = developer_data['tag'] or None
+        sk = developer_data['sk'] or None
+        earnings = developer_data['earnings'] or None
         bir = turbolancer_data_Security.decrypt(key, developer_data["bir"]) or None
         gan = turbolancer_data_Security.decrypt(key, developer_data.get("gan", None)) or None
-
+        length = len(sk) if sk else 0
         return {
             'name': name,
             'image': image,
@@ -844,56 +973,76 @@ def get_developer_data(developer_id):
             'grade': grade,
             'tag': tag,
             'bir': bir,
-            'gan': gan
+            'gan': gan,
+            'sk':sk,
+            'earnings' : earnings,
+            'len':length
         }
     return None
 @app.route('/account/<x>/<y>')
 def account(x, y):
-    grer = [
-        'Welcome', 'Greetings', 'Hello', 'Salutations', 'Good to see you', 'Pleased to see you',
-        'Nice to see you', 'Glad to see you', 'Happy to see you', 'Delighted to see you',
-        'Honored to meet you', 'Esteemed greetings'
-    ]
-    
+  
+
     if not check(request.cookies, 'file'):
         return redirect(url_for('main'))
-    
-    decrypted_x = turbolancer_data_Security.decrypt(key, getkey(request.cookies)['ideo'])
-    
+
+    decrypted_x = turbolancer_data_Security.decrypt(
+        key, getkey(request.cookies)['ideo'])
+
     if check(request.cookies, 'file') and decrypted_x != x:
         ud = get_user_dataA(x) or get_developer_data(x)
         lud = get_user_dataA(decrypted_x) or get_developer_data(decrypted_x)
 
         if ud['ph'] == lud['ph']:
-            random.shuffle(grer)
 
             if y in ['c', 'd']:
                 if y == 'c':
                     user_data = get_user_dataA(x)
                     if user_data:
-                        return render_template('profile_page.html', **user_data, greeting=grer[0])
+                        # Dummy data for user_data
+                        user_data['total_earnings'] = "$12,345"
+                        user_data['total_catalog_items'] = 125
+                        user_data['total_projects'] = 42
+                        user_data['user_rating'] = 4.8
+                        return render_template('profile_page.html', **user_data, )
                 elif y == 'd':
                     developer_data = get_developer_data(x)
-                    # developer_data['rating']
                     if developer_data:
-                        return render_template('profile_page.html', **developer_data, rating='4', greeting=grer[0], d='avail', grade=developer_data['grade'])
+                        # Dummy data for developer_data
+                        developer_data['total_catalog_items'] = 125
+                        developer_data['total_projects'] = 42
+                        developer_data['rating'] = float(developer_data['rating'])
+                        
+                        return render_template('profile_page.html', **developer_data, d='avail')
+
                     return redirect(url_for('main'))
         return redirect(url_for('main'))
 
-    random.shuffle(grer)
 
     if y in ['c', 'd']:
         if y == 'c':
             user_data = get_user_dataA(x)
             if user_data:
-                return render_template('profile_page.html', **user_data, greeting=grer[0])
+                # Dummy data for user_data
+                user_data['total_earnings'] = "$12,345"
+                user_data['total_catalog_items'] = 125
+                user_data['total_projects'] = 42
+                user_data['user_rating'] = 4.8
+                return render_template('profile_page.html', **user_data, )
         elif y == 'd':
             developer_data = get_developer_data(x)
             if developer_data:
-                return render_template('profile_page.html', **developer_data, rating='4', greeting=grer[0], d='avail', grade=developer_data['grade'])
+                # Dummy data for developer_data
+                developer_data['total_catalog_items'] = 125
+                developer_data['total_projects'] = 42
+                developer_data['rating'] = float(developer_data['rating'])
+
+                return render_template('profile_page.html', **developer_data, d='avail', x = 'yes')
+
             return redirect(url_for('main'))
 
     return redirect(url_for('main'))
+
 
 @app.errorhandler(404)
 def page_not_found(error):

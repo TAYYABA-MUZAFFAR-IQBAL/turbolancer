@@ -156,8 +156,7 @@
       ></span>
       <br />
       <br />
-      <a href="{{aclink}}"
-        ><img
+      <a id="anchor" href="{{aclink}}"><img
           src="{{image}}"
           class="pfp"
           title="{{name}}"
@@ -185,5 +184,10 @@
       >
     </div>
     <script src="/static/clint.js"></script>
+    <script>
+    const anchor = document.getElementById('anchor');
+      anchor.href += `?referrer=${encodeURIComponent(btoa(window.location.href))}`;
+      
+      </script>
   </body>
 </html>
