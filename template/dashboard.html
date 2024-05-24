@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TurboLancer Seller Dashboard</title>
+    <title>TurboLancer Seller Dashboard | {{name.capitalize()}}</title>
     <link rel="icon" type="image/png" href="/static/icon.png" />
     <link
       rel="stylesheet"
@@ -13,13 +13,14 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="/static/toast.css" />
+    <script src="/static/toast.js"></script>
+
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css"
       rel="stylesheet"
       type="text/css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/static/toast.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
       rel="stylesheet"
@@ -86,6 +87,7 @@
               <ul
                 tabindex="0"
                 class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                style="margin-right: 10px;"
               >
                 <li><a>Item 1</a></li>
                 <li><a>Item 2</a></li>
@@ -95,8 +97,7 @@
               <div tabindex="0" class="m-1 btn btn-ghost btn-circle avatar">
                 <div class="w-10 rounded-full">
                   <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  src="{{image}}"  alt="{{ name.upper() }}"
                   />
                 </div>
               </div>
@@ -105,26 +106,26 @@
                 class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a class="justify-between"> Profile </a>
+                  <a class="justify-between" id="anchor"  href="{{aclink}}"> Profile </a>
                 </li>
-                <li><a>Switch to buyer account</a></li>
-                <li><a>Logout</a></li>
+                <li><a href="{{allink}}">Switch to buyer account</a></li>
+                <li><a id="deleteCookieButton">Logout</a></li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="page">
+        <div class="page" id="page">
           <!-- Page content -->
           <div class="view">
             <div class="profile-header">
               <div class="profile-initials" >
-                  <img onclick="openit(this)" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg">
+                  <img onclick="openit(this)" src="{{image}}"  alt="{{ name.upper() }}">
               </div>
               <div class="profile-info">
-                  <h2 class="profile-name">Mian Junaid</h2>
-                  <p class="profile-details">mmjunaid001@gmail.com ,032994031451, <i class="fas ico fa-globe"></i> Pakistan
+                  <h2 class="profile-name"> {{ name.upper() }}</h2>
+                  <p class="profile-details">{{ email }} , {{ ph }}, <i class="fas ico fa-globe"></i> {{ country }}
                   </p>
-                  <p class="profile-role" style="color: #00b800; text-decoration: underline;">@minjunaid0001</p>
+                  <p class="profile-role" style="color: #00b800; text-decoration: underline;">{{ tag }}</p>
               </div>
           </div>
           </div>
@@ -134,25 +135,26 @@
                 <div class="stat-title">
                   <i class="fas ico fa-dollar-sign"></i> Total Earnings
                 </div>
-                <div class="stat-value">$0</div>
+                <div class="stat-value">{% if earnings %}{{ earnings | sum }}{% else %}0{% endif %}
+                </div>
               </div>
               <div class="stat">
                 <div class="stat-title">
                   <i class="fas ico fa-box"></i> Total Catalog Items
                 </div>
-                <div class="stat-value">6</div>
+                <div class="stat-value">{{ total_catalog_items }}</div>
               </div>
               <div class="stat">
                 <div class="stat-title">
                   <i class="fas ico fa-project-diagram"></i> Total Projects
                 </div>
-                <div class="stat-value">60</div>
+                <div class="stat-value">{{ total_projects }}</div>
               </div>
               <div class="stat">
                 <div class="stat-title">
                   <i class="fas ico fa-star"></i> User Rating
                 </div>
-                <div class="stat-value">0.9</div>
+                <div class="stat-value">{{ rating }}</div>
               </div>
             </div>
           </div>
@@ -215,6 +217,7 @@
             </div>
           </div>
         </div>
+        <div class="iframe page" style="display: none; "><iframe src="" style="width: 100%; height: 88vh;"></iframe></div>
       </div>
       <div class="drawer-side">
         <label for="my-drawer" class="drawer-overlay"></label>
@@ -222,22 +225,22 @@
           <li class="menu-title">
             <span>Menu</span>
           </li>
-          <li onclick="toast('s','Dashboard')" class="Mactive">
-            <a>Dashboard</a>
+          <li  class="Mactive">
+            <a onclick="hideiframe(this)" >Dashboard</a>
           </li>
-          <li><a>Profile</a></li>
+          <li><a href="{{aclink}}" id="anchor">Profile</a></li>
           <li><a>Trends</a></li>
           <li><a>Projects</a></li>
-          <li><a>Catalogs</a></li>
+          <li><a onclick="showiframe(this)" data-link="/catalogue/{{_id}}/d">Catalogs</a></li>
           <li><a>Messages</a></li>
-          <li><a>LogOUT</a></li>
+          <li><a id="deleteCookieButton">LogOUT</a></li>
         </ul>
       </div>
     </div>
 <input type="checkbox" id="details" class="modal-toggle" />
 <div class="modal h-full" role="dialog">
   <div class="modal-box w-11/12 h-full max-w-5xl">
-    <iframe class="w-full" style="height: 87%; border-radius: 13px;" src="http://127.0.0.1:5000/account/05613ef1-6457-4eff-84f1-6970988884ae/d?referrer=aHR0cDovLzEyNy4wLjAuMTo1MDAwL2hvbWUtYy8wNTYxM2VmMS02NDU3LTRlZmYtODRmMS02OTcwOTg4ODg0YWUvZA%3D%3D" frameborder="0"></iframe>
+    <iframe class="w-full" style="height: 87%; border-radius: 13px;" src="http://127.0.0.1:5500/template/technology.html" frameborder="0"></iframe>
     <div class="modal-action">
       <label for="details" class="btn">Close!</label>
     </div>
@@ -246,13 +249,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
     <script>
+function showiframe(element) {
+  document.querySelector('.Mactive').classList.remove('Mactive')
+  element.parentElement.classList.add('Mactive')
+  const link = element.getAttribute('data-link');
+  const iframe = document.querySelector('.iframe iframe');
+  if(!(iframe.src.includes(link))){
+    iframe.src = link;
+  }
+ else{
+  iframe.src
+ }
+
+  document.querySelectorAll('#page').forEach(item => {
+    item.style.opacity = '0';
+    setTimeout(() => {
+      item.style.display = 'none';
+    }, 400);
+  });
+
+  const iframeContainer = document.querySelector('.iframe');
+  iframeContainer.style.display = 'block';
+  setTimeout(() => {
+    iframeContainer.style.opacity = '1';
+  }, 400);
+}
+function hideiframe(element) {
+  document.querySelector('.Mactive').classList.remove('Mactive');
+  element.parentElement.classList.add('Mactive')
+
+  document.querySelectorAll('#page').forEach(item => {
+    item.style.display = 'block';
+    setTimeout(() => {
+      item.style.opacity = '1';
+    }, 400);
+  });
+
+  const iframeContainer = document.querySelector('.iframe');
+  iframeContainer.style.opacity = '0';
+  setTimeout(() => {
+    iframeContainer.style.display = 'none';
+  }, 400);
+}
+const anchor = document.querySelectorAll('#anchor');
+    anchor.forEach(element => {
+      element.href += `?referrer=${encodeURIComponent(btoa(window.location.href))}`;
+      console.log('{{ year }}')
+
+    });
+    const earnings = {{ earnings | tojson | safe }}
       const options = {
         // set the labels option to true to show the labels on the X and Y axis
         xaxis: {
           show: true,
-          categories: [
-          'Jan 2022', 'Feb 2022', 'Mar 2022', 'Apr 2022', 'May 2022', 'Jun 2022', 'Jul 2022', 'Aug 2022', 'Sep 2022', 'Oct 2022', 'Nov 2022', 'Dec 2022'
-          ],
+          categories: getMonthsArray('{{ year }}'),
           labels: {
             show: true,
             style: {
@@ -283,7 +333,7 @@
         series: [
           {
             name: "Earnings",
-            data: [100, 500, 300, 1100, 100, 800, 2500, 0, 0, 0, 600, 700],
+            data: earnings,
             color: "#8ed884",
           }],
 
@@ -343,7 +393,7 @@
         chart.render();
       }
 
-      
+
     </script>
   </body>
 </html>

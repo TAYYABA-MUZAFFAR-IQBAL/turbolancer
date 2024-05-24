@@ -19,15 +19,39 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="section-card" style="display:flex;flex-direction: row; align-items: center; gap: 6px;">
-            <a id="back" href="">
-                <button class="btn btn-square btn-ghost back">
-                    <i class="fas fa-arrow-left"></i>
-                </button>
-            </a>
-            <strong>Go Back</strong>
+     <!-- Navbar -->
+     <div class="w-full navbar bg-base-300">
+
+        <div class="flex-1 px-2 mx-2">
+            <a id="back" class="btn btn-ghost" href="">
+                <i class="fas fa-arrow-left"></i>
+        </a>
+          <img src="/static/dark_logo.png" alt="TurboLancer" class="logo" />
         </div>
+        <div class="flex-none">
+          <!-- ADD DROP DOWN HERE -->
+          
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" class="m-1 btn btn-ghost btn-circle avatar">
+              <div class="w-10 rounded-full">
+                <img
+                src="{{image}}"  alt="{{ name.upper() }}"
+                />
+              </div>
+            </div>
+            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                {% if not x %}
+              <li><a>Message</a></li>
+{% else %}
+              <li><a id="deleteCookieButton">Logout</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <div class="container">
+            
         <div class="profile-section">
             <div class="profile-header">
                 <div class="profile-initials" >
@@ -48,28 +72,30 @@
                 </div>
             </div>
             <div class="profile-stats stats shadow " style="width: 100%;">
-                {% if x %}
+                {% if x%}
                 <div class="stat">
 
-                    <div class="stat-title"> <i class="fas ico  fa-dollar-sign"></i> Total Earnings</div>
-                    <div class="stat-value">${% if earnings %}{{ earnings }}{% else %}0{% endif %}</div>
+                    <div class="stat-title"> <i class="fas ico  fa-dollar-sign"></i>{% if c %} Total Spendings {% else %} Total Earnings {% endif %}</div>
+                    <div class="stat-value">${% if earnings %}{{ earnings | sum }}{% else %}0{% endif %}</div>
                 </div>
                 {% endif %}
                 <div class="stat">
 
-                    <div class="stat-title"><i class="fas ico  fa-box"></i> Total Catalog Items</div>
+                    <div class="stat-title"><i class="fas ico  fa-box"></i> {% if c %}Total Orders {% else %} Total Catalog Items {% endif %}</div>
                     <div class="stat-value">{{ total_catalog_items }}</div>
                 </div>
                 <div class="stat">
 
-                    <div class="stat-title"><i class="fas ico  fa-project-diagram"></i> Total Projects</div>
+                    <div class="stat-title"><i class="fas ico  fa-project-diagram"></i> {% if c %}Total Job Uploads {% else %}Total Projects {% endif %}</div>
                     <div class="stat-value">{{ total_projects }}</div>
                 </div>
+                {% if not c %}
                 <div class="stat">
 
                     <div class="stat-title"><i class="fas ico  fa-star"></i> User Rating</div>
                     <div class="stat-value">{{ rating }}</div>
                 </div>
+                {% endif %}
             </div>
             <div class="profile-bio mb-3 text-gray-500 dark:text-gray-400" style="margin-left: 3%;">
                 <p>{{ about_self }}</p>
@@ -94,6 +120,7 @@
                 </div>
             </div>
         </div>
+        {% if not c %}
         <div class="section-card">
             <h3 class="section-title"><i class="fas ico fa-graduation-cap"></i> Skills <tag class="stat-title">(Claimed by Seller)</tag></h3>
             {% if sk %}
@@ -114,6 +141,7 @@
 
             {% endif %}
         </div>
+        {% endif %}
         <div class="section-card">
             {% if x and not c %}
             <h3 class="section-title"><i class="fas ico fa-project-diagram"></i> Your Projects</h3>
@@ -233,6 +261,7 @@
         </div>
         {% endif %}
     </div>
+
     {% if x %}
 
     <!-- Modal -->
@@ -277,6 +306,8 @@
                     </label>
                     <input type="date" class="input input-bordered" id="bir" value='{{bir}}'>
                 </div>
+                {% if not c %}
+
                 <div class="form-control">
                     <label class="label">
                         <span class="card-title ">Edit Skills Stat <tag class="text-red-700 light:text-white">(Max 6)</tag></span>
@@ -324,6 +355,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="modal-action">
                     <button type="submit" class="btn bg-green-500 submitbtn"><span class="A1" style="display: none;"> <span class="loading loading-spinner"></span> Saving Changes</span> <span class="A2"><span class="loading loading-spinner"></span>  Save Changes</span></button>
                     <label for="editProfileModal" class="btn" onclick="document.querySelector('form').reset();document.getElementById('avatarPreview').src='{{image}}'">Cancel</label>
@@ -725,97 +757,113 @@ btn.querySelector('.A1').style.display = 'none'
         }
 
         '{% if x %}'
-        function checkOverLimit(textarea, maxLength) {
-            const charCount = textarea.value.length;
-            const charCountElement = document.querySelector('.charcount');
-            const remainingElement = document.querySelector('.remaining');
-            const remainingLabel = document.querySelector('.remaining-label');
-            const lessLabel = document.querySelector('.less');
-
-            charCountElement.innerHTML = `${charCount}/${maxLength}`;
-            const remainingChars = maxLength - charCount;
-            remainingElement.innerHTML = Math.abs(remainingChars);
-
-            if (charCount > maxLength) {
-                remainingLabel.classList.add('over');
-                remainingLabel.innerHTML = 'exceeded by:';
-                remainingElement.classList.add('over');
-                textarea.style.color = 'hsl(0, 80%, 60%)';
-                textarea.setAttribute('data-over', 'true');
-                setSubmitBtnDisabledStatus(true);
-                lessLabel.style.display = 'none';
-            } else if (charCount < 250) {
-                remainingLabel.classList.remove('over');
-                remainingLabel.innerHTML = 'Remaining:';
-                remainingElement.classList.remove('over');
-                textarea.style.color = 'hsl(0, 80%, 60%)';
-                textarea.setAttribute('data-over', 'false');
-                setSubmitBtnDisabledStatus(false);
-                lessLabel.style.display = 'block';
-            } else {
-                remainingLabel.innerHTML = 'Remaining:';
-                remainingElement.classList.remove('over');
-                textarea.style.color = 'hsl(0, 0%, 50%)';
-                textarea.setAttribute('data-over', 'false');
-                setSubmitBtnDisabledStatus(false);
-                lessLabel.style.display = 'none';
-            }
-        }
-
-        function initializeTextarea() {
-            const textarea = document.querySelector('.textarea');
-            const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
-            const charCount = textarea.value.length;
-            const charCountElement = document.querySelector('.charcount');
-            const remainingElement = document.querySelector('.remaining');
-
-            charCountElement.innerHTML = `${charCount}/${maxLength}`;
-            remainingElement.innerHTML = maxLength - charCount;
-            checkOverLimit(textarea, maxLength);
-
-            textarea.addEventListener('input', () => {
-                checkOverLimit(textarea, maxLength);
-            });
-        }
-
-        initializeTextarea();
-function transfer(element){
-
-    button = document.querySelector('#dellitem');
-    console.log(button)
-
-    name = element.getAttribute('data-skill');
-    console.log(name)
-    button.setAttribute('data-skill',name);
-    console.log('transfer done');
-
+    // Utility function to update the submit button status
+function setSubmitBtnDisabledStatus(isDisabled) {
+  const submitBtn = document.querySelector('.submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = isDisabled;
+  }
 }
-        function delitem(element){
-            console.log(element.getAttribute('data-skill'))
-            const formData = new FormData();
-formData.append('sk', element.getAttribute('data-skill'));
-            fetch("/delItem", {
-                method: "POST",
-                body:formData,
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    toast('s', 'Item deleted Successfully');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                })
-                .catch((error) => {
-                    toast('d', 'An Error occurred.');
-                    console.error("Error:", error);
-                });
-        }
 
+// Function to check if the textarea value exceeds the maximum length
+function checkOverLimit(textarea, maxLength) {
+  const charCount = textarea.value.length;
+  const charCountElement = document.querySelector('.charcount');
+  const remainingElement = document.querySelector('.remaining');
+  const remainingLabel = document.querySelector('.remaining-label');
+  const lessLabel = document.querySelector('.less');
+
+  charCountElement.innerHTML = `${charCount}/${maxLength}`;
+  const remainingChars = maxLength - charCount;
+  remainingElement.innerHTML = Math.abs(remainingChars);
+
+  if (charCount > maxLength) {
+    remainingLabel.classList.add('over');
+    remainingLabel.innerHTML = 'exceeded by:';
+    remainingElement.classList.add('over');
+    textarea.style.color = 'hsl(0, 80%, 60%)';
+    textarea.setAttribute('data-over', 'true');
+    setSubmitBtnDisabledStatus(true);
+    lessLabel.style.display = 'none';
+  } else if (charCount < 250) {
+    remainingLabel.classList.remove('over');
+    remainingLabel.innerHTML = 'Remaining:';
+    remainingElement.classList.remove('over');
+    textarea.style.color = 'hsl(0, 80%, 60%)';
+    textarea.setAttribute('data-over', 'false');
+    setSubmitBtnDisabledStatus(false);
+    lessLabel.style.display = 'block';
+  } else {
+    remainingLabel.innerHTML = 'Remaining:';
+    remainingElement.classList.remove('over');
+    textarea.style.color = 'hsl(0, 0%, 50%)';
+    textarea.setAttribute('data-over', 'false');
+    setSubmitBtnDisabledStatus(false);
+    lessLabel.style.display = 'none';
+  }
+}
+
+// Function to initialize the textarea
+function initializeTextarea() {
+  const textarea = document.querySelector('.textarea');
+  if (!textarea) return;
+
+  const maxLength = parseInt(textarea.getAttribute('maxlength'), 10);
+  const charCount = textarea.value.length;
+  const charCountElement = document.querySelector('.charcount');
+  const remainingElement = document.querySelector('.remaining');
+
+  charCountElement.innerHTML = `${charCount}/${maxLength}`;
+  remainingElement.innerHTML = maxLength - charCount;
+
+  checkOverLimit(textarea, maxLength);
+
+  textarea.addEventListener('input', () => {
+    checkOverLimit(textarea, maxLength);
+  });
+}
+
+initializeTextarea();
+
+// Function to transfer data attribute value
+function transfer(element) {
+  const button = document.querySelector('#dellitem');
+  if (button) {
+    const name = element.getAttribute('data-skill');
+    button.setAttribute('data-skill', name);
+    console.log('transfer done');
+  }
+}
+
+// Function to delete an item
+function delitem(element) {
+  const skillName = element.getAttribute('data-skill');
+  console.log(skillName);
+
+  const formData = new FormData();
+  formData.append('sk', skillName);
+
+  fetch("/delItem", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      toast('s', 'Item deleted Successfully');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    })
+    .catch((error) => {
+      toast('d', 'An Error occurred.');
+      console.error("Error:", error);
+    });
+}
         '{% endif %}'
 
 

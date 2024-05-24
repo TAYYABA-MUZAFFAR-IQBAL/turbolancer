@@ -1,44 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="light">
 <head>
-<title>Magic Button Animation</title>
-<style>
-  button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border: none;
-    position: relative; /* Needed for animation */
-    overflow: hidden; /* Needed for some effects */
-  }
-  
-  .magic-button-clicked {
-    background-color: #3e8e41; /* Darker green */
-    animation: magic 0.7s ease-in-out forwards; /* Animation properties */
-  }
-  
-  @keyframes magic {
-    0% { transform: scale(1); } /* Start at normal size */
-    50% { transform: scale(1.2); box-shadow: 0 0 20px #fff, 0 0 50px #3e8e41; } /* Grow and add glow */
-    100% { transform: scale(1); box-shadow: none; } /* Shrink back and remove glow */
-  }
-</style>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>404 Not Found</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script>
+   tailwind.config = {
+     theme: {
+       extend: {
+         colors: {
+           primary: {
+             "50": "#eff6ff",
+             "100": "#dbeafe",
+             "200": "#bfdbfe",
+             "300": "#93c5fd",
+             "400": "#60a5fa",
+             "500": "#3b82f6",
+             "600": "#2563eb",
+             "700": "#1d4ed8",
+             "800": "#1e40af",
+             "900": "#1e3a8a",
+             "950": "#172554"
+           }
+         },
+         fontFamily: {
+           sans: ['Inter', 'sans-serif']
+         }
+       }
+     }
+   }
+ </script>
+ <link rel="stylesheet" href="https://d2s3ptptdai04x.cloudfront.net/get-flowbite-pro.c808d72e-ef26-480f-b229-1c8888485960.css">
+ <style>
+   .text-primary-600 {
+     color: #2563eb;
+   }
+ </style>
 </head>
-<body>
-  <button id="magicButton">Click for Magic!</button>
+<body class="flex flex-col items-center justify-center min-h-screen">
+ <div class="max-w-md text-center mb-8">
+   <img class="mx-auto mb-6" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/404/404-computer.svg" alt="404 Not Found">
+   <h1 class="text-5xl font-bold text-primary-600 mb-4">404 Not Found</h1>
+   <p class="text-xl text-gray-600 mb-6">Whoops! That page doesn't exist.</p>
+   <p class="text-xl text-gray-600 mb-4">Here are some helpful links instead:</p>
+ </div>
+ <ul class="flex flex-col items-center space-y-2 text-xl text-gray-600">
+   <li><a href="#" class="hover:text-primary-600">Home</a></li>
+   <li><a href="#" class="hover:text-primary-600">Search</a></li>
+   <li><a href="#" class="hover:text-primary-600">Help</a></li>
+   <li><a href="#" class="hover:text-primary-600">Contact</a></li>
+ </ul>
 
-  <script>
-    const button = document.getElementById("magicButton");
+ <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+ <script>
+   window.addEventListener("load", function(event) {
+     const links = document.querySelectorAll("a");
+     const buttons = document.querySelectorAll("button");
 
-    button.addEventListener("click", function() {
-      this.classList.toggle("magic-button-clicked");
-    });
-  </script>
+     links.forEach(function(link) {
+       link.addEventListener("click", function(ev) {
+         ev.preventDefault();
+       });
+     });
+
+     buttons.forEach(function(button) {
+       button.addEventListener("click", function(ev) {
+         ev.preventDefault();
+       });
+     });
+   });
+ </script>
 </body>
 </html>

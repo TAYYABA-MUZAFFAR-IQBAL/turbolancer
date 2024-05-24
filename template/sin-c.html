@@ -341,7 +341,7 @@
     </style>
 </head>
 
-<body onload="check()">
+<body>
     <div class="container">
         <button class="back-button" onclick="goBack()">&#8249;</button><br>
         <h3 style="font-size: 25px; color: red; font-weight: bold; text-align: center;" id="error"></h3>
@@ -469,14 +469,14 @@
                         success: function (response) {
                             console.log(response);
 
-                            if (response.error) {
-                                document.querySelector('.btn-open').textContent = response.error
-                                document.querySelector('.btn-open').style.color = 'red';
-                            } else if (response.success) {
+                            if (!response.error) {
                                 console.log(response.redirect_url)
                                 document.querySelector('.btn-open').textContent = 'Sign In successfull'
                                 window.location.href = response.redirect_url;
                                 document.querySelector('.btn-open').style.color = '#00a56e';
+                            } else if (response.success) {
+                                   document.querySelector('.btn-open').textContent = response.error
+                                document.querySelector('.btn-open').style.color = 'red';
                             }
                         },
                         error: function (xhr, status, error) {

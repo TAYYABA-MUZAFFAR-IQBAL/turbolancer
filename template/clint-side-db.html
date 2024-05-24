@@ -65,9 +65,11 @@
               ><img src="{{image}}" title="{{name}}" alt="{{name}}" />
             </span>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Account</a></li>
+              <li><p class="profile-role" style="color: #00b800; text-decoration: underline;text-align: center;">{{tag}}</p></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" id="anchor" href="{{aclink}}">Account</a></li>
               <li><a class="dropdown-item" href="#">Messages</a></li>
-              <li><a class="dropdown-item" href="#">Create seller Account</a></li>
+              <li><a class="dropdown-item" href="{%  if 'c' in d %} # {% else %} {{allink}}{% endif %}">{%  if 'c' in d %} Create seller Account {% else %} Switch to selling aount {% endif %}</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" id="deleteCookieButton" href="#">LogOUt</a></li>
             </ul>
@@ -185,8 +187,11 @@
     </div>
     <script src="/static/clint.js"></script>
     <script>
-    const anchor = document.getElementById('anchor');
-      anchor.href += `?referrer=${encodeURIComponent(btoa(window.location.href))}`;
+    const anchor = document.querySelectorAll('#anchor');
+    anchor.forEach(element => {
+      element.href += `?referrer=${encodeURIComponent(btoa(window.location.href))}`;
+
+    });
       
       </script>
   </body>

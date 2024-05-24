@@ -380,7 +380,10 @@
             id="Category"
             placeholder="Enter job category"
             class="input input-bordered w-full"
+            list="category_Items"
           />
+          <datalist id="category_Items"></datalist>
+
         </div>
       </div>
       <!-- Task Description field -->
@@ -538,7 +541,15 @@
 
 
     <script>
-
+function insert() {
+  const div = document.querySelector('#category_Items');
+  OFC().forEach(item => {
+    const option = document.createElement('option');
+    option.innerText = item;
+    div.appendChild(option);
+  });
+}
+insert();
 
 const successModal = document.getElementById("successModal");
 const modalContent = successModal.querySelector(".inline-block");

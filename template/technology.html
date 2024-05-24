@@ -1,498 +1,247 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TurboLancer Seller Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    <title>TurboLancer</title>
     <link rel="icon" type="image/png" href="/static/icon.png" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="/static/toast.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="/static/toast.js"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-      }
+        @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+        @import url("https://fonts.googleapis.com/css?family=Sofia");
 
-      .chart-container {
-        width: 100%;
-        max-width: 1000px;
-        height: 400px;
-        margin: 20px;
-        margin-left: 50%;
-        transform: translateX(-50%);
-      }
+        * {
+            padding: 0;
+            font-family: "Poppins", Arial, sans-serif;
+            -webkit-transition: all 0.4s;
+            -o-transition: all 0.4s;
+            transition: all 0.4s;
+        }
 
-      .view {
-        margin: 8px;
-        border-radius: 14px;
-        background-color: white;
-        box-shadow: 0 3px 7px #00000027;
-        padding: 10px;
-        width: auto;
-        display: block;
-      }
-      .navbar {
-        background-color: #ffff !important;
-        border-radius: 0 0 14px 14px;
-        box-shadow: 0 3px 7px #00000027;
-      }
-      .menu {
-        background-color: #fff !important;
+        .port {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            gap: 10px;
+            width: 90%;
+            margin-left: 5%;
+            padding: 13px;
+        }
 
-        border-radius: 0 14px 14px 0;
-      }
-      .drawer-side {
-        border-radius: 0 14px 14px 0;
-        box-shadow: 0 3px 7px #00000027;
-        margin-right: 10px;
-      }
-      ul li a:active {
-        background-color: #8ed884;
-      }
+        .avatar .w-24.rounded-full {
+            box-shadow: 0 3px 10px #00000058;
+        }
 
-      .logo {
-        width: 30%;
-        max-width: 200px;
-      }
-      .fas.ico {
-        color: #8ed884;
-      }
+        .navbar {
+            width: 100%;
+            box-shadow: 0 3px 10px #0000002a;
+            border-radius: 13px;
+        }
 
-      .Mactive a {
-        background-color: #18ca00;
-        color: #fff;
-      }
+        .view {
+            border-radius: 13px;
+            padding: 10px;
+            box-shadow: 0 3px 10px #0000002a;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: start;
+            gap: 10px;
+        }
 
-      .dis {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        justify-content: start;
-        align-items: center;
-        padding: 3px;
-      }
-      .dis img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50px;
-      }
-      .notification:hover {
-        backdrop-filter: brightness(90%);
-        border-radius: 50px;
-      }
-      .have::before {
-        width: 10px;
-        height: 10px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        border-radius: 50px;
-        background-color: #18ca00;
-      }
-      .drawer-content {
-        overflow-x: hidden;
-      }
-
-      .profile-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .profile-initials img{
-    width: 90px;
-    height: 90px;
-    background-color: #909090;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    margin-right: 15px;
-  }
-  
-  .profile-info {
-    flex-grow: 1;
-  }
-  
-  .profile-name {
-    font-size: 20px;
-    margin: 0;
-  }
-  
-  .profile-details,
-  .profile-role {
-    font-size: 14px;
-    color: #666;
-    margin: 5px 0;
-  }
-
-  .tr:hover{
-filter: brightness(90%);
-
-  }
-  ::-webkit-scrollbar {
-    width: 10px;
-    border-radius: 50px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 50px;
-
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #bababa;
-    border-radius: 50px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #bdbdbd;
-  }   
-  .openmodal{
-    word-break: keep-all;
-  text-align: center;
-  text-decoration: underline;
-  color: #006aff;
-  cursor: pointer;
-  }
+        .stats {
+            box-shadow: 0 3px 10px #0000002a;
+        }
     </style>
-  </head>
-  <body>
-    <div class="drawer drawer-mobile">
-      <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content flex flex-col">
-        <!-- Navbar -->
-        <div class="w-full navbar bg-base-300">
-          <div class="flex-none lg:hidden">
-            <label for="my-drawer" class="btn btn-square btn-ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                class="inline-block w-6 h-6 stroke-current"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
-            </label>
-          </div>
-          <div class="flex-1 px-2 mx-2">
-            <img src="/static/dark_logo.png" alt="TurboLancer" class="logo" />
-          </div>
-          <div class="flex-none">
-            <!-- ADD DROP DOWN HERE -->
-            <div class="dropdown">
-              <div
-                tabindex="0"
-                role="button"
-                style="
-                  background: none;
-                  border: none;
-                  outline: none;
-                  color: #232323;
-                "
-                class="btn m-1 notification"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 have"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
-              </div>
-              <ul
-                tabindex="0"
-                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
+</head>
+
+<body>
+    <div class="port">
+        <div class="avatar">
+            <div class="w-24 rounded-full">
+                <img onclick="openit(this)" src="/static/4543.png" />
             </div>
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" class="m-1 btn btn-ghost btn-circle avatar">
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
-                </div>
-              </div>
-              <ul
-                tabindex="0"
-                class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li>
-                  <a class="justify-between"> Profile </a>
-                </li>
-                <li><a>Switch to buyer account</a></li>
-                <li><a>Logout</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
-        <div class="page">
-          <!-- Page content -->
-          <div class="view">
-            <div class="profile-header">
-              <div class="profile-initials" >
-                  <img onclick="openit(this)" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" alt="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg">
-              </div>
-              <div class="profile-info">
-                  <h2 class="profile-name">Mian Junaid</h2>
-                  <p class="profile-details">mmjunaid001@gmail.com ,032994031451, <i class="fas ico fa-globe"></i> Pakistan
-                  </p>
-                  <p class="profile-role" style="color: #00b800; text-decoration: underline;">@minjunaid0001</p>
-              </div>
-          </div>
-          </div>
-          <div class="view">
-            <div class="profile-stats stats shadow" style="width: 100%">
-              <div class="stat">
-                <div class="stat-title">
-                  <i class="fas ico fa-dollar-sign"></i> Total Earnings
-                </div>
-                <div class="stat-value">$0</div>
-              </div>
-              <div class="stat">
-                <div class="stat-title">
-                  <i class="fas ico fa-box"></i> Total Catalog Items
-                </div>
-                <div class="stat-value">6</div>
-              </div>
-              <div class="stat">
-                <div class="stat-title">
-                  <i class="fas ico fa-project-diagram"></i> Total Projects
-                </div>
-                <div class="stat-value">60</div>
-              </div>
-              <div class="stat">
-                <div class="stat-title">
-                  <i class="fas ico fa-star"></i> User Rating
-                </div>
-                <div class="stat-value">0.9</div>
-              </div>
+        <div class="navbar bg-base-100">
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl " style="pointer-events: none;">Mian Junaid, </a> <p class="profile-role" style="color: #00b800; text-decoration: underline;">@mianjunaid0001</p>
             </div>
-          </div>
-
-          <div class="view">
-            <div
-              class="w-full bg-white rounded-lg shadow light:bg-gray-800 p-4 md:p-6"
-            >
-              <div class="flex justify-between">
-                <div>
-                  <h1 class="text-3xl font-bold mb-4">
-                    Earnings <tag class="stat-title">(per month)</tag>
-                  </h1>
-                </div>
-              </div>
-
-              <div id="labels-chart" class="px-2.5"></div>
+            <div class="flex-none">
+                <a class="btn btn-ghost text-xl"> <i class="fa fa-regular fa-message"></i></a>
             </div>
-          </div>
-          <div class="view">
-            <h1 class="text-3xl font-bold mt-8 mb-4">Orders</h1>
-            <div class="overflow-x-auto">
-              <table class="table w-full">
-                <thead>
-                  <tr>
-                    <th>client name</th>
-                    <th>complitation</th>
-                    <th>DeadLine </th>
-                    <th>Status</th>
-                    <th> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                <tr class="tr">
-                    <th style=" height: 62px; padding-left: 4px;" class="dis"><img onclick="openit(this)" src="/static/4543.png" alt="">Junaid</th>
-                    <td>
-                      <div class="dis">
-                        <progress
-                          class="progress progress-success w-40"
-                          value="60"
-                          max="100"
-                        ></progress>
-
-                        <strong class="percent">60%</strong>
-                      </div>
-                    </td>
-                    <td>05/15/2024</td>
-                    <td>
-                      <span style="min-width: 100px" class="badge badge-success"
-                        >On Track</span
-                      >
-                    </td>
-                    <td>
-                    <label for="details" class="openmodal">Show details</label>
-</td>
-                  </tr>
-                  <!-- Add more rows as needed -->
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="drawer-side">
-        <label for="my-drawer" class="drawer-overlay"></label>
-        <ul class="menu p-4 w-80 bg-base-200 text-base-content">
-          <li class="menu-title">
-            <span>Menu</span>
-          </li>
-          <li onclick="toast('s','Dashboard')" class="Mactive">
-            <a>Dashboard</a>
-          </li>
-          <li><a>Profile</a></li>
-          <li><a>Trends</a></li>
-          <li><a>Projects</a></li>
-          <li><a>Catalogs</a></li>
-          <li><a>Messages</a></li>
-          <li><a>LogOUT</a></li>
-        </ul>
-      </div>
+
+        <div class="view">
+          <div style="width: 100%;">
+
+            <h3 class="stat-value" style="text-align: center; justify-self: baseline; align-self: baseline; font-size: 25px; margin-left: 1%;">Shoes!</h3>
+            <div class="divider"></div>
+            <p style="text-align: center; justify-self: center; align-self: center; margin-left: 1%;">If a dog chews shoes whose shoes does he choose?</p>
+
+        </div>
+        <div class="view">
+
+            <div class="stats stats-vertical lg:stats-horizontal w-full">
+
+                <div class="stat">
+                    <div class="stat-title">Price</div>
+                    <div class="stat-value">$31K</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">DeadLine</div>
+                    <div class="stat-value dead">5/18/2024</div>
+                    <div class="stat-desc rem" style="color: rgb(255, 0, 0);">(15 days from now)</div>
+
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">Status</div>
+                    <div class="stat-value" id="status">Pending</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">Client Rating</div>
+                    <div class="stat-value" id="client-rating">
+                        <i class="fa fa-star text-yellow-400"></i>
+                        <i class="fa fa-star text-yellow-400"></i>
+                        <i class="fa fa-star text-yellow-400"></i>
+                        <i class="fa fa-star-o text-yellow-400"></i>
+                        <i class="fa fa-star-o text-yellow-400"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="view">
+            <div class="progress progress-primary h-2 rounded-lg">
+                <div class="progress-bar" id="progress-bar" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <h3 class="stat-value" id="comp" style="text-align: center; justify-self: baseline; align-self: baseline; font-size: 25px; margin-left: 1%;">
+                completion (30%)</h3>
+
+            <input id="range" oninput="update(this)" type="range" min="0" max="100" value="30" class="range" step="5" />
+            <div class="w-full flex justify-between text-xs px-2">
+
+                <span style="color: red;">Pending (0%)</span>
+                <span style="color: orangered;">Just begun (25%)</span>
+                <span style="color: rgb(0, 162, 226);">In progress (50%)</span>
+                <span style="color:rgb(0, 157, 157) ;">Finishing up (75%)</span>
+                <span style="color: #00ca00;">Completed (100%)</span>
+            </div>
+        </div>
+
+        <div class="view">
+            <button class="btn btn-primary" id="deliver-btn">Deliver Project</button>
+            <div id="deliver-message" style="display: none; color: green; text-align: center;">Project Delivered!</div>
+        </div>
+
+        <div class="view">
+            <i class="fa fa-file" id="file-indicator" style="display: none; color: #00b800;"></i> Files Shared
+        </div>
     </div>
-<input type="checkbox" id="details" class="modal-toggle" />
-<div class="modal h-full" role="dialog">
-  <div class="modal-box w-11/12 h-full max-w-5xl">
-    <iframe class="w-full" style="height: 87%; border-radius: 13px;" src="http://127.0.0.1:5000/account/05613ef1-6457-4eff-84f1-6970988884ae/d?referrer=aHR0cDovLzEyNy4wLjAuMTo1MDAwL2hvbWUtYy8wNTYxM2VmMS02NDU3LTRlZmYtODRmMS02OTcwOTg4ODg0YWUvZA%3D%3D" frameborder="0"></iframe>
-    <div class="modal-action">
-      <label for="details" class="btn">Close!</label>
-    </div>
-  </div>
-</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+<script>
+  function daysUntilDeadline(deadlineDateString) {
+    // Existing logic to calculate days until deadline and update color
 
-    <script>
-      const options = {
-        // set the labels option to true to show the labels on the X and Y axis
-        xaxis: {
-          show: true,
-          categories: [
-          'Jan 2022', 'Feb 2022', 'Mar 2022', 'Apr 2022', 'May 2022', 'Jun 2022', 'Jul 2022', 'Aug 2022', 'Sep 2022', 'Oct 2022', 'Nov 2022', 'Dec 2022'
-          ],
-          labels: {
-            show: true,
-            style: {
-              fontFamily: "Inter, sans-serif",
-              cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
-            },
-          },
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-        },
-        yaxis: {
-          show: true,
-          labels: {
-            show: true,
-            style: {
-              fontFamily: "Inter, sans-serif",
-              cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
-            },
-            formatter: function (value) {
-              return "$" + value;
-            },
-          },
-        },
-        series: [
-          {
-            name: "Earnings",
-            data: [100, 500, 300, 1100, 100, 800, 2500, 0, 0, 0, 600, 700],
-            color: "#8ed884",
-          }],
+    // Assuming the deadline date is in the format "mm/dd/yyyy"
+    const [month, day, year] = deadlineDateString.split('/');
+    const deadline = new Date(+year, month - 1, +day);
 
+    const today = new Date();
 
-        chart: {
-          sparkline: {
-            enabled: false,
-          },
-          height: "100%",
-          width: "100%",
-          type: "area",
-          fontFamily: "Inter, sans-serif",
-          dropShadow: {
-            enabled: false,
-          },
-          toolbar: {
-            show: false,
-          },
-        },
-        tooltip: {
-          enabled: true,
-          x: {
-            show: false,
-          },
-        },
-        fill: {
-          type: "gradient",
-          gradient: {
-            opacityFrom: 0.55,
-            opacityTo: 0,
-            shade: "#8ed884",
-            gradientToColors: ["#8ed884"],
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          width: 6,
-        },
-        legend: {
-          show: false,
-        },
-        grid: {
-          show: false,
-        },
-      };
+    // Extract date components
+    const deadlineDay = deadline.getDate();
+    const deadlineMonth = deadline.getMonth();
+    const deadlineYear = deadline.getFullYear();
+    const todayDay = today.getDate();
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
 
-      if (
-        document.getElementById("labels-chart") &&
-        typeof ApexCharts !== "undefined"
-      ) {
-        const chart = new ApexCharts(
-          document.getElementById("labels-chart"),
-          options
-        );
-        chart.render();
-      }
+    // Compare dates
+    if (deadlineYear < todayYear || (deadlineYear === todayYear && deadlineMonth < todayMonth) || (deadlineYear === todayYear && deadlineMonth === todayMonth && deadlineDay < todayDay)) {
+        return ["(Deadline surpassed)", 'black'];
+    }
 
-      
-    </script>
-  </body>
-</html>
+    // Calculate the difference in days
+    const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) {
+        return [ "(Today)",'red'];
+    } else if (diffDays === 1) {
+        return ["(One day left)",'red'];
+    } else {
+        return [`(${diffDays} days from now)`,'black'];
+    }
+}
+
+// Set the deadline date
+const deadlineDateString = document.querySelector('.dead').innerText;
+document.querySelector('.rem').innerText = daysUntilDeadline(deadlineDateString)[0];
+document.querySelector('.rem').style.color = daysUntilDeadline(deadlineDateString)[1];
+
+const arr = ['Pending', 'Just begun', 'In progress', 'Working on it', 'Finishing up', 'Completed'];
+const stat = document.getElementById('status');
+const range = document.getElementById('range');
+const progressBar = document.getElementById('progress-bar');
+const deliverBtn = document.getElementById('deliver-btn');
+const deliverMessage = document.getElementById('deliver-message');
+const fileIndicator = document.getElementById('file-indicator');
+
+function update(input) {
+    const v = parseInt(input.value);
+    document.getElementById('comp').innerText = `completion (${v}%)`;
+    progressBar.style.width = `${v}%`;
+
+    if (v === 0) {
+        stat.innerText = arr[0];
+        stat.style.color = '#121212';
+    } else if (0 < v && v <= 25) {
+        stat.innerText = arr[1];
+        stat.style.color = '#121212'; // Change the color as desired
+    } else if (25 < v && v <= 50) {
+        stat.innerText = arr[2];
+        stat.style.color = '#121212'; // Change the color as desired
+    } else if (50 < v && v <= 75) {
+        stat.innerText = arr[3];
+        stat.style.color = '#121212'; // Change the color as desired
+    } else if (75 < v && v < 100) {
+        stat.innerText = arr[4];
+        stat.style.color = '#121212'; // Change the color as desired
+    } else {
+        stat.innerText = arr[5];
+        stat.style.color = '#00ca00';
+    }
+}
+
+update(range);
+
+deliverBtn.addEventListener('click', function() {
+  // Simulate project delivery with a confirmation message
+  deliverBtn.disabled = true; // Disable button to prevent multiple clicks
+  deliverMessage.style.display = 'block';
+  // Add logic to actually deliver the project to the client (potentially using an API call)
+});
+
+// Logic to show file indicator if files are shared within the project chat
+// (This would require integration with your chat functionality)
+function showFileIndicator() {
+  fileIndicator.style.display = 'inline';
+}
+
+// Call showFileIndicator() if files have been shared
+// (Replace with your actual logic for detecting file sharing)
+showFileIndicator();
+
+</script>
+
+</div></body></html>

@@ -5,15 +5,52 @@
 body {
   font-family: "Poppins", Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
   }
   
   .container {
-    max-width: 900px !important;
+    max-width: 1100px !important;
     margin: 0 auto;
+    margin-top: 20px;
+
   }
-  
+   #back{
+    margin-right: 10px;
+    background-color: #e7e7e7;
+   }
+   #back:hover{
+    background-color: #f5f4f4;
+    color: #000;
+    transform: scale(1.03);
+   }
+  .navbar {
+    background-color: #ffff !important;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 3px 7px #00000037;
+  }
+  .menu {
+    background-color: #fff !important;
+
+    border-radius: 0 14px 14px 0;
+  }
+  .drawer-side {
+    border-radius: 0 14px 14px 0;
+    box-shadow: 0 3px 7px #00000027;
+    margin-right: 10px;
+  }
+  ul li a:active {
+    background-color: #8ed884;
+  }
+
+  .logo {
+    width: 30%;
+    max-width: 200px;
+  }
+  .fas.ico {
+    color: #8ed884;
+  }
+
+
   /* Profile Section */
   .profile-section {
     background-color: #fff;

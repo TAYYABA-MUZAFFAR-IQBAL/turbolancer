@@ -47,23 +47,7 @@ function isElementOverflowingX(element) {
   
     scrollDirection = currentScroll;
   });
-        function _(cookieName) {
-          var expirationDate = new Date(0); // Create a Date object set to the epoch time (January 1, 1970)
-          var formattedDate = expirationDate.toUTCString(); // Get the UTC string representation of the date
-  
-          document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
-        }
-  
-        document
-          .getElementById("deleteCookieButton")
-          .addEventListener("click", function () {
-            list = ["ideo", "emalo", "deno", "tp"];
-            for (i = 0; i <= list.length; i++) {
-              _(list[i]);
-            }
-            window.location.reload();
-          });
-  
+     
         function select(x) {
           function doit(x) {
             document

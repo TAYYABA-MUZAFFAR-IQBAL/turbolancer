@@ -1,9 +1,23 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Sofia");
+
+* {
+    padding: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-  }
+    background-color: #ffffff;
 
+  } 
   .chart-container {
     width: 100%;
     max-width: 1000px;
@@ -25,7 +39,7 @@ body {
   .navbar {
     background-color: #ffff !important;
     border-radius: 0 0 14px 14px;
-    box-shadow: 0 3px 7px #00000027;
+    box-shadow: 0 3px 7px #00000037;
   }
   .menu {
     background-color: #fff !important;
@@ -52,6 +66,8 @@ body {
   .Mactive a {
     background-color: #18ca00;
     color: #fff;
+    pointer-events: none;
+    cursor: pointer;
   }
 
   .dis {
@@ -145,4 +161,13 @@ text-align: center;
 text-decoration: underline;
 color: #006aff;
 cursor: pointer;
+}
+.iframe{
+  margin-top: 20px;
+  border-radius: 13px;
+  
+}
+
+ul li a{
+  cursor: pointer;
 }
