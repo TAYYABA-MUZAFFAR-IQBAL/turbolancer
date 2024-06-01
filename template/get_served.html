@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=0.6">
 <title>Freelancing Marketplace</title>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="/static/tailwind.js"></script>
 <script src="https://kit.fontawesome.com/cfa490a0db.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/static/toast.css" />
+<script src="/static/toast.js"></script>
 <style>
   
   .slideshow::-webkit-scrollbar-thumb {
@@ -148,10 +150,25 @@ object-fit: fill;
 ::-webkit-scrollbar-thumb:hover {
   background: #bdbdbd;
 }
-
-
+.btn-ghost{
+  background-color: #f1f1f1;
+}
+.newcataloge {
+        width: 320px;
+        height: 384px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 20px !important;
+      }
+      .newcataloge svg{
+        font-weight: 300;
+        width: 18px;
+        margin-right: 10px;
+        transform: rotate(-80deg);
+      }
 
 .gridparent{
+  padding: 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly !important;
@@ -167,13 +184,21 @@ object-fit: fill;
   font-size: 20px;
   backdrop-filter: brightness(150%);
 }
-.heart .fa-regular, .heart.liked .fa-solid{
-display: block;}
-.heart .fa-solid, .heart.liked .fa-regular{
-display: none;}
-.heart:hover{
-  filter: brightness(120%);
-}
+.heart {
+        background-color: transparent;
+        font-size: 20px;
+      }
+      .heart .fa-regular,
+      .heart.liked .fa-solid {
+        display: block;
+      }
+      .heart .fa-solid,
+      .heart.liked .fa-regular {
+        display: none;
+      }
+      .heart:hover {
+        filter: brightness(120%);
+      }
 .disc{
   white-space: nowrap; 
     text-align: center;
@@ -216,96 +241,148 @@ display: none;}
   </div>
 </div>
 <div class="flex gridparent" >
-  <div class="card bg-base-100 shadow-xl w-80 reqimg" onmouseleave="hide(this)" onmouseenter="show(this)" data-c="320">
+  {% for item in cat %}
+  <div
+    class="card bg-base-100 shadow-xl w-80 reqimg"
+    id="CARD{{ loop.index0 }}"
+    data-p="{{item['_id']}}"
+    onmouseleave="hide(this)"
+    onmouseenter="show(this)"
+    data-c="320"
+  >
     <div class="after" onclick="next(this)">↪</div>
     <div class="before" onclick="back(this)">↩</div>
     <figure class="relative">
       <div class="slideshow">
-        
-        <img src="/static/6krbcxk4.png" data-num="2" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
-        <img src="/static/banner.jpg" data-num="3" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
-        <img src="/static/bh.jpg-" data-num="3" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
+        {% for img in item['images'] %}
+        <img
+          src="{{img}}"
+          data-num="{{ loop.index0 }}"
+          alt="Product Image"
+          class="rounded-t-box w-full h-48 object-cover"
+        />
+        {% endfor %}
       </div>
-      <button class="btn btn-circle btn-ghost absolute top-2 right-2 heart" onclick="like(this)">
-        <i class="fa-regular fa-heart" style="color: #d1d1d1;"></i>
-        <i class="fa-solid fa-heart text-red-500"></i>
+      {% if item['sell'] %}
+    <button
+        class="btn btn-circle btn-ghost absolute top-2 right-2 heart"
+        style="background-color: #404040"
+        onclick="const channel = new BroadcastChannel('live.TurboLancer/dell');
+        channel.postMessage(`{{item['_id']}}`);">
+        <i
+          class="fa-regular fa-trash-can"
+          style="background-color: transparent; color: #ff0000"
+        ></i>
       </button>
+    {% else %}
+    <button
+    class="btn btn-circle btn-ghost absolute top-2 right-2 heart"
+    onclick="like(this)"
+  >
+    <i
+      class="fa-regular fa-heart"
+      style="background-color: transparent; color: #e2e2e2"
+    ></i>
+    <i
+      class="fa-solid fa-heart text-red-500"
+      style="background-color: transparent"
+    ></i>
+  </button>
+      {% endif %}
     </figure>
-    <div class="card-body">
-      <h2 class="card-title"><span>Product Name</span></h2>
-      <h6 class="card-actions">
+    <div
+      onclick="place('{{c_id[loop.index0]}}')"
+      class="card-body"
+      style="border-radius: 14px; cursor: pointer"
+    >
+      <h4 class="card-title" title="{{item['title']}}">
+        <span class="ti" style="font-size: 17px">{{item['title']}}</span>
+        {% if item['res'] %}
+        <sup class="badge badge-secondary">NEW</sup>
+        {% endif %}
+      </h4>
+      <div class="flex items-center justify-between">
         <div class="flex items-center">
           <div class="avatar online">
             <div class="w-8 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src="{{item['seller_image']}}" />
             </div>
-          </div>&nbsp;&nbsp;
-          <span style="font-size: small; color: #000000; font-weight: 600;">SELLER Name</span>
+          </div>
+          <span class="ml-2 text-sm font-semibold ti"
+            >{{item['seller_name']}}</span
+          >
         </div>
-        <div class="badge badge-secondary">NEW</div>
-      </h6>
+      </div>
       <div class="card-actions justify-between mt-4">
-        <div class="badge badge-lg">10 order</div>
-        <div class="text-black text-base-200 font-semibold" ><text style="color: #6d6d6d;">Starting at:</text> <bold style="font-size: larger;">$40</bold></div>
+        <div class="badge badge-lg">{{item['orders']}} orders</div>
+        <div class="text-base-content font-semibold">
+          <span class="text-gray-500">Starting at:</span>
+          <span class="text-lg ti" style="width: 70px"
+            >${{item['inputValues'][0]}}</span
+          >
+        </div>
       </div>
     </div>
   </div>
-
+  {% endfor %}
+  <!-- repeat it for more card -->
+  <button onclick="" class="btn btn-ghost newcataloge">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg> Load more
+  </button>
   
   
   <!-- Add more product cards here -->
 </div>
 
 <script>
- window.onload = function (){
-  
+function dellit() {
+        document.querySelector("#dellit").addEventListener("click", () => {
+          const element = document
+            .querySelector("#dellit")
+            .getAttribute("data-given");
+          const pId = document
+            .querySelector(`#${element}`)
+            .getAttribute("data-p");
+          console.log(pId);
+          form = new FormData();
+          form.append("id", pId);
+          fetch("/dell_catalogue", {
+            method: "POST",
+            body: form,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              toast("s", "Successfully Deleted");
+              setTimeout(() => {
+                window.location.reload();
+              }, 1000);
+            })
+            .catch((error) => {
+              toast("d", "An error occurred");
+            });
+        });
+      }
+      function place(x) {
+    const queryString = window.location.search;
+    
+    if (queryString) {
+        const urlParams = new URLSearchParams(queryString);
+        const userParam = urlParams.get("here");
 
-gridparent = document.querySelector('.gridparent')
-
-for (i = 0;i<=12;i++){
-  gridparent.innerHTML+=`  <div class="card bg-base-100 shadow-xl w-80 reqimg" onmouseleave="hide(this)" onmouseenter="show(this)" data-c="320">
-    <div class="after" onclick="next(this)">↪</div>
-    <div class="before" onclick="back(this)">↩</div>
-    <figure class="relative">
-      <div class="slideshow">
-        
-        <img src="/static/6krbcxk4.png" data-num="2" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
-        <img src="/static/banner.jpg" data-num="3" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
-        <img src="/static/bh.jpg-" data-num="3" alt="Product Image" class="rounded-t-box w-full h-48 object-cover">
-      </div>
-      <button class="btn btn-circle btn-ghost absolute top-2 right-2 heart" onclick="like(this)">
-        <i class="fa-regular fa-heart" style="color: #d1d1d1;"></i>
-        <i class="fa-solid fa-heart text-red-500"></i>
-      </button>
-    </figure>
-    <div class="card-body">
-      <h2 class="card-title"><span>Product Name</span></h2>
-      <h6 class="card-actions">
-        <div class="flex items-center">
-          <div class="avatar online">
-            <div class="w-8 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-            </div>
-          </div>&nbsp;&nbsp;
-          <span style="font-size: small; color: #000000; font-weight: 600;">SELLER Name</span>
-        </div>
-        <div class="badge badge-secondary">NEW</div>
-      </h6>
-      <div class="card-actions justify-between mt-4">
-        <div class="badge badge-lg">10 order</div>
-        <div class="text-black text-base-200 font-semibold" ><text style="color: #6d6d6d;">Starting at:</text> <bold style="font-size: larger;">$40</bold></div>
-      </div>
-    </div>
-  </div>`
-
-
-
+        if (userParam) {
+            details(x);
+        } else {
+            const channel = new BroadcastChannel("live.TurboLancer/c");
+            channel.postMessage(x);
+        }
+    } else {
+        const channel = new BroadcastChannel("live.TurboLancer/c");
+        channel.postMessage(x);
+    }
 }
 
-}
-// Constants for better readability
 const SLIDE_WIDTH = 320;
-const TRANSITION_DURATION = 100; // in milliseconds
+const TRANSITION_DURATION = 100;
 
 function show(container) {
   const afterElement = container.querySelector('.after');
@@ -313,17 +390,14 @@ function show(container) {
   const imgElements = container.querySelectorAll('img');
   const imageCount = imgElements.length;
 
-  // Show the before and after elements
   afterElement.style.display = 'flex';
   beforeElement.style.display = 'flex';
 
-  // Add a delay for the transition effect
   setTimeout(() => {
     afterElement.classList.add('show');
     beforeElement.classList.add('show');
   }, TRANSITION_DURATION);
 
-  // Set data attributes for each image
   imgElements.forEach((img, index) => {
     img.setAttribute('data-num', index);
   });
@@ -335,11 +409,9 @@ function hide(container) {
   const afterElement = container.querySelector('.after');
   const beforeElement = container.querySelector('.before');
 
-  // Hide the before and after elements
   afterElement.classList.remove('show');
   beforeElement.classList.remove('show');
 
-  // Add a delay for the transition effect
   setTimeout(() => {
     afterElement.style.display = 'none';
     beforeElement.style.display = 'none';

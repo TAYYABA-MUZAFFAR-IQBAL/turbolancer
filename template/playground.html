@@ -1,77 +1,401 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
-<head>
- <meta charset="UTF-8">
- <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>404 Not Found</title>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
- <script src="https://cdn.tailwindcss.com"></script>
- <script>
-   tailwind.config = {
-     theme: {
-       extend: {
-         colors: {
-           primary: {
-             "50": "#eff6ff",
-             "100": "#dbeafe",
-             "200": "#bfdbfe",
-             "300": "#93c5fd",
-             "400": "#60a5fa",
-             "500": "#3b82f6",
-             "600": "#2563eb",
-             "700": "#1d4ed8",
-             "800": "#1e40af",
-             "900": "#1e3a8a",
-             "950": "#172554"
-           }
-         },
-         fontFamily: {
-           sans: ['Inter', 'sans-serif']
-         }
-       }
-     }
-   }
- </script>
- <link rel="stylesheet" href="https://d2s3ptptdai04x.cloudfront.net/get-flowbite-pro.c808d72e-ef26-480f-b229-1c8888485960.css">
- <style>
-   .text-primary-600 {
-     color: #2563eb;
-   }
- </style>
-</head>
-<body class="flex flex-col items-center justify-center min-h-screen">
- <div class="max-w-md text-center mb-8">
-   <img class="mx-auto mb-6" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/404/404-computer.svg" alt="404 Not Found">
-   <h1 class="text-5xl font-bold text-primary-600 mb-4">404 Not Found</h1>
-   <p class="text-xl text-gray-600 mb-6">Whoops! That page doesn't exist.</p>
-   <p class="text-xl text-gray-600 mb-4">Here are some helpful links instead:</p>
- </div>
- <ul class="flex flex-col items-center space-y-2 text-xl text-gray-600">
-   <li><a href="#" class="hover:text-primary-600">Home</a></li>
-   <li><a href="#" class="hover:text-primary-600">Search</a></li>
-   <li><a href="#" class="hover:text-primary-600">Help</a></li>
-   <li><a href="#" class="hover:text-primary-600">Contact</a></li>
- </ul>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Two-Way Chat App</title>
+    <link rel="icon" type="image/png" href="/static/icon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
 
- <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
- <script>
-   window.addEventListener("load", function(event) {
-     const links = document.querySelectorAll("a");
-     const buttons = document.querySelectorAll("button");
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="/static/tailwind.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="/static/toast.css" />
+    <script src="/static/toast.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+    <style>
+      * {
+        text-wrap: balance;
+      }
+      .chat-end .chat-bubble {
+        background-color: #28a745;
+        color: #fff;
+      }
+      .chat-bubble {
+        max-width: 500px;
+        word-break: break-all;
+        line-break: anywhere;
+        text-wrap: balance;
+      }
+      #messages {
+        height: calc(100% - 6rem);
+        overflow-y: auto;
+      }
+      #imageInputContainer {
+        position: relative;
+        display: inline-block;
+      }
+      #imagePreview {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-98%);
+      }
+      #cancelImage {
+        position: absolute;
+        top: -60px;
+        left: 70px;
+        transform: translate(-50%, -50%);
+        background-color: #f56565;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        cursor: pointer;
+        display: none;
+        z-index: 10;
+      }
+      .btnsend {
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        outline: none;
+      }
+      .btn {
+        border-radius: 50px;
+      }
+      #message {
+        border: none;
+        border-radius: 50px;
 
-     links.forEach(function(link) {
-       link.addEventListener("click", function(ev) {
-         ev.preventDefault();
-       });
-     });
+        padding: 10px;
+        padding-left: 20px;
+        background-color: #f1f1f1;
+      }
+      .card {
+        border-radius: 20px;
+      }
+      .card-header {
+        border-radius: 20px 20px 0 0;
 
-     buttons.forEach(function(button) {
-       button.addEventListener("click", function(ev) {
-         ev.preventDefault();
-       });
-     });
-   });
- </script>
-</body>
+        border-bottom: 1px solid #39393957;
+        color: #121212;
+        gap: 10px;
+      }
+      .form-control {
+        border-top: 1px solid #39393957;
+      }
+      #Suser {
+        border-radius: 50px;
+        width: 50px;
+        box-shadow: 0 2px 3px #3939398a;
+        height: 50px;
+      }
+      .status-indicator {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+
+      .status-online {
+        background-color: rgb(0, 195, 0);
+      }
+
+      .status-offline {
+        background-color: #6c757d;
+      }
+    </style>
+  </head>
+  <body
+    ondragover="event.preventDefault();"
+    ondrop="dropImage(event)"
+    class="flex justify-center items-center h-screen w-full bg-gray-100"
+  >
+    <div
+      class="card w-full max-w-5xl bg-base-100 h-full shadow-xl flex flex-col"
+    >
+      <div
+        class="card-header flex items-center bg-white text-primary-content p-4"
+      >
+        <img
+          src="/static/6krbcxk4.png"
+          onclick="openit(this)"
+          alt="second person"
+          id="Suser"
+        />
+        <div class="flex flex-col">
+          <span id="chat-header" class="text-lg font-semibold">Chat</span>
+          <span id="user-status" class="text-xs opacity-50">Offline</span>
+        </div>
+      </div>
+      <div id="messages" class="flex-1 overflow-y-auto p-4"></div>
+      <div class="form-control p-4">
+        <div class="flex gap-4">
+          <div id="imageInputContainer" class="relative flex-grow">
+            <img
+              id="imagePreview"
+              src=""
+              onclick="openit(this)"
+              alt="Image Preview"
+            />
+            <span id="cancelImage" onclick="cancelImage()">✕</span>
+            <input
+              type="text"
+              id="message"
+              placeholder="Type your message or drop an image here..."
+              class="input input-bordered w-full"
+            />
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              class="hidden"
+              onchange="previewImage(this)"
+            />
+          </div>
+
+          <button
+            class="btn btn-square btn-ghost"
+            style="padding: 5px"
+            onclick="document.getElementById('imageInput').click()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>Add image</title>
+              <path
+                d="M13 19C13 19.7 13.13 20.37 13.35 21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H19C20.11 3 21 3.9 21 5V13.35C20.37 13.13 19.7 13 19 13V5H5V19H13M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H13.35C13.75 15.88 14.47 14.91 15.4 14.21L13.96 12.29M20 18V15H18V18H15V20H18V23H20V20H23V18H20Z"
+              />
+            </svg>
+          </button>
+          <button
+            class="btn btnsend btn-success btn-square"
+            style="padding: 12px"
+            onclick="sendMessage()"
+          >
+            <svg
+              fill="#fff"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <title>send</title>
+              <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+let socket = io();
+const username = '{{un}}';
+const room = '{{x}}';
+let chatPartner = null;
+let selectedImage = null;
+
+function joinRoom() {
+  socket.emit('join', { username, room });
+  resetChatHeader();
+}
+
+joinRoom();
+
+socket.on('response', function (data) {
+  const [message, usernameG, timestamp, type, caption] = data;
+  appendMessage(usernameG, message, timestamp, type, caption);
+});
+
+socket.on('status', function (data) {
+  const messageContainer = document.getElementById('messages');
+
+  if (data.id) {
+    if (data.id !== username) {
+      updateChatPartner(data, other = true);
+    } else {
+      // Update own online status
+      const userStatus = document.getElementById('user-status');
+      const statusIndicator = document.createElement('span');
+      statusIndicator.classList.add('status-indicator');
+      statusIndicator.classList.toggle('status-online', data.online);
+      statusIndicator.classList.toggle('status-offline',!data.online);
+      userStatus.innerHTML = '';
+      userStatus.appendChild(statusIndicator);
+      userStatus.appendChild(document.createTextNode(`${data.online? 'online' : 'offline'}`));
+    }
+  }
+});
+
+function updateChatPartner(data, other = false) {
+  chatPartner = data;
+
+  const userImage = document.getElementById('Suser');
+  const userHeader = document.getElementById('chat-header');
+  const userStatus = document.getElementById('user-status');
+  const messageContainer = document.getElementById('messages');
+
+ 
+
+  if (other) {
+    userImage.src = data.image;
+  userHeader.innerText = data.name;
+    const statusIndicator = document.createElement('span');
+    statusIndicator.classList.add('status-indicator');
+    statusIndicator.classList.toggle('status-online', data.online);
+    statusIndicator.classList.toggle('status-offline',!data.online);
+    userStatus.innerHTML = '';
+    userStatus.appendChild(statusIndicator);
+    userStatus.appendChild(document.createTextNode(`${data.online? 'online' : 'offline'}`));
+  }
+
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+function resetChatHeader() {
+  const userImage = document.getElementById('Suser');
+  const userHeader = document.getElementById('chat-header');
+  const userStatus = document.getElementById('user-status');
+
+  userImage.src = '/static/6krbcxk4.png';
+  userHeader.innerText = 'Loading...';
+
+  const statusIndicator = document.createElement('span');
+  statusIndicator.classList.add('status-indicator', 'tatus-offline');
+  userStatus.innerHTML = '';
+  userStatus.appendChild(statusIndicator);
+  userStatus.appendChild(document.createTextNode('Offline'));
+}
+
+socket.on('disconnect', function () {
+  resetChatHeader();
+  const userStatus = document.getElementById('user-status');
+  const statusIndicator = document.createElement('span');
+  statusIndicator.classList.add('status-indicator', 'tatus-offline');
+  userStatus.innerHTML = '';
+  userStatus.appendChild(statusIndicator);
+  userStatus.appendChild(document.createTextNode('Disconnected'));
+});
+
+function sendMessage() {
+  const messageInput = document.getElementById('message');
+  const message = messageInput.value.trim();
+  if (message !== '' || selectedImage) {
+    if (selectedImage) {
+      const caption = message;
+      socket.emit('message', { image: selectedImage, room, username, caption });
+      cancelImage();
+    } else {
+      socket.emit('message', { message, room, username });
+    }
+    messageInput.value = '';
+  }
+}
+
+function appendMessage(usernameG, message, timestamp, type, caption = '') {
+  const isOwnMessage = usernameG === username;
+  const messageContainer = document.getElementById('messages');
+  const messageElement = document.createElement('div');
+  const localTime = convertToLocalTime(timestamp);
+  const alignmentClass = isOwnMessage ? 'chat-end' : 'chat-start';
+  const userImage = isOwnMessage ? '/static/yourprofile.jpg' : (chatPartner ? chatPartner.image : '/static/6krbcxk4.png');
+
+  if (type === 'text') {
+    messageElement.innerHTML = `
+      <div class="chat ${alignmentClass}">
+       
+   
+        <div class="chat-bubble">${message}</div>
+        <div class="chat-footer opacity-50">${localTime}</div>
+      </div>
+    `;
+  } else if (type === 'image') {
+    messageElement.innerHTML = `
+      <div class="chat ${alignmentClass}">
+ 
+        <div class="chat-bubble">
+          <img src="${message}" onclick="openit(this)" alt="Image" class="max-w-xs h-auto rounded-lg">
+          ${caption ? `<div class="text-sm mt-2">${caption}</div>` : ''}
+        </div>
+        <div class="chat-footer opacity-50">${localTime}</div>
+      </div>
+    `;
+  }
+  messageContainer.appendChild(messageElement);
+  messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+function previewImage(input) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedImage = e.target.result;
+      showImagePreview(selectedImage);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function dropImage(event) {
+  const files = event.dataTransfer.files;
+  if (files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      selectedImage = e.target.result;
+      showImagePreview(selectedImage);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+}
+
+function showImagePreview(imageData) {
+  const preview = document.getElementById('imagePreview');
+  preview.src = imageData;
+  preview.style.display = 'block';
+  document.getElementById('cancelImage').style.display = 'flex';
+  document.getElementById('message').placeholder = "Add a caption... (optional)";
+}
+
+function cancelImage() {
+  selectedImage = null;
+  document.getElementById('imageInput').value = '';
+  document.getElementById('imagePreview').style.display = 'none';
+  document.getElementById('cancelImage').style.display = 'none';
+  document.getElementById('message').placeholder = "Type your message or drop an image here...";
+}
+
+function convertToLocalTime(timestamp) {
+  const date = new Date(timestamp);
+  const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+  return new Intl.DateTimeFormat(undefined, options).format(date);
+}
+
+
+    </script>
+  </body>
 </html>

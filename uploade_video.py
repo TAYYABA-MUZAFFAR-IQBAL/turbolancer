@@ -1,58 +1,65 @@
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
-import base64
-key = b'||/:?"(:@junaid)'
+from flask import Flask, render_template, request
+from flask_socketio import SocketIO, emit, join_room, leave_room, disconnect
+import pymongo
+from datetime import datetime
+import pytz
 
-def pad(text):
-    block_size = 16
-    padding_length = block_size - (len(text) % block_size)
-    padding = bytes([padding_length]) * padding_length
-    return text + padding
+app = Flask(__name__, template_folder='template')
+app.config['SECRET_KEY'] = 'your_secret_key'
+socketio = SocketIO(app)
 
-def unpad(padded_text):
-    padding_length = padded_text[-1]
-    return padded_text[:-padding_length]
+client = pymongo.MongoClient("mongodb+srv://junaidiqbal:allahsadaro@junaid.lkpmjko.mongodb.net/?retryWrites=true&w=majority")
+chat = client["chat"]
+messages_collection = chat["messages"]
 
-def encrypt(key, text):
-    try:
-        backend = default_backend()
-        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
-        encryptor = cipher.encryptor()
+users = {}
 
-        padded_text = pad(text.encode())
+@app.route('/chat')
+def index():
+    return render_template('playground.html')
 
-        ciphertext = encryptor.update(padded_text) + encryptor.finalize()
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    users[request.sid] = {'username': username, 'room': room}
+    emit('status', {'msg': f'{username} has entered the room.'}, room=room)
 
-        encrypted_data = base64.urlsafe_b64encode(ciphertext).decode().rstrip("=")
-        return encrypted_data
-    except Exception as e:
-        return f"Encryption Error: {str(e)}"
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    emit('status', {'msg': f'{username} has left the room.'}, room=room)
+    if request.sid in users:
+        del users[request.sid]
 
-def decrypt(key, encrypted_data):
-    try:
-        backend = default_backend()
+@socketio.on('disconnect')
+def on_disconnect():
+    user = users.get(request.sid)
+    if user:
+        username = user['username']
+        room = user['room']
+        leave_room(room)
+        emit('status', {'msg': f'{username} has disconnected.'}, room=room)
+        del users[request.sid]
 
-        padding_length = len(encrypted_data) % 4
-        encrypted_data += "=" * padding_length
+@socketio.on('message')
+def handle_message(data):
+    room = data['room']
+    message = data['message']
+    username = data['username']
+    timestamp = datetime.now(pytz.utc)
+    print(f'Received message: {message} in room: {room} from {username}')
+    message_data = {
+        "room": room,
+        "message": message,
+        "username": username,
+        "timestamp": timestamp
+    }
+    messages_collection.insert_one(message_data)
+    emit('response', {'message': message, 'username': username, 'timestamp': timestamp.isoformat()}, room=room)
 
-        ciphertext = base64.urlsafe_b64decode(encrypted_data.encode())
-
-        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=backend)
-        decryptor = cipher.decryptor()
-
-        padded_text = decryptor.update(ciphertext) + decryptor.finalize()
-
-        text = unpad(padded_text).decode()
-        return text
-    except Exception as e:
-        return f"Decryption Error: {str(e)}"
 if __name__ == '__main__':
-    while True:
-        option = input('Enter what to chose [e,d]: ')
-        if 'e' == option:
-            text : str = input('Enter: ')
-            print(encrypt(key, text))
-
-        elif 'd' == option:
-            text : str = input('Enter: ')
-            print(decrypt(key, text))
+    socketio.run(app, debug=True)

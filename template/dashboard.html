@@ -20,7 +20,7 @@
       rel="stylesheet"
       type="text/css"
     />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/tailwind.js"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
       rel="stylesheet"
@@ -106,7 +106,7 @@
                 class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a class="justify-between" id="anchor"  href="{{aclink}}"> Profile </a>
+                  <a class="justify-between" id="anchor"  href="{{aclink}}"> Account </a>
                 </li>
                 <li><a href="{{allink}}">Switch to buyer account</a></li>
                 <li><a id="deleteCookieButton">Logout</a></li>
@@ -125,7 +125,7 @@
                   <h2 class="profile-name"> {{ name.upper() }}</h2>
                   <p class="profile-details">{{ email }} , {{ ph }}, <i class="fas ico fa-globe"></i> {{ country }}
                   </p>
-                  <p class="profile-role" style="color: #00b800; text-decoration: underline;">{{ tag }}</p>
+                 <a href="{{aclink}}" target="_blank" rel="noopener noreferrer"> <p class="profile-role" style="color: #00b800; text-decoration: underline; text-transform: lowercase;">{{ tag }}</p></a>
               </div>
           </div>
           </div>
@@ -249,6 +249,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 
     <script>
+const channel = new BroadcastChannel('live.TurboLancer');
+channel.onmessage = (event) => {
+details(event.data)}
+
 function showiframe(element) {
   document.querySelector('.Mactive').classList.remove('Mactive')
   element.parentElement.classList.add('Mactive')

@@ -7,7 +7,9 @@ import io
 import uuid
 import json
 import random
-import datetime
+import datetime as dt
+
+from datetime import datetime, timedelta
 from urllib.parse import unquote
 from flask import (
     Flask,
@@ -26,14 +28,15 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import turbolancer_data_Security
 import TurboLancer_RePhrase_text
-from flask_socketio import SocketIO, emit, join_room
+from flask_socketio import SocketIO, emit, join_room, leave_room, disconnect
 from werkzeug.datastructures import ImmutableMultiDict
 import uploade_video as uv
 from jinja2 import Environment, FileSystemLoader
-import base64
-app = Flask(__name__, template_folder="template", static_folder="static")
-app.config["SECRET_KEY"] = os.urandom(24)
-socketio = SocketIO(app)
+import pytz
+from base64 import b64decode
+TurboLancer = Flask(__name__, template_folder="template", static_folder="static")
+TurboLancer.config["SECRET_KEY"] = os.urandom(24)
+socketio = SocketIO(TurboLancer)
 env = Environment(loader=FileSystemLoader("template"))
 
 # Connect to MongoDB
@@ -42,8 +45,10 @@ client = MongoClient(
 )
 db = client["Tasker"]
 key = b'||/:?"(:@junaid)'
-
+chat = client["chat"]
 # Set collection names
+chatroom_collection = chat["chatroom"]
+chatImages_collection = chat["images"]
 seller_collection = db["Sellers"]
 user_collection = db["users"]
 serving_sectors_collection = db["serving_sectors"]
@@ -58,6 +63,13 @@ slideshow_collection = db["slideshow"]
 def generate_id():
     return str(uuid.uuid4())
 
+def new_or_not(date_str):
+   date = datetime.strptime(date_str, "%d/%m/%y")
+   days_diff = (datetime.now() - date).days
+   if days_diff <= 5:
+       return True
+   else:
+       return False
 
 def getkey(data):
     keys_to_find = ["ideo", "emalo", "deno"]
@@ -104,7 +116,7 @@ class ImageUploadForm(FlaskForm):
     image = FileField("Image")
 
 
-@app.route("/")
+@TurboLancer.route("/")
 def main():
     try:
         cookies = getkey(request.cookies)
@@ -133,7 +145,7 @@ def main():
     return render_template("index.html")
 
 
-@app.route("/start_selling_now", methods=["GET", "POST"])
+@TurboLancer.route("/start_selling_now", methods=["GET", "POST"])
 def signup():
     try:
         if check(request.cookies, "file") is not None:
@@ -186,8 +198,8 @@ def signup():
                 count = seller_collection.count_documents({"name": name})
                 count_s = user_collection.count_documents({"name": name})
                 count = str((int(count + count_s) + 1) * 1000)[::-1]
-                year = datetime.date.today().year
-                month = datetime.date.today().strftime("%b")
+                year = dt.date.today().year
+                month = dt.date.today().strftime("%b")
                 count = str(count)
                 if count:
                     count += str(random.randint(0, 9))
@@ -229,7 +241,7 @@ def signup():
     return render_template("signup-c.html")
 
 
-@app.route("/addinfo/<x>/<y>/<z>")
+@TurboLancer.route("/addinfo/<x>/<y>/<z>")
 def addinfo(x, y, z):
     try:
         cookies = getkey(request.cookies)
@@ -251,7 +263,7 @@ def addinfo(x, y, z):
         return redirect(url_for("main"))
 
 
-@app.route("/begin_client_journey", methods=["GET", "POST"])
+@TurboLancer.route("/begin_client_journey", methods=["GET", "POST"])
 def signup_and_upload_image():
     try:
         if check(request.cookies, "file") is not None:
@@ -312,8 +324,8 @@ def signup_and_upload_image():
                 count = seller_collection.count_documents({"name": name})
                 count_s = user_collection.count_documents({"name": name})
                 count = str((int(count + count_s) + 1) * 1000)[::-1]
-                year = datetime.date.today().year
-                month = datetime.date.today().strftime("%b")
+                year = dt.date.today().year
+                month = dt.date.today().strftime("%b")
 
                 count = str(count)
                 if count:
@@ -351,7 +363,7 @@ def signup_and_upload_image():
         return render_template("sin-c.html")
 
 
-@app.route("/signin", methods=["GET", "POST"])
+@TurboLancer.route("/signin", methods=["GET", "POST"])
 def signin():
     try:
         if check(request.cookies, "file") is not None:
@@ -403,7 +415,7 @@ def signin():
     return render_template("singin.html")
 
 
-@app.route("/redi/<user_id>/<encoded_email>/<ide>/<user_d>/<deno>")
+@TurboLancer.route("/redi/<user_id>/<encoded_email>/<ide>/<user_d>/<deno>")
 def redi(user_id, encoded_email, ide, user_d, deno):
     try:
         expected_deno = "_[__xxx__%12*79)(56)[:]-++784kdd]_"
@@ -427,7 +439,7 @@ def redi(user_id, encoded_email, ide, user_d, deno):
         return redirect(url_for("main"))
 
 
-@app.route("/UPLOAD_IMAGE", methods=["POST"])
+@TurboLancer.route("/UPLOAD_IMAGE", methods=["POST"])
 def upload_image():
     try:
         if "image" in request.files:
@@ -473,7 +485,7 @@ def upload_image_local(image_data, encoded_email, ideo):
         {"data": image_data, "reference": ideo}
     ).inserted_id
 
-    # Update the 'image' field in the appropriate collection
+    # Update the 'image' field in the TurboLancerropriate collection
     if seller_collection.find_one({"_id": ideo, "email": encoded_email}):
         seller_collection.update_one(
             {"_id": ideo, "email": encoded_email},
@@ -487,14 +499,24 @@ def upload_image_local(image_data, encoded_email, ideo):
 
     return jsonify({"image_id": str(image_id)})
 
-
-@app.route("/get_image/<image_id>", methods=["GET"])
-def get_image(image_id):
+@TurboLancer.route("/i/<image_id>", methods=["GET"])
+def get_i(image_id):
     # Retrieve the image from the database
-    image_data = image_collection.find_one({"_id": ObjectId(image_id)}) or slideshow_collection.find_one({"_id": ObjectId(image_id)})
+    image_data =  slideshow_collection.find_one({"_id": ObjectId(image_id)})
 
     if image_data and "data" in image_data:
-        # Serve the image data with appropriate content type
+        # Serve the image data with TurboLancerropriate content type
+        return send_file(io.BytesIO(image_data["data"]), mimetype="image/jpeg")
+    else:
+        return jsonify({"error": "Image not found"})
+
+@TurboLancer.route("/get_image/<image_id>", methods=["GET"])
+def get_image(image_id):
+    # Retrieve the image from the database
+    image_data = image_collection.find_one({"_id": ObjectId(image_id)}) 
+
+    if image_data and "data" in image_data:
+        # Serve the image data with TurboLancerropriate content type
         return send_file(io.BytesIO(image_data["data"]), mimetype="image/jpeg")
     else:
         return jsonify({"error": "Image not found"})
@@ -502,7 +524,7 @@ def get_image(image_id):
     ##############################################################################################
 
 
-@app.route("/update_data", methods=["POST"])
+@TurboLancer.route("/update_data", methods=["POST"])
 def update_data():
     data = request.get_json()
     encoded_email = data.get("email")
@@ -531,12 +553,12 @@ def update_data():
         return jsonify({"error": "Invalid data."})
 
 
-@app.errorhandler(404)
+@TurboLancer.errorhandler(404)
 def not_found_error(error):
     return jsonify({"error": "Sorry! Resource not found"}), 404
 
 
-@app.route("/home-c/<x>/<y>")
+@TurboLancer.route("/home-c/<x>/<y>")
 def home_c(x, y):
     if not check(request.cookies, "file"):
         return redirect(url_for("main"))
@@ -572,7 +594,7 @@ def home_c(x, y):
     return redirect(url_for("main"))
 
 
-@app.route("/dashboard/<x>/<y>")
+@TurboLancer.route("/dashboard/<x>/<y>")
 def dashboard(x, y):
     if not check(request.cookies, "file"):
         return redirect(url_for("main"))
@@ -605,69 +627,118 @@ def dashboard(x, y):
 
 
 
-@app.route("/catalogue/<x>/<y>", methods=["GET", "POST"])
+@TurboLancer.route("/catalogue/<x>/<y>", methods=["GET", "POST"])
 def catalogue(x, y):
     if not check(request.cookies, "file"):
         return redirect(url_for("main"))
-    elif (
-        check(request.cookies, "file")
-        and turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"]) != x
-    ):
+    
+    decrypted_key = turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"])
+    if check(request.cookies, "file") and decrypted_key != x:
         return redirect(url_for("main"))
-
+    
     Seller_data = seller_collection.find_one({"_id": x, "d": y})
-
-    if Seller_data:
-        if request.method == "GET":
-            cat = list(catalogue_collection.find({"seller_id": x}))
-            if cat:
-                print(cat)
-                return render_template("catalogue.html", **Seller_data, cat=cat)
-            return render_template("catalogue.html", **Seller_data)
-
+    if not Seller_data:
+        return jsonify({"success": False}), 404
+    
+    if request.method == "GET":
+        new = []
+        cat = list(catalogue_collection.find({"seller_id": x}))
+        if cat:
+            res = None
+            for item in cat:
+                res = new_or_not(item['date'])
+                id = item["_id"]
+                item['res'] = res
+                new.TurboLancerend(id)
+            return render_template("catalogue.html", **Seller_data, cat=cat, c_id=new,)
+        return render_template("catalogue.html", **Seller_data)
+    
     if request.method == "POST":
         data = request.form.to_dict()
-        uploaded_files =request.files.getlist('images')
-        
+        uploaded_files = request.files.getlist('images')
         images = []
+        
         for file in uploaded_files:
             binary_data = file.read()
             img_id = slideshow_collection.insert_one({'data': binary_data, 'reference': x}).inserted_id
-            images.append("/get_image/" + str(img_id)) 
-            print(images)
-        catalogue_collection.insert_one({
-            'title': data['title'],
+            images.TurboLancerend("/i/" + str(img_id))
+        
+        print(images)
+        
+        catalogue_data = {
+            'title': data.get('title'),
             'seller_id': x,
-            'category': data['category'],
-            'description': data['description'],
-            'tags': json.loads(data['tags']),
+            'category': data.get('category'),
+            'description': data.get('description'),
+            'tags': json.loads(data.get('tags', '[]')),
             'images': images,
-            'inputLabels': json.loads(data['inputLabels']),
-            'inputValues': json.loads(data['inputValues']),
-            'date': datetime.date.today().strftime("%d/%m/%y"),
-            'seller_image': Seller_data['image'],
-            'seller_name': Seller_data['name'],
+            'inputLabels': json.loads(data.get('inputLabels', '[]')),
+            'inputValues': json.loads(data.get('inputValues', '[]')),
+            'date': dt.date.today().strftime("%d/%m/%y"),
+            'seller_image': Seller_data.get('image'),
+            'seller_name': Seller_data.get('name'),
             'likes': 0,
             'orders': 0,
             'clicks': 0
-        })
-
-        return jsonify({"success": True})
+        }
         
-"""
-{'title': 'this is title',
- 'category': 'Software Development',
-   'description': '131231231232222222222222222222222222222222222222222222222222222222222222222222222222222222222222222',
-     'tags': '["tag1","tag2","tag3","tag4","tag5","tag6","tag7","tag8"]',
-       'images': '[object Blob],[object Blob]',
-         'inputLabels': 'Price,Price,Price,Turnaround Time,Turnaround Time,Turnaround Time,Free Revisions,Free Revisions,Free Revisions',
-           'inputValues': '123,234,345,2,5,7,8,9,4'}
+        catalogue_collection.insert_one(catalogue_data)
+        return jsonify({"success": True})
+    
+    return jsonify({"success": False})
 
-          
-"""
+@TurboLancer.route("/dell_catalogue", methods=["POST"])
+def dell_catalogue():
+    if not check(request.cookies, "file"):
+        return jsonify({'success': False})
+    else:
+        decrypted_key = turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"])
+        data = request.form.to_dict()
+        taken = data.get('id')
+
+        if taken:
+            catalogue = catalogue_collection.find_one({'_id': ObjectId(taken)})
+            if catalogue and (catalogue.get('seller_id') == decrypted_key):
+                for img in catalogue['images']:
+                    delete_image(img)
+                catalogue_collection.delete_one({'_id': ObjectId(taken)})
+                return jsonify({"success": True})
+            else:
+                return jsonify({'success': False})
+        else:
+            return jsonify({'success': False})
+
+@TurboLancer.route('/full_catalogue/<id>')
+def full_catalogue(id):
+    data = catalogue_collection.find_one({'_id':ObjectId(id)})
+    seller = seller_collection.find_one({'_id':data['seller_id']})
+    listA:list = data['inputLabels']
+    listB:list = data['inputValues']
+    pakeages = {'Basic': [], 'Standard': [], 'Premium': []}
 
 
-@app.route("/update_profile", methods=["POST"])
+    for i, label in enumerate(listA):
+        package = 'Basic' if i % 3 == 0 else 'Standard' if i % 3 == 1 else 'Premium'
+        if i < len(listB):
+            pakeages[package].TurboLancerend((label, listB[i]))
+    cookies = getkey(request.cookies)
+    ideo = turbolancer_data_Security.decrypt(key, cookies.get("ideo"))
+    print(pakeages)
+    if data and seller:
+        
+
+        owner :dict = {
+        'Stag':seller['tag'],
+        'country':turbolancer_data_Security.decrypt(key, seller['country']),
+        'name': seller['name'],
+        'S_id': seller['_id'],
+        'data': pakeages
+    }
+        return render_template('full_catalogue.html', **data, **owner, x = 6 if ideo == seller['_id'] else 0)
+    else:
+        return redirect("/NotFound")
+
+@TurboLancer.route("/update_profile", methods=["POST"])
 def update_profile():
     cookies = getkey(request.cookies)
     image_data = ""
@@ -714,11 +785,11 @@ def split_into_child_arrays(original_array):
     child_arrays = []
     for i in range(0, len(original_array), 3):
         child_array = original_array[i : i + 3]
-        child_arrays.append(child_array)
+        child_arrays.TurboLancerend(child_array)
     return child_arrays
 
 
-@app.route("/delItem", methods=["POST"])
+@TurboLancer.route("/delItem", methods=["POST"])
 def delItem():
     cookies = getkey(request.cookies)
     encoded_email = cookies.get("emalo")
@@ -763,7 +834,7 @@ def update_database(collection, ideo, encoded_email, data):
                             found = True
                             break
                     if not found:
-                        main_arr.append(arr[x])
+                        main_arr.TurboLancerend(arr[x])
                 print(main_arr)
 
                 collection.update_one(
@@ -777,12 +848,18 @@ def update_database(collection, ideo, encoded_email, data):
 
 def delete_image(image_id):
     image_id = image_id.split("/")[-1]
+    print('this is from: '+image_id)
     filter = {"_id": ObjectId(image_id)}
 
-    result = image_collection.delete_one(filter)
+    result = image_collection.find_one(filter) or slideshow_collection.find_one(filter)
 
-    if result.deleted_count > 0:
-        print(f"Image with ID {image_id} deleted successfully.")
+    if result:
+        delete_result = image_collection.delete_one(filter) or slideshow_collection.find_one(filter)
+
+        if delete_result.deleted_count > 0:
+            print(f"Image with ID {image_id} deleted successfully.")
+        else:
+            print(f"No image found with ID {image_id}.")
     else:
         print(f"No image found with ID {image_id}.")
 
@@ -858,51 +935,35 @@ def get_seller_data(developer_id):
     return None
 
 
-@app.route("/account/<x>/<y>")
+@TurboLancer.route("/account/<x>/<y>")
 def account(x, y):
-
-    if not check(request.cookies, "file"):
+    res  = check(request.cookies, "file")
+    print(res)
+    if not res:
         return redirect(url_for("main"))
 
     decrypted_x = turbolancer_data_Security.decrypt(
         key, getkey(request.cookies)["ideo"]
     )
 
-    if check(request.cookies, "file") and decrypted_x != x:
-        ud = get_user_dataA(x) or get_seller_data(x)
-        lud = get_user_dataA(decrypted_x) or get_seller_data(decrypted_x)
-
-        if ud["ph"] == lud["ph"]:
-
-            if y in ["c", "d"]:
-                if y == "c":
-                    user_data = get_user_dataA(x)
-                    if user_data:
-                        # Dummy data for user_data
-                        user_data["total_earnings"] = "$12,345"
-                        user_data["total_catalog_items"] = 125
-                        user_data["total_projects"] = 42
-                        user_data["user_rating"] = 4.8
-                        return render_template(
-                            "profile_page.html",
-                            **user_data,
-                        )
-                elif y == "d":
-                    developer_data = get_seller_data(x)
-                    if developer_data:
-                        # Dummy data for developer_data
-                        developer_data["total_catalog_items"] = 125
-                        developer_data["total_projects"] = 42
-                        developer_data["rating"] = float(developer_data["rating"])
-
-                        return render_template(
-                            "profile_page.html", **developer_data, d="avail"
-                        )
-
-                    return redirect(url_for("main"))
+    if res and (decrypted_x != x ):
+        if y in ["c", "d"]:
+            if y == "c":
+                return redirect("/NotFound")
+            elif y == "d":
+                developer_data = get_seller_data(x)
+                if developer_data:
+                    # Dummy data for developer_data
+                    developer_data["total_catalog_items"] = 125
+                    developer_data["total_projects"] = 42
+                    developer_data["rating"] = float(developer_data["rating"])
+                    return render_template(
+                        "profile_page.html", **developer_data, d="avail"
+                    )
+                return redirect(url_for("main"))
         return redirect(url_for("main"))
 
-    if y in ["c", "d"]:
+    if res and (decrypted_x == x ) and ( y in ["c", "d"]) :
         if y == "c":
             user_data = get_user_dataA(x)
             if user_data:
@@ -931,22 +992,38 @@ def account(x, y):
     return redirect(url_for("main"))
 
 
-@app.errorhandler(404)
+@TurboLancer.errorhandler(404)
 def page_not_found(error):
     return "404"
 
 
-@app.route("/upjobpage")
+@TurboLancer.route("/upjobpage")
 def page():
     return render_template("upload_job.html")
 
 
-@app.route("/getserved")
+@TurboLancer.route("/getserved")
 def get_searved():
-    return render_template("get_served.html")
+ 
+    Seller = seller_collection.find_one({"_id": turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"]), "d": 'd'}) or None
+
+    new = []
+    Seller_data: dict = {}
+    cat = list(catalogue_collection.find())
+    if cat:
+        res = None
+        for item in cat:
+            Seller_data = seller_collection.find_one({"_id": item['seller_id'], "d": 'd'})
+            res = new_or_not(item['date'])
+            id = item["_id"]
+            item['sell'] = 'Yes' if Seller.get('_id') and (item['seller_id']  == Seller['_id']) else None
+            item['res'] = res
+            new.TurboLancerend(id)
+        return render_template("get_served.html", **Seller_data, cat=cat, c_id=new)
+    return render_template("get_served.html", **Seller_data)
 
 
-@app.route("/proj")
+@TurboLancer.route("/proj")
 def proj():
     return render_template("project.html")
 
@@ -962,7 +1039,7 @@ def remove_first_uppercase(s):
     return s
 
 
-@app.route("/rephrase_text", methods=["POST"])
+@TurboLancer.route("/rephrase_text", methods=["POST"])
 def rephrase():
     data = request.get_json()
     input_text = data.get("text")
@@ -999,6 +1076,149 @@ def rephrase():
     print(response)
     return jsonify(text=response)
 
+######################################################################################################################
+#############################################CHAT TurboLancer#################################################################
+######################################################################################################################
+
+
+@TurboLancer.route('/chat/<room>')
+def index(room):
+    return render_template('playground.html', un=getkey(request.cookies).get('ideo'), x=room)
+
+@TurboLancer.route('/chatImg/<x>', methods=['GET'])
+def get_chat_img(x):
+    img = chatImages_collection.find_one({'_id': ObjectId(x)})
+    if img and "data" in img:
+        return send_file(io.BytesIO(img["data"]), mimetype="image/jpeg")
+    else:
+        return jsonify({"error": "Image not found"})
+
+def upload_image_chat(image_data, chatroom_id):
+    image_id = chatImages_collection.insert_one({"data": image_data, "reference": chatroom_id}).inserted_id
+    return image_id
+
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    arr = []
+    chatroom = chatroom_collection.find_one({'name': room})
+
+    if chatroom and 'messages' in chatroom:
+        for message in chatroom['messages']:
+            emit('response', [message['message'], message['sender'], message['timestamp'], message.get('type', 'text'), message.get('caption', '')], room=request.sid)
+
+    current_users = chatroom.get('users', []) if chatroom else []
+    user_exists = False
+    other_user = False
+    users = []
+    for user in current_users:
+        x = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])})
+        users.append(x)
+        if user['username'] == username:
+            user['sid'] = request.sid
+            user_exists = True
+        else:
+            other_user = True
+            if x:
+                items = {
+                    'id': turbolancer_data_Security.encrypt(key,x['_id']),
+                    'name': x['name'],
+                    'image': x['image'],
+                    'tag': x['tag']
+                }
+                arr.append(items)
+
+    if not user_exists:
+        current_users.append({'username': username, 'sid': request.sid})
+    else:
+        # User is rejoining, update their status to online
+        for user in users:
+            if turbolancer_data_Security.encrypt(key, user['_id']) == username:
+                emit('status', {'id': username, 'name': user['name'], 'image': user['image'], 'online': True}, room=room)
+                break
+
+    chatroom_collection.update_one(
+        {'name': room},
+        {'$set': {'users': current_users}},
+        upsert=True
+    )
+
+    if other_user and arr:
+        emit('status', { 'id': arr[0]['id'], 'name': arr[0]['name'], 'image': arr[0]['image'], 'online': True }, room=room)
+    else:
+        for user in users:
+            if turbolancer_data_Security.encrypt(key, user['_id']) == username:
+                emit('status', {'id': username, 'name': user['name'], 'image': user['image'], 'online': user_exists}, room=room)
+                break
+
+    # Notify all users in the room that this user is back online
+    if user_exists:
+        for user in current_users:
+            if user['username'] != username:
+                x = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])})
+                if x:
+                    emit('status', {'id': x['username'], 'name': x['name'], 'image': x['image'], 'online': True}, room=user['sid'])
+@socketio.on('disconnect')
+def on_disconnect():
+    user = chatroom_collection.find_one({'users.sid': request.sid})
+    if user:
+        username = None
+        room = user['name']
+        for u in user['users']:
+            if u['sid'] == request.sid:
+                username = u['username']
+                break
+
+        if username:
+    
+            leave_room(room)
+            # Fetch user details to send in the status update
+            user_details = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})
+            if user_details:
+                status_data = {
+                    'id': username,
+                    'name': user_details['name'],
+                    'image': user_details['image'],
+                    'online': False
+                }
+                emit('status', status_data, room=room)
+            else:
+                emit('status', {'msg': f'{username} has disconnected.', 'online': False, 'id': username}, room=room)
+@socketio.on('message')
+def handle_message(data):
+    room = data.get('room')
+    message = data.get('message')
+    username = data.get('username')
+    if room and username:
+        timestamp = datetime.now(pytz.utc)
+        if message:
+            try:
+                chatroom_collection.update_one(
+                    {'name': room}, 
+                    {'$push': {'messages': {'sender': username, 'message': message, 'timestamp': timestamp.isoformat(), 'type': 'text'}}}, 
+                    upsert=True
+                )
+                emit('response', [message, username, timestamp.isoformat(), "text"], room=room)
+            except Exception as e:
+                print(f"Error updating database: {e}")
+        elif data.get('image'):
+            image_data = b64decode(data['image'].split(",")[1])
+            caption = data.get('caption', '')
+            image_id = upload_image_chat(image_data, room)
+            image_url = f'/chatImg/{image_id}'
+            try:
+                chatroom_collection.update_one(
+                    {'name': room},
+                    {'$push': {'messages': {'sender': username, 'message': image_url, 'timestamp': timestamp.isoformat(), 'type': 'image', 'caption': caption}}},
+                    upsert=True
+                )
+                emit('response', [image_url, username, timestamp.isoformat(), "image", caption], room=room)
+            except Exception as e:
+                print(f"Error updating database: {e}")
+    else:
+        emit('error', {'msg': 'Invalid message data.'})
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(TurboLancer, debug=True)

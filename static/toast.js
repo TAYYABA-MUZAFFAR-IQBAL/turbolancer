@@ -73,6 +73,8 @@ function toast(type, text, padding = 0) {
   activeToasts.push({ element: toastElement, timeout: toastTimeout });
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function openit(x){
@@ -150,7 +152,235 @@ console.log(months_array)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function modal(type, modalText, buttonText, buttonId, data_to_taransfor = '') {
+  // Create the modal container
+  const modal = document.createElement('div');
+  modal.classList.add('Modal_GLOBAL');
 
+  // Create the modal content
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('Modal_GLOBAL-content');
+
+  // Create the modal body
+  const modalBody = document.createElement('div');
+  modalBody.classList.add('Modal_GLOBAL-body');
+
+  // Create the icon
+  let icon;
+  switch (type) {
+      case 'i':
+          icon = `<svg class = "info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>`;
+          break;
+      case 's':
+          icon = `<svg class = "success-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z"/></svg>`;
+          break;
+      case 'w':
+          icon = `<svg class = "warning-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>`;
+          break;
+      case 'd':
+          icon = `<svg class=" danger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>`;
+          break;
+  }
+
+  // Create text node for the modal body
+  const textNode = document.createTextNode(modalText);
+
+  // Append the icon and text to the modal body
+  modalBody.innerHTML = icon;
+  modalBody.appendChild(textNode);
+
+  // Create the modal footer
+  const modalFooter = document.createElement('div');
+  modalFooter.classList.add('Modal_GLOBAL-footer');
+
+  // Create the action button
+  const actionButton = document.createElement('button');
+  actionButton.classList.add('Mbtn',type);
+  actionButton.setAttribute('id', buttonId);
+  actionButton.textContent = buttonText;
+  actionButton.setAttribute('data-given', data_to_taransfor)
+  actionButton.onclick = function() {
+      closeModal(modal, modalContent);
+  }
+  const closeButton = document.createElement('button');
+  closeButton.classList.add('closeMX');
+  closeButton.innerHTML = '&times;';
+  closeButton.onclick = function() {
+      closeModal(modal, modalContent);
+  }
+
+  // Create the close modal button
+  const closeModalButton = document.createElement('button');
+  closeModalButton.classList.add('Mbtn','Mcancle');
+  closeModalButton.textContent = 'Close';
+  closeModalButton.onclick = function() {
+      closeModal(modal, modalContent);
+  }
+
+  // Append the buttons to the footer
+  modalFooter.appendChild(actionButton);
+  modalFooter.appendChild(closeModalButton);
+  modalBody.appendChild(closeButton);
+
+  // Append the body and footer to the modal content
+  modalContent.appendChild(modalBody);
+  modalContent.appendChild(modalFooter);
+
+  // Append the modal content to the modal container
+  modal.appendChild(modalContent);
+
+  // Append the modal to the document body
+  document.body.appendChild(modal);
+
+  // Show the modal
+  openModal(modal, modalContent);
+}
+
+function openModal(modal, modalContent) {
+  modal.classList.add('open');
+  modalContent.classList.add('open');
+  modal.style.display = 'block';
+}
+
+function closeModal(modal, modalContent) {
+  modalContent.classList.add('close');
+  modalContent.addEventListener('animationend', function() {
+      modalContent.classList.remove('close', 'open');
+      modal.classList.remove('open');
+
+      modal.remove()
+      
+  }, { once: true });
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function details(url) {
+  const modal = document.createElement('div');
+  modal.classList.add('Modal_GLOBAL','D');
+
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('Modal_GLOBAL-content','D');
+  modalContent.style.width = '92vw';
+  modalContent.style.height = '92vh';
+  const iframe = document.createElement('iframe');
+  iframe.src = '/full_catalogue/'+url;
+  iframe.style.width = '100%';
+  iframe.style.height = '97%';
+
+  const closeButton = document.createElement('button');
+  closeButton.classList.add('closeMX');
+  closeButton.innerHTML = '&times;';
+  closeButton.style.fontSize = '22px'
+  closeButton.onclick = function() {
+    closeModal(modal, modalContent);
+  }
+  modal.onclick = function() {
+    closeModal(modal, modalContent);
+  }
+  modalContent.appendChild(iframe);
+  modalContent.appendChild(closeButton);
+
+  modal.appendChild(modalContent);
+
+  document.body.appendChild(modal);
+
+  openModal(modal, modalContent);
+}
+
+function openModal(modal, modalContent) {
+  modal.classList.add('open');
+  modalContent.classList.add('open');
+  modal.style.display = 'block';
+}
+
+
+function closeModal(modal, modalContent) {
+  modalContent.classList.add('close');
+  modalContent.addEventListener('animationend', function() {
+    modalContent.classList.remove('close', 'open');
+    modal.classList.remove('open');
+    modal.remove();
+  }, { once: true });
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function addIframeOverlay() {
+  const iframes = document.querySelectorAll('iframe');
+
+  iframes.forEach((iframe) => {
+    if (iframe.parentNode.querySelector('.iframe-overlay') || iframe.hasAttribute('data-overlay-added')) {
+      return;
+    }
+
+    const icon = document.createElement('span');
+    icon.classList.add('iframe-icon');
+    icon.style.position = 'absolute';
+    icon.style.bottom = '20px';
+    icon.style.right = '25px';
+    icon.style.width = '30px';
+    icon.style.height = '30px';
+    icon.style.borderRadius = '50%';
+    icon.style.backgroundColor = '#0000008a';
+    icon.style.display = 'flex';
+    icon.style.flexDirection = 'row'
+    icon.style.justifyContent = 'center';
+    icon.style.alignItems = 'center';
+    icon.style.cursor = 'pointer';
+    icon.style.textAlign = 'center'
+    icon.style.opacity = '0';
+    icon.style.transform = 'scale(0.6)';
+    icon.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    icon.title = "Open in new tab"
+    icon.setAttribute('viewBox', '0 0 24 24');
+    icon.style.outline = '5px solid #0000008a';
+    icon.style.padding = '6px'
+    icon.style.fill = '#fff';
+
+    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M352 0c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9L370.7 96 201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L416 141.3l41.4 41.4c9.2 9.2 22.9 11.9 34.9 6.9s19.8-16.6 19.8-29.6V32c0-17.7-14.3-32-32-32H352zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"/></svg>'
+
+    iframe.parentNode.style.position = 'relative';
+    iframe.parentNode.appendChild(icon);
+
+    icon.addEventListener('mouseover', () => {
+      icon.style.opacity = '1';
+      icon.style.transform = 'scale(1)';
+      setTimeout(() => {
+        icon.style.opacity = '0';
+        icon.style.transform = 'scale(0.6)';
+      }, 9000);
+    });
+    iframe.addEventListener('mouseover', () => {
+      icon.style.opacity = '1';
+      icon.style.transform = 'scale(1)';
+      setTimeout(() => {
+        icon.style.opacity = '0';
+        icon.style.transform = 'scale(0.6)';
+      }, 9000);
+    });
+
+    iframe.addEventListener('mouseout', () => {
+      icon.style.opacity = '0';
+      icon.style.transform = 'scale(0.6)';
+    });
+
+    icon.addEventListener('click', () => {
+      window.open(iframe.src+`?here=true`, '_blank');
+    });
+
+    iframe.setAttribute('data-overlay-added', 'true');
+  });
+}
+setInterval(addIframeOverlay, 1000);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const ARRAY = [
   "Web Development",
