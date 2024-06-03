@@ -36,138 +36,7 @@
       align-items: center;
       border-radius: 5px;
     }
-    .tb_ai-button {
-      transition: all 0.4s;
-      display: block;
-      cursor: pointer;
-      color: #333;
-      margin: 0 auto;
-      position: relative;
-      text-decoration: none;
-      font-weight: 600;
-      border-radius: 50px;
-      overflow: hidden;
-      padding: 3px;
-      width: 150px;
-      height: 50px;
-    }
-
-    .tb_ai-button::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 400%;
-      height: 100%;
-      background: linear-gradient(
-        115deg,
-        #4caf50,
-        #ffeb3b,
-        #9c27b0,
-        #03a9f4,
-        #4caf50
-      );
-      background-size: 25% 100%;
-      animation: playit 0.75s
-        linear infinite;
-      animation-play-state: paused;
-      translate: -5% 0%;
-      transition: translate 0.25s ease-out;
-    }
-    .tb_ai-button.run {
-      width: 50px;
-      padding: 5px;
-    }
-    .tb_ai-button.run::before {
-      animation-play-state: running;
-      transition-duration: 0.75s;
-      translate: 0% 0%;
-    }
-
-    @keyframes playit  {
-      to {
-        transform: translateX(-25%);
-      }
-    }
-
-    .tb_ai-button span {
-      position: relative;
-      display: block;
-      transform-origin: center;
-
-      padding: 10px;
-      text-align: center;
-      font-size: 1.1rem;
-      background: #fff;
-      color: #333;
-      border-radius: 50px;
-      height: 100%;
-      width: 143px;
-    }
-
-    .tb_ai-button span.second {
-      transform: scaleX(0);
-      width: 0;
-      display: flex;
-      opacity: 0;
-      color: transparent;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .tb_ai-button.run span.second {
-      transform: scaleX(1);
-      width: 45px !important ;
-      height: 44px;
-      opacity: 1;
-      position: absolute;
-      top: 3px;
-      left: 3px;
-    }
-
-    .tb_ai-button.run span.first {
-      transform: scaleX(0);
-      width: 0;
-      opacity: 0;
-    }
-
-    .icon {
-      font-size: 20px;
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(
-        115deg,
-        #4caf50,
-        #ffeb3b,
-        #9c27b0,
-        #03a9f4,
-        #4caf50
-      );
-      background-size: 400% 400%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-      transform-origin: center;
-
-      animation: moveBackgroundd 5s ease infinite;
-    }
-
-    @keyframes moveBackgroundd {
-      0% {
-        background-position: 0% 50%;
-        opacity: 1;
-      }
-      50% {
-        background-position: 100% 50%;
-        opacity: 0.7;
-      }
-      100% {
-        background-position: 0% 50%;
-        opacity: 1;
-      }
-    }
+  
 
     .suggest {
       font-size: 15px !important;
@@ -363,7 +232,7 @@
             <a onclick="run(this)" class="tb_ai-button" data-id="title"
               ><span class="first"> Rephrase it!</span
               ><span class="second">
-                <strong class="icon">✨</strong>
+                <strong class="iconAi">✨</strong>
               </span></a
             >
           </div>
@@ -401,9 +270,8 @@
             <a onclick="run(this)" data-id="disc" class="tb_ai-button texta"
               ><span class="first"> Rephrase it!</span
               ><span class="second">
-                <strong class="icon">✨</strong>
-              </span></a
-            >
+                <strong class="iconAi">✨</strong>
+              </span></a>
           </div>
         </div>
       </div>
@@ -455,7 +323,7 @@
             <a onclick="run(this)" class="tb_ai-button" data-id="bida"
               ><span class="first suggest">Suggest Budget</span
               ><span class="second">
-                <strong class="icon">✨</strong>
+                <strong class="iconAi">✨</strong>
               </span></a
             >
           </div>
@@ -642,91 +510,8 @@ function checkInputs() {
 
   return isEmpty;
 }
-function checkIn(input) {
-  const emptyClass = "empty-field";
-  let isEmpty = true;
 
-    if (!(input.value.length >= 10)) {
-      input.parentElement.classList.add(emptyClass);
-      isEmpty = false;
-    } else {
-      input.parentElement.classList.remove(emptyClass);
-    }
-  
-  return isEmpty;
-}
-function run(button) {
-  const inputId = button.getAttribute("data-id");
-  const input = document.getElementById(inputId);
-  let given;
 
-  if (inputId === "bida") {
-    if (checkInputs()) {
-      const today = new Date().toDateString();
-      given = `title = ${title.value}, description of task = ${disc.value}, Category of task = ${Category.value}, deadline of task = ${Deadline.value} and -> today is ${today}`;
-    } else {
-      toast('d','pleas fill all requared feilds')
-      
-
-      
-    }
-  } else {
-    if (checkIn(input)) {
-      given = input.value;
-    } else {
-      toast('w', 'Please enter a text of at least 10 characters.')
-
-    }
-  }
-
-  const isValidInput = (inputId === "bida" && checkInputs()) || input.value.replace(' ', '').length >= 10;
-
-  if (isValidInput ) {
-    button.classList.add("run");
-    fetch("/rephrase_text", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        main: inputId,
-        text: given,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        button.classList.remove("run");
-        if (inputId === "bida") {
-          const { prices, remainingStr } = extractPrices(data.text);
-          if (prices) {
-            const paste = document.getElementById('paste');
-            paste.style.display = 'block';
-            paste.setAttribute('data-arr', prices);
-          } else {
-            document.getElementById('paste').style.display = 'none';
-          }
-          const re = remainingStr.replace('[', '').replace(']', '');
-          document.getElementById('mtext').innerText = re;
-          successModal.classList.remove("hidden");
-          modalContent.classList.add("animate-scale");
-        } else {
-          toast('s', 'Text rephreased successfully.')
-          const re = data.text.replace('[', '').replace(']', '');
-          input.value = re;
-        }
-      })
-      .catch((error) => {
-        toast('d', 'An Error occurred.')
-
-        console.error("Error:", error);
-      });
-  }
-}
 closeButton.addEventListener("click", closeModal);
 closeButton2.addEventListener("click", closeModal);
 document.addEventListener("DOMContentLoaded", function() {

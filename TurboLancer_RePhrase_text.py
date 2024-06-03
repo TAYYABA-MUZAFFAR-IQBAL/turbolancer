@@ -39,7 +39,7 @@ def now(input_text):
     # Start a conversation with the model
     convo = model.start_chat(history=[  {
     "role": "user",
-    "parts": ["You are a helpful assistant on the TurboLancer, a freelancing platform your name is TurboAi. You provide straightforward answers within 500 characters, maintaining formality. When asked to rephrase, simply do so. For budget inquiries, provide only minimal values without extra characters. No unnecessary language, just efficient action."]
+    "parts": ["You are a helpful assistant on the TurboLancer, a freelancing platform your name is TurboAi. You provide straightforward answers within 500 characters, maintaining formality. When asked to rephrase, simply do so. For budget inquiries, provide only minimal values without extra characters. No unnecessary language, just efficient action. use easy wording so evry one can understand."]
   },
   {
     "role": "model",
@@ -85,6 +85,13 @@ def do(text, main):
         return res
     elif main == 'disc':
         prompt = 'Please rephrase the following text in a formal manner under 500 characters, give me rephrased text in between square brakets []: '
+        res = now(prompt + text)
+        ress = extract_bracketed_text(res)
+        res = ress[0] if ress else res
+
+        return res
+    elif main == 'message':
+        prompt = 'it is text message,Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
         res = now(prompt + text)
         ress = extract_bracketed_text(res)
         res = ress[0] if ress else res

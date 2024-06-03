@@ -145,7 +145,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #0000005b;
+  background-color: #00000070;
+  backdrop-filter: blur(7px);
   z-index: 2342343;
   animation: showup .4s ease;
 }
@@ -175,7 +176,7 @@
 }
 
 #imgvp.go {
-  animation: hideback .4s ease;
+  animation: hideback .4s ease forwards;
 }
 
 @keyframes hideback {
@@ -189,7 +190,7 @@
 }
 
 #imgvp.go img {
-  animation: hidebackimg .4s ease;
+  animation: hidebackimg .4s ease forwards;
 }
 
 @keyframes hidebackimg {
@@ -230,7 +231,7 @@
 }
 
 .Modal_GLOBAL.open {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out ;
 }
 
 /* Modal_GLOBAL content */
@@ -473,4 +474,137 @@
 
   .btn-ghost{
     background-color: #f1f1f1;
+  }
+
+  .tb_ai-button {
+    transition: all 0.4s;
+    display: block;
+    cursor: pointer;
+    color: #333;
+    margin: 0 auto;
+    position: relative;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    overflow: hidden;
+    padding: 3px;
+    width: 150px;
+    height: 50px;
+  }
+
+  .tb_ai-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400%;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      #4caf50,
+      #ffeb3b,
+      #9c27b0,
+      #03a9f4,
+      #4caf50
+    );
+    background-size: 25% 100%;
+    animation: playit 0.75s
+      linear infinite;
+    animation-play-state: paused;
+    translate: -5% 0%;
+    transition: translate 0.25s ease-out;
+  }
+  .tb_ai-button.run {
+    width: 50px;
+    padding: 5px;
+  }
+  .tb_ai-button.run::before {
+    animation-play-state: running;
+    transition-duration: 0.75s;
+    translate: 0% 0%;
+  }
+
+  @keyframes playit  {
+    to {
+      transform: translateX(-25%);
+    }
+  }
+
+  .tb_ai-button span {
+    position: relative;
+    display: block;
+    transform-origin: center;
+
+    padding: 10px;
+    text-align: center;
+    font-size: 1.1rem;
+    background: #fff;
+    color: #333;
+    border-radius: 50px;
+    height: 100%;
+    width: 143px;
+  }
+
+  .tb_ai-button span.second {
+    transform: scaleX(0);
+    width: 0;
+    display: flex;
+    opacity: 0;
+    color: transparent;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tb_ai-button.run span.second {
+    transform: scaleX(1);
+    width: 45px !important ;
+    height: 44px;
+    opacity: 1;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+  }
+
+  .tb_ai-button.run span.first {
+    transform: scaleX(0);
+    width: 0;
+    opacity: 0;
+  }
+
+  .iconAi {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(
+      115deg,
+      #4caf50,
+      #ffeb3b,
+      #9c27b0,
+      #03a9f4,
+      #4caf50
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    transform-origin: center;
+
+    animation: moveBackgroundd 5s ease infinite;
+  }
+
+  @keyframes moveBackgroundd {
+    0% {
+      background-position: 0% 50%;
+      opacity: 1;
+    }
+    50% {
+      background-position: 100% 50%;
+      opacity: 0.7;
+    }
+    100% {
+      background-position: 0% 50%;
+      opacity: 1;
+    }
   }

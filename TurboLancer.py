@@ -8,7 +8,8 @@ import uuid
 import json
 import random
 import datetime as dt
-
+import threading
+import time
 from datetime import datetime, timedelta
 from urllib.parse import unquote
 from flask import (
@@ -1079,8 +1080,6 @@ def rephrase():
 ######################################################################################################################
 #############################################CHAT TurboLancer#################################################################
 ######################################################################################################################
-
-
 @TurboLancer.route('/chat/<room>')
 def index(room):
     return render_template('playground.html', un=getkey(request.cookies).get('ideo'), x=room)
@@ -1097,47 +1096,51 @@ def upload_image_chat(image_data, chatroom_id):
     image_id = chatImages_collection.insert_one({"data": image_data, "reference": chatroom_id}).inserted_id
     return image_id
 
+
+
 @socketio.on('join')
 def on_join(data):
     username = data['username']
     room = data['room']
     join_room(room)
-    arr = []
+
     chatroom = chatroom_collection.find_one({'name': room})
-
-    if chatroom and 'messages' in chatroom:
-        for message in chatroom['messages']:
-            emit('response', [message['message'], message['sender'], message['timestamp'], message.get('type', 'text'), message.get('caption', '')], room=request.sid)
-
-    current_users = chatroom.get('users', []) if chatroom else []
+    if chatroom is None:
+        chatroom = {'name': room, 'users': [], 'messages': []}
+    
+    # Fetch current users in the chatroom
+    current_users = chatroom.get('users', [])
     user_exists = False
-    other_user = False
-    users = []
+    users_info = []
+
     for user in current_users:
-        x = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])})
-        users.append(x)
-        if user['username'] == username:
-            user['sid'] = request.sid
-            user_exists = True
-        else:
-            other_user = True
-            if x:
-                items = {
-                    'id': turbolancer_data_Security.encrypt(key,x['_id']),
-                    'name': x['name'],
-                    'image': x['image'],
-                    'tag': x['tag']
-                }
-                arr.append(items)
+        decrypted_username = turbolancer_data_Security.decrypt(key, user['username'])
+        user_data = user_collection.find_one({'_id': decrypted_username}) or seller_collection.find_one({'_id': decrypted_username})
+
+        if user_data:
+            online_status = bool(user.get('sid'))
+            user_info = {
+                'id': turbolancer_data_Security.encrypt(key, user_data['_id']),
+                'name': user_data['name'],
+                'image': user_data['image'],
+                'tag': user_data.get('tag', ''),
+                'online': online_status
+            }
+            users_info.append(user_info)
+
+            if user['username'] == username:
+                user['sid'] = request.sid
+                user_exists = True
+            else:
+                # Emit other user's status to the joining user
+                emit('status', user_info, room=request.sid)
 
     if not user_exists:
         current_users.append({'username': username, 'sid': request.sid})
     else:
-        # User is rejoining, update their status to online
-        for user in users:
-            if turbolancer_data_Security.encrypt(key, user['_id']) == username:
-                emit('status', {'id': username, 'name': user['name'], 'image': user['image'], 'online': True}, room=room)
-                break
+        for user in current_users:
+            if user['username'] == username:
+                user['sid'] = request.sid
 
     chatroom_collection.update_one(
         {'name': room},
@@ -1145,34 +1148,45 @@ def on_join(data):
         upsert=True
     )
 
-    if other_user and arr:
-        emit('status', { 'id': arr[0]['id'], 'name': arr[0]['name'], 'image': arr[0]['image'], 'online': True }, room=room)
-    else:
-        for user in users:
-            if turbolancer_data_Security.encrypt(key, user['_id']) == username:
-                emit('status', {'id': username, 'name': user['name'], 'image': user['image'], 'online': user_exists}, room=room)
-                break
+    # Notify all users in the room about the new user's status
+    for user_info in users_info:
+        emit('status', user_info, room=room)
 
-    # Notify all users in the room that this user is back online
-    if user_exists:
-        for user in current_users:
-            if user['username'] != username:
-                x = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, user['username'])})
-                if x:
-                    emit('status', {'id': x['username'], 'name': x['name'], 'image': x['image'], 'online': True}, room=user['sid'])
+    # Emit previous messages to the user who just joined
+    if 'messages' in chatroom:
+        for message in chatroom['messages']:
+            emit('response', [message['message'], message['sender'], message.get('timestamp'), message.get('type', 'text'), message.get('caption', ''), message.get('replyTo',None)], room=request.sid)
+    
+    # Broadcast the current user's status to others
+    current_user_data = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})
+    if current_user_data:
+        current_user_info = {
+            'id': turbolancer_data_Security.encrypt(key, current_user_data['_id']),
+            'name': current_user_data['name'],
+            'image': current_user_data['image'],
+            'online': True
+        }
+        emit('status', current_user_info, room=room)
+
 @socketio.on('disconnect')
 def on_disconnect():
-    user = chatroom_collection.find_one({'users.sid': request.sid})
-    if user:
+    chatroom = chatroom_collection.find_one({'users.sid': request.sid})
+    if chatroom:
         username = None
-        room = user['name']
-        for u in user['users']:
-            if u['sid'] == request.sid:
-                username = u['username']
+        room = chatroom['name']
+        current_users = chatroom['users']
+        for user in current_users:
+            if user['sid'] == request.sid:
+                username = user['username']
+                user['sid'] = None  # Remove the SID to mark the user as offline
                 break
 
         if username:
-    
+            chatroom_collection.update_one(
+                {'name': room},
+                {'$set': {'users': current_users}},
+                upsert=True
+            )
             leave_room(room)
             # Fetch user details to send in the status update
             user_details = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})
@@ -1186,21 +1200,31 @@ def on_disconnect():
                 emit('status', status_data, room=room)
             else:
                 emit('status', {'msg': f'{username} has disconnected.', 'online': False, 'id': username}, room=room)
+
 @socketio.on('message')
 def handle_message(data):
     room = data.get('room')
     message = data.get('message')
     username = data.get('username')
+    reply_to = data.get('replyTo')
     if room and username:
         timestamp = datetime.now(pytz.utc)
         if message:
             try:
+                message_data = {
+                    'sender': username, 
+                    'message': message, 
+                    'timestamp': timestamp.isoformat(), 
+                    'type': 'text'
+                }
+                if reply_to:
+                    message_data['replyTo'] = reply_to
                 chatroom_collection.update_one(
                     {'name': room}, 
-                    {'$push': {'messages': {'sender': username, 'message': message, 'timestamp': timestamp.isoformat(), 'type': 'text'}}}, 
+                    {'$push': {'messages': message_data}}, 
                     upsert=True
                 )
-                emit('response', [message, username, timestamp.isoformat(), "text"], room=room)
+                emit('response', [message, username, timestamp.isoformat(), "text", "", reply_to], room=room)
             except Exception as e:
                 print(f"Error updating database: {e}")
         elif data.get('image'):
@@ -1209,16 +1233,61 @@ def handle_message(data):
             image_id = upload_image_chat(image_data, room)
             image_url = f'/chatImg/{image_id}'
             try:
+                message_data = {
+                    'sender': username, 
+                    'message': image_url, 
+                    'timestamp': timestamp.isoformat(), 
+                    'type': 'image', 
+                    'caption': caption
+                }
+                if reply_to:
+                    message_data['replyTo'] = reply_to
                 chatroom_collection.update_one(
                     {'name': room},
-                    {'$push': {'messages': {'sender': username, 'message': image_url, 'timestamp': timestamp.isoformat(), 'type': 'image', 'caption': caption}}},
+                    {'$push': {'messages': message_data}},
                     upsert=True
                 )
-                emit('response', [image_url, username, timestamp.isoformat(), "image", caption], room=room)
+                emit('response', [image_url, username, timestamp.isoformat(), "image", caption, reply_to], room=room)
             except Exception as e:
                 print(f"Error updating database: {e}")
     else:
         emit('error', {'msg': 'Invalid message data.'})
+
+@socketio.on('deleteMessage')
+def handle_delete_message(data):
+    message_id = data.get('messageId')
+    room = data.get('room')
+    username = data.get('username')
+    if message_id and room and username:
+        try:
+            chatroom = chatroom_collection.find_one({'name': room})
+            if chatroom and 'messages' in chatroom:
+                for message in chatroom['messages']:
+                    if (message.get('timestamp') == message_id) and (message.get('sender') == username):
+                        if message['type'] == 'image':
+                            chatImages_collection.delete_one({'_id':ObjectId(message['message'].split('/')[2])})
+                            message['message'] = "This message was deleted"
+                            message['type'] = 'deleted'
+                            message['timestamp']  = ''
+                            if 'replyTo' in message: del message['replyTo']
+                            if 'caption' in message: del message['caption']
+                            break
+                        else:
+                            message['message'] = "This message was deleted"
+                            message['type'] = 'deleted'
+                            message['timestamp'] = ''
+                            if 'replyTo' in message: del message['replyTo']
+                            if 'caption' in message: del message['caption']
+                            break
+                chatroom_collection.update_one({'name': room}, {'$set': {'messages': chatroom['messages']}})
+                emit('delDone', ["This message was deleted", message['sender'], message_id, "deleted"], room=room)
+        except Exception as e:
+            print(f"Error deleting message: {e}")
+            emit('error', {'msg': 'Failed to delete message.'}, room=request.sid)
+    else:
+        emit('error', {'msg': 'Invalid delete request.'}, room=request.sid)
+
+
 
 if __name__ == "__main__":
     socketio.run(TurboLancer, debug=True)
