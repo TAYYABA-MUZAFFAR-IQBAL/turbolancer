@@ -1082,7 +1082,7 @@ def rephrase():
 ######################################################################################################################
 @TurboLancer.route('/chat/<room>')
 def index(room):
-    return render_template('playground.html', un=getkey(request.cookies).get('ideo'), x=room)
+    return render_template('chat.html', un=getkey(request.cookies).get('ideo'), x=room)
 
 @TurboLancer.route('/chatImg/<x>', methods=['GET'])
 def get_chat_img(x):

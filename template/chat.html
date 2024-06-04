@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Two-Way Chat App</title>
+  <link rel="icon" type="image/png" href="/static/icon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="/static/tailwind.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <link rel="stylesheet" href="/static/toast.css" />
+  <script src="/static/toast.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"></script>
+  <style>
+    * {
+      text-wrap: balance;
+      user-select: none;
+    }
+
+    .chat-end .chat-bubble {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .chat-bubble img{
+    background-size: 100% 100%;
+    background-color: #00000065;
+   }
+    .chat-bubble {
+      max-width: 500px;
+
+      text-wrap: balance;
+    }
+
+    #messages {
+      height: calc(100% - 6rem);
+      overflow-y: auto;
+    }
+
+    #imageInputContainer {
+      position: relative;
+      display: inline-block;
+    }
+
+    #imagePreview {
+      padding: 5px;
+      background-color: #f1f1f1;
+
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: none;
+      position: absolute;
+      top: -3px;
+      left: 0px;
+
+      transform: translateY(-98%);
+    }
+
+    #cancelImage {
+      position: absolute;
+      top: -50px;
+      left: 50px;
+      transform: translate(-50%, -50%);
+      background-color: #f56565;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      z-index: 10;
+    }
+
+    .btnsend {
+      color: #fff;
+      background-color: #28a745;
+      border: none;
+      outline: none;
+    }
+
+    .btn {
+      border-radius: 50px;
+    }
+
+    #message {
+      border: none;
+      border-radius: 50px;
+
+      padding: 10px;
+      padding-left: 20px;
+      background-color: #f1f1f1;
+    }
+
+    .card {
+      border-radius: 20px;
+    }
+
+    .card-header {
+      border-radius: 20px 20px 0 0;
+
+      border-bottom: 1px solid #39393957;
+      color: #121212;
+      gap: 10px;
+    }
+
+    .form-control {
+      border-top: 1px solid #39393957;
+    }
+
+    #Suser {
+      border-radius: 50px;
+      width: 50px;
+      box-shadow: 0 2px 3px #3939398a;
+      height: 50px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .status-online {
+      background-color: rgb(0, 195, 0);
+    }
+
+    .status-offline {
+      background-color: #6c757d;
+    }
+
+    body.imageover {
+
+      filter: blur(5px);
+    }
+
+    .tooltipp {
+      filter: drop-shadow(0 3px 5px #0000009b);
+    }
+
+    img {
+      user-select: none;
+    }
+
+    .reply {
+      transform: scaleY(0);
+      height: 0;
+      width: 100%;
+
+      padding: 5px;
+      border-radius: 8px;
+      gap: 2px;
+      justify-content: center;
+      align-items: center;
+      background-color: #fbfbfb;
+    }
+
+    .reply .btn-ghost {
+      border-radius: 5px;
+      height: 50px;
+      width: 50px;
+
+    }
+
+    .reply span {
+      opacity: 0.8;
+      user-select: none;
+      display: grid;
+      grid-template-columns: 50px calc(100% - 52px);
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      width: calc(100% - 52px);
+      border-radius: 8px;
+      height: 50px;
+
+      background-color: #f1f1f1;
+
+    }
+
+    .reply span svg {
+      padding: 4px;
+      width: 40px;
+      border-right: 1px solid;
+      fill: #000000;
+      height: 20px;
+    }
+
+    .reply span p {
+      width: calc(100% - 50px);
+      white-space: nowrap;
+      text-align: left;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+    }
+
+    .reply.mar {
+
+      width: calc(100% - 70px);
+      margin-left: 70px;
+    }
+
+    .reply.show {
+      transform: scaleY(1);
+      height: 60px;
+    }
+
+    #contextMenu {
+      z-index: 1000;
+      width: 200px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+      transform: translateY(-10px) scale(0.95);
+      opacity: 0;
+      visibility: hidden;
+      transition: visibility 0s linear 0.4s, opacity 0.4s ease, transform 0.4s ease;
+      position: fixed;
+    }
+
+    #contextMenu.show {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+      transition: visibility 0s linear 0s, opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #contextMenu button {
+      transition: background-color 0.2s, transform 0.4s, opacity 0.4s;
+      user-select: none;
+      transform: rotateX(-90deg) translateY(10px);
+      opacity: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #contextMenu.show button {
+      transform: rotateX(0deg) translateY(0);
+      opacity: 1;
+    }
+
+    #contextMenu.show button:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+
+    #contextMenu.show button:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+
+    #contextMenu.show button:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+
+    #replyOption:hover,
+    #copyOption:hover {
+      background-color: #e5e5e5;
+      transform: scale(1.05);
+    }
+
+    #deleteOption:hover {
+      background-color: #f8d7da;
+      transform: scale(1.05);
+    }
+
+    #contextMenu button svg {
+      fill: currentColor;
+    }
+
+    .bg-gray-200 {
+      background-color: #edf2f7;
+      transition: background-color 0.5s;
+    }
+
+    .deleted {
+      pointer-events: none;
+      user-select: none;
+
+    }
+    .chat-end.de .chat-bubble, .deleted .chat-end .chat-bubble,.chat-start.de .chat-bubble, .deleted .chat-start .chat-bubble{
+      background-color: #dedede !important;
+      color: #121212 !important;
+    }
+    .dell {
+      font-style: oblique;
+      color: #858585;
+    }
+  </style>
+</head>
+
+<body ondragover="event.preventDefault(); document.body.classList.add('imageover')"
+  ondrop="dropImage(event); document.body.classList.remove('imageover')"
+  onclick="document.body.classList.remove('imageover')"
+  class="flex justify-center items-center h-screen w-full bg-gray-100">
+  <div class="card w-full max-w-5xl bg-base-100 h-full shadow-xl flex flex-col">
+    <div class="card-header flex items-center bg-white text-primary-content p-4">
+      <img src="/static/avatar.svg" onclick="openit(this)" alt="second person" id="Suser" />
+      <div class="flex flex-col">
+        <span id="chat-header" class="text-lg font-semibold">Chat</span>
+        <span id="user-status" class="text-xs opacity-50">Offline</span>
+      </div>
+    </div>
+    <div id="messages" class="flex-1 overflow-y-auto p-4"></div>
+
+    <div class="form-control p-4">
+      <div class="reply flex flex-row w-full">
+        <button onclick="cancelReply()" class="btn btn-square btn-ghost">x</button>
+        <span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+              d="M205 34.8c11.5 5.1 19 16.6 19 29.2v64H336c97.2 0 176 78.8 176 176c0 113.3-81.5 163.9-100.2 174.1c-2.5 1.4-5.3 1.9-8.1 1.9c-10.9 0-19.7-8.9-19.7-19.7c0-7.5 4.3-14.4 9.8-19.5c9.4-8.8 22.2-26.4 22.2-56.7c0-53-43-96-96-96H224v64c0 12.6-7.4 24.1-19 29.2s-25 3-34.4-5.4l-160-144C3.9 225.7 0 217.1 0 208s3.9-17.7 10.6-23.8l160-144c9.4-8.5 22.9-10.6 34.4-5.4z" />
+          </svg>
+          <p>Reply</p>
+
+        </span>
+      </div>
+      <div class="flex gap-4">
+        <div id="imageInputContainer" class="relative flex-grow">
+          <img id="imagePreview" src="" onclick="openit(this)" alt="Image Preview" />
+          <span id="cancelImage" onclick="cancelImage()">✕</span>
+          <input type="text" id="message" placeholder="Type your message or drop an image here..."
+            class="input input-bordered w-full" />
+          <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="previewImage(this)" />
+        </div>
+
+        <button class="btn btn-square btn-ghost" style="padding: 5px"
+          onclick="document.getElementById('imageInput').click()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>Add image</title>
+            <path
+              d="M13 19C13 19.7 13.13 20.37 13.35 21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H19C20.11 3 21 3.9 21 5V13.35C20.37 13.13 19.7 13 19 13V5H5V19H13M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H13.35C13.75 15.88 14.47 14.91 15.4 14.21L13.96 12.29M20 18V15H18V18H15V20H18V23H20V20H23V18H20Z" />
+          </svg>
+        </button>
+        <a onclick="run(this)" data-id="message" class="tb_ai-button texta"><span class="first"> Rephrase
+            it!</span><span class="second">
+            <strong class="iconAi">✨</strong>
+          </span></a>
+        <button class="btn btnsend btn-success btn-square" style="padding: 12px" onclick="sendMessage()">
+          <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>send</title>
+            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="contextMenu" class="hidden absolute bg-white shadow-lg rounded-lg overflow-hidden">
+    <button id="replyOption" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 512 512">
+        <path
+          d="M205 34.8c11.5 5.1 19 16.6 19 29.2v64H336c97.2 0 176 78.8 176 176c0 113.3-81.5 163.9-100.2 174.1c-2.5 1.4-5.3 1.9-8.1 1.9c-10.9 0-19.7-8.9-19.7-19.7c0-7.5 4.3-14.4 9.8-19.5c9.4-8.8 22.2-26.4 22.2-56.7c0-53-43-96-96-96H224v64c0 12.6-7.4 24.1-19 29.2s-25 3-34.4-5.4l-160-144C3.9 225.7 0 217.1 0 208s3.9-17.7 10.6-23.8l160-144c9.4-8.5 22.9-10.6 34.4-5.4z" />
+      </svg>
+      Reply
+    </button>
+    <button id="copyOption" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 448 512">
+        <path
+          d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z" />
+      </svg>
+      Copy
+    </button>
+    <button id="deleteOption" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center text-red-500">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 448 512">
+        <path
+          d="M170.5 51.6L151.5 80h145l-19-28.4c-1.5-2.3-4-3.6-6.7-3.6H177.1c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80H368h48 8c13.3 0 24 10.7 24 24s-10.7 24-24 24h-8V432c0 44.2-35.8 80-80 80H112c-44.2 0-80-35.8-80-80V128H24c-13.3 0-24-10.7-24-24S10.7 80 24 80h8H80 93.8l36.7-55.1C140.9 9.4 158.4 0 177.1 0h93.7c18.7 0 36.2 9.4 46.6 24.9zM80 128V432c0 17.7 14.3 32 32 32H336c17.7 0 32-14.3 32-32V128H80zm80 64V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0V400c0 8.8-7.2 16-16 16s-16-7.2-16-16V192c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
+      </svg>
+      Delete
+    </button>
+  </div>
+  <script>
+    let socket = io();
+    const username = '{{un}}';
+    const room = '{{x}}';
+    let chatPartner = null;
+    let selectedImage = null;
+    let replyToMessageId = null;
+    document.addEventListener('DOMContentLoaded', function () {
+      const messages = document.getElementById('messages');
+      const contextMenu = document.getElementById('contextMenu');
+      const replyOption = document.getElementById('replyOption');
+      const copyOption = document.getElementById('copyOption');
+      const deleteOption = document.getElementById('deleteOption');
+      let targetMessage = null;
+
+      messages.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+        targetMessage = e.target.closest('.messP');
+        if (targetMessage) {
+          contextMenu.style.display = 'block';
+          void contextMenu.offsetWidth;
+          contextMenu.classList.add('show');
+
+          const menuWidth = contextMenu.offsetWidth;
+          const menuHeight = contextMenu.offsetHeight;
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+
+          let left = e.clientX;
+          let top = e.clientY;
+
+          if (left + menuWidth > windowWidth) {
+            left = windowWidth - menuWidth - 10;
+          }
+
+          if (top + menuHeight > windowHeight) {
+            top = windowHeight - menuHeight - 10;
+          }
+
+          left = Math.max(10, left);
+          top = Math.max(10, top);
+
+          contextMenu.style.left = `${left}px`;
+          contextMenu.style.top = `${top}px`;
+
+          deleteOption.style.display = (targetMessage.getAttribute('data-pop') === username) ? 'flex' : 'none';
+
+          const isTextMessage = targetMessage.querySelector('.chat-bubble p') !== null && !targetMessage.querySelector('.chat-bubble.dell p');
+          copyOption.style.display = isTextMessage ? 'flex' : 'none';
+        }
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!contextMenu.contains(e.target)) {
+          hideContextMenu();
+        }
+      });
+
+      function hideContextMenu() {
+        contextMenu.classList.remove('show');
+
+        const transitionEndHandler = function () {
+          contextMenu.style.display = 'none';
+          contextMenu.removeEventListener('transitionend', transitionEndHandler);
+        };
+
+        contextMenu.addEventListener('transitionend', transitionEndHandler);
+      }
+
+      replyOption.addEventListener('click', function () {
+        if (targetMessage) {
+          reply(targetMessage);
+          hideContextMenu();
+        }
+      });
+
+      copyOption.addEventListener('click', function () {
+        const textElement = targetMessage.querySelector('.chat-bubble p');
+        if (textElement) {
+          navigator.clipboard.writeText(textElement.innerText).then(() => {
+            toast('s', 'Message copied to clipboard');
+          }).catch(err => {
+            toast('e', 'Failed to copy message');
+          });
+        }
+        hideContextMenu();
+      });
+
+      deleteOption.addEventListener('click', function () {
+        if (targetMessage) {
+          hideContextMenu();
+
+          modal('d', 'Are you sure you want to delete this message?', 'Yes, I\'m sure', 'dellit');
+          document.querySelector('#dellit').addEventListener('click', function () {
+            if (targetMessage.getAttribute('data-pop') === username) {
+              const messageId = targetMessage.id;
+              socket.emit('deleteMessage', { messageId, room, username });
+            } else {
+              toast('d', 'An error occurred');
+            }
+          });
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        if (contextMenu.classList.contains('show')) {
+          const menuRect = contextMenu.getBoundingClientRect();
+          const windowWidth = window.innerWidth;
+          const windowHeight = window.innerHeight;
+
+          let left = parseInt(contextMenu.style.left);
+          let top = parseInt(contextMenu.style.top);
+
+          if (left + menuRect.width > windowWidth) {
+            left = windowWidth - menuRect.width - 10;
+          }
+          if (top + menuRect.height > windowHeight) {
+            top = windowHeight - menuRect.height - 10;
+          }
+
+          contextMenu.style.left = `${left}px`;
+          contextMenu.style.top = `${top}px`;
+        }
+      });
+    });
+    const inputField = document.getElementById('message');
+
+    inputField.addEventListener('keypress', function (event) {
+      if (event.keyCode === 13) {
+        sendMessage();
+      }
+    });
+
+
+    function joinRoom() {
+      socket.emit('join', { username, room });
+      resetChatHeader();
+    }
+
+    joinRoom();
+
+    socket.on('response', function (data) {
+      const [message, usernameG, timestamp, type, caption, replyTo] = data;
+      appendMessage(usernameG, message, timestamp, type, caption, replyTo);
+    });
+    socket.on('delDone', function (data) {
+      const [message, usernameG, message_id] = data;
+      ele = document.getElementById(message_id)
+      if (ele) {
+        ele.classList.add('deleted')
+        ele.disabled = true
+        ele.innerHTML = ''
+        const alignmentClass = (usernameG === username) ? 'chat-end de' : 'chat-start de';
+
+        ele.innerHTML = `<div class="chat ${alignmentClass}">
+    <div class="chat-bubble dell"><p>
+    ${message}</p></div>
+    </div>`
+
+      }
+    })
+    socket.on('status', function (data) {
+      const messageContainer = document.getElementById('messages');
+
+      if (data.id) {
+        if (data.id !== username) {
+          updateChatPartner(data, other = true);
+        }
+      }
+    });
+
+    function updateChatPartner(data, other = false) {
+      chatPartner = data;
+
+      const userImage = document.getElementById('Suser');
+      const userHeader = document.getElementById('chat-header');
+      const userStatus = document.getElementById('user-status');
+      const messageContainer = document.getElementById('messages');
+
+      if (other) {
+        userImage.src = data.image;
+        userHeader.innerText = data.name;
+        const statusIndicator = document.createElement('span');
+        statusIndicator.classList.add('status-indicator');
+        statusIndicator.classList.toggle('status-online', data.online);
+        statusIndicator.classList.toggle('status-offline', !data.online);
+        userStatus.innerHTML = '';
+        userStatus.appendChild(statusIndicator);
+        userStatus.appendChild(document.createTextNode(`${data.online ? 'online' : 'offline'}`));
+      }
+
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+    function resetChatHeader() {
+      const userImage = document.getElementById('Suser');
+      const userHeader = document.getElementById('chat-header');
+      const userStatus = document.getElementById('user-status');
+
+      userImage.src = '/static/avatar.svg';
+      userHeader.innerText = 'Loading...';
+
+      const statusIndicator = document.createElement('span');
+      statusIndicator.classList.add('status-indicator', 'status-offline');
+      userStatus.innerHTML = '';
+      userStatus.appendChild(statusIndicator);
+      userStatus.appendChild(document.createTextNode('Offline'));
+    }
+
+    socket.on('disconnect', function () {
+      resetChatHeader();
+      const userStatus = document.getElementById('user-status');
+      const statusIndicator = document.createElement('span');
+      statusIndicator.classList.add('status-indicator', 'status-offline');
+      userStatus.innerHTML = '';
+      userStatus.appendChild(statusIndicator);
+      userStatus.appendChild(document.createTextNode('Disconnected'));
+    });
+function remove(img){
+  img.onload= ()=>{
+    console.log('opened....')
+  }
+}
+    function sendMessage() {
+      const messageInput = document.getElementById('message');
+      const message = messageInput.value.trim();
+      if (message !== '' || selectedImage) {
+        if (selectedImage) {
+          const caption = message;
+          socket.emit('message', { image: selectedImage, room, username, caption, replyTo: replyToMessageId });
+          cancelImage();
+        } else {
+          socket.emit('message', { message, room, username, replyTo: replyToMessageId });
+        }
+        messageInput.value = '';
+        cancelReply();
+      }
+    }
+    function appendMessage(usernameG = '', message, timestamp = '', type, caption = '', replyTo = null) {
+      const isOwnMessage = usernameG === username;
+      const messageContainer = document.getElementById('messages');
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('messP')
+      messageElement.addEventListener("dblclick", function () {
+        reply(this);
+      });
+      let localTime = ''
+
+      messageElement.id = timestamp;
+      messageElement.setAttribute('data-pop', usernameG);
+      messageElement.style.borderRadius = '10px'
+      messageElement.style.padding = '10px'
+
+      const alignmentClass = isOwnMessage ? 'chat-end' : 'chat-start';
+
+      let messageContent = '';
+      if (type === 'text') {
+        messageContent = `<div class="chat-bubble"><p>${message}</p></div>`;
+        localTime = convertToLocalTime(timestamp);
+
+      }
+      else if (type === 'deleted') {
+        messageElement.classList.add('deleted')
+        messageElement.disabled = true
+
+        messageContent = `<div class="chat-bubble dell"><p>${message}</p></div>`;
+      } else if (type === 'image') {
+        localTime = convertToLocalTime(timestamp);
+
+        messageContent = `
+      <div class="chat-bubble">
+        <img src="${message}" onload="document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight; remove(this)" onclick="openit(this)" alt="Image" class="max-w-xs h-auto rounded-lg">
+        ${caption ? `<div class="text-sm mt-2"><p>${caption}</p></div>` : ''}
+      </div>
+    `;
+      }
+
+      const rptext = (() => {
+        if (!replyTo) return '';
+        const replyElement = document.getElementById(replyTo);
+        if (!replyElement) return 'Deleted message';
+
+        const textElement = replyElement.querySelector('.chat-bubble p');
+        if (textElement) {
+          if (textElement.innerText.trim()) {
+            return textElement.innerText.trim().slice(0, 30) + (textElement.innerText.length > 30 ? '...' : '');
+          }
+          else {
+            return 'message'
+          }
+
+        }
+
+        const imageElement = replyElement.querySelector('.chat-bubble img');
+        return imageElement ? 'Image' : 'Deleted message';
+      })();
+
+      messageElement.innerHTML = `
+    <div class="chat ${alignmentClass}">
+      ${replyTo ? `<div onclick="scrollToMessage('${replyTo}')" class="chat-header replyto">Replying to <span class="font-semibold cursor-pointer">${rptext}</span></div>` : ''}
+      ${messageContent}
+      <div class="chat-footer opacity-50">${localTime}</div>
+    </div>
+  `;
+
+      messageElement.style.marginTop = '13px';
+      messageContainer.appendChild(messageElement);
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+
+    function previewImage(input) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          selectedImage = e.target.result;
+          showImagePreview(selectedImage);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function dropImage(event) {
+      event.preventDefault();
+      const files = event.dataTransfer.files;
+      if (files.length > 0) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          selectedImage = e.target.result;
+          showImagePreview(selectedImage);
+        };
+        reader.readAsDataURL(files[0]);
+      }
+    }
+
+    function showImagePreview(imageData) {
+      document.querySelector('.reply').classList.add('mar');
+      const preview = document.getElementById('imagePreview');
+      preview.src = imageData;
+      preview.style.display = 'block';
+      document.getElementById('cancelImage').style.display = 'flex';
+      document.getElementById('message').placeholder = "Add a caption... (optional)";
+    }
+
+    function cancelImage() {
+      selectedImage = null;
+      document.getElementById('imageInput').value = '';
+      document.getElementById('imagePreview').style.display = 'none';
+      document.querySelector('.reply').classList.remove('mar');
+      document.getElementById('cancelImage').style.display = 'none';
+      document.getElementById('message').placeholder = "Type your message or drop an image here...";
+    }
+
+    function convertToLocalTime(timestamp) {
+      const date = new Date(timestamp);
+      const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+      return new Intl.DateTimeFormat(undefined, options).format(date);
+    }
+    function reply(item) {
+      cancelReply()
+      const rp = document.querySelector('.reply');
+
+
+      rp.querySelector('span').onclick = function () {
+        scrollToMessage(item.id)
+      }
+
+      rp.classList.add('show');
+      event.preventDefault();
+
+      const messageText = item.querySelector('.chat-bubble p') ? item.querySelector('.chat-bubble p').innerText : 'IMAGE';
+      rp.querySelector('span').querySelector('p').innerText = messageText;
+      replyToMessageId = item.id;
+
+    }
+
+    function cancelReply() {
+      const rp = document.querySelector('.reply');
+      rp.classList.remove('show');
+      replyToMessageId = null;
+
+    }
+
+
+    function scrollToMessage(messageId) {
+      const targetMessage = document.getElementById(messageId);
+      if (targetMessage) {
+        targetMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetMessage.classList.add('bg-green-200');
+        setTimeout(() => targetMessage.classList.remove('bg-green-200'), 2000);
+      } else {
+        toast('d', 'Original message not found');
+      }
+    }
+
+
+
+    document.getElementById('imageInput').addEventListener('change', function () {
+      previewImage(this);
+    });
+
+    document.body.addEventListener('dragover', function (event) {
+      event.preventDefault();
+      document.body.classList.add('imageover');
+    });
+
+    document.body.addEventListener('drop', function (event) {
+      dropImage(event);
+      document.body.classList.remove('imageover');
+    });
+
+    document.body.addEventListener('click', function () {
+      document.body.classList.remove('imageover');
+    });
+
+    document.getElementById('message').addEventListener('keypress', function (event) {
+      if (event.keyCode === 13) {
+        sendMessage();
+      }
+    });
+
+    document.querySelector('button[onclick="sendMessage()"]').addEventListener('click', sendMessage);
+
+  </script>
+</body>
+
+</html>
