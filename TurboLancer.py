@@ -59,7 +59,7 @@ question_collection = db["questions"]
 image_collection = db["images"]
 catalogue_collection = db["catalogue"]
 slideshow_collection = db["slideshow"]
-
+chatFiles_collection = chat['chatFiles']
 
 def generate_id():
     return str(uuid.uuid4())
@@ -78,38 +78,250 @@ def getkey(data):
     return found_items
 
 
+
 def check(data, file):
     try:
-        compound = getkey(data)
-        if compound:
-            if compound.get("ideo", None):
-                id_ = turbolancer_data_Security.decrypt(key, compound.get("ideo", None))
-                ud = seller_collection.find_one(
-                    {"_id": id_}
-                ) or user_collection.find_one({"_id": id_})
-
-                if ud:
-                    if (
-                        compound.get("emalo") == ud["email"]
-                        and ud["d"] == "d"
-                        and not compound.get("deno")
-                    ):
-                        return None
-                    elif (
-                        compound.get("emalo") == ud["email"]
-                        and ud["d"] == "d"
-                        and compound.get("deno")
-                    ):
-                        return file
-                    elif compound.get("emalo") == ud["email"] and ud["d"] == "c":
-                        return file
-            else:
-                return None
-        else:
+        compound = {key: data.get(key) for key in ["ideo", "emalo", "deno"] if key in data}
+        if not compound:
             return None
+
+        if "ideo" not in compound:
+            return None
+
+        user_id = turbolancer_data_Security.decrypt(key, compound.get("ideo"))
+        if not user_id:
+            return None
+
+        user = seller_collection.find_one({"_id": user_id}) or user_collection.find_one({"_id": user_id})
+        if not user:
+            return None
+
+        user_email = user.get("email")
+        if not user_email or user_email != compound.get("emalo"):
+            return None
+
+        if user.get("d") == "d" and not compound.get("deno"):
+            return None
+        elif user.get("d") == "d" and compound.get("deno"):
+            return file
+        elif user.get("d") == "c":
+            return file
+
+        return None
     except Exception as e:
         print(f"An error occurred in check function: {e}")
         return None
+
+def remove_word_without_space(text, word):
+    pattern = rf"\b{word}(?!\s)"
+    return re.sub(pattern, "", text)
+
+
+def remove_first_uppercase(s):
+    if len(s) >= 2 and s[:2].isupper():
+        return s[1:]
+    return s
+
+def update_database(collection, ideo, encoded_email, data):
+    for field in ["bir", "gan", "name", "about_self", "sk"]:
+        if field == "sk" and data.get(field):
+            arr = data["sk"].split(",")
+            arr = split_into_child_arrays(
+                arr
+            )  # Assuming this function is defined elsewhere
+            ud = collection.find_one({"_id": ideo, "email": encoded_email})
+            if ud and "sk" in ud:
+                main_arr = ud["sk"]
+                print(main_arr)
+                for x in range(len(arr)):
+                    found = False
+                    for y in range(len(main_arr)):
+                        if main_arr[y][0] == arr[x][0]:
+                            main_arr[y] = arr[x]
+                            found = True
+                            break
+                    if not found:
+                        main_arr.append(arr[x])
+                print(main_arr)
+
+                collection.update_one(
+                    {"_id": ideo, "email": encoded_email}, {"$set": {"sk": main_arr}}
+                )
+        elif data.get(field):
+            collection.update_one(
+                {"_id": ideo, "email": encoded_email}, {"$set": {field: data[field]}}
+            )
+
+
+def delete_image(image_id):
+    image_id = image_id.split("/")[-1]
+    print('this is from: '+image_id)
+    filter = {"_id": ObjectId(image_id)}
+
+    result = image_collection.find_one(filter) or slideshow_collection.find_one(filter)
+
+    if result:
+        delete_result = image_collection.delete_one(filter) or slideshow_collection.find_one(filter)
+
+        if delete_result.deleted_count > 0:
+            print(f"Image with ID {image_id} deleted successfully.")
+        else:
+            print(f"No image found with ID {image_id}.")
+    else:
+        print(f"No image found with ID {image_id}.")
+
+
+def get_user_dataA(user_id):
+    user_data = user_collection.find_one({"_id": user_id})
+    if user_data:
+        email = turbolancer_data_Security.decrypt(key, user_data["email"])
+        image = user_data["image"]
+        name = user_data["name"]
+        country = turbolancer_data_Security.decrypt(key, user_data["country"])
+        ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
+        year = user_data["account_created_in"]
+        method = user_data["payment_method"]
+        bir = turbolancer_data_Security.decrypt(key, user_data["bir"])
+        gan = turbolancer_data_Security.decrypt(key, user_data.get("gan", None)) or None
+        tag = user_data["tag"] or None
+
+        return {
+            'dd':user_id,
+            "name": name,
+            "image": image,
+            "email": email,
+            "country": country,
+            "ph": ph,
+            "year": year,
+            "bir": bir,
+            "tag": tag,
+            "gan": gan,
+        }
+
+    return None
+
+
+def get_seller_data(developer_id):
+    developer_data = seller_collection.find_one({"_id": developer_id})
+    if developer_data:
+        email = turbolancer_data_Security.decrypt(key, developer_data["email"])
+        image = developer_data["image"]
+        name = developer_data["name"]
+        country = turbolancer_data_Security.decrypt(key, developer_data["country"])
+        ph = turbolancer_data_Security.decrypt(key, developer_data["phone_number"])
+        year = developer_data["account_created_in"]
+        method = developer_data["payment_method"]
+        grade = developer_data["grade"]
+        rating = developer_data["rating"]
+        about_self = developer_data["about_self"]
+        tag = developer_data["tag"] or None
+        sk = developer_data["sk"] or None
+        earnings = developer_data["earnings"] or None
+        bir = turbolancer_data_Security.decrypt(key, developer_data["bir"]) or None
+        gan = (
+            turbolancer_data_Security.decrypt(key, developer_data.get("gan", None))
+            or None
+        )
+        length = len(sk) if sk else 0
+        return {
+            'dd':developer_id,
+            "name": name,
+            "image": image,
+            "email": email,
+            "country": country,
+            "ph": ph,
+            "year": year,
+            "about_self": about_self,
+            "rating": rating,
+            "grade": grade,
+            "tag": tag,
+            "bir": bir,
+            "gan": gan,
+            "sk": sk,
+            "earnings": earnings,
+            "len": length,
+        }
+    return None
+def upload_image_local(image_data, encoded_email, ideo):
+    collection = seller_collection.find_one(
+        {"_id": ideo, "email": encoded_email}
+    ) or user_collection.find_one({"_id": ideo, "email": encoded_email})
+    if "image" in collection:
+        previous_image_link = collection["image"]
+        if previous_image_link != "":
+            previous_image_id = previous_image_link.split("/")[-1]
+            image_collection.delete_one({"_id": ObjectId(previous_image_id)})
+    image_id = image_collection.insert_one(
+        {"data": image_data, "reference": ideo}
+    ).inserted_id
+
+    # Update the 'image' field in the TurboLancerropriate collection
+    if seller_collection.find_one({"_id": ideo, "email": encoded_email}):
+        seller_collection.update_one(
+            {"_id": ideo, "email": encoded_email},
+            {"$set": {"image": "/get_image/" + str(image_id)}},
+        )
+    else:
+        user_collection.update_one(
+            {"_id": ideo, "email": encoded_email},
+            {"$set": {"image": "/get_image/" + str(image_id)}},
+        )
+
+    return jsonify({"image_id": str(image_id)})
+
+def handle_data_encryption(data):
+    if data.get("bir"):
+        data["bir"] = turbolancer_data_Security.encrypt(key, data["bir"])
+    if data.get("gan"):
+        data["gan"] = turbolancer_data_Security.encrypt(key, data["gan"])
+    return data
+
+
+def get_collection(ideo, encoded_email):
+    if seller_collection.find_one({"_id": ideo, "email": encoded_email}):
+        return seller_collection
+    else:
+        return user_collection
+
+
+def split_into_child_arrays(original_array):
+    child_arrays = []
+    for i in range(0, len(original_array), 3):
+        child_array = original_array[i : i + 3]
+        child_arrays.append(child_array)
+    return child_arrays
+
+def collect_messages(data):
+    combined_messages = {}
+    
+    for message_obj in data:
+        room = message_obj['room']
+        username = message_obj['username']
+        keyy = (room, username)
+        print(turbolancer_data_Security.decrypt(key, username))
+
+        if keyy not in combined_messages:
+            item = user_collection.find_one({'_id':turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id':turbolancer_data_Security.decrypt(key, username)})
+            combined_messages[keyy] = {
+                'room': room,
+                'username': item['name'] if item else 'Unknown User',
+                'img': item['image'] if item else '/static/default_avatar.png',
+                'message_count': 0
+            }
+        
+        combined_messages[keyy]['message_count'] += len(message_obj['messages'])
+    
+    result = []
+    for value in combined_messages.values():
+        result.append({
+            'room': value['room'],
+            'username': value['username'],
+            'img': value['img'],
+            'message_count': value['message_count']
+        })
+    
+    return result
+
 
 
 # Form for uploading images
@@ -305,21 +517,17 @@ def signup_and_upload_image():
             user_id = generate_id()
 
             if "image" not in request.files:
-                return render_template("error.html", message="No image uploaded")
-            else:
-                image = request.files["image"]
-                image_data = image.read()
-                image_id = image_collection.insert_one({"data": image_data}).inserted_id
+                return jsonify(success=False, error="No image uploaded")
+
+            image = request.files["image"]
+            image_data = image.read()
+            image_id = image_collection.insert_one({"data": image_data}).inserted_id
 
             if user or user_ph:
-                return render_template(
-                    "sin-c.html",
-                    x="Account already exists with this email/phone.",
-                    y="onload= this.click",
-                )
+                return jsonify(success=False, error="Account already exists with this email/phone.")
 
-            elif user is None and user_ph is None:
-                t = name.replace(" ", "")
+            if user is None and user_ph is None:
+                t = name.split(' ')[0]
                 tag = "@" + t
                 user_id = generate_id()
                 count = seller_collection.count_documents({"name": name})
@@ -352,16 +560,14 @@ def signup_and_upload_image():
                 user_collection.insert_one(user)
                 ide = user_id
                 user_id = turbolancer_data_Security.encrypt(key, user_id)
-                return jsonify(
-                    {
-                        "success": True,
-                        "redirect_url": f'/redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/none',
-                    }
-                )
+                redirect_url = f'/redi/{user_id}/{encoded_email}/{ide}/{user["d"]}/none'
+                return jsonify(success=True, redirect_url=redirect_url)
+
         return render_template("sin-c.html")
     except Exception as e:
         print(f"An error occurred in signup_and_upload_image route: {e}")
-        return render_template("sin-c.html")
+        return jsonify(success=False, error=str(e))
+
 
 
 @TurboLancer.route("/signin", methods=["GET", "POST"])
@@ -473,32 +679,7 @@ def upload_image():
         return jsonify({"error": "An error occurred during image upload."})
 
 
-def upload_image_local(image_data, encoded_email, ideo):
-    collection = seller_collection.find_one(
-        {"_id": ideo, "email": encoded_email}
-    ) or user_collection.find_one({"_id": ideo, "email": encoded_email})
-    if "image" in collection:
-        previous_image_link = collection["image"]
-        if previous_image_link != "":
-            previous_image_id = previous_image_link.split("/")[-1]
-            image_collection.delete_one({"_id": ObjectId(previous_image_id)})
-    image_id = image_collection.insert_one(
-        {"data": image_data, "reference": ideo}
-    ).inserted_id
 
-    # Update the 'image' field in the TurboLancerropriate collection
-    if seller_collection.find_one({"_id": ideo, "email": encoded_email}):
-        seller_collection.update_one(
-            {"_id": ideo, "email": encoded_email},
-            {"$set": {"image": "/get_image/" + str(image_id)}},
-        )
-    else:
-        user_collection.update_one(
-            {"_id": ideo, "email": encoded_email},
-            {"$set": {"image": "/get_image/" + str(image_id)}},
-        )
-
-    return jsonify({"image_id": str(image_id)})
 
 @TurboLancer.route("/i/<image_id>", methods=["GET"])
 def get_i(image_id):
@@ -608,17 +789,19 @@ def dashboard(x, y):
     Seller_data = seller_collection.find_one({"_id": x, "d": y})
 
     if Seller_data:
+        cat = list(catalogue_collection.find({"seller_id": x}))
 
-        developer_data = get_seller_data(x)
-        if developer_data:
-            # Dummy data for developer_data
-            developer_data["total_catalog_items"] = 125
-            developer_data["total_projects"] = 42
-            developer_data["rating"] = float(developer_data["rating"])
+        seller_dataS = get_seller_data(x)
+        if seller_dataS:
+            # Dummy data for seller_dataS
+            seller_dataS["total_catalog_items"] = len(cat)
+            seller_dataS["total_projects"] = 42
+            seller_dataS["rating"] = float(seller_dataS["rating"])
+            seller_dataS['um'] = collect_messages(Seller_data['unreadMessages'])
         if "d" in y:
             return render_template(
                 "dashboard.html",
-                **developer_data,
+                **seller_dataS,
                 aclink=f"/account/{x}/{y}",
                 allink=f"/home-c/{x}/{y}",
                 _id=x,
@@ -626,7 +809,21 @@ def dashboard(x, y):
 
     return redirect(url_for("main"))
 
+@TurboLancer.route('/notification', methods=['POST'])
+def notification():
+    data = request.json.get('id')
 
+    if not check(request.cookies, "file"):
+        return redirect(url_for("main"))
+    
+    elif (check(request.cookies, "file") and turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"]) != data):
+        return redirect(url_for("main"))
+    
+    user = user_collection.find_one({'_id': data}) or seller_collection.find_one({'_id':data})
+
+    if user and user['unreadMessages']:
+        return jsonify({'um':collect_messages(user['unreadMessages'])})
+    return jsonify({'not_Found':True})
 
 @TurboLancer.route("/catalogue/<x>/<y>", methods=["GET", "POST"])
 def catalogue(x, y):
@@ -650,7 +847,7 @@ def catalogue(x, y):
                 res = new_or_not(item['date'])
                 id = item["_id"]
                 item['res'] = res
-                new.TurboLancerend(id)
+                new.append(id)
             return render_template("catalogue.html", **Seller_data, cat=cat, c_id=new,)
         return render_template("catalogue.html", **Seller_data)
     
@@ -662,7 +859,7 @@ def catalogue(x, y):
         for file in uploaded_files:
             binary_data = file.read()
             img_id = slideshow_collection.insert_one({'data': binary_data, 'reference': x}).inserted_id
-            images.TurboLancerend("/i/" + str(img_id))
+            images.append("/i/" + str(img_id))
         
         print(images)
         
@@ -721,7 +918,7 @@ def full_catalogue(id):
     for i, label in enumerate(listA):
         package = 'Basic' if i % 3 == 0 else 'Standard' if i % 3 == 1 else 'Premium'
         if i < len(listB):
-            pakeages[package].TurboLancerend((label, listB[i]))
+            pakeages[package].append((label, listB[i]))
     cookies = getkey(request.cookies)
     ideo = turbolancer_data_Security.decrypt(key, cookies.get("ideo"))
     print(pakeages)
@@ -767,27 +964,6 @@ def update_profile():
     return jsonify({"success": False})
 
 
-def handle_data_encryption(data):
-    if data.get("bir"):
-        data["bir"] = turbolancer_data_Security.encrypt(key, data["bir"])
-    if data.get("gan"):
-        data["gan"] = turbolancer_data_Security.encrypt(key, data["gan"])
-    return data
-
-
-def get_collection(ideo, encoded_email):
-    if seller_collection.find_one({"_id": ideo, "email": encoded_email}):
-        return seller_collection
-    else:
-        return user_collection
-
-
-def split_into_child_arrays(original_array):
-    child_arrays = []
-    for i in range(0, len(original_array), 3):
-        child_array = original_array[i : i + 3]
-        child_arrays.TurboLancerend(child_array)
-    return child_arrays
 
 
 @TurboLancer.route("/delItem", methods=["POST"])
@@ -815,130 +991,9 @@ def delItem():
         return jsonify({"success": False})
     return jsonify({"success": False})
 
-
-def update_database(collection, ideo, encoded_email, data):
-    for field in ["bir", "gan", "name", "about_self", "sk"]:
-        if field == "sk" and data.get(field):
-            arr = data["sk"].split(",")
-            arr = split_into_child_arrays(
-                arr
-            )  # Assuming this function is defined elsewhere
-            ud = collection.find_one({"_id": ideo, "email": encoded_email})
-            if ud and "sk" in ud:
-                main_arr = ud["sk"]
-                print(main_arr)
-                for x in range(len(arr)):
-                    found = False
-                    for y in range(len(main_arr)):
-                        if main_arr[y][0] == arr[x][0]:
-                            main_arr[y] = arr[x]
-                            found = True
-                            break
-                    if not found:
-                        main_arr.TurboLancerend(arr[x])
-                print(main_arr)
-
-                collection.update_one(
-                    {"_id": ideo, "email": encoded_email}, {"$set": {"sk": main_arr}}
-                )
-        elif data.get(field):
-            collection.update_one(
-                {"_id": ideo, "email": encoded_email}, {"$set": {field: data[field]}}
-            )
-
-
-def delete_image(image_id):
-    image_id = image_id.split("/")[-1]
-    print('this is from: '+image_id)
-    filter = {"_id": ObjectId(image_id)}
-
-    result = image_collection.find_one(filter) or slideshow_collection.find_one(filter)
-
-    if result:
-        delete_result = image_collection.delete_one(filter) or slideshow_collection.find_one(filter)
-
-        if delete_result.deleted_count > 0:
-            print(f"Image with ID {image_id} deleted successfully.")
-        else:
-            print(f"No image found with ID {image_id}.")
-    else:
-        print(f"No image found with ID {image_id}.")
-
-
-def get_user_dataA(user_id):
-    user_data = user_collection.find_one({"_id": user_id})
-    if user_data:
-        email = turbolancer_data_Security.decrypt(key, user_data["email"])
-        image = user_data["image"]
-        name = user_data["name"]
-        country = turbolancer_data_Security.decrypt(key, user_data["country"])
-        ph = turbolancer_data_Security.decrypt(key, user_data["phone_number"])
-        year = user_data["account_created_in"]
-        method = user_data["payment_method"]
-        bir = turbolancer_data_Security.decrypt(key, user_data["bir"])
-        gan = turbolancer_data_Security.decrypt(key, user_data.get("gan", None)) or None
-        tag = user_data["tag"] or None
-
-        return {
-            "name": name,
-            "image": image,
-            "email": email,
-            "country": country,
-            "ph": ph,
-            "year": year,
-            "bir": bir,
-            "tag": tag,
-            "gan": gan,
-        }
-
-    return None
-
-
-def get_seller_data(developer_id):
-    developer_data = seller_collection.find_one({"_id": developer_id})
-    if developer_data:
-        email = turbolancer_data_Security.decrypt(key, developer_data["email"])
-        image = developer_data["image"]
-        name = developer_data["name"]
-        country = turbolancer_data_Security.decrypt(key, developer_data["country"])
-        ph = turbolancer_data_Security.decrypt(key, developer_data["phone_number"])
-        year = developer_data["account_created_in"]
-        method = developer_data["payment_method"]
-        grade = developer_data["grade"]
-        rating = developer_data["rating"]
-        about_self = developer_data["about_self"]
-        tag = developer_data["tag"] or None
-        sk = developer_data["sk"] or None
-        earnings = developer_data["earnings"] or None
-        bir = turbolancer_data_Security.decrypt(key, developer_data["bir"]) or None
-        gan = (
-            turbolancer_data_Security.decrypt(key, developer_data.get("gan", None))
-            or None
-        )
-        length = len(sk) if sk else 0
-        return {
-            "name": name,
-            "image": image,
-            "email": email,
-            "country": country,
-            "ph": ph,
-            "year": year,
-            "about_self": about_self,
-            "rating": rating,
-            "grade": grade,
-            "tag": tag,
-            "bir": bir,
-            "gan": gan,
-            "sk": sk,
-            "earnings": earnings,
-            "len": length,
-        }
-    return None
-
-
 @TurboLancer.route("/account/<x>/<y>")
 def account(x, y):
-    res  = check(request.cookies, "file")
+    res = check(request.cookies, "file")
     print(res)
     if not res:
         return redirect(url_for("main"))
@@ -947,24 +1002,33 @@ def account(x, y):
         key, getkey(request.cookies)["ideo"]
     )
 
-    if res and (decrypted_x != x ):
+    if res and (decrypted_x != x):
         if y in ["c", "d"]:
             if y == "c":
                 return redirect("/NotFound")
             elif y == "d":
-                developer_data = get_seller_data(x)
-                if developer_data:
-                    # Dummy data for developer_data
-                    developer_data["total_catalog_items"] = 125
-                    developer_data["total_projects"] = 42
-                    developer_data["rating"] = float(developer_data["rating"])
+                seller_data = get_seller_data(x)
+                if seller_data:
+                    new = []
+                    cat = list(catalogue_collection.find({"seller_id": x}))
+                    if cat:
+                        for item in cat:
+                            item['sell'] = 'Yes' if seller_data.get('dd') and (item['seller_id'] == seller_data['dd']) else None
+                            item['res'] = new_or_not(item['date'])
+                            new.append(item["_id"])
+                    
+                    # Combine seller_data with additional data
+                    seller_data["total_catalog_items"] = len(cat)
+                    seller_data["total_projects"] = 42  # Replace with actual data
+                    seller_data["rating"] = float(seller_data["rating"])
+                    
                     return render_template(
-                        "profile_page.html", **developer_data, d="avail"
+                        "profile_page.html", **seller_data, d="avail", cat=cat, c_id=new
                     )
                 return redirect(url_for("main"))
         return redirect(url_for("main"))
 
-    if res and (decrypted_x == x ) and ( y in ["c", "d"]) :
+    if res and (decrypted_x == x) and (y in ["c", "d"]):
         if y == "c":
             user_data = get_user_dataA(x)
             if user_data:
@@ -977,21 +1041,27 @@ def account(x, y):
                     "profile_page.html", **user_data, x="yes", c="yes"
                 )
         elif y == "d":
-            developer_data = get_seller_data(x)
-            if developer_data:
-                # Dummy data for developer_data
-                developer_data["total_catalog_items"] = 125
-                developer_data["total_projects"] = 42
-                developer_data["rating"] = float(developer_data["rating"])
-
+            seller_data = get_seller_data(x)
+            if seller_data:
+                new = []
+                cat = list(catalogue_collection.find({"seller_id": x}))
+                if cat:
+                    for item in cat:
+                        item['sell'] = 'Yes' if seller_data.get('dd') and (item['seller_id'] == seller_data['dd']) else None
+                        item['res'] = new_or_not(item['date'])
+                        new.append(item["_id"])
+                
+                # Combine seller_data with additional data
+                seller_data["total_catalog_items"] = len(cat)
+                seller_data["total_projects"] = 42  # Replace with actual data
+                seller_data["rating"] = float(seller_data["rating"])
+                
                 return render_template(
-                    "profile_page.html", **developer_data, d="avail", x="yes"
+                    "profile_page.html", **seller_data, d="avail", x="yes", cat=cat, c_id=new
                 )
-
             return redirect(url_for("main"))
 
     return redirect(url_for("main"))
-
 
 @TurboLancer.errorhandler(404)
 def page_not_found(error):
@@ -1006,8 +1076,8 @@ def page():
 @TurboLancer.route("/getserved")
 def get_searved():
  
-    Seller = seller_collection.find_one({"_id": turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"]), "d": 'd'}) or None
-
+    Seller:dict = seller_collection.find_one({"_id": turbolancer_data_Security.decrypt(key, getkey(request.cookies)["ideo"]), "d": 'd'}) or {'_id':'000'}
+    print(Seller)
     new = []
     Seller_data: dict = {}
     cat = list(catalogue_collection.find())
@@ -1019,7 +1089,7 @@ def get_searved():
             id = item["_id"]
             item['sell'] = 'Yes' if Seller.get('_id') and (item['seller_id']  == Seller['_id']) else None
             item['res'] = res
-            new.TurboLancerend(id)
+            new.append(id)
         return render_template("get_served.html", **Seller_data, cat=cat, c_id=new)
     return render_template("get_served.html", **Seller_data)
 
@@ -1029,15 +1099,7 @@ def proj():
     return render_template("project.html")
 
 
-def remove_word_without_space(text, word):
-    pattern = rf"\b{word}(?!\s)"
-    return re.sub(pattern, "", text)
 
-
-def remove_first_uppercase(s):
-    if len(s) >= 2 and s[:2].isupper():
-        return s[1:]
-    return s
 
 
 @TurboLancer.route("/rephrase_text", methods=["POST"])
@@ -1082,91 +1144,206 @@ def rephrase():
 ######################################################################################################################
 @TurboLancer.route('/chat/<room>')
 def index(room):
-    return render_template('chat.html', un=getkey(request.cookies).get('ideo'), x=room)
+    res = check(request.cookies, "file")
+    print(res)
+    if not res:
+        return redirect("/NotFound")
+    
+    id = getkey(request.cookies).get('ideo')
+    ch = chatroom_collection.find_one({
+        'name': room,
+        'users': {'$elemMatch': {'username': id}}
+    })
+    
+    if ch:
+        return render_template('chat.html', un=id, x=room)
+    else:
+        return redirect("/NotFound")
+    
+@TurboLancer.route('/create_chat/<other_username>')
+def create_chat(other_username):
+    if not check(request.cookies, "file"):
+        return redirect("/NotFound")
+
+    encrypted_id = getkey(request.cookies).get('ideo')
+    current_user_id = turbolancer_data_Security.decrypt(key, encrypted_id)
+
+    current_user = (
+        user_collection.find_one({'_id': current_user_id}) or 
+        seller_collection.find_one({'_id': current_user_id})
+    )
+    if not current_user:
+        return redirect("/NotFound")
+
+    for room in current_user.get('rooms', []):
+        if room['username'] == other_username:
+            return redirect(f'/chat/{room['room']}')
+
+    room_id = str(uuid.uuid4())
+
+    current_user_collection = seller_collection if current_user['d'] == 'd' else user_collection
+    current_user_collection.update_one(
+        {'_id': current_user_id},
+        {'$push': {'rooms': {'username': other_username, 'room': room_id}}}
+    )
+
+    other_user = (
+        user_collection.find_one({'_id': other_username}) or 
+        seller_collection.find_one({'_id': other_username})
+    )
+    if not other_user:
+        return redirect("/NotFound")
+
+    other_user_collection = seller_collection if other_user.get('d') == 'd' else user_collection
+    other_user_collection.update_one(
+        {'_id': other_username},
+        {'$push': {'rooms': {'username': current_user_id, 'room': room_id}}}
+    )
+
+    chatroom_collection.insert_one({
+        'name': room_id,
+        'users': [
+            {'username': turbolancer_data_Security.encrypt(key, other_username)},
+            {'username': encrypted_id}
+        ]
+    })
+
+    return redirect(f'/chat/{room_id}')
+    
 
 @TurboLancer.route('/chatImg/<x>', methods=['GET'])
 def get_chat_img(x):
-    img = chatImages_collection.find_one({'_id': ObjectId(x)})
-    if img and "data" in img:
-        return send_file(io.BytesIO(img["data"]), mimetype="image/jpeg")
-    else:
-        return jsonify({"error": "Image not found"})
+    try:
+        img = chatImages_collection.find_one({'_id': ObjectId(x)})
+        if not img:
+            return jsonify({"error": "Image not found"}), 404
 
-def upload_image_chat(image_data, chatroom_id):
-    image_id = chatImages_collection.insert_one({"data": image_data, "reference": chatroom_id}).inserted_id
+        encrypted_id = getkey(request.cookies).get('ideo')
+        if not encrypted_id:
+            return jsonify({"error": "Invalid encryption key"}), 403
+
+        t = any(item.get('username') == encrypted_id for item in img.get('users', []))
+
+        if "data" in img and t:
+            return send_file(io.BytesIO(img["data"]), mimetype="image/jpeg")
+        else:
+            return jsonify({"error": "image data not found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def upload_image_chat(image_data, chatroom_id, users):
+    image_id = chatImages_collection.insert_one({"data": image_data, "reference": chatroom_id,'users':users}).inserted_id
     return image_id
+@socketio.on('message')
+def handle_message(data):
+    room = data.get('room')
+    message = data.get('message')
+    username = data.get('username')
+    reply_to = data.get('replyTo')
 
+    if room and username:
+        timestamp = datetime.now(pytz.utc).isoformat()
 
+        # Check if the reply_to message is an 'offer' and update it
+        if reply_to:
+            chatroom_doc = chatroom_collection.find_one({'name': room}, {'messages': 1})
+            if chatroom_doc and 'messages' in chatroom_doc:
+                chatroom_collection.update_one(
+                    {'name': room, 'messages.timestamp': reply_to},
+                    {'$set': {'messages.$.type': 'deleted', 'messages.$.message': 'Submitted an offer '}}
+                )
 
-@socketio.on('join')
-def on_join(data):
-    username = data['username']
-    room = data['room']
-    join_room(room)
-
-    chatroom = chatroom_collection.find_one({'name': room})
-    if chatroom is None:
-        chatroom = {'name': room, 'users': [], 'messages': []}
-    
-    # Fetch current users in the chatroom
-    current_users = chatroom.get('users', [])
-    user_exists = False
-    users_info = []
-
-    for user in current_users:
-        decrypted_username = turbolancer_data_Security.decrypt(key, user['username'])
-        user_data = user_collection.find_one({'_id': decrypted_username}) or seller_collection.find_one({'_id': decrypted_username})
-
-        if user_data:
-            online_status = bool(user.get('sid'))
-            user_info = {
-                'id': turbolancer_data_Security.encrypt(key, user_data['_id']),
-                'name': user_data['name'],
-                'image': user_data['image'],
-                'tag': user_data.get('tag', ''),
-                'online': online_status
+        try:
+            message_data = {
+                'sender': username,
+                'message': message,
+                'timestamp': timestamp,
+                'type': 'text',
+                'replyTo': reply_to if reply_to else None
             }
-            users_info.append(user_info)
 
-            if user['username'] == username:
-                user['sid'] = request.sid
-                user_exists = True
-            else:
-                # Emit other user's status to the joining user
-                emit('status', user_info, room=request.sid)
+            if data.get('type') == 'offer':
+                message_data['type'] = 'offer'
+            elif data.get('file'):
+                file_data = b64decode(data['file'])
+                file_id = upload_file_chat(file_data, room, data['filename'])
+                file_url = f'/chatFile/{file_id}'
+                message_data['message'] = file_url
+                message_data['type'] = 'file'
+                message_data['filename'] = data['filename']
+            elif data.get('image'):
+                image_data = b64decode(data['image'].split(",")[1])
+                caption = data.get('caption', '')
+                chatroom = chatroom_collection.find_one({'name': room}, {'users': 1})
+                if chatroom and 'users' in chatroom:
+                    image_id = upload_image_chat(image_data, room, chatroom['users'])
+                    image_url = f'/chatImg/{image_id}'
+                    message_data['message'] = image_url
+                    message_data['type'] = 'image'
+                    message_data['caption'] = caption
 
-    if not user_exists:
-        current_users.append({'username': username, 'sid': request.sid})
+            # Store the message in the chatroom collection
+            chatroom_collection.update_one(
+                {'name': room},
+                {'$push': {'messages': message_data}},
+                upsert=True
+            )
+
+            emit('response', {
+                'message': message_data['message'],
+                'sender': message_data['sender'],
+                'timestamp': message_data['timestamp'],
+                'type': message_data['type'],
+                'caption': message_data.get('caption', ''),
+                'replyTo': message_data.get('replyTo', None),
+                'filename': message_data.get('filename', '')
+            }, room=room)
+
+            # Handle unread messages for offline recipients
+            chatroom = chatroom_collection.find_one({'name': room}, {'users': 1})
+            if chatroom and 'users' in chatroom and chatroom['users']:
+                recipient_user = next((user for user in chatroom['users'] if user['username'] != data['username']), None)
+                if recipient_user and not recipient_user.get('sid'):
+                    recipient_username = turbolancer_data_Security.decrypt(key, recipient_user['username'])
+                    recipient_collection = user_collection if user_collection.find_one({'_id': recipient_username}) else seller_collection
+
+                    # Update unreadMessages for the offline recipient
+                    recipient_collection.update_one(
+                        {'_id': recipient_username},
+                        {'$push': {'unreadMessages': {'$each': [{'room': room, 'username': username, 'messages': [message_data]}], '$position': 0}}},
+                        upsert=True
+                    )
+        except Exception as e:
+            print(f"Error updating database: {e}")
+            emit('error', {'msg': 'Failed to send message.'}, room=request.sid)
     else:
-        for user in current_users:
-            if user['username'] == username:
-                user['sid'] = request.sid
+        emit('error', {'msg': 'Invalid message data.'}, room=request.sid)
+        
+def upload_file_chat(file_data, chatroom_id, filename):
+    file_id = chatFiles_collection.insert_one({
+        "data": file_data, 
+        "reference": chatroom_id, 
+        "filename": filename
+    }).inserted_id
+    return file_id
 
-    chatroom_collection.update_one(
-        {'name': room},
-        {'$set': {'users': current_users}},
-        upsert=True
-    )
+@TurboLancer.route('/chatFile/<x>', methods=['GET'])
+def get_chat_file(x):
+    file_doc = chatFiles_collection.find_one({'_id': ObjectId(x)})
+    if file_doc and "data" in file_doc:
+        return send_file(io.BytesIO(file_doc["data"]), 
+                        download_name=file_doc["filename"], 
+                        as_attachment=True)
+    else:
+        return jsonify({"error": "File not found"}), 404
 
-    # Notify all users in the room about the new user's status
-    for user_info in users_info:
-        emit('status', user_info, room=room)
 
-    # Emit previous messages to the user who just joined
-    if 'messages' in chatroom:
-        for message in chatroom['messages']:
-            emit('response', [message['message'], message['sender'], message.get('timestamp'), message.get('type', 'text'), message.get('caption', ''), message.get('replyTo',None)], room=request.sid)
-    
-    # Broadcast the current user's status to others
-    current_user_data = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})
-    if current_user_data:
-        current_user_info = {
-            'id': turbolancer_data_Security.encrypt(key, current_user_data['_id']),
-            'name': current_user_data['name'],
-            'image': current_user_data['image'],
-            'online': True
-        }
-        emit('status', current_user_info, room=room)
+@TurboLancer.route('/offer')
+def bid():
+    if not check(request.cookies, "file"):
+        return redirect("/NotFound")
+    return render_template('offer.html')
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -1200,58 +1377,90 @@ def on_disconnect():
                 emit('status', status_data, room=room)
             else:
                 emit('status', {'msg': f'{username} has disconnected.', 'online': False, 'id': username}, room=room)
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
 
-@socketio.on('message')
-def handle_message(data):
-    room = data.get('room')
-    message = data.get('message')
-    username = data.get('username')
-    reply_to = data.get('replyTo')
-    if room and username:
-        timestamp = datetime.now(pytz.utc)
-        if message:
-            try:
-                message_data = {
-                    'sender': username, 
-                    'message': message, 
-                    'timestamp': timestamp.isoformat(), 
-                    'type': 'text'
-                }
-                if reply_to:
-                    message_data['replyTo'] = reply_to
-                chatroom_collection.update_one(
-                    {'name': room}, 
-                    {'$push': {'messages': message_data}}, 
-                    upsert=True
-                )
-                emit('response', [message, username, timestamp.isoformat(), "text", "", reply_to], room=room)
-            except Exception as e:
-                print(f"Error updating database: {e}")
-        elif data.get('image'):
-            image_data = b64decode(data['image'].split(",")[1])
-            caption = data.get('caption', '')
-            image_id = upload_image_chat(image_data, room)
-            image_url = f'/chatImg/{image_id}'
-            try:
-                message_data = {
-                    'sender': username, 
-                    'message': image_url, 
-                    'timestamp': timestamp.isoformat(), 
-                    'type': 'image', 
-                    'caption': caption
-                }
-                if reply_to:
-                    message_data['replyTo'] = reply_to
-                chatroom_collection.update_one(
-                    {'name': room},
-                    {'$push': {'messages': message_data}},
-                    upsert=True
-                )
-                emit('response', [image_url, username, timestamp.isoformat(), "image", caption, reply_to], room=room)
-            except Exception as e:
-                print(f"Error updating database: {e}")
+    chatroom = chatroom_collection.find_one({'name': room})
+    if chatroom is None:
+        chatroom = {'name': room, 'users': [], 'messages': []}
+
+    # Fetch current users in the chatroom
+    current_users = chatroom.get('users', [])
+    user_exists = False
+    users_info = []
+
+    for user in current_users:
+        decrypted_username = turbolancer_data_Security.decrypt(key, user['username'])
+        user_data = user_collection.find_one({'_id': decrypted_username}) or seller_collection.find_one({'_id': decrypted_username})
+
+        if user_data:
+            online_status = bool(user.get('sid'))
+            user_info = {
+                'id': turbolancer_data_Security.encrypt(key, user_data['_id']),
+                'name': user_data['name'],
+                'image': user_data['image'],
+                'tag': user_data.get('tag', ''),
+                'online': online_status
+            }
+            users_info.append(user_info)
+
+            if user['username'] == username:
+                user['sid'] = request.sid
+                user_exists = True
+
+                # Remove all unread messages for this room from the user's document
+                user_collection_to_check = user_collection if user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) else seller_collection
+                for item in user_collection_to_check.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})['unreadMessages'] if user_collection_to_check.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}).get('unreadMessages') else []:
+                    if item['room'] == room:
+                        user_collection_to_check.update_one(
+                            {'_id': turbolancer_data_Security.decrypt(key, username)},
+                            {'$pull': {'unreadMessages': {'room': room}}}
+                        )
+            else:
+                # Emit other user's status to the joining user
+                emit('status', user_info, room=request.sid)
+
+    if not user_exists:
+        current_users.append({'username': username, 'sid': request.sid})
     else:
-        emit('error', {'msg': 'Invalid message data.'})
+        for user in current_users:
+            if user['username'] == username:
+                user['sid'] = request.sid
+
+    chatroom_collection.update_one(
+        {'name': room},
+        {'$set': {'users': current_users}},
+        upsert=True
+    )
+
+    for user_info in users_info:
+        emit('status', user_info, room=room)
+
+    if 'messages' in chatroom:
+        for message in chatroom['messages']:
+                        emit('response', {
+                    'message': message['message'],
+                    'sender': message['sender'],
+                    'timestamp': message['timestamp'],
+                    'type': message['type'],
+                    'caption': message.get('caption', ''),
+                    'replyTo': message.get('replyTo', None),
+                    'filename': message.get('filename', '')
+                }, room=request.sid)
+    # Broadcast the current user's status to others
+    current_user_data = user_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)}) or seller_collection.find_one({'_id': turbolancer_data_Security.decrypt(key, username)})
+    if current_user_data:
+        current_user_info = {
+            'id': turbolancer_data_Security.encrypt(key, current_user_data['_id']),
+            'name': current_user_data['name'],
+            'image': current_user_data['image'],
+            'online': True
+        }
+        emit('status', current_user_info, room=room)
+
 
 @socketio.on('deleteMessage')
 def handle_delete_message(data):
@@ -1268,16 +1477,21 @@ def handle_delete_message(data):
                             chatImages_collection.delete_one({'_id':ObjectId(message['message'].split('/')[2])})
                             message['message'] = "This message was deleted"
                             message['type'] = 'deleted'
-                            message['timestamp']  = ''
+                            if 'replyTo' in message: del message['replyTo']
+                            if 'caption' in message: del message['caption']
+                            break
+                        elif message['type'] == 'file':
+                            chatFiles_collection.delete_one({'_id':ObjectId(message['message'].split('/')[2])})
+                            message['message'] = "This message was deleted"
+                            message['type'] = 'deleted'
                             if 'replyTo' in message: del message['replyTo']
                             if 'caption' in message: del message['caption']
                             break
                         else:
                             message['message'] = "This message was deleted"
                             message['type'] = 'deleted'
-                            message['timestamp'] = ''
                             if 'replyTo' in message: del message['replyTo']
-                            if 'caption' in message: del message['caption']
+                            if 'filename' in message: del message['filename']
                             break
                 chatroom_collection.update_one({'name': room}, {'$set': {'messages': chatroom['messages']}})
                 emit('delDone', ["This message was deleted", message['sender'], message_id, "deleted"], room=room)

@@ -1,8 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Sofia");
+
 * {
-  scroll-behavior: smooth;
-  transition: all 0.4s !important;
-  text-wrap: balance;
+    padding: 0;
+    font-family: "Poppins", Arial, sans-serif;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    text-wrap: balance;
+    scroll-behavior: smooth;
+
 }
+
 
 #toast_parent-TurboLancer {
   position: fixed;
@@ -495,6 +504,7 @@
   .tb_ai-button::before {
     content: "";
     position: absolute;
+    filter: blur(4px);
     top: 0;
     left: 0;
     width: 400%;

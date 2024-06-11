@@ -28,10 +28,12 @@
       background-color: #28a745;
       color: #fff;
     }
-    .chat-bubble img{
-    background-size: 100% 100%;
-    background-color: #00000065;
-   }
+
+    .chat-bubble img {
+      background-size: 100% 100%;
+      background-color: #00000065;
+    }
+
     .chat-bubble {
       max-width: 500px;
 
@@ -103,10 +105,6 @@
       background-color: #f1f1f1;
     }
 
-    .card {
-      border-radius: 20px;
-    }
-
     .card-header {
       border-radius: 20px 20px 0 0;
 
@@ -143,7 +141,6 @@
     }
 
     body.imageover {
-
       filter: blur(5px);
     }
 
@@ -172,7 +169,6 @@
       border-radius: 5px;
       height: 50px;
       width: 50px;
-
     }
 
     .reply span {
@@ -188,7 +184,6 @@
       height: 50px;
 
       background-color: #f1f1f1;
-
     }
 
     .reply span svg {
@@ -209,7 +204,6 @@
     }
 
     .reply.mar {
-
       width: calc(100% - 70px);
       margin-left: 70px;
     }
@@ -226,7 +220,8 @@
       transform: translateY(-10px) scale(0.95);
       opacity: 0;
       visibility: hidden;
-      transition: visibility 0s linear 0.4s, opacity 0.4s ease, transform 0.4s ease;
+      transition: visibility 0s linear 0.4s, opacity 0.4s ease,
+        transform 0.4s ease;
       position: fixed;
     }
 
@@ -234,7 +229,8 @@
       transform: translateY(0) scale(1);
       opacity: 1;
       visibility: visible;
-      transition: visibility 0s linear 0s, opacity 0.4s ease, transform 0.4s ease;
+      transition: visibility 0s linear 0s, opacity 0.4s ease,
+        transform 0.4s ease;
     }
 
     #contextMenu button {
@@ -287,43 +283,88 @@
     .deleted {
       pointer-events: none;
       user-select: none;
-
     }
-    .chat-end.de .chat-bubble, .deleted .chat-end .chat-bubble,.chat-start.de .chat-bubble, .deleted .chat-start .chat-bubble{
+
+    .chat-end.de .chat-bubble,
+    .deleted .chat-end .chat-bubble,
+    .chat-start.de .chat-bubble,
+    .deleted .chat-start .chat-bubble {
       background-color: #dedede !important;
       color: #121212 !important;
     }
+
     .dell {
       font-style: oblique;
       color: #858585;
+    }
+
+    #plusbtn:hover {
+      transform: rotate(90deg);
+    }
+
+
+
+    .file {
+      height: 50px;
+      background-color: #00000028;
+      padding: 7px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      gap: 3px;
+      min-width: 160px;
+      font-size: 20px;
+    }
+
+    .file svg {
+      fill: #fecda3;
+      width: 20px;
+      height: 20px;
+    }
+    strong{
+      color: #323232;
+    }
+    #accept-btn,#decline-btn{
+      border-radius: 6px !important;
+    }
+    #accept-btn:hover{
+      background-color: #18ca00 !important;
+      color: #fff !important;
+    }
+
+    #decline-btn:hover{
+      background-color: #e82c2c !important;
+      color: #fff !important;
     }
   </style>
 </head>
 
 <body ondragover="event.preventDefault(); document.body.classList.add('imageover')"
-  ondrop="dropImage(event); document.body.classList.remove('imageover')"
-  onclick="document.body.classList.remove('imageover')"
-  class="flex justify-center items-center h-screen w-full bg-gray-100">
-  <div class="card w-full max-w-5xl bg-base-100 h-full shadow-xl flex flex-col">
+  ondrop="document.body.classList.remove('imageover')" onclick="document.body.classList.remove('imageover')"
+  class="flex justify-center items-center h-screen w-full">
+  <div class="card w-full max-w-9xl bg-base-100 h-full shadow-xl flex flex-col">
     <div class="card-header flex items-center bg-white text-primary-content p-4">
       <img src="/static/avatar.svg" onclick="openit(this)" alt="second person" id="Suser" />
       <div class="flex flex-col">
         <span id="chat-header" class="text-lg font-semibold">Chat</span>
-        <span id="user-status" class="text-xs opacity-50">Offline</span>
+        <span id="user-status" class="text-xs opacity-50">offline (Not in chat)</span>
       </div>
     </div>
     <div id="messages" class="flex-1 overflow-y-auto p-4"></div>
 
     <div class="form-control p-4">
       <div class="reply flex flex-row w-full">
-        <button onclick="cancelReply()" class="btn btn-square btn-ghost">x</button>
+        <button onclick="cancelReply()" class="btn btn-square btn-ghost" >
+          x
+        </button>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
             <path
               d="M205 34.8c11.5 5.1 19 16.6 19 29.2v64H336c97.2 0 176 78.8 176 176c0 113.3-81.5 163.9-100.2 174.1c-2.5 1.4-5.3 1.9-8.1 1.9c-10.9 0-19.7-8.9-19.7-19.7c0-7.5 4.3-14.4 9.8-19.5c9.4-8.8 22.2-26.4 22.2-56.7c0-53-43-96-96-96H224v64c0 12.6-7.4 24.1-19 29.2s-25 3-34.4-5.4l-160-144C3.9 225.7 0 217.1 0 208s3.9-17.7 10.6-23.8l160-144c9.4-8.5 22.9-10.6 34.4-5.4z" />
           </svg>
           <p>Reply</p>
-
         </span>
       </div>
       <div class="flex gap-4">
@@ -332,16 +373,72 @@
           <span id="cancelImage" onclick="cancelImage()">✕</span>
           <input type="text" id="message" placeholder="Type your message or drop an image here..."
             class="input input-bordered w-full" />
-          <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="previewImage(this)" />
+          <input type="file" id="imageInput" accept=".png,.jpg,.jpeg" class="hidden" onchange="previewImage(this)" />
         </div>
 
-        <button class="btn btn-square btn-ghost" style="padding: 5px"
-          onclick="document.getElementById('imageInput').click()">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <title>Add image</title>
-            <path
-              d="M13 19C13 19.7 13.13 20.37 13.35 21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H19C20.11 3 21 3.9 21 5V13.35C20.37 13.13 19.7 13 19 13V5H5V19H13M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H13.35C13.75 15.88 14.47 14.91 15.4 14.21L13.96 12.29M20 18V15H18V18H15V20H18V23H20V20H23V18H20Z" />
-          </svg>
+        <button class="dropdown dropdown-top">
+          <div tabindex="1" style="width: 48px; font-size: 30px;  font-weight: 100; " role="button"
+            class="btn btn-ghost" >
+            +
+          </div>
+          <ul tabindex="1" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 gap-1">
+            <li>
+              <a class="btn-ghost" onclick="document.getElementById('imageInput').click()">
+                <svg style="width: 17px; height: 17px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <title>Add image</title>
+                  <path
+                    d="M13 19C13 19.7 13.13 20.37 13.35 21H5C3.9 21 3 20.11 3 19V5C3 3.9 3.9 3 5 3H19C20.11 3 21 3.9 21 5V13.35C20.37 13.13 19.7 13 19 13V5H5V19H13M13.96 12.29L11.21 15.83L9.25 13.47L6.5 17H13.35C13.75 15.88 14.47 14.91 15.4 14.21L13.96 12.29M20 18V15H18V18H15V20H18V23H20V20H23V18H20Z" />
+                </svg>
+                Add image
+              </a>
+            </li>
+
+            <li>
+              <a class="btn-ghost" onclick="openFileInput()">
+                <svg style="width: 17px; height: 17px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <title>Send File</title>
+                  <path
+                    d="M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M12,12L16,16H13.5V19H10.5V16H8L12,12Z" />
+                </svg>
+                Send File
+              </a>
+            </li>
+            <li onclick="openOfferModal()">
+              <a class="btn-ghost" style="border: 1px solid #18ca00; color: #18ca00; background-color: #fff;">
+                <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
+                  viewBox="0 0 5120 5120">
+                  <g id="l49uoti0KSzdCA7jzjm8JTb" fill="#18ca00" style="transform: none;">
+                    <g style="transform: none;">
+                      <path id="p1CEFqGh3l"
+                        d="M1855 5100 c-30 -12 -85 -74 -275 -310 -95 -118 -174 -216 -175 -218 -1 -1 -143 -25 -315 -53 -172 -27 -323 -52 -336 -55 -29 -7 -91 -69 -98 -99 -3 -12 -28 -163 -55 -335 -27 -172 -54 -316 -58 -319 -38 -26 -474 -385 -497 -410 -23 -24 -30 -42 -34 -83 -3 -48 6 -79 113 -355 l116 -303 -115 -301 c-142 -366 -143 -382 -49 -470 31 -30 437 -361 465 -380 5 -3 32 -147 59 -319 27 -172 52 -322 55 -335 8 -31 51 -75 90 -91 18 -8 173 -36 345 -64 172 -27 315 -53 318 -58 24 -35 386 -473 410 -496 24 -23 42 -30 83 -33 48 -4 80 6 355 112 l303 116 302 -116 c273 -105 308 -116 354 -113 35 3 61 12 80 28 22 18 329 389 410 496 8 10 106 30 324 65 173 27 323 52 336 55 12 3 38 22 58 41 41 42 39 31 101 422 25 156 46 285 47 286 42 30 482 392 502 414 23 24 30 42 34 83 3 48 -6 79 -113 356 l-116 302 116 303 c107 276 116 307 113 355 -4 41 -11 59 -34 83 -20 22 -460 384 -502 414 -1 1 -22 130 -47 286 -62 391 -60 380 -101 422 -20 19 -46 38 -58 41 -13 3 -163 28 -335 55 -282 45 -314 52 -331 73 -250 313 -396 486 -423 501 -61 33 -98 24 -416 -99 l-301 -115 -301 115 c-302 116 -350 129 -404 106z m-21 -1334 c37 -34 1632 -2264 1647 -2303 13 -34 -11 -84 -56 -118 -47 -37 -86 -36 -130 1 -19 16 -399 540 -845 1164 -883 1238 -840 1170 -788 1235 25 32 92 65 118 58 11 -3 35 -19 54 -37z m1277 30 c94 -20 164 -59 235 -130 144 -144 177 -332 87 -498 -96 -177 -292 -279 -464 -243 -252 52 -425 315 -356 541 25 83 56 135 121 200 70 70 141 110 230 129 78 17 70 17 147 1z m-960 -1600 c94 -20 164 -59 235 -130 144 -144 177 -332 87 -498 -103 -189 -319 -290 -501 -235 -149 45 -274 170 -319 318 -68 228 100 490 351 544 78 17 70 17 147 1z">
+                      </path>
+                      <path id="p19g8FI9M5"
+                        d="M2945 3536 c-42 -18 -83 -69 -91 -112 -12 -67 0 -149 29 -187 40 -52 86 -70 172 -65 59 3 78 8 107 30 53 41 71 86 66 174 -4 78 -18 108 -72 148 -35 26 -164 34 -211 12z">
+                      </path>
+                      <path id="pjHGcKvZw"
+                        d="M1985 1936 c-42 -18 -83 -69 -91 -112 -12 -67 0 -149 29 -187 40 -52 86 -70 172 -65 59 3 78 8 107 30 53 41 71 86 66 174 -4 78 -18 108 -72 148 -35 26 -164 34 -211 12z">
+                      </path>
+                    </g>
+                  </g>
+                  <g id="l312HjEdGqSjkwYVAU7uIJD" fill="rgb(250,250,250)" style="transform: none;">
+                    <g style="transform: none;">
+                      <path id="pRKPCRZnO"
+                        d="M1691 3818 c-65 -33 -86 -67 -86 -136 0 -44 6 -65 25 -92 291 -419 1602 -2244 1627 -2267 64 -58 148 -56 212 5 45 42 60 95 44 152 -12 44 -1609 2283 -1657 2324 -48 40 -107 45 -165 14z">
+                      </path>
+                      <path id="p9YGV5iPi"
+                        d="M2934 3825 c-89 -19 -160 -59 -230 -129 -97 -97 -140 -202 -138 -341 1 -140 56 -263 159 -353 278 -245 721 -88 786 278 26 154 -22 303 -135 416 -71 71 -141 110 -235 130 -80 17 -127 17 -207 -1z m169 -319 c104 -43 128 -175 47 -256 -43 -43 -87 -56 -146 -46 -47 9 -111 73 -120 120 -24 131 99 233 219 182z">
+                      </path>
+                      <path id="p1E7OOvBsx"
+                        d="M1974 2225 c-217 -47 -369 -239 -368 -465 0 -174 80 -318 225 -405 85 -52 149 -69 254 -68 362 3 582 376 414 704 -30 60 -134 161 -198 193 -59 31 -165 56 -226 55 -22 0 -67 -7 -101 -14z m169 -319 c104 -43 128 -175 47 -256 -67 -67 -153 -67 -220 0 -124 124 11 324 173 256z">
+                      </path>
+                    </g>
+                  </g>
+                </svg>
+
+                Create Offer
+              </a>
+            </li>
+          </ul>
         </button>
         <a onclick="run(this)" data-id="message" class="tb_ai-button texta"><span class="first"> Rephrase
             it!</span><span class="second">
@@ -380,430 +477,66 @@
       Delete
     </button>
   </div>
+
+  <!-- File Input -->
+  <input type="file" id="fileInput" class="hidden" onchange="sendFile(this)" accept=".pdf,text/*" />
+
+  <div id="modal" class="modal">
+    <div class="modal-box" style="width: 100%; max-width: 700px;">
+      <div
+        style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; border-bottom: 1px solid #dcdcdce2;">
+        <h3 class="font-bold text-lg" id="modal-title"></h3>
+        <p><span style="color: #18ca00;" id="modal-price"></span></p>
+      </div>
+      <div class="mt-4" style="min-height: 200px;">
+
+        <p><strong style="padding: 10px;color: #0000008b;" >Description:</strong><br> <span id="modal-description" style="min-height: 100px; padding: 10px; margin-top: 20px;"></span></p>
+      </div>
+      <div class="mt-4" style=" border-top: 1px solid #dcdcdce2; padding: 10px;">
+        <h3 style="color: #0000008b;" class="font-bold text-lg" id="title">Your offer includes:</h3>
+
+        <div
+          style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 10px;">
+
+          <span style="display: flex; flex-direction: row; justify-content: center; align-items: center;"><svg
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill: #18ca00;" height="15" width="15">
+              <path
+                d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z" />
+            </svg>
+            &nbsp;<span id="modal-revisions"></span> <strong>&nbsp;Revisions</strong> </span>
+          <span style="display: flex; flex-direction: row; justify-content: center; align-items: center;"> <svg
+              xmlns="http://www.w3.org/2000/svg" style="fill: #18ca00;" height="15" width="15" viewBox="0 0 512 512">
+              <path
+                d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z" />
+            </svg>
+            &nbsp;<span id="modal-delivery"></span> <strong>&nbsp;Delivery Days</strong> </span>
+        </div>
+      </div>
+      <div class="modal-action" style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;">
+        <a href="#" class="btn btn-outline bg-green-50 btn-success w-52 hover:bg-green-500 hover:text-white" id="accept-btn">Accept</a>
+                <a href="#" class="btn btn-outline bg-red-50 btn-error w-52" id="decline-btn">Decline</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     let socket = io();
-    const username = '{{un}}';
-    const room = '{{x}}';
-    let chatPartner = null;
-    let selectedImage = null;
-    let replyToMessageId = null;
-    document.addEventListener('DOMContentLoaded', function () {
-      const messages = document.getElementById('messages');
-      const contextMenu = document.getElementById('contextMenu');
-      const replyOption = document.getElementById('replyOption');
-      const copyOption = document.getElementById('copyOption');
-      const deleteOption = document.getElementById('deleteOption');
-      let targetMessage = null;
+    const username = "{{un}}";
+    const room = "{{x}}";
+    const br = new BroadcastChannel('bid');
 
-      messages.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-        targetMessage = e.target.closest('.messP');
-        if (targetMessage) {
-          contextMenu.style.display = 'block';
-          void contextMenu.offsetWidth;
-          contextMenu.classList.add('show');
+    br.onmessage = (event) => {
+      sendOffer(event.data);
+    };
 
-          const menuWidth = contextMenu.offsetWidth;
-          const menuHeight = contextMenu.offsetHeight;
-          const windowWidth = window.innerWidth;
-          const windowHeight = window.innerHeight;
+    function sendOffer(d) {
 
-          let left = e.clientX;
-          let top = e.clientY;
-
-          if (left + menuWidth > windowWidth) {
-            left = windowWidth - menuWidth - 10;
-          }
-
-          if (top + menuHeight > windowHeight) {
-            top = windowHeight - menuHeight - 10;
-          }
-
-          left = Math.max(10, left);
-          top = Math.max(10, top);
-
-          contextMenu.style.left = `${left}px`;
-          contextMenu.style.top = `${top}px`;
-
-          deleteOption.style.display = (targetMessage.getAttribute('data-pop') === username) ? 'flex' : 'none';
-
-          const isTextMessage = targetMessage.querySelector('.chat-bubble p') !== null && !targetMessage.querySelector('.chat-bubble.dell p');
-          copyOption.style.display = isTextMessage ? 'flex' : 'none';
-        }
-      });
-
-      document.addEventListener('click', function (e) {
-        if (!contextMenu.contains(e.target)) {
-          hideContextMenu();
-        }
-      });
-
-      function hideContextMenu() {
-        contextMenu.classList.remove('show');
-
-        const transitionEndHandler = function () {
-          contextMenu.style.display = 'none';
-          contextMenu.removeEventListener('transitionend', transitionEndHandler);
-        };
-
-        contextMenu.addEventListener('transitionend', transitionEndHandler);
-      }
-
-      replyOption.addEventListener('click', function () {
-        if (targetMessage) {
-          reply(targetMessage);
-          hideContextMenu();
-        }
-      });
-
-      copyOption.addEventListener('click', function () {
-        const textElement = targetMessage.querySelector('.chat-bubble p');
-        if (textElement) {
-          navigator.clipboard.writeText(textElement.innerText).then(() => {
-            toast('s', 'Message copied to clipboard');
-          }).catch(err => {
-            toast('e', 'Failed to copy message');
-          });
-        }
-        hideContextMenu();
-      });
-
-      deleteOption.addEventListener('click', function () {
-        if (targetMessage) {
-          hideContextMenu();
-
-          modal('d', 'Are you sure you want to delete this message?', 'Yes, I\'m sure', 'dellit');
-          document.querySelector('#dellit').addEventListener('click', function () {
-            if (targetMessage.getAttribute('data-pop') === username) {
-              const messageId = targetMessage.id;
-              socket.emit('deleteMessage', { messageId, room, username });
-            } else {
-              toast('d', 'An error occurred');
-            }
-          });
-        }
-      });
-
-      window.addEventListener('resize', function () {
-        if (contextMenu.classList.contains('show')) {
-          const menuRect = contextMenu.getBoundingClientRect();
-          const windowWidth = window.innerWidth;
-          const windowHeight = window.innerHeight;
-
-          let left = parseInt(contextMenu.style.left);
-          let top = parseInt(contextMenu.style.top);
-
-          if (left + menuRect.width > windowWidth) {
-            left = windowWidth - menuRect.width - 10;
-          }
-          if (top + menuRect.height > windowHeight) {
-            top = windowHeight - menuRect.height - 10;
-          }
-
-          contextMenu.style.left = `${left}px`;
-          contextMenu.style.top = `${top}px`;
-        }
-      });
-    });
-    const inputField = document.getElementById('message');
-
-    inputField.addEventListener('keypress', function (event) {
-      if (event.keyCode === 13) {
-        sendMessage();
-      }
-    });
-
-
-    function joinRoom() {
-      socket.emit('join', { username, room });
-      resetChatHeader();
+      socket.emit('message', { room: room, message: d, username: username, type: 'offer' });
+      closeModal()
     }
-
-    joinRoom();
-
-    socket.on('response', function (data) {
-      const [message, usernameG, timestamp, type, caption, replyTo] = data;
-      appendMessage(usernameG, message, timestamp, type, caption, replyTo);
-    });
-    socket.on('delDone', function (data) {
-      const [message, usernameG, message_id] = data;
-      ele = document.getElementById(message_id)
-      if (ele) {
-        ele.classList.add('deleted')
-        ele.disabled = true
-        ele.innerHTML = ''
-        const alignmentClass = (usernameG === username) ? 'chat-end de' : 'chat-start de';
-
-        ele.innerHTML = `<div class="chat ${alignmentClass}">
-    <div class="chat-bubble dell"><p>
-    ${message}</p></div>
-    </div>`
-
-      }
-    })
-    socket.on('status', function (data) {
-      const messageContainer = document.getElementById('messages');
-
-      if (data.id) {
-        if (data.id !== username) {
-          updateChatPartner(data, other = true);
-        }
-      }
-    });
-
-    function updateChatPartner(data, other = false) {
-      chatPartner = data;
-
-      const userImage = document.getElementById('Suser');
-      const userHeader = document.getElementById('chat-header');
-      const userStatus = document.getElementById('user-status');
-      const messageContainer = document.getElementById('messages');
-
-      if (other) {
-        userImage.src = data.image;
-        userHeader.innerText = data.name;
-        const statusIndicator = document.createElement('span');
-        statusIndicator.classList.add('status-indicator');
-        statusIndicator.classList.toggle('status-online', data.online);
-        statusIndicator.classList.toggle('status-offline', !data.online);
-        userStatus.innerHTML = '';
-        userStatus.appendChild(statusIndicator);
-        userStatus.appendChild(document.createTextNode(`${data.online ? 'online' : 'offline'}`));
-      }
-
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-
-    function resetChatHeader() {
-      const userImage = document.getElementById('Suser');
-      const userHeader = document.getElementById('chat-header');
-      const userStatus = document.getElementById('user-status');
-
-      userImage.src = '/static/avatar.svg';
-      userHeader.innerText = 'Loading...';
-
-      const statusIndicator = document.createElement('span');
-      statusIndicator.classList.add('status-indicator', 'status-offline');
-      userStatus.innerHTML = '';
-      userStatus.appendChild(statusIndicator);
-      userStatus.appendChild(document.createTextNode('Offline'));
-    }
-
-    socket.on('disconnect', function () {
-      resetChatHeader();
-      const userStatus = document.getElementById('user-status');
-      const statusIndicator = document.createElement('span');
-      statusIndicator.classList.add('status-indicator', 'status-offline');
-      userStatus.innerHTML = '';
-      userStatus.appendChild(statusIndicator);
-      userStatus.appendChild(document.createTextNode('Disconnected'));
-    });
-function remove(img){
-  img.onload= ()=>{
-    console.log('opened....')
-  }
-}
-    function sendMessage() {
-      const messageInput = document.getElementById('message');
-      const message = messageInput.value.trim();
-      if (message !== '' || selectedImage) {
-        if (selectedImage) {
-          const caption = message;
-          socket.emit('message', { image: selectedImage, room, username, caption, replyTo: replyToMessageId });
-          cancelImage();
-        } else {
-          socket.emit('message', { message, room, username, replyTo: replyToMessageId });
-        }
-        messageInput.value = '';
-        cancelReply();
-      }
-    }
-    function appendMessage(usernameG = '', message, timestamp = '', type, caption = '', replyTo = null) {
-      const isOwnMessage = usernameG === username;
-      const messageContainer = document.getElementById('messages');
-      const messageElement = document.createElement('div');
-      messageElement.classList.add('messP')
-      messageElement.addEventListener("dblclick", function () {
-        reply(this);
-      });
-      let localTime = ''
-
-      messageElement.id = timestamp;
-      messageElement.setAttribute('data-pop', usernameG);
-      messageElement.style.borderRadius = '10px'
-      messageElement.style.padding = '10px'
-
-      const alignmentClass = isOwnMessage ? 'chat-end' : 'chat-start';
-
-      let messageContent = '';
-      if (type === 'text') {
-        messageContent = `<div class="chat-bubble"><p>${message}</p></div>`;
-        localTime = convertToLocalTime(timestamp);
-
-      }
-      else if (type === 'deleted') {
-        messageElement.classList.add('deleted')
-        messageElement.disabled = true
-
-        messageContent = `<div class="chat-bubble dell"><p>${message}</p></div>`;
-      } else if (type === 'image') {
-        localTime = convertToLocalTime(timestamp);
-
-        messageContent = `
-      <div class="chat-bubble">
-        <img src="${message}" onload="document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight; remove(this)" onclick="openit(this)" alt="Image" class="max-w-xs h-auto rounded-lg">
-        ${caption ? `<div class="text-sm mt-2"><p>${caption}</p></div>` : ''}
-      </div>
-    `;
-      }
-
-      const rptext = (() => {
-        if (!replyTo) return '';
-        const replyElement = document.getElementById(replyTo);
-        if (!replyElement) return 'Deleted message';
-
-        const textElement = replyElement.querySelector('.chat-bubble p');
-        if (textElement) {
-          if (textElement.innerText.trim()) {
-            return textElement.innerText.trim().slice(0, 30) + (textElement.innerText.length > 30 ? '...' : '');
-          }
-          else {
-            return 'message'
-          }
-
-        }
-
-        const imageElement = replyElement.querySelector('.chat-bubble img');
-        return imageElement ? 'Image' : 'Deleted message';
-      })();
-
-      messageElement.innerHTML = `
-    <div class="chat ${alignmentClass}">
-      ${replyTo ? `<div onclick="scrollToMessage('${replyTo}')" class="chat-header replyto">Replying to <span class="font-semibold cursor-pointer">${rptext}</span></div>` : ''}
-      ${messageContent}
-      <div class="chat-footer opacity-50">${localTime}</div>
-    </div>
-  `;
-
-      messageElement.style.marginTop = '13px';
-      messageContainer.appendChild(messageElement);
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-
-    function previewImage(input) {
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          selectedImage = e.target.result;
-          showImagePreview(selectedImage);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function dropImage(event) {
-      event.preventDefault();
-      const files = event.dataTransfer.files;
-      if (files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          selectedImage = e.target.result;
-          showImagePreview(selectedImage);
-        };
-        reader.readAsDataURL(files[0]);
-      }
-    }
-
-    function showImagePreview(imageData) {
-      document.querySelector('.reply').classList.add('mar');
-      const preview = document.getElementById('imagePreview');
-      preview.src = imageData;
-      preview.style.display = 'block';
-      document.getElementById('cancelImage').style.display = 'flex';
-      document.getElementById('message').placeholder = "Add a caption... (optional)";
-    }
-
-    function cancelImage() {
-      selectedImage = null;
-      document.getElementById('imageInput').value = '';
-      document.getElementById('imagePreview').style.display = 'none';
-      document.querySelector('.reply').classList.remove('mar');
-      document.getElementById('cancelImage').style.display = 'none';
-      document.getElementById('message').placeholder = "Type your message or drop an image here...";
-    }
-
-    function convertToLocalTime(timestamp) {
-      const date = new Date(timestamp);
-      const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
-      return new Intl.DateTimeFormat(undefined, options).format(date);
-    }
-    function reply(item) {
-      cancelReply()
-      const rp = document.querySelector('.reply');
-
-
-      rp.querySelector('span').onclick = function () {
-        scrollToMessage(item.id)
-      }
-
-      rp.classList.add('show');
-      event.preventDefault();
-
-      const messageText = item.querySelector('.chat-bubble p') ? item.querySelector('.chat-bubble p').innerText : 'IMAGE';
-      rp.querySelector('span').querySelector('p').innerText = messageText;
-      replyToMessageId = item.id;
-
-    }
-
-    function cancelReply() {
-      const rp = document.querySelector('.reply');
-      rp.classList.remove('show');
-      replyToMessageId = null;
-
-    }
-
-
-    function scrollToMessage(messageId) {
-      const targetMessage = document.getElementById(messageId);
-      if (targetMessage) {
-        targetMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        targetMessage.classList.add('bg-green-200');
-        setTimeout(() => targetMessage.classList.remove('bg-green-200'), 2000);
-      } else {
-        toast('d', 'Original message not found');
-      }
-    }
-
-
-
-    document.getElementById('imageInput').addEventListener('change', function () {
-      previewImage(this);
-    });
-
-    document.body.addEventListener('dragover', function (event) {
-      event.preventDefault();
-      document.body.classList.add('imageover');
-    });
-
-    document.body.addEventListener('drop', function (event) {
-      dropImage(event);
-      document.body.classList.remove('imageover');
-    });
-
-    document.body.addEventListener('click', function () {
-      document.body.classList.remove('imageover');
-    });
-
-    document.getElementById('message').addEventListener('keypress', function (event) {
-      if (event.keyCode === 13) {
-        sendMessage();
-      }
-    });
-
-    document.querySelector('button[onclick="sendMessage()"]').addEventListener('click', sendMessage);
 
   </script>
+  <script src="/static/chat.js"></script>
 </body>
 
 </html>

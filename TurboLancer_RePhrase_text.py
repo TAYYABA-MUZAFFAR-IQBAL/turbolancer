@@ -97,5 +97,12 @@ def do(text, main):
         res = ress[0] if ress else res
 
         return res
+    elif main == 'offer_disc':
+        prompt = 'it is offer discryption that user is sending,Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
+        res = now(prompt + text)
+        ress = extract_bracketed_text(res)
+        res = ress[0] if ress else res
+
+        return res
     else:
         return "Invalid main value"

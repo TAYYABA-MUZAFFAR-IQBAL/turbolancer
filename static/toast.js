@@ -175,7 +175,7 @@ function getMonthsArray(startMonthYear) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function modal(type, modalText, buttonText, buttonId, data_to_taransfor = "") {
+function modal(type, modalText, buttonText, buttonId, data_to_taransfor = "",cncle = 'Close',cid = '') {
   // Create the modal container
   const modal = document.createElement("div");
   modal.classList.add("Modal_GLOBAL");
@@ -234,7 +234,8 @@ function modal(type, modalText, buttonText, buttonId, data_to_taransfor = "") {
 
   const closeModalButton = document.createElement("button");
   closeModalButton.classList.add("Mbtn", "Mcancle");
-  closeModalButton.textContent = "Close";
+  closeModalButton.textContent = cncle;
+  closeModalButton.id = cid
   closeModalButton.onclick = () => {
     closeModalM(modal, modalContentM);
   };
@@ -275,7 +276,7 @@ function closeModalM(modal, modalContentM) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function details(url) {
+function details(url, other = false) {
   const modal = document.createElement("div");
   modal.classList.add("Modal_GLOBAL", "D");
 
@@ -284,7 +285,14 @@ function details(url) {
   modalContent.style.width = "92vw";
   modalContent.style.height = "92vh";
   const iframe = document.createElement("iframe");
-  iframe.src = "/full_catalogue/" + url;
+  if(!other){
+      iframe.src = "/full_catalogue/" + url;
+
+  }
+  else if (other){
+    iframe.src =  url;
+
+  }
   iframe.style.width = "100%";
   iframe.style.height = "97%";
 
@@ -293,10 +301,10 @@ function details(url) {
   closeButton.innerHTML = "&times;";
   closeButton.style.fontSize = "22px";
   closeButton.onclick = function () {
-    closeModal(modal, modalContent);
+    closeModal()
   };
   modal.onclick = function () {
-    closeModal(modal, modalContent);
+    closeModal()
   };
   modalContent.appendChild(iframe);
   modalContent.appendChild(closeButton);
@@ -314,17 +322,22 @@ function openModal(modal, modalContent) {
   modal.style.display = "block";
 }
 
-function closeModal(modal, modalContent) {
-  modalContent.classList.add("close");
-  modalContent.addEventListener(
-    "animationend",
-    function () {
-      modalContent.classList.remove("close", "open");
-      modal.classList.remove("open");
-      modal.remove();
-    },
-    { once: true }
-  );
+function closeModal() {
+  const modal = document.querySelector(".Modal_GLOBAL.open");
+  const modalContent = document.querySelector(".Modal_GLOBAL-content.open");
+
+  if (modal && modalContent) {
+    modalContent.classList.add("close");
+    modalContent.addEventListener(
+      "animationend",
+      function () {
+        modalContent.classList.remove("close", "open");
+        modal.classList.remove("open");
+        modal.remove();
+      },
+      { once: true }
+    );
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -435,60 +435,46 @@
         });
 
         $("form").submit(function (event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
+    event.preventDefault();
+    const birthdate = document.getElementById('birthdate').value;
 
-            // Get the birthdate value from the input
-            const birthdate = document.getElementById('birthdate').value;
+    if (birthdate) {
+        const today = new Date();
+        const inputDate = new Date(birthdate);
+        const ageDiff = today - inputDate;
+        const age = Math.floor(ageDiff / (1000 * 60 * 60 * 24 * 365.25));
 
-            // Check if a birthdate is entered
-            if (birthdate) {
-                // Create a Date object for the birthdate
-                const today = new Date();
-                const inputDate = new Date(birthdate);
+        if (age >= 17) {
+            var formData = new FormData(this);
 
-                // Calculate the age difference in milliseconds
-                const ageDiff = today - inputDate;
-
-                // Approximately calculate the age in years
-                const age = Math.floor(ageDiff / (1000 * 60 * 60 * 24 * 365.25));
-
-                // Check if the user is at least 18 years old
-                if (age >= 17) {
-                    // Allow form submission
-                    var email = $("#email").val(); // Get the email value from the input field with the ID "email"
-                    var formData = new FormData(this); // Create a FormData object with the form data
-                    formData.append("email", email); // Append the email to the FormData object
-
-                    // Send the AJAX request to upload the form data and image
-                    $.ajax({
-                        url: "/begin_client_journey",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            console.log(response);
-
-                            if (!response.error) {
-                                console.log(response.redirect_url)
-                                document.querySelector('.btn-open').textContent = 'Sign In successfull'
-                                window.location.href = response.redirect_url;
-                                document.querySelector('.btn-open').style.color = '#00a56e';
-                            } else if (response.success) {
-                                   document.querySelector('.btn-open').textContent = response.error
-                                document.querySelector('.btn-open').style.color = 'red';
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("Error during signup and image upload: " + xhr.status);
-                        },
-                    });
-                } else {
-                    document.getElementById('erroro').textContent = 'You must be at least 17 years old to SignUp.';
+            $.ajax({
+                url: "/begin_client_journey",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        document.querySelector('.btn-open').textContent = 'Sign In successful';
+                        document.querySelector('.btn-open').style.color = '#00a56e';
+                        window.location = response.redirect_url;
+                    } else if (response.error) {
+                        document.querySelector('.btn-open').textContent = response.error;
+                        document.querySelector('.btn-open').style.color = 'red';
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error during signup and image upload: " + xhr.status);
+                    document.querySelector('.btn-open').textContent = 'An error occurred. Please try again.';
+                    document.querySelector('.btn-open').style.color = 'red';
                 }
-            }
+            });
+        } else {
+            document.getElementById('erroro').textContent = 'You must be at least 17 years old to SignUp.';
+        }
+    }
+});
 
-        });
 
         // JavaScript code for hiding the modal
         document.querySelectorAll("[data-modal-hide]").forEach(function (button) {
