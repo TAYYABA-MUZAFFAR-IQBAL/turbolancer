@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import re
+from google.generativeai.types import generation_types
 
 def now(input_text):
     # Configure the Generative AI API
@@ -72,37 +73,45 @@ def extract_bracketed_text(text):
         return []
 
 def do(text, main):
-    if main == 'bida':
-        prompt = 'Could you please supply the anticipated lowest possible cost in dollars for the client form concerning the task specifications on the freelancing platform? Ensure all essential details are provided, indicating the lower price range. Make sure price range is articulated in text format following the pattern $numerical -> $numerical. Additionally, rewrite the prices within square brackets at the end of the text without any headings or symbols, always using -> as the separator between numbers, without symbols, to facilitate filtering. remember to give  lowest posible prices posible, also write info about price too like :The lowest possible cost for this project concerning the task specifications on TurboLancer is etc...: '
-        res = now(prompt + text)
+    try:
+        if main == 'bida':
+            prompt = 'Could you please supply the anticipated lowest possible cost in dollars for the client form concerning the task specifications on the freelancing platform? Ensure all essential details are provided, indicating the lower price range. Make sure price range is articulated in text format following the pattern $numerical -> $numerical. Additionally, rewrite the prices within square brackets at the end of the text without any headings or symbols, always using -> as the separator between numbers, without symbols, to facilitate filtering. remember to give  lowest posible prices posible, also write info about price too like :The lowest possible cost for this project concerning the task specifications on TurboLancer is etc...: '
+            res = now(prompt + text)
 
-        return res
-    elif main == 'title':
-        prompt = 'Please rephrase the following title in a formal manner under three words, give me rephrased text in between square brakets []: '
-        res = now(prompt + text)
-        ress = extract_bracketed_text(res)
-        res = ress[0] if ress else res
-        return res
-    elif main == 'disc':
-        prompt = 'Please rephrase the following text in a formal manner under 500 characters, give me rephrased text in between square brakets []: '
-        res = now(prompt + text)
-        ress = extract_bracketed_text(res)
-        res = ress[0] if ress else res
+            return res
+        elif main == 'title':
+            prompt = 'Please rephrase the following title in a formal manner under three words, give me rephrased text in between square brakets []: '
+            res = now(prompt + text)
+            ress = extract_bracketed_text(res)
+            res = ress[0] if ress else res
+            return res
+        elif main == 'disc':
+            prompt = 'Please rephrase the following text in a formal manner under 500 characters, give me rephrased text in between square brakets []: '
+            res = now(prompt + text)
+            ress = extract_bracketed_text(res)
+            res = ress[0] if ress else res
 
-        return res
-    elif main == 'message':
-        prompt = 'it is text message,Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
-        res = now(prompt + text)
-        ress = extract_bracketed_text(res)
-        res = ress[0] if ress else res
+            return res
+        elif main == 'message':
+            prompt = 'Please rephrase the following text in a formal manner, providing the rephrased text within square brackets '
+            res = now(prompt + text)
+            ress = extract_bracketed_text(res)
+            res = ress[0] if ress else res
 
-        return res
-    elif main == 'offer_disc':
-        prompt = 'it is offer discryption that user is sending,Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
-        res = now(prompt + text)
-        ress = extract_bracketed_text(res)
-        res = ress[0] if ress else res
+            return res
+        elif main == 'offer_disc':
+            prompt = 'it is offer discryption that user is sending,Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
+            res = now(prompt + text)
+            ress = extract_bracketed_text(res)
+            res = ress[0] if ress else res
 
-        return res
-    else:
-        return "Invalid main value"
+            return res
+        else:
+            prompt = 'Please rephrase the following text in a little bit formal manner , give me rephrased text in between square brakets []: '
+            res = now(prompt + text)
+            ress = extract_bracketed_text(res)
+            res = ress[0] if ress else res
+
+            return res
+    except generation_types.StopCandidateException as e:
+        return "Inappropriate language detected. Please rephrase your input."

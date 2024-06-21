@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Two-Way Chat App</title>
+  <title>TurboLancer | Chat</title>
   <link rel="icon" type="image/png" href="/static/icon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -28,9 +28,12 @@
       background-color: #28a745;
       color: #fff;
     }
-
+.chat-bubble p {
+  word-wrap: break-word;
+}
     .chat-bubble img {
       background-size: 100% 100%;
+      padding: 3px;
       background-color: #00000065;
     }
 
@@ -326,18 +329,11 @@
     strong{
       color: #323232;
     }
-    #accept-btn,#decline-btn{
-      border-radius: 6px !important;
-    }
-    #accept-btn:hover{
-      background-color: #18ca00 !important;
-      color: #fff !important;
+    .optionbtn:hover{
+      color: #ffff !important;
     }
 
-    #decline-btn:hover{
-      background-color: #e82c2c !important;
-      color: #fff !important;
-    }
+
   </style>
 </head>
 
@@ -377,7 +373,7 @@
         </div>
 
         <button class="dropdown dropdown-top">
-          <div tabindex="1" style="width: 48px; font-size: 30px;  font-weight: 100; " role="button"
+          <div tabindex="1" id="plusbtn" style="width: 48px; font-size: 30px;  font-weight: 100; " role="button"
             class="btn btn-ghost" >
             +
           </div>
@@ -403,6 +399,7 @@
                 Send File
               </a>
             </li>
+            {% if not user_has_buy %}
             <li onclick="openOfferModal()">
               <a class="btn-ghost" style="border: 1px solid #18ca00; color: #18ca00; background-color: #fff;">
                 <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" width="512" height="512"
@@ -438,13 +435,14 @@
                 Create Offer
               </a>
             </li>
+            {% endif %}
           </ul>
         </button>
-        <a onclick="run(this)" data-id="message" class="tb_ai-button texta"><span class="first"> Rephrase
+        <div style="padding: 1px;"><a onclick="run(this)" data-id="message" class="tb_ai-button texta"><span class="first"> Rephrase
             it!</span><span class="second">
             <strong class="iconAi">✨</strong>
-          </span></a>
-        <button class="btn btnsend btn-success btn-square" style="padding: 12px" onclick="sendMessage()">
+          </span></a></div>
+        <button class="btn btnsend btn-success btn-square" id="send-btn" style="padding: 12px" onclick="sendMessage()">
           <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <title>send</title>
             <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
@@ -513,8 +511,8 @@
         </div>
       </div>
       <div class="modal-action" style="display: flex; flex-direction: row; justify-content: space-evenly; align-items: center;">
-        <a href="#" class="btn btn-outline bg-green-50 btn-success w-52 hover:bg-green-500 hover:text-white" id="accept-btn">Accept</a>
-                <a href="#" class="btn btn-outline bg-red-50 btn-error w-52" id="decline-btn">Decline</a>
+        <a href="#" id="anchorM"><button  class="btn btn-outline bg-green-100 btn-success w-52 hover:bg-green-1000 hover:text-white optionbtn" id="accept">Accept</button></a>
+                <button href="#" class="btn btn-outline bg-red-50 btn-error w-52 optionbtn" id="reject">Decline</button>
       </div>
     </div>
   </div>
@@ -534,9 +532,16 @@
       socket.emit('message', { room: room, message: d, username: username, type: 'offer' });
       closeModal()
     }
+function go(s){
+  url = `/order_specifications/${s}/`+ btoa(document.getElementById('modal-price').textContent)
+return url
+
+}
+
 
   </script>
-  <script src="/static/chat.js"></script>
+    <script src="/static/chat.js"></script>
+
 </body>
 
 </html>

@@ -28,7 +28,7 @@ height: calc(100% + 40px) !important;
     text-transform: capitalize;
   }
  
-#deleteCookieButton:hover{
+#LogOutButton:hover{
 color: #f11919;
 }
   

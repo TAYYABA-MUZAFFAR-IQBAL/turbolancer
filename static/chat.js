@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
       navigator.clipboard.writeText(textElement.innerText).then(() => {
         toast('s', 'Message copied to clipboard');
       }).catch(err => {
-        toast('e', 'Failed to copy message');
+        toast('d', 'Failed to copy message');
       });
     }
     hideContextMenu();
@@ -139,6 +139,10 @@ function joinRoom() {
 }
 
 joinRoom();
+
+window.addEventListener('beforeunload', () => {
+  socket.disconnect();
+});
 
 socket.on('delDone', function (data) {
   const [message, usernameG, message_id] = data;
@@ -203,6 +207,20 @@ function resetChatHeader() {
   userStatus.appendChild(statusIndicator);
   userStatus.appendChild(document.createTextNode('offline (Not in chat)'));
 }
+// Send heartbeat every 30 seconds
+setInterval(() => {
+  socket.emit('heartbeat', { username: username, room: room });
+}, 30000);
+
+// Use Page Visibility API
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    socket.emit('user_inactive', { username: username, room: room });
+  } else {
+    socket.emit('user_active', { username: username, room: room });
+  }
+});
+
 
 socket.on('disconnect', function () {
   resetChatHeader();
@@ -211,7 +229,12 @@ socket.on('disconnect', function () {
   statusIndicator.classList.add('status-indicator', 'status-offline');
   userStatus.innerHTML = '';
   userStatus.appendChild(statusIndicator);
-  userStatus.appendChild(document.createTextNode('Disconnected, Please reload the page'));
+  setTimeout(() => {
+    socket.connect();
+    // Re-join rooms and update status after reconnection
+    socket.emit('Rejoin', { username: username, room: room });
+  }, 5000);
+  userStatus.appendChild(document.createTextNode('Reconnecting...'));
 });
 function remove(img){
 img.onload= ()=>{
@@ -220,6 +243,8 @@ console.log('opened....')
 }
 
 function sendMessage() {
+    sendbtn = document.getElementById('send-btn')
+    sendbtn.classList.add('dis')
     const messageInput = document.getElementById('message');
     const message = messageInput.value.trim();
     if (message !== '' || selectedImage) {
@@ -236,6 +261,11 @@ function sendMessage() {
   }
 socket.on('response', function(data) {
     appendMessage(data)
+    sendbtn = document.getElementById('send-btn')
+    if (sendbtn){
+        sendbtn.classList.remove('dis')
+
+    }
   });
   function addeven(id){
     document.querySelector('#accept').onclick = () =>{handleOffer('accept', id)} 
@@ -252,6 +282,7 @@ socket.on('response', function(data) {
     const filename = data.filename || '';
    const isOwnMessage = sender === username;
     const messageContainer = document.getElementById('messages');
+    
     const messageElement = document.createElement('div');
     messageElement.classList.add('messP');
     messageElement.addEventListener("dblclick", function () {
@@ -281,7 +312,7 @@ socket.on('response', function(data) {
         break;
       case 'offer':
         if (!isOwnMessage){
-        showModal(message.split('[<>===pvsi{turbolancer}===<>]'))
+        showModal(message.split('[<>===pvsi{turbolancer}===<>]'),'Y3VzdG9taXplZA=='+btoa(sender) )
         addeven(timestamp)}
         messageContent = `
           <div class="chat-bubble bg-yellow-100 text-black dell">
@@ -491,37 +522,37 @@ details('/offer',true)
 }
 
 
+function showModal(data,s) {
+  const [title, price, description, revisions, delivery] = data
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalPrice = document.getElementById('modal-price');
+  const modalDescription = document.getElementById('modal-description');
+  const modalRevisions = document.getElementById('modal-revisions');
+  const modalDelivery = document.getElementById('modal-delivery');
+  const acceptBtn = document.getElementById('accept');
+  const declineBtn = document.getElementById('reject');
 
-function showModal(data) {
-    const [title, price, description, revisions, delivery] = data
-    const modal = document.getElementById('modal');
-    const modalTitle = document.getElementById('modal-title');
-    const modalPrice = document.getElementById('modal-price');
-    const modalDescription = document.getElementById('modal-description');
-    const modalRevisions = document.getElementById('modal-revisions');
-    const modalDelivery = document.getElementById('modal-delivery');
-    const acceptBtn = document.getElementById('accept-btn');
-    acceptBtn.id = 'accept'
-    const declineBtn = document.getElementById('decline-btn');
-    declineBtn.id = 'reject'
+  modalTitle.textContent = title;
+  modalPrice.textContent = `$${price}`;
+  modalDescription.textContent = description;
+  modalRevisions.textContent = revisions;
+  modalDelivery.textContent = delivery;
 
-    modalTitle.textContent = title;
-    modalPrice.textContent = `$${price}`;
-    modalDescription.textContent = description;
-    modalRevisions.textContent = revisions;
-    modalDelivery.textContent = delivery;
+  acceptBtn.addEventListener('click', () => {
+      // Handle accept button click
+      console.log('Offer accepted');
+      modal.classList.remove('modal-open');
+  });
 
-    acceptBtn.addEventListener('click', () => {
-        // Handle accept button click
-        console.log('Offer accepted');
-        modal.classList.remove('modal-open');
-    });
+  declineBtn.addEventListener('click', () => {
+      // Handle decline button click
+      console.log('Offer declined');
+      modal.classList.remove('modal-open');
+  });
 
-    declineBtn.addEventListener('click', () => {
-        // Handle decline button click
-        console.log('Offer declined');
-        modal.classList.remove('modal-open');
-    });
-
-    modal.classList.add('modal-open');
+  modal.classList.add('modal-open');
+  
+console.log(go(s))
+  document.querySelector('#anchorM').href = go(s)
 }

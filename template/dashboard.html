@@ -88,7 +88,7 @@
                 </a>
               </li>
               <li>
-                <a id="deleteCookieButton">
+                <a id="LogOutButton">
                   Logout
                 </a>
               </li>
@@ -210,8 +210,8 @@
         <li><a>Trends</a></li>
         <li><a>Projects</a></li>
         <li><a onclick="showiframe(this)" data-link="/catalogue/{{_id}}/d">Catalogs</a></li>
-        <li><a>Messages</a></li>
-        <li><a id="deleteCookieButton">LogOUT</a></li>
+        <li><a onclick="showiframe(this)" data-link="/messenger">Messages</a></li>
+        <li><a id="LogOutButton">LogOUT</a></li>
       </ul>
     </div>
   </div>
@@ -329,31 +329,6 @@ fetchDataAndAppend('{{_id}}');
     channel.onmessage = (event) => {
       details(event.data)
     }
-    function showNotification(title, options) {
-    if (!("Notification" in window)) {
-        console.log("This browser does not support desktop notifications.");
-        return;
-    }
-    
-    const displayNotification = () => {
-        const notification = new Notification(title, options);
-        if (options.onClick) {
-            notification.onclick = options.onClick;
-        }
-    };
-
-    if (Notification.permission === "granted") {
-        displayNotification();
-    } else if (Notification.permission === "default") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                displayNotification();
-            }
-        });
-    } else {
-        console.log("Notification permission denied.");
-    }
-}
 
     function showiframe(element) {
       document.querySelector('.Mactive').classList.remove('Mactive')

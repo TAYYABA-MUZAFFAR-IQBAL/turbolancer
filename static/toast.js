@@ -135,7 +135,7 @@ window.addEventListener("DOMContentLoaded", function () {
       console.error("Error deleting cookies and reloading page:", error);
     }
   }
-  const deleteButtons = document.querySelectorAll("#deleteCookieButton");
+  const deleteButtons = document.querySelectorAll("#LogOutButton");
 
   deleteButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -179,10 +179,10 @@ function modal(type, modalText, buttonText, buttonId, data_to_taransfor = "",cnc
   // Create the modal container
   const modal = document.createElement("div");
   modal.classList.add("Modal_GLOBAL");
-
   // Create the modal content
   const modalContentM = document.createElement("div");
   modalContentM.classList.add("Modal_GLOBAL-content");
+  modalContentM.style.padding = '20px'
 
   // Create the modal body
   const modalBody = document.createElement("div");
@@ -257,7 +257,7 @@ function modal(type, modalText, buttonText, buttonId, data_to_taransfor = "",cnc
 function openModalM(modal, modalContentM) {
   modal.classList.add("open");
   modalContentM.classList.add("open");
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeModalM(modal, modalContentM) {
@@ -294,7 +294,8 @@ function details(url, other = false) {
 
   }
   iframe.style.width = "100%";
-  iframe.style.height = "97%";
+  iframe.style.height = "100%";
+  iframe.style.borderRadius = '10px'
 
   const closeButton = document.createElement("button");
   closeButton.classList.add("closeMX");
@@ -319,7 +320,7 @@ function details(url, other = false) {
 function openModal(modal, modalContent) {
   modal.classList.add("open");
   modalContent.classList.add("open");
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeModal() {
@@ -466,6 +467,9 @@ function run(button, text = "") {
       })
       .then((data) => {
         button.classList.remove("run");
+        if (data.text.includes("Inappropriate language detected")) {
+            toast("w", "Inappropriate language detected.");
+        } else {
         if (inputId === "bida") {
           const { prices, remainingStr } = extractPrices(data.text);
           if (prices) {
@@ -484,8 +488,10 @@ function run(button, text = "") {
           const re = data.text.replace("[", "").replace("]", "");
           input.value = re;
         }
-      })
+      }})
       .catch((error) => {
+        button.classList.remove("run");
+
         toast("d", "An Error occurred.");
 
         console.error("Error:", error);
@@ -505,6 +511,47 @@ function checkIn(input) {
 
   return isEmpty;
 }
+function generateRandomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charactersLength);
+      result += characters.charAt(randomIndex);
+  }
+  return result;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function showNotification(title, options) {
+  if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notifications.");
+      return;
+  }
+  
+  const displayNotification = () => {
+      const notification = new Notification(title, options);
+      if (options.onClick) {
+          notification.onclick = options.onClick;
+      }
+  };
+
+  if (Notification.permission === "granted") {
+      displayNotification();
+  } else if (Notification.permission === "default") {
+      Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+              displayNotification();
+          }
+      });
+  } else {
+      console.log("Notification permission denied.");
+  }
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

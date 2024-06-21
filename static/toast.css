@@ -12,7 +12,22 @@
 
 }
 
+.dis{
+  pointer-events: none;
+animation: waiting 2s ease infinite;
+}
+@keyframes waiting {
+  0%{
+    opacity: 0.6;
+  }
+  50%{
+    opacity: 1;
 
+  }
+  100%{
+    opacity: 0.6;
+  }
+}
 #toast_parent-TurboLancer {
   position: fixed;
   left: 50%;
@@ -22,7 +37,7 @@
   background-color: transparent !important;
   flex-direction: column;
   gap: 4px;
-  z-index: 423424235;
+  z-index: 9876543210;
 }
 
 #toast_parent-TurboLancer #s,
@@ -52,7 +67,8 @@
 #toast_parent-TurboLancer #s.go,
 #toast_parent-TurboLancer #w.go,
 #toast_parent-TurboLancer #d.go {
-  z-index: 1121;
+  height: 0;
+  z-index: 9876543210;
   animation-name: popdown;
   animation-duration: 0.4s;
   animation-timing-function: ease;
@@ -156,7 +172,7 @@
   align-items: center;
   background-color: #00000070;
   backdrop-filter: blur(7px);
-  z-index: 2342343;
+  z-index: 9876543210;
   animation: showup .4s ease;
 }
 
@@ -230,57 +246,47 @@
 .Modal_GLOBAL {
   display: none;
   position: fixed;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   z-index: 999999999999999;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 .Modal_GLOBAL.open {
-  animation: fadeIn 0.3s ease-in-out ;
+  display: flex;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal_GLOBAL content */
 .Modal_GLOBAL-content {
   background-color: #fefefe;
-  margin: 15% auto;
   border-radius: 15px;
-  position: relative;
-  padding: 20px;
-
   border: 1px solid #888;
   width: 90%;
+  padding: 20px;
   max-width: 600px;
 }
+
 .Modal_GLOBAL-content.D {
   background-color: #fefefe;
   border-radius: 17px;
   overflow: auto;
-
-  position: absolute !important;
-  top: 10px;
-  height: 100%;
-  justify-self: top;
-  align-self: top;
-
-  left: 3%;
-  padding: 20px;
+  padding: 5px !important;
   border: 1px solid #888;
   width: 97%;
-  margin: 0;
   max-width: 1400px;
-
 }
+
 .Modal_GLOBAL-content.open {
   animation: slideDown 0.3s ease-in-out;
 }
 
 .Modal_GLOBAL-content.close {
-  background-color: #fefefe;
-
   animation: slideUp 0.3s ease-in-out;
 }
 
@@ -447,7 +453,10 @@
   height: 35px;
   border-radius: 50px;
   text-align: center;
-  z-index: 99999;
+  z-index: 9876543210;
+}
+strong{
+  transition: all 0.4s !important;
 }
 .loading::before {
   content: "";
@@ -482,7 +491,7 @@
   }   
 
   .btn-ghost{
-    background-color: #f1f1f1;
+    background-color: #f1f1f1 !important;
   }
 
   .tb_ai-button {
@@ -618,3 +627,6 @@
       opacity: 1;
     }
   }
+  .tb-green {
+    color: #1dbf73;
+}

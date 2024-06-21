@@ -40,7 +40,7 @@
                     {% if not x %}
                     <li onclick="details('/create_chat/{{dd}}', true)"><a>Message</a></li>
                     {% else %}
-                    <li><a id="deleteCookieButton">Logout</a></li>
+                    <li><a id="LogOutButton">Logout</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -458,7 +458,7 @@
                     Are you sure you want to LogOut?
                 </h3>
                 <div class="mt-6 flex justify-center space-x-4">
-                    <label for="popup-logout" class="btn bg-error logout" id="deleteCookieButton">Yes, I'm sure</label>
+                    <label for="popup-logout" class="btn bg-error logout" id="LogOutButton">Yes, I'm sure</label>
                     <label for="popup-logout" class="btn btn-outline">No, cancel</label>
                 </div>
             </div>
@@ -725,7 +725,7 @@
             document.cookie = `${cookieName}=; expires=${formattedDate}; path=/;`;
         }
         document
-            .getElementById("deleteCookieButton")
+            .getElementById("LogOutButton")
             .addEventListener("click", function () {
                 list = ["ideo", "emalo", "deno", "tp"];
                 for (i = 0; i <= list.length; i++) {
