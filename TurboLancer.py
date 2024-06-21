@@ -975,26 +975,21 @@ def order_specifications(x, y):
         print("User is not logged in, redirecting to main")
         return redirect(url_for("main"))
     elif check(request.cookies, "file") and not 'Y3VzdG9taXplZA==' in x:
-        print("Rendering playground.html for a catalog item")
         data = catalogue_collection.find_one({'_id': ObjectId(x)})
         if data:
             ideo = turbolancer_data_Security.decrypt(key, getkey(request.cookies).get("ideo"))
             ideo = user_collection.find_one({'_id': ideo}) or seller_collection.find_one({'_id': ideo})
             image = ideo['image']
             name = ideo['name']
-            return render_template('playground.html', data=data['questions'], name=name, image=image, price=y)
+            return render_template('order_specifications.html', data=data['questions'], name=name, image=image, price=y)
         else:
             print("Catalog item not found, redirecting to NotFound")
             return redirect('/NotFound')
     elif check(request.cookies, "file") and 'Y3VzdG9taXplZA==' in x:
-        print("Rendering order_specifications.html for a customized item")
         seller = x.replace('Y3VzdG9taXplZA==', '')
         seller = b64decode(seller)
-        print("Base64 decoded seller:", seller)
         seller = turbolancer_data_Security.decrypt(key, seller.decode('utf-8'))
-        print("Decrypted seller:", seller)
         seller = seller_collection.find_one({'_id': seller})
-        print("Seller document:", seller)
         ideo = turbolancer_data_Security.decrypt(key, getkey(request.cookies).get("ideo"))
         ideo = user_collection.find_one({'_id': ideo}) or seller_collection.find_one({'_id': ideo})
         if seller and ideo and (seller['phone_number'] != ideo['phone_number']):
@@ -1423,7 +1418,7 @@ def  messenger():
             }
             data_arr.append(data)
         sorted_data = sorted(data_arr, key=lambda x: x['name'])
-        return render_template('playground.html',data = sorted_data, _id = user_id)
+        return render_template('messenger.html',data = sorted_data, _id = user_id)
     
     return redirect("/NotFound")
 
