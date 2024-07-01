@@ -282,8 +282,8 @@ function details(url, other = false) {
 
   const modalContent = document.createElement("div");
   modalContent.classList.add("Modal_GLOBAL-content", "D");
-  modalContent.style.width = "92vw";
-  modalContent.style.height = "92vh";
+  modalContent.style.width = "92svw";
+  modalContent.style.height = "92svh";
   const iframe = document.createElement("iframe");
   if(!other){
       iframe.src = "/full_catalogue/" + url;
@@ -294,7 +294,7 @@ function details(url, other = false) {
 
   }
   iframe.style.width = "100%";
-  iframe.style.height = "100%";
+  iframe.style.height = "94%";
   iframe.style.borderRadius = '10px'
 
   const closeButton = document.createElement("button");

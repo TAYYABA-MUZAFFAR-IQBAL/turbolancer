@@ -9,9 +9,19 @@
     transition: all 0.4s;
     text-wrap: balance;
     scroll-behavior: smooth;
+    animation: fade-in 0.4s linear; 
+}
+@keyframes fade-in {
+0%{
+  opacity: 0;
+
+}  
+100%{
+  opacity: 1;
+
 
 }
-
+}
 .dis{
   pointer-events: none;
 animation: waiting 2s ease infinite;
@@ -323,6 +333,7 @@ animation: waiting 2s ease infinite;
 /* Close button */
 .Mcancle{
   border:solid 2px  #4b4b4b !important;
+  color: #000 !important;
 
 }
 .close {

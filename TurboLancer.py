@@ -127,10 +127,14 @@ def update_database(collection, ideo, encoded_email, data):
     for field in ["bir", "gan", "name", "about_self", "sk"]:
         if field == "sk" and data.get(field):
             arr = data["sk"].split(",")
+            print(arr)
             arr = split_into_child_arrays(
                 arr
-            )  # Assuming this function is defined elsewhere
-            ud = collection.find_one({"_id": ideo, "email": encoded_email})
+            ) 
+            print(arr)
+
+            ud = seller_collection.find_one({"_id": ideo, "email": encoded_email})
+            print(ud)
             if ud and "sk" in ud:
                 main_arr = ud["sk"]
                 print(main_arr)
@@ -145,7 +149,7 @@ def update_database(collection, ideo, encoded_email, data):
                         main_arr.append(arr[x])
                 print(main_arr)
 
-                collection.update_one(
+                seller_collection.update_one(
                     {"_id": ideo, "email": encoded_email}, {"$set": {"sk": main_arr}}
                 )
         elif data.get(field):
@@ -416,7 +420,7 @@ def signup():
                     "_id": user_id,
                     "image": "",
                     "name": name,
-                    "tag": tag + count,
+                    "tag": (tag + count).lower(),
                     "email": encoded_email,
                     "password": encoded_password,
                     "country": encoded_country,
@@ -539,7 +543,7 @@ def signup_and_upload_image():
                     "_id": user_id,
                     "image": "/get_image/" + str(image_id),
                     "name": name,
-                    "tag": tag + count,
+                    "tag":(tag + count).lower(),
                     "email": encoded_email,
                     "password": encoded_password,
                     "country": encoded_country,
@@ -1013,13 +1017,14 @@ def update_profile():
 
     elif check_result and request.method == "POST":
         data = dict(request.form)
+        print(data)
         file = request.files.get("image")
         if file:
             image_data = file.read()
             upload_image_local(image_data, encoded_email, ideo)
 
         data = handle_data_encryption(data)
-
+        print(data)
         collection = get_collection(ideo, encoded_email)
         update_database(collection, ideo, encoded_email, data)
 
@@ -1127,6 +1132,81 @@ def account(x, y):
             return redirect(url_for("main"))
 
     return redirect(url_for("main"))
+
+@TurboLancer.route('/<tag>')
+def tag_pf(tag):
+    res = check(request.cookies, "file")
+    print(res)
+    if not res:
+        return redirect(url_for("main"))
+
+    decrypted_x = turbolancer_data_Security.decrypt(
+        key, getkey(request.cookies)["ideo"]
+    )
+    user = seller_collection.find_one({'tag':tag}) or user_collection.find_one({'tag':tag})
+    x = user['_id'] if user else None
+    y = user['d'] if user else None
+    if res and (decrypted_x != x):
+        if y in ["c", "d"]:
+            if y == "c":
+                return redirect("/NotFound")
+            elif y == "d":
+                seller_data = get_seller_data(x)
+                if seller_data:
+                    new = []
+                    cat = list(catalogue_collection.find({"seller_id": x}))
+                    if cat:
+                        for item in cat:
+                            item['sell'] = 'Yes' if seller_data.get('dd') and (item['seller_id'] == seller_data['dd']) else None
+                            item['res'] = new_or_not(item['date'])
+                            new.append(item["_id"])
+                    
+                    # Combine seller_data with additional data
+                    seller_data["total_catalog_items"] = len(cat)
+                    seller_data["total_projects"] = 42  # Replace with actual data
+                    seller_data["rating"] = float(seller_data["rating"])
+                    
+                    return render_template(
+                        "profile_page.html", **seller_data, d="avail", cat=cat, c_id=new
+                    )
+                return redirect(url_for("main"))
+        return redirect(url_for("main"))
+
+    if res and (decrypted_x == x) and (y in ["c", "d"]):
+        if y == "c":
+            user_data = get_user_dataA(x)
+            if user_data:
+                # Dummy data for user_data
+                user_data["total_earnings"] = "$12,345"
+                user_data["total_catalog_items"] = 125
+                user_data["total_projects"] = 42
+                user_data["user_rating"] = 4.8
+                return render_template(
+                    "profile_page.html", **user_data, x="yes", c="yes"
+                )
+        elif y == "d":
+            seller_data = get_seller_data(x)
+            if seller_data:
+                new = []
+                cat = list(catalogue_collection.find({"seller_id": x}))
+                if cat:
+                    for item in cat:
+                        item['sell'] = 'Yes' if seller_data.get('dd') and (item['seller_id'] == seller_data['dd']) else None
+                        item['res'] = new_or_not(item['date'])
+                        new.append(item["_id"])
+                
+                # Combine seller_data with additional data
+                seller_data["total_catalog_items"] = len(cat)
+                seller_data["total_projects"] = 42  # Replace with actual data
+                seller_data["rating"] = float(seller_data["rating"])
+                
+                return render_template(
+                    "profile_page.html", **seller_data, d="avail", x="yes", cat=cat, c_id=new
+                )
+            return redirect(url_for("main"))
+
+    return redirect(url_for("main"))
+
 
 @TurboLancer.errorhandler(404)
 def page_not_found(error):

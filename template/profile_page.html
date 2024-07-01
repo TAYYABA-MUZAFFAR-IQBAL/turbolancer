@@ -410,7 +410,7 @@
                 </div>
                 {% endif %}
                 <div class="modal-action">
-                    <button type="submit" class="btn bg-green-500 submitbtn">
+                    <button type="submit"  class="btn bg-green-500 submitbtn">
                         Save
                         Changes</span>
                     </button>
@@ -516,6 +516,7 @@
             button.remove();
             setupElement(randomDigitString);
         }
+
         function generateRandomDigitString() {
             let randomDigitString = "";
             const digits = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -530,6 +531,8 @@
         }
         function changedata(x) {
             const inputElement = x.getAttribute("data-inputclass");
+            console.log(`this is ${inputElement}`)
+            console.log(`and ${ document.querySelector(`.${inputElement}`)}`)
             document
                 .querySelector(`.${inputElement}`)
                 .setAttribute("data-skill", x.innerText);
@@ -594,7 +597,9 @@
             element.addEventListener("input", handleInputChange);
         }
         function changeprev(x) {
+            console.log(x)
             const prevdata = x.getAttribute("data-prev");
+            console.log(prevdata)
             if (prevdata && changedFields["sk"].length > 0) {
                 for (i = 0; i <= changedFields["sk"].length; i++) {
                     if (
@@ -602,6 +607,7 @@
                         changedFields["sk"][i][0] === ""
                     ) {
                         changedFields["sk"][i][0] = x.innerText;
+
                     }
                 }
             }
@@ -659,14 +665,23 @@
             }
         }
 
-        form.addEventListener("submit", (event) => {
-            btn = document.querySelector(".submitbtn");
-            btn.querySelector(".A1").style.display = "block";
-            btn.querySelector(".A2").style.display = "none";
-            event.preventDefault();
-            update(changedFields);
-            console.log("Changed fields:", changedFields);
+        document.addEventListener('DOMContentLoaded', function() {
+    const submitBtn = document.querySelector(".submitbtn");
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(event) {
+            console.log("Submit button clicked");
+            submit(event);
         });
+    }
+});
+
+function submit(event) {
+    console.log("Submit function called");
+    event.preventDefault(); // Prevent default form submission
+    btn = document.querySelector(".submitbtn");
+    update(changedFields);
+    console.log("Changed fields:", changedFields);
+}
 
         function previewImage(event) {
             var input = event.target;
@@ -702,9 +717,9 @@
                     toast("s", "Successfully updated your profile.");
                     btn = document.querySelector(".submitbtn");
 
-                    btn.querySelector(".A2").style.display = "block";
-                    btn.querySelector(".A1").style.display = "none";
+           
                     setTimeout(() => {
+                        console.log('hi')
                         window.location.reload();
                     }, 1000);
                 })
@@ -712,8 +727,7 @@
                     toast("d", "An Error occurred.");
                     btn = document.querySelector(".submitbtn");
 
-                    btn.querySelector(".A2").style.display = "block";
-                    btn.querySelector(".A1").style.display = "none";
+
                     console.error("Error:", error);
                 });
         }

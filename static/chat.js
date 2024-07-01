@@ -516,8 +516,12 @@ document.body.addEventListener('click', function () {
   }
 
 // Function to open the offer modal
-function openOfferModal() {
+function openOfferModal(x) {
+  if(x){
 details('/offer',true)
+
+
+  }
 
 }
 
