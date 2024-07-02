@@ -104,7 +104,8 @@ function showIframe(element) {
   document.querySelector('.navbar').style.background = '#fff';
   document.querySelector('.navbar').style.borderBottom = '1px solid lightgray';
   document.querySelector('.navbar').querySelector('.btn').style.color = '#000';
-  if (iframe.src !== link) {
+  
+  if ( !iframe?.src?.includes(link)) {
     iframe.src = link;
   }
 
@@ -120,7 +121,7 @@ function showIframe(element) {
 }
 
 function hideIframe(element) {
-  document.querySelector('.navbar').style.borderBottom = '1px solid transparent';
+  document.querySelector('.navbar').style.borderBottom = '';
 
   document.querySelector('.navbar').querySelector('.btn').style.color = '#fff';
   document.querySelector('.navbar').style.background = '';

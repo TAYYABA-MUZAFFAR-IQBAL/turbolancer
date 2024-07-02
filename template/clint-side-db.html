@@ -135,7 +135,7 @@
             <label for="tb-drawer" class="drawer-overlay"></label>
             <ul class="menu p-4 w-80 h-full bg-base-200 text-base-content">
                 <li onclick="hideIframe(this)" class="Mactive"><a>Home</a></li>
-                <li><a>Profile</a></li>
+                <li><a id="anchor" href="{{aclink}}" >Account</a></li>
                 <li><a>Notification</a></li>
                 <li onclick="showIframe(this)" data-link="/messenger"><a>Messages</a></li>
                 <li><a>Order History</a></li>
@@ -148,7 +148,11 @@
     </div>
     <script src="/static/clint.js"></script>
     <script>
-  
+      const anchor = document.querySelectorAll('#anchor');
+    anchor.forEach(element => {
+      element.href += `?referrer=${encodeURIComponent(btoa(window.location.href))}`;
+
+    });
     const channel = new BroadcastChannel('live.TurboLancer/dell');
     channel.onmessage = (event) => {
       modal('d', 'Are you sure you want to delete this catalogue?', 'Yes, I\'m sure', 'dellit', event.data)

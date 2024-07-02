@@ -45,6 +45,9 @@
 .hero-content{
     width: 100svw;
 }
+.iframe-icon {
+    display: none !important;
+}
 
 #iframe {
 overflow-y: auto !important;
